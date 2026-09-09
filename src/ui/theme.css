@@ -1,0 +1,924 @@
+/* =========================================================================
+   theme.css — the design sheet, as code.
+   Every HTML page a skill in this repo generates loads exactly this file.
+   Prose version + rationale: .claude/ui/DESIGN.md
+   Nothing here is page-specific. If you need a one-off rule, put it in your
+   skill's own stylesheet (build_page.py --css), never in here.
+   ========================================================================= */
+
+/* ---------------------------------------------------------------- tokens */
+/* Light is the base definition. Every colour is defined HERE, on bare :root,
+   so a token can never be undefined in one theme; the dark blocks only
+   redefine values. */
+:root {
+  /* surfaces */
+  --bg:            #f4f2ee;   /* page — warm paper, never pure white */
+  --bg-sunk:       #ebe8e1;   /* wells, inset areas, table stripes */
+  --card:          #fffdfa;   /* raised surfaces: panels, cards, rows */
+  --card-hover:    #fffefd;
+
+  /* ink */
+  --ink:           #1c1a17;   /* body text, headings */
+  --ink-soft:      #453f37;   /* secondary body text */
+  --muted:         #6b6459;   /* labels, captions, metadata */
+  --faint:         #9a9287;   /* placeholders, disabled */
+
+  /* structure */
+  --line:          #e5e0d8;   /* default hairline */
+  --line-strong:   #d3ccc0;   /* emphasised border, input outline */
+
+  /* accent — overridden per page, see [data-accent] below */
+  --accent:        #7a5c3e;   /* fills, active states */
+  --accent-ink:    #6b4f34;   /* accent used AS TEXT on --bg/--card (AA) */
+  --accent-soft:   #f0e8de;   /* tinted background wash */
+  --on-accent:     #ffffff;   /* text on an --accent fill */
+
+  /* semantic */
+  --rec:           #b98a4b;   /* "our pick" gold — highlight, not a state */
+  --ok:            #2f6d5c;
+  --warn:          #a9662a;
+  --bad:           #a33a30;
+  --on-semantic:   #ffffff;
+
+  /* series — the categorical palette a chart paints with, in fixed order.
+     Not the accent: one page has one accent, and a chart with six lines needs
+     six colours that stay apart. Light and dark are picked separately, and both
+     sets are checked rather than eyeballed — OKLCH lightness band, chroma floor,
+     protan/deutan separation of neighbouring slots, contrast against --card. */
+  --series-1:      #2f6fb5;
+  --series-2:      #c2521f;
+  --series-3:      #1a8a72;
+  --series-4:      #a8791b;
+  --series-5:      #9c3d7a;
+  --series-6:      #4d7d1f;
+
+  /* elevation — four steps, no more */
+  --sh-1: 0 1px 2px rgba(40,30,15,.06);
+  --sh-2: 0 4px 16px rgba(40,30,15,.10);
+  --sh-3: 0 8px 40px rgba(40,30,15,.12);
+  --sh-4: 0 18px 60px rgba(40,30,15,.20);
+  --ring: 0 0 0 3px color-mix(in srgb, var(--accent) 32%, transparent);
+
+  /* radius */
+  --r-xs: 6px;  --r-sm: 10px;  --r-md: 14px;  --r-lg: 20px;  --r-xl: 28px;
+  --r-pill: 999px;
+
+  /* space — 4px base, the only allowed gaps */
+  --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px; --s5: 24px;
+  --s6: 32px; --s7: 48px; --s8: 64px;
+
+  /* type */
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --t-xs: 11px; --t-sm: 13px; --t-md: 14px; --t-base: 16px; --t-lg: 18px;
+  --lh: 1.55;
+  --track-caps: .12em;        /* letter-spacing for the uppercase eyebrow */
+
+  /* layout */
+  --maxw: 940px;              /* default content column */
+  --maxw-narrow: 720px;       /* reading-width column (text-heavy pages) */
+  --maxw-wide: 1180px;        /* tables, maps, galleries */
+
+  /* motion */
+  --dur-1: .12s; --dur-2: .22s; --ease: cubic-bezier(.2,.7,.3,1);
+
+  color-scheme: light dark;
+}
+
+/* Dark: system preference, unless the page was explicitly forced to light. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#14130f; --bg-sunk:#100f0c; --card:#1f1d18; --card-hover:#262319;
+    --ink:#efe9df; --ink-soft:#d6cec1; --muted:#a49a8a; --faint:#7c7365;
+    --line:#332c24; --line-strong:#493f33;
+    --accent:#d3a978; --accent-ink:#e0bb8f; --accent-soft:#2a2319; --on-accent:#1b1610;
+    --rec:#e0b878; --ok:#7cc0a8; --warn:#e0a35e; --bad:#e8837a; --on-semantic:#1b1610;
+    --series-1:#5286cc; --series-2:#cf6234; --series-3:#199a82;
+    --series-4:#b58a2a; --series-5:#bc6099; --series-6:#789b34;
+    --sh-1: 0 1px 2px rgba(0,0,0,.4);
+    --sh-2: 0 4px 16px rgba(0,0,0,.45);
+    --sh-3: 0 8px 40px rgba(0,0,0,.55);
+    --sh-4: 0 18px 60px rgba(0,0,0,.65);
+  }
+}
+/* Explicit choice always wins over the media query, in both directions. */
+:root[data-theme="dark"] {
+  --bg:#14130f; --bg-sunk:#100f0c; --card:#1f1d18; --card-hover:#262319;
+  --ink:#efe9df; --ink-soft:#d6cec1; --muted:#a49a8a; --faint:#7c7365;
+  --line:#332c24; --line-strong:#493f33;
+  --accent:#d3a978; --accent-ink:#e0bb8f; --accent-soft:#2a2319; --on-accent:#1b1610;
+  --rec:#e0b878; --ok:#7cc0a8; --warn:#e0a35e; --bad:#e8837a; --on-semantic:#1b1610;
+  --series-1:#5286cc; --series-2:#cf6234; --series-3:#199a82;
+  --series-4:#b58a2a; --series-5:#bc6099; --series-6:#789b34;
+  --sh-1: 0 1px 2px rgba(0,0,0,.4);
+  --sh-2: 0 4px 16px rgba(0,0,0,.45);
+  --sh-3: 0 8px 40px rgba(0,0,0,.55);
+  --sh-4: 0 18px 60px rgba(0,0,0,.65);
+}
+
+/* --------------------------------------------------------- accent presets */
+/* One page = one accent. Set it with build_page.py --accent <name|#hex>.
+   Each preset needs a light AND a dark value, because a colour that reads on
+   paper rarely reads on near-black. */
+:root[data-accent="fashion"] { --accent:#7a5c3e; --accent-ink:#6b4f34; --accent-soft:#f0e8de; --on-accent:#fff; }
+:root[data-accent="travel"]  { --accent:#2f6d5c; --accent-ink:#2a5f50; --accent-soft:#e3ede9; --on-accent:#fff; }
+:root[data-accent="music"]   { --accent:#1db954; --accent-ink:#0d7a36; --accent-soft:#e4f4e9; --on-accent:#fff; }
+:root[data-accent="ink"]     { --accent:#2f3336; --accent-ink:#2f3336; --accent-soft:#e9eaeb; --on-accent:#fff; }
+:root[data-accent="food"]    { --accent:#b4522e; --accent-ink:#9e4728; --accent-soft:#fbeae3; --on-accent:#fff; }
+:root[data-accent="home"]    { --accent:#4a5d8a; --accent-ink:#3f5179; --accent-soft:#e8ecf5; --on-accent:#fff; }
+:root[data-accent="health"]  { --accent:#0f7b8a; --accent-ink:#0c6875; --accent-soft:#e0eff1; --on-accent:#fff; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"])[data-accent="fashion"] { --accent:#d3a978; --accent-ink:#e0bb8f; --accent-soft:#2a2319; --on-accent:#1b1610; }
+  :root:not([data-theme="light"])[data-accent="travel"]  { --accent:#7cc0a8; --accent-ink:#8fd0b8; --accent-soft:#1a251f; --on-accent:#10201a; }
+  :root:not([data-theme="light"])[data-accent="music"]   { --accent:#1db954; --accent-ink:#4ade80; --accent-soft:#14231a; --on-accent:#08150c; }
+  :root:not([data-theme="light"])[data-accent="ink"]     { --accent:#c9ccce; --accent-ink:#d9dcde; --accent-soft:#22252700; --on-accent:#16181a; }
+  :root:not([data-theme="light"])[data-accent="food"]    { --accent:#e8916b; --accent-ink:#f0a583; --accent-soft:#2b1c15; --on-accent:#241009; }
+  :root:not([data-theme="light"])[data-accent="home"]    { --accent:#9aaee0; --accent-ink:#adbfea; --accent-soft:#1a1f2e; --on-accent:#121724; }
+  :root:not([data-theme="light"])[data-accent="health"]  { --accent:#5cc3d3; --accent-ink:#78d2df; --accent-soft:#122528; --on-accent:#08191c; }
+}
+:root[data-theme="dark"][data-accent="fashion"] { --accent:#d3a978; --accent-ink:#e0bb8f; --accent-soft:#2a2319; --on-accent:#1b1610; }
+:root[data-theme="dark"][data-accent="travel"]  { --accent:#7cc0a8; --accent-ink:#8fd0b8; --accent-soft:#1a251f; --on-accent:#10201a; }
+:root[data-theme="dark"][data-accent="music"]   { --accent:#1db954; --accent-ink:#4ade80; --accent-soft:#14231a; --on-accent:#08150c; }
+:root[data-theme="dark"][data-accent="ink"]     { --accent:#c9ccce; --accent-ink:#d9dcde; --accent-soft:#222527; --on-accent:#16181a; }
+:root[data-theme="dark"][data-accent="food"]    { --accent:#e8916b; --accent-ink:#f0a583; --accent-soft:#2b1c15; --on-accent:#241009; }
+:root[data-theme="dark"][data-accent="home"]    { --accent:#9aaee0; --accent-ink:#adbfea; --accent-soft:#1a1f2e; --on-accent:#121724; }
+:root[data-theme="dark"][data-accent="health"]  { --accent:#5cc3d3; --accent-ink:#78d2df; --accent-soft:#122528; --on-accent:#08191c; }
+
+/* ------------------------------------------------------------------ reset */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: var(--t-base)/var(--lh) var(--font);
+  overflow-wrap: break-word;
+  /* iOS safe areas — pages are installed as PWAs and run full-bleed */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+           env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+img, svg, video { max-width: 100%; display: block; }
+a { color: var(--accent-ink); }
+:focus-visible { outline: none; box-shadow: var(--ring); border-radius: var(--r-xs); }
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001ms !important; transition-duration: .001ms !important;
+      scroll-behavior: auto !important; }
+}
+
+/* ------------------------------------------------------- layout utilities */
+.ui-shell   { min-height: 100vh; display: flex; flex-direction: column; }
+.ui-wrap    { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 var(--s4); }
+.ui-wrap.narrow { max-width: var(--maxw-narrow); }
+.ui-wrap.wide   { max-width: var(--maxw-wide); }
+/* Edge to edge, for dashboards. Still keeps the side padding — content that
+   touches the window edge reads as broken, not as full-width. */
+.ui-wrap.full   { max-width: none; padding: 0 var(--s5); }
+@media (max-width: 640px) { .ui-wrap.full { padding: 0 var(--s4); } }
+.ui-main    { flex: 1; padding-bottom: var(--s7); }
+
+.ui-row  { display: flex; flex-direction: row; align-items: center; gap: var(--s3); }
+.ui-row.top    { align-items: flex-start; }
+.ui-row.bottom { align-items: flex-end; }
+/* „bottom" means the bottom of the CONTROLS, not of the boxes around them.
+   A <Field> is label · control · hint, so flex alignment put a neighbouring
+   button level with the hint and left it floating below the input it belongs
+   to. Subgrid gives every child of the row the same three bands, so the field's
+   label, input and hint line up across the row and anything that is not a field
+   (a button, a <Muted>) sits in the control band where it belongs. Rows are
+   placed by rule rather than by source order, so a field without a label or
+   without a hint still lands in the right band.
+   Wrapping rows keep the old flex behaviour: they have no stable columns to
+   align to, and the ones in this repo hold no fields. */
+@supports (grid-template-rows: subgrid) {
+  .ui-row.bottom:not(.wrap) {
+    display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, auto);
+    grid-template-rows: auto auto auto; align-items: end;
+  }
+  .ui-row.bottom:not(.wrap) > .ui-field {
+    display: grid; grid-template-rows: subgrid; grid-row: span 3; row-gap: 5px;
+  }
+  .ui-row.bottom:not(.wrap) > .ui-field > label { grid-row: 1; }
+  .ui-row.bottom:not(.wrap) > .ui-field > .ui-hint,
+  .ui-row.bottom:not(.wrap) > .ui-field > .ui-error { grid-row: 3; }
+  .ui-row.bottom:not(.wrap) > .ui-field
+    > :not(label):not(.ui-hint):not(.ui-error) { grid-row: 2; }
+  .ui-row.bottom:not(.wrap) > :not(.ui-field) { grid-row: 2; }
+
+  @media (max-width: 640px) {
+    .ui-row.bottom.stack:not(.wrap) { grid-auto-flow: row; }
+    .ui-row.bottom.stack:not(.wrap) > * { grid-row: auto; }
+    .ui-row.bottom.stack:not(.wrap) > .ui-field { grid-row: auto; display: flex; }
+  }
+}
+.ui-row.wrap   { flex-wrap: wrap; }
+.ui-row.between{ justify-content: space-between; }
+.ui-row.end    { justify-content: flex-end; }
+.ui-row.center { justify-content: center; }
+/* Side-by-side above 640px, stacked below it — the phone layout for any
+   "image left, text right" block. Overrides an inline flex basis on purpose. */
+.ui-row.stack { flex-wrap: wrap; }
+@media (max-width: 640px) {
+  .ui-row.stack { flex-direction: column; align-items: stretch; }
+  .ui-row.stack > * { flex: 1 1 auto !important; width: 100%; max-width: 100%; }
+}
+.ui-col  { display: flex; flex-direction: column; gap: var(--s3); }
+.ui-grid { display: grid; gap: var(--s4);
+           grid-template-columns: repeat(auto-fit, minmax(var(--min, 240px), 1fr)); }
+.ui-gap-0 { gap: 0 } .ui-gap-1 { gap: var(--s1) } .ui-gap-2 { gap: var(--s2) }
+.ui-gap-3 { gap: var(--s3) } .ui-gap-4 { gap: var(--s4) } .ui-gap-5 { gap: var(--s5) }
+.ui-gap-6 { gap: var(--s6) }
+.ui-grow { flex: 1; min-width: 0; }
+.ui-spacer { flex: 1 }
+
+.ui-scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* Elevation + radius as standalone classes, usable on any bare <div>. */
+.ui-sh-0 { box-shadow: none }
+.ui-sh-1 { box-shadow: var(--sh-1) }
+.ui-sh-2 { box-shadow: var(--sh-2) }
+.ui-sh-3 { box-shadow: var(--sh-3) }
+.ui-sh-4 { box-shadow: var(--sh-4) }
+.ui-lift { transition: transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease); }
+.ui-lift:hover { transform: translateY(-2px); box-shadow: var(--sh-4); }
+.ui-r-xs { border-radius: var(--r-xs) } .ui-r-sm { border-radius: var(--r-sm) }
+.ui-r-md { border-radius: var(--r-md) } .ui-r-lg { border-radius: var(--r-lg) }
+.ui-r-xl { border-radius: var(--r-xl) } .ui-r-pill { border-radius: var(--r-pill) }
+/* Eine Fläche ist nie nur eine Farbe: Text, der am Rand klebt, sieht kaputt
+   aus. Beide Helfer bringen deshalb ihr eigenes Innenmaß mit — überschreibbar
+   mit <Box pad="..."> oder einer eigenen padding-Regel. */
+.ui-surface { background: var(--card); border: 1px solid var(--line);
+  padding: var(--s3) var(--s4); }
+.ui-sunk    { background: var(--bg-sunk); border: 1px solid var(--line);
+  padding: var(--s3) var(--s4); }
+
+/* -------------------------------------------------------------- typography */
+.ui-h1, .ui-h2, .ui-h3, .ui-h4, .ui-h5, .ui-h6 {
+  margin: 0; font-weight: 650; line-height: 1.2; letter-spacing: -.01em; color: var(--ink);
+}
+.ui-h1 { font-size: clamp(24px, 4.2vw, 34px); letter-spacing: -.02em; }
+.ui-h2 { font-size: clamp(20px, 3vw, 26px); }
+.ui-h3 { font-size: 19px; }
+.ui-h4 { font-size: 16px; }
+.ui-h5 { font-size: var(--t-md); }
+.ui-h6 { font-size: var(--t-xs); font-weight: 600; letter-spacing: var(--track-caps);
+         text-transform: uppercase; color: var(--muted); }
+.ui-lead   { font-size: var(--t-lg); color: var(--ink-soft); margin: 0; max-width: 70ch; }
+.ui-text   { margin: 0; max-width: 74ch; }
+.ui-muted  { color: var(--muted); }
+.ui-small  { font-size: var(--t-sm); }
+.ui-eyebrow{ font-size: var(--t-xs); font-weight: 600; letter-spacing: var(--track-caps);
+             text-transform: uppercase; color: var(--accent-ink); }
+.ui-mono   { font-family: var(--mono); font-size: .92em; }
+.ui-prose p { margin: 0 0 var(--s3); max-width: 74ch; }
+.ui-prose p:last-child { margin-bottom: 0; }
+.ui-prose b, .ui-prose strong { font-weight: 650; }
+.ui-prose a { color: var(--accent-ink); text-decoration-thickness: 1px;
+              text-underline-offset: 2px; }
+
+/* ------------------------------------------------------------ page header */
+.ui-topbar { position: sticky; top: 0; z-index: 20; display: flex; justify-content: flex-end;
+  gap: var(--s2); padding: var(--s3) var(--s4) 0;
+  /* Fades the content out behind the floating actions instead of boxing them. */
+  background: linear-gradient(var(--bg) 62%, transparent);
+  pointer-events: none;
+}
+.ui-topbar > * { pointer-events: auto; }
+.ui-header { text-align: center; padding: var(--s2) var(--s4) 0; }
+.ui-header .ui-h1 { margin: 0 auto; max-width: 22ch; }
+.ui-header .ui-sub { margin: var(--s2) auto 0; color: var(--muted); max-width: 60ch; }
+/* On a full-bleed page the header is a bar, not a title page: a centred line
+   floating over 1600 px of tiles reads as a document that lost its margins.
+   Left-aligned, and pulled in from the action bar so the two do not collide. */
+.ui-wrap.full > .ui-header { text-align: left; padding-left: 0; padding-right: 0;
+  max-width: calc(100% - 320px); }
+.ui-wrap.full > .ui-header .ui-h1 { margin: 0; max-width: none; }
+.ui-wrap.full > .ui-header .ui-sub { margin: var(--s1) 0 0; max-width: 70ch; }
+@media (max-width: 860px) { .ui-wrap.full > .ui-header { max-width: none; } }
+.ui-taskbox {
+  display: inline-block; text-align: left; margin: var(--s4) auto 0; max-width: 680px;
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+  padding: var(--s2) var(--s4); font-size: var(--t-md); box-shadow: var(--sh-2);
+}
+.ui-taskbox b { display: block; margin-bottom: 2px; font-size: var(--t-xs); font-weight: 600;
+  letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--accent-ink); }
+.ui-taskbox .ui-taskbody { color: var(--ink-soft); white-space: pre-wrap; }
+
+/* The closing block: everything *about* the page, never above it (PageMeta). */
+.ui-pagefoot { padding-bottom: var(--s6); }
+.ui-meta { margin-top: var(--s7); padding-top: var(--s6); border-top: 1px solid var(--line); }
+/* In the header the task box was a centred island; here it is a full-width row. */
+.ui-meta .ui-taskbox { display: block; max-width: none; margin: 0; }
+/* The parts are tabs, so they start at the heading's edge rather than centred.
+   Two classes deep on purpose: `.ui-tabs` sets both further down the file. */
+.ui-meta .ui-meta-tabs { justify-content: flex-start; padding: 0; }
+.ui-meta-panel { margin-top: var(--s4); }
+.ui-meta-note { margin: 0 0 var(--s3); }
+.ui-meta-stamp { margin-top: var(--s6); text-align: center;
+  color: var(--faint); font-size: var(--t-sm); }
+.ui-meta-stamp a { color: var(--faint); }
+
+/* ----------------------------------------------------------------- panels */
+/* Same reasoning as `.ui-section` below: a panel owns the spacing between its
+   own children, so a page that drops a <Grid>, a <Row> and two <Text>s into one
+   does not get them glued together. */
+.ui-panel { background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--r-md); box-shadow: var(--sh-2); padding: var(--s4);
+  display: flex; flex-direction: column; gap: var(--s3); }
+.ui-panel.pad-0 { padding: 0 } .ui-panel.pad-sm { padding: var(--s3) }
+.ui-panel.pad-lg { padding: var(--s5) }
+.ui-panel.flat { box-shadow: none }
+.ui-panel.sunk { background: var(--bg-sunk); box-shadow: none }
+.ui-panel.rec  { border-left: 3px solid var(--rec); }
+.ui-panel.accent { border-left: 3px solid var(--accent); }
+.ui-panel-head { display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--s3); margin-bottom: var(--s3); }
+.ui-card { background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--r-lg); box-shadow: var(--sh-3); overflow: hidden; }
+/* A section owns the spacing between its own children.
+   Before 2026-09-08 it did not, and a page that put two blocks straight into a
+   <Section> — a <Callout> above a <Grid>, say — got them flush against each
+   other, which reads as a rendering bug rather than as a layout. The
+   convention was "wrap it in <Col gap={4}>", and a convention every page has to
+   remember is one some page will forget. A flex column with a gap cannot be
+   forgotten. A <Col> inside is then a single child, so it never doubles up. */
+.ui-section { display: flex; flex-direction: column; gap: var(--s4);
+  margin: var(--s6) 0 0; }
+/* The gap now carries this; a margin on top of it would space the heading
+   twice as far as everything else. */
+.ui-section-head { margin-bottom: 0; }
+.ui-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3);
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
+  padding: var(--s3) var(--s4); box-shadow: var(--sh-1); }
+.ui-callout { display: flex; gap: var(--s3); border-radius: var(--r-md); padding: var(--s3) var(--s4);
+  background: var(--accent-soft); border: 1px solid var(--line); }
+.ui-callout .ui-callout-icon { font-size: 18px; line-height: 1.3; }
+/* Title and body were flush; a callout with both reads as one run-on line. */
+.ui-callout > .ui-grow { display: flex; flex-direction: column; gap: var(--s2); }
+.ui-callout.warn { border-color: var(--warn); }
+.ui-callout.bad  { border-color: var(--bad); }
+.ui-empty { text-align: center; color: var(--muted); padding: var(--s7) var(--s4); }
+
+/* A wait with no number on it. The ring is decoration and the label is the
+   message, which is why reduced motion may stop the ring entirely. */
+.ui-spinner { display: inline-flex; align-items: center; gap: var(--s3);
+  color: var(--muted); font-size: var(--t-sm); }
+.ui-spinner-ring { flex: none; width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid var(--line-strong); border-top-color: var(--accent);
+  animation: ui-spin .8s linear infinite; }
+.ui-spinner.sm .ui-spinner-ring { width: 14px; height: 14px; border-width: 2px; }
+.ui-spinner.lg { flex-direction: column; gap: var(--s3); width: 100%;
+  justify-content: center; padding: var(--s6) var(--s4); text-align: center; }
+.ui-spinner.lg .ui-spinner-ring { width: 34px; height: 34px; border-width: 3px; }
+@keyframes ui-spin { to { transform: rotate(360deg); } }
+
+/* The overlay for a wait that blocks the whole page. A native <dialog> in the
+   top layer, so the background goes inert and nothing behind it can be clicked
+   by accident while the page is not ready. */
+.ui-loadwrap { border: 0; padding: 0; background: transparent; max-width: none;
+  max-height: none; width: 100%; height: 100%; overflow: hidden; }
+.ui-loadwrap::backdrop { background: color-mix(in srgb, var(--ink) 55%, transparent);
+  backdrop-filter: blur(2px); }
+.ui-loadcard { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; gap: var(--s4);
+  width: min(420px, calc(100vw - var(--s6) * 2)); box-sizing: border-box;
+  padding: var(--s6) var(--s5); text-align: center;
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--r-lg); box-shadow: var(--sh-4); }
+.ui-loadcard .ui-spinner { flex-direction: column; gap: var(--s4); }
+.ui-loadcard .ui-spinner-ring { width: 38px; height: 38px; border-width: 3px; }
+.ui-loadcard .ui-spinner-label { font-size: var(--t-md); color: var(--ink-soft); }
+.ui-loadcard-title { font-weight: 650; font-size: var(--t-lg); color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-spinner-ring { animation: ui-pulse 1.6s var(--ease) infinite;
+    border-top-color: var(--line-strong); background: var(--accent-soft); }
+  @keyframes ui-pulse { 0%, 100% { opacity: .35 } 50% { opacity: 1 } }
+}
+
+/* --------------------------------------------------------------- controls */
+.ui-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s2);
+  font: inherit; font-weight: 600; line-height: 1.1; text-decoration: none; cursor: pointer;
+  padding: 10px 18px; border-radius: var(--r-pill); border: 1px solid var(--line-strong);
+  background: var(--card); color: var(--ink); white-space: nowrap;
+  transition: background var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease),
+              color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
+}
+.ui-btn:hover { border-color: var(--accent); color: var(--accent-ink); }
+.ui-btn:active { transform: translateY(1px); }
+.ui-btn[disabled], .ui-btn.disabled { opacity: .5; pointer-events: none; }
+.ui-btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.ui-btn.primary:hover { color: var(--on-accent); filter: brightness(1.07); }
+.ui-btn.ghost { background: transparent; border-color: transparent; }
+.ui-btn.ghost:hover { background: var(--accent-soft); }
+.ui-btn.danger { border-color: var(--bad); color: var(--bad); }
+.ui-btn.danger:hover { background: var(--bad); color: var(--on-semantic); }
+.ui-btn.sm { padding: 6px 13px; font-size: var(--t-sm); }
+.ui-btn.lg { padding: 13px 24px; font-size: var(--t-lg); }
+.ui-btn.block { display: flex; width: 100%; }
+.ui-btn.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.ui-iconbtn { width: 40px; height: 40px; padding: 0; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center; font: inherit;
+  cursor: pointer; background: var(--card); color: var(--ink);
+  border: 1px solid var(--line); box-shadow: var(--sh-2); }
+.ui-iconbtn:hover { border-color: var(--accent); color: var(--accent-ink); }
+/* The language control. Same round shape as the theme toggle, a flag instead
+   of an icon. Sized like an emoji rather than like text, because that is what
+   it is — and where a platform cannot draw the flag it falls back to the two
+   regional-indicator letters, which still fit. */
+.ui-langtag, .ui-langpick { display: inline-flex; align-items: center; justify-content: center;
+  font-size: 17px; line-height: 1; }
+/* With one language it is a label: no hover affordance, no pointer. */
+.ui-langtag { color: var(--muted); cursor: default; }
+.ui-langtag:hover { border-color: var(--line); color: var(--muted); }
+/* With several it is a picker: a real <select> laid invisibly over the button,
+   so the keyboard, the mobile wheel and Esc all come from the browser. */
+.ui-langpick { position: relative; cursor: pointer; }
+.ui-filterbar { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: end; }
+.ui-filterbar > * { min-width: 180px; max-width: 260px; }
+.ui-langpick select { position: absolute; inset: 0; width: 100%; height: 100%;
+  opacity: 0; cursor: pointer; border: 0; padding: 0; -webkit-appearance: none; appearance: none; }
+.ui-share { gap: var(--s2); width: auto; padding: 0 var(--s4); border-radius: var(--r-pill); }
+
+.ui-tabs { display: flex; flex-wrap: wrap; gap: var(--s2); justify-content: center;
+  padding: var(--s5) 0 var(--s2); }
+.ui-badge { display: inline-block; font-size: var(--t-xs); font-weight: 600; white-space: nowrap;
+  padding: 3px 9px; border-radius: var(--r-pill);
+  background: var(--rec); color: var(--on-semantic); }
+.ui-badge.accent { background: var(--accent); color: var(--on-accent); }
+.ui-badge.ok  { background: var(--ok);  color: var(--on-semantic); }
+.ui-badge.warn{ background: var(--warn);color: var(--on-semantic); }
+.ui-badge.bad { background: var(--bad); color: var(--on-semantic); }
+.ui-badge.quiet { background: transparent; color: var(--muted); border: 1px solid var(--line); }
+.ui-tag { font: inherit; font-size: var(--t-xs); letter-spacing: .04em; cursor: pointer;
+  padding: 3px 10px; border-radius: var(--r-pill); border: 1px solid var(--line);
+  background: transparent; color: var(--accent-ink); }
+.ui-tag:hover { border-color: var(--accent); }
+.ui-tag.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.ui-tag[disabled] { cursor: default; color: var(--muted); }
+
+/* ----------------------------------------------------------------- inputs */
+.ui-field { display: flex; flex-direction: column; gap: 5px; }
+.ui-field > label { font-size: var(--t-sm); font-weight: 600; color: var(--muted); }
+.ui-field .ui-hint { font-size: var(--t-sm); color: var(--faint); }
+.ui-field .ui-error { font-size: var(--t-sm); color: var(--bad); }
+.ui-input, .ui-textarea, .ui-select {
+  font: inherit; width: 100%; color: var(--ink); background: var(--card);
+  border: 1px solid var(--line-strong); border-radius: var(--r-sm);
+  padding: 10px var(--s3); transition: border-color var(--dur-1) var(--ease);
+}
+.ui-input::placeholder, .ui-textarea::placeholder { color: var(--faint); }
+.ui-input:hover, .ui-textarea:hover, .ui-select:hover { border-color: var(--accent); }
+.ui-textarea { min-height: 96px; resize: vertical; line-height: var(--lh); }
+.ui-select { appearance: none; padding-right: var(--s6);
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+                    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 20px) 52%, calc(100% - 15px) 52%;
+  background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; }
+.ui-check { display: inline-flex; align-items: center; gap: var(--s2); cursor: pointer; }
+.ui-check input { width: 17px; height: 17px; accent-color: var(--accent); margin: 0; }
+
+
+/* ----------------------------------------------------------------- tables */
+.ui-table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r-md);
+  background: var(--card); box-shadow: var(--sh-2); }
+.ui-table { width: 100%; border-collapse: collapse; font-size: var(--t-md); }
+.ui-table caption { caption-side: top; text-align: left; padding: var(--s3) var(--s4);
+  color: var(--muted); font-size: var(--t-sm); }
+.ui-table th, .ui-table td { padding: var(--s3) var(--s4); text-align: left;
+  border-bottom: 1px solid var(--line); vertical-align: top; }
+.ui-table thead th { position: sticky; top: 0; background: var(--card); z-index: 1;
+  font-size: var(--t-xs); letter-spacing: var(--track-caps); text-transform: uppercase;
+  color: var(--muted); font-weight: 600; white-space: nowrap; }
+.ui-table thead th.sortable { cursor: pointer; user-select: none; }
+.ui-table thead th.sortable:hover { color: var(--accent-ink); }
+.ui-table thead th .ui-sortmark { opacity: .45; margin-left: 4px; }
+.ui-table thead th.on .ui-sortmark { opacity: 1; color: var(--accent-ink); }
+.ui-table tbody tr:last-child td { border-bottom: 0; }
+.ui-table tbody tr.rec { background: var(--accent-soft); }
+.ui-table.striped tbody tr:nth-child(even) { background: var(--bg-sunk); }
+.ui-table.dense th, .ui-table.dense td { padding: var(--s2) var(--s3); }
+.ui-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.ui-facts { display: flex; flex-wrap: wrap; gap: var(--s2); }
+.ui-fact { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-sm);
+  padding: var(--s2) var(--s3); min-width: 96px; }
+.ui-fact .k { display: block; font-size: var(--t-xs); letter-spacing: var(--track-caps);
+  text-transform: uppercase; color: var(--muted); }
+.ui-fact .v { font-weight: 600; }
+/* The one number a dashboard leads with. Exactly one per view: a second hero
+   is two heroes, which is none. Same sans as everything else — a display face
+   here reads as decoration rather than as data. */
+.ui-stat.hero .v { font-size: clamp(44px, 6vw, 68px); line-height: 1.05; }
+.ui-stat.hero .k { font-size: var(--t-sm); }
+/* The change against a named period. Direction is the arrow; whether that
+   direction is good is the colour, and the two are set separately because for
+   half these numbers up is bad. */
+.ui-stat-delta { font-size: var(--t-sm); font-weight: 600; display: inline-flex;
+  align-items: baseline; gap: .3em; }
+.ui-stat-delta.up { color: var(--ok); }
+.ui-stat-delta.down { color: var(--bad); }
+.ui-stat-delta.flat { color: var(--muted); }
+.ui-stat .v { font-size: clamp(22px, 3vw, 30px); font-weight: 650; letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums; }
+
+/* -------------------------------------------------------------- carousel */
+.ui-carousel { position: relative; overflow: hidden; border-radius: var(--r-lg); }
+.ui-track { display: flex; transition: transform var(--dur-2) var(--ease); }
+.ui-track > * { flex: 0 0 100%; min-width: 100%; }
+.ui-nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+  width: 44px; height: 44px; border-radius: 50%; cursor: pointer; font-size: 22px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--card); color: var(--ink); border: 1px solid var(--line); box-shadow: var(--sh-3); }
+.ui-nav:hover { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.ui-nav.prev { left: 10px } .ui-nav.next { right: 10px }
+.ui-thumbs { display: flex; gap: var(--s2); overflow-x: auto; padding: var(--s3) 2px;
+  justify-content: center; }
+.ui-hint { text-align: center; color: var(--faint); font-size: var(--t-sm); }
+
+/* ------------------------------------------------------------------ modal */
+.ui-modal { border: 0; padding: 0; background: transparent; margin: auto;
+  max-width: min(430px, 92vw); width: 100%; color: var(--ink); }
+.ui-modal::backdrop {
+  /* ::backdrop does not reliably inherit custom properties — literal scrim. */
+  background: rgba(18, 14, 8, .55);
+}
+.ui-modal-card { background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--r-lg); box-shadow: var(--sh-4); padding: var(--s5); }
+.ui-modal-head { display: flex; align-items: center; justify-content: space-between;
+  gap: var(--s3); margin-bottom: var(--s4); }
+.ui-modal-foot { margin-top: var(--s4); padding-top: var(--s3);
+  border-top: 1px solid var(--line); }
+.ui-modal[open] { animation: ui-modal-in var(--dur-2) var(--ease); }
+@keyframes ui-modal-in { from { opacity: 0; transform: translateY(8px) scale(.98); } }
+
+/* --------------------------------------------------------------------- QR */
+.ui-qr-wrap { display: flex; flex-direction: column; align-items: center; gap: var(--s2); }
+.ui-qr { display: block; border-radius: var(--r-sm); box-shadow: var(--sh-1);
+  /* The white quiet zone is part of the code — never let a theme tint it. */
+  background: #fff; max-width: 100%; height: auto; }
+.ui-urlbox { font-family: var(--mono); font-size: var(--t-sm); line-height: 1.45;
+  background: var(--bg-sunk); border: 1px solid var(--line); border-radius: var(--r-sm);
+  padding: var(--s2) var(--s3); word-break: break-all; user-select: all;
+  max-height: 5.4em; overflow-y: auto; }
+
+/* ------------------------------------------------------------- data gaps */
+/* Was die Seite NICHT weiss. Jede Seite hier ist aus einem unvollständigen
+   Repo gebaut; diese Blöcke machen die Lücken sichtbar, statt sie unter einer
+   glatten Antwort verschwinden zu lassen. */
+.ui-gaps { display: flex; flex-direction: column; gap: var(--s4); }
+.ui-gaps-head { display: flex; flex-wrap: wrap; align-items: baseline;
+  justify-content: space-between; gap: var(--s3); }
+.ui-gaps-counts { display: flex; flex-wrap: wrap; gap: var(--s2); }
+.ui-gaps-list { display: flex; flex-direction: column; gap: var(--s3); }
+
+.ui-gaps-item { scroll-margin-top: var(--s8); border: 1px solid var(--line); border-left: 3px solid var(--faint);
+  border-radius: var(--r-sm); background: var(--card); padding: var(--s3) var(--s4);
+  display: flex; flex-direction: column; gap: var(--s2); }
+.ui-gaps-item.missing { border-left-color: var(--bad); }
+.ui-gaps-item.assumed { border-left-color: var(--warn); }
+.ui-gaps-item.stale   { border-left-color: var(--muted); }
+
+.ui-gaps-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s2); }
+.ui-gaps-label { font-weight: 600; }
+.ui-gaps-sev { flex: none; font-size: var(--t-xs); font-weight: 700;
+  letter-spacing: var(--track-caps); text-transform: uppercase;
+  padding: 2px var(--s2); border-radius: var(--r-pill);
+  border: 1px solid currentColor; color: var(--faint); }
+.ui-gaps-item.missing .ui-gaps-sev { color: var(--bad); }
+.ui-gaps-item.assumed .ui-gaps-sev { color: var(--warn); }
+.ui-gaps-item.stale   .ui-gaps-sev { color: var(--muted); }
+
+.ui-gaps-line { font-size: var(--t-sm); color: var(--ink-soft); }
+.ui-gaps-line .k { color: var(--muted); font-weight: 600; }
+.ui-gaps-ask { font-size: var(--t-sm); color: var(--ink);
+  background: var(--bg-sunk); border-radius: var(--r-xs);
+  padding: var(--s2) var(--s3); }
+.ui-gaps-where { font-family: var(--mono); font-size: var(--t-xs); color: var(--muted); }
+
+/* Inline-Marker: sitzt direkt neben dem Wert, den er kennzeichnet, weil ein
+   Hinweis am Seitenende den Leser nicht mehr erreicht (PAGE-SPEC). */
+.ui-assumed { display: inline-flex; align-items: center; gap: 3px; vertical-align: baseline;
+  font-size: var(--t-xs); font-weight: 700; line-height: 1;
+  padding: 2px 6px; border-radius: var(--r-pill); text-decoration: none;
+  border: 1px solid currentColor; color: var(--warn); background: transparent;
+  cursor: help; white-space: nowrap; }
+a.ui-assumed:hover { background: var(--accent-soft); }
+.ui-assumed.missing { color: var(--bad); }
+.ui-assumed.stale   { color: var(--muted); }
+
+@media print { .ui-gaps-item { break-inside: avoid; } }
+
+/* --------------------------------------------------------------- feedback */
+.ui-toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom));
+  transform: translateX(-50%); z-index: 60; padding: 10px 18px; border-radius: var(--r-pill);
+  background: var(--ink); color: var(--bg); font-size: var(--t-md); box-shadow: var(--sh-4);
+  opacity: 0; transition: opacity var(--dur-2) var(--ease); pointer-events: none; }
+.ui-toast.on { opacity: 1; }
+
+
+/* Print: a page should survive Cmd-P as a readable document. */
+@media print {
+  .ui-topbar, .ui-nav, .ui-thumbs, .ui-toast, .ui-hint { display: none !important; }
+  body { background: #fff; }
+  .ui-panel, .ui-card, .ui-table-wrap { box-shadow: none; break-inside: avoid; }
+}
+
+/* --- Evidence: Because, AsOf, Confidence, SourceList --------------------- */
+/* Four markers that answer the same four questions on every page: why this,
+   as of when, how sure, from where. Small on purpose — they sit next to the
+   statement they qualify and must not outweigh it. */
+.ui-because {
+  display: flex;
+  gap: var(--s2);
+  align-items: baseline;
+  margin: var(--s2) 0 0;
+  font-size: var(--t-sm);
+  color: var(--ink-soft);
+  line-height: var(--lh);
+}
+.ui-because-label {
+  flex: none;
+  font-size: var(--t-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--track-caps);
+  color: var(--accent-ink);
+  font-weight: 600;
+  padding-top: 1px;
+}
+.ui-because.is-warn .ui-because-label { color: var(--warn); }
+.ui-because.is-bad  .ui-because-label { color: var(--bad); }
+.ui-because.is-ok   .ui-because-label { color: var(--ok); }
+.ui-because.is-rec  .ui-because-label { color: var(--rec); }
+
+.ui-asof {
+  display: inline-flex; align-items: baseline; gap: var(--s1);
+  font-size: var(--t-xs);
+  color: var(--muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.ui-asof-label { text-transform: uppercase; letter-spacing: .04em; }
+.ui-asof.is-stale { color: var(--warn); }
+.ui-asof-flag {
+  padding: 0 var(--s1);
+  border: 1px solid var(--warn);
+  border-radius: var(--r-xs);
+  color: var(--warn);
+}
+
+.ui-conf {
+  display: inline-flex; align-items: center; gap: var(--s1);
+  font-size: var(--t-xs);
+  line-height: 1.6;
+  padding: 0 var(--s2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--bg-sunk);
+  color: var(--muted);
+  cursor: help;
+  white-space: nowrap;
+}
+.ui-conf-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.ui-conf.verified   { color: var(--ok);   border-color: color-mix(in srgb, var(--ok) 45%, var(--line)); }
+.ui-conf.estimated  { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 45%, var(--line)); }
+.ui-conf.unverified { color: var(--bad);  border-color: color-mix(in srgb, var(--bad) 45%, var(--line)); }
+.ui-conf-date { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.ui-sources { list-style: none; margin: 0; padding: 0; counter-reset: src; }
+.ui-sources-item {
+  counter-increment: src;
+  position: relative;
+  padding: var(--s3) 0 var(--s3) var(--s6);
+  border-bottom: 1px solid var(--line);
+}
+.ui-sources-item:last-child { border-bottom: 0; }
+.ui-sources-item::before {
+  content: "[" counter(src) "]";
+  position: absolute; left: 0; top: var(--s3);
+  font-size: var(--t-xs);
+  font-family: var(--mono);
+  color: var(--muted);
+}
+.ui-sources-top { display: flex; gap: var(--s2); align-items: baseline; flex-wrap: wrap; }
+.ui-sources-title { font-weight: 600; color: var(--ink); text-decoration: none; }
+a.ui-sources-title:hover { color: var(--accent-ink); text-decoration: underline; }
+.ui-sources-url {
+  font-size: var(--t-xs); font-family: var(--mono); color: var(--faint);
+  overflow-wrap: anywhere;
+}
+.ui-sources-note { font-size: var(--t-sm); color: var(--ink-soft); margin-top: var(--s1); }
+.ui-sources-item:target { background: var(--accent-soft); border-radius: var(--r-sm); }
+
+/* --- Details ------------------------------------------------------------- */
+/* Native <details>: it prints open, works without JavaScript, and the caret
+   is the only thing this adds. */
+.ui-details {
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--card);
+}
+.ui-details-summary {
+  display: flex; align-items: center; gap: var(--s2);
+  padding: var(--s3) var(--s4);
+  cursor: pointer;
+  font-size: var(--t-sm); font-weight: 600;
+  list-style: none;
+  border-radius: var(--r-md);
+}
+.ui-details-summary::-webkit-details-marker { display: none; }
+.ui-details-summary:hover { color: var(--accent-ink); }
+.ui-details-summary:focus-visible { outline: none; box-shadow: var(--ring); }
+.ui-details-caret { color: var(--muted); transition: transform var(--dur-1) var(--ease); }
+.ui-details[open] > .ui-details-summary > .ui-details-caret { transform: rotate(90deg); }
+.ui-details-count {
+  margin-left: auto;
+  font-size: var(--t-xs); font-weight: 400; color: var(--muted);
+  background: var(--bg-sunk); border-radius: var(--r-pill);
+  padding: 0 var(--s2);
+}
+.ui-details-body {
+  padding: 0 var(--s4) var(--s4);
+  border-top: 1px solid var(--line);
+  padding-top: var(--s3);
+}
+@media print { .ui-details-body { display: block !important; } }
+
+/* --- Progress ------------------------------------------------------------ */
+.ui-progress { display: flex; flex-direction: column; gap: var(--s2); }
+.ui-progress-top {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--s3);
+  font-size: var(--t-sm); color: var(--ink-soft);
+}
+.ui-progress-value { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink); }
+.ui-progress-track {
+  height: 10px; border-radius: var(--r-pill);
+  background: var(--bg-sunk); border: 1px solid var(--line);
+  overflow: hidden;
+}
+.ui-progress-fill {
+  height: 100%; border-radius: var(--r-pill);
+  background: var(--accent);
+  transition: width var(--dur-2) var(--ease);
+}
+.ui-progress.ok   .ui-progress-fill { background: var(--ok); }
+.ui-progress.warn .ui-progress-fill { background: var(--warn); }
+.ui-progress-hint { font-size: var(--t-xs); color: var(--muted); }
+
+/* --- StatusStrip --------------------------------------------------------- */
+.ui-strip { display: flex; flex-direction: column; gap: var(--s2); }
+.ui-strip-top { font-size: var(--t-sm); color: var(--ink-soft); }
+.ui-strip-track {
+  display: flex; gap: 2px; align-items: stretch;
+  height: 28px; padding: var(--s1);
+  border-radius: var(--r-sm);
+  background: var(--bg-sunk); border: 1px solid var(--line);
+  overflow: hidden;
+}
+.ui-strip-bar {
+  flex: 1 1 0; min-width: 2px; border-radius: 2px;
+  background: var(--line-strong);
+}
+.ui-strip-bar.ok   { background: var(--ok); }
+.ui-strip-bar.warn { background: var(--warn); }
+.ui-strip-bar.bad  { background: var(--bad); }
+.ui-strip-bar.none { background: var(--line-strong); opacity: .5; }
+.ui-strip-hint { font-size: var(--t-xs); color: var(--muted); }
+
+/* --- Voyage -------------------------------------------------------------- */
+/* The arc is SVG and stretches with the box; everything ON the arc is HTML at
+   the same fractions, so a dot stays round and the traveller keeps its size. */
+.ui-voyage {
+  /* A column, not a canvas: the status line and the two place labels are in
+     normal flow, so a three-line status on a 390-px screen grows the box
+     instead of landing on the arc. Only the arc and what sits ON it are
+     absolute. */
+  position: relative; width: 100%;
+  display: flex; flex-direction: column;
+  border: 1px solid var(--line); border-radius: var(--r-lg);
+  background: linear-gradient(180deg, var(--accent-soft), var(--card) 78%);
+  box-shadow: var(--sh-1);
+  overflow: hidden;
+  transition: opacity var(--dur-2) var(--ease);
+}
+.ui-voyage.is-paused { opacity: .78; }
+.ui-voyage-sky { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ui-voyage-arc {
+  fill: none; stroke: var(--line-strong); stroke-width: 2;
+  stroke-dasharray: .012 .012; vector-effect: non-scaling-stroke;
+}
+.ui-voyage-arc.is-done {
+  stroke: var(--accent); stroke-width: 3; stroke-linecap: round;
+  /* Beats the dashed base rule — a class here would otherwise lose to it, and
+     the flown part has to be one solid line clipped by the dash offset. */
+  stroke-dasharray: 1;
+  transition: stroke-dashoffset 1s var(--ease);
+}
+.ui-voyage-dot,
+.ui-voyage-mark,
+.ui-voyage-traveller { position: absolute; transform: translate(-50%, -50%); }
+.ui-voyage-dot {
+  width: 12px; height: 12px; border-radius: var(--r-pill);
+  background: var(--accent); box-shadow: 0 0 0 4px var(--card);
+}
+.ui-voyage-dot.is-end { background: var(--card); border: 3px solid var(--accent); }
+.ui-voyage-mark {
+  width: 8px; height: 8px; border-radius: var(--r-pill);
+  background: var(--card); border: 2px solid var(--line-strong);
+}
+.ui-voyage-mark.is-reached { background: var(--accent); border-color: var(--accent); }
+.ui-voyage-traveller { font-size: 30px; line-height: 1; z-index: 1; }
+.ui-voyage-bird { display: inline-block; animation: ui-voyage-bob 2.4s ease-in-out infinite; }
+.ui-voyage.is-paused .ui-voyage-bird { animation: none; }
+@keyframes ui-voyage-bob {
+  0%, 100% { transform: translateY(-3px) rotate(-4deg); }
+  50%      { transform: translateY(3px)  rotate(4deg); }
+}
+.ui-voyage-cloud {
+  position: absolute; border-radius: var(--r-pill);
+  background: var(--card); opacity: .45; filter: blur(5px);
+}
+.ui-voyage-cloud.c1 { width: 90px;  height: 16px; left: 10%; top: 44%; animation: ui-voyage-drift 34s linear infinite; }
+.ui-voyage-cloud.c2 { width: 130px; height: 20px; left: 48%; top: 30%; animation: ui-voyage-drift 52s linear infinite; }
+.ui-voyage-cloud.c3 { width: 70px;  height: 14px; left: 76%; top: 52%; animation: ui-voyage-drift 44s linear infinite; }
+@keyframes ui-voyage-drift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-160px); }
+}
+.ui-voyage-ends {
+  margin-top: auto; position: relative; z-index: 1;
+  display: flex; justify-content: space-between;
+  padding: 0 var(--s4) var(--s3); pointer-events: none;
+}
+.ui-voyage-place {
+  font-size: var(--t-sm); font-weight: 600; color: var(--ink);
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--r-pill); padding: 2px var(--s3);
+}
+/* Above the arc, not below it: the bottom belongs to the two place labels, and
+   a third thing down there collides with them at 390 px. `order` puts it first
+   in the column while leaving it last in the markup, where it reads. */
+.ui-voyage-status {
+  order: -1; position: relative; z-index: 1;
+  margin: 0 auto; padding: var(--s3) var(--s4) 0; max-width: 42ch;
+  font-size: var(--t-xs); color: var(--muted); text-align: center;
+}
+@media (max-width: 560px) {
+  .ui-voyage-traveller { font-size: 24px; }
+  .ui-voyage-place { font-size: var(--t-xs); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ui-voyage-bird, .ui-voyage-cloud { animation: none; }
+  .ui-voyage-arc.is-done, .ui-progress-fill { transition: none; }
+}
+
+/* ------------------------------------------------------------------- charts */
+/* The components live in `.claude/app-builder/lib/charts` (`@charts`), not in
+   components/, because Recharts weighs 465 KB and only a page that draws
+   something should carry it. The look belongs here with everything else. */
+.ui-chart { width: 100%; }
+.ui-chart + .ui-chart-legend { margin-top: var(--s2); }
+
+.ui-chart-legend {
+  display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4);
+  font-size: var(--t-sm); color: var(--ink-soft);
+}
+.ui-chart-legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.ui-chart-swatch { flex: none; width: 10px; height: 10px; border-radius: 3px; }
+
+.ui-chart-tip {
+  background: var(--card); border: 1px solid var(--line-strong);
+  border-radius: var(--r-sm); box-shadow: var(--sh-2);
+  padding: var(--s2) var(--s3); font-size: var(--t-sm); color: var(--ink);
+  min-width: 120px;
+}
+.ui-chart-tip-head { color: var(--muted); font-size: var(--t-xs);
+  text-transform: uppercase; letter-spacing: var(--track-caps); margin-bottom: 4px; }
+.ui-chart-tip-row { display: flex; align-items: center; gap: var(--s2);
+  justify-content: space-between; }
+.ui-chart-tip-label { display: inline-flex; align-items: center; gap: 6px;
+  color: var(--ink-soft); }
+.ui-chart-tip-value { font-variant-numeric: tabular-nums; font-weight: 600; }
+
+.ui-chart-empty {
+  display: grid; place-items: center; border: 1px dashed var(--line-strong);
+  border-radius: var(--r-md); color: var(--muted); font-size: var(--t-sm);
+  background: var(--bg-sunk);
+}
+.ui-sparkline { display: inline-block; vertical-align: middle; }
+
+/* A sync that keeps running after its modal closed needs somewhere to say so,
+   and the button that opened it is the only place the reader is still looking.
+   A dot rather than a colour change: the ⇅ has to stay readable as an icon. */
+.ui-iconbtn.ui-syncing { position: relative; }
+.ui-iconbtn.ui-syncing::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--card);
+}

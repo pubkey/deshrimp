@@ -1,0 +1,1286 @@
+{
+  "de": {
+    "intro": "Die Seite nimmt jede Sekunde ein Bild aus der Webcam und liest drei Winkel daraus ab: wie weit der Kopf vor den Schultern steht, wie schief die Schulterlinie liegt und wie stark der Kopf zur Seite geneigt ist. Der erste ist der wichtigste — Nacken zu weit vorn ist der Grund, aus dem es diese Seite gibt. Liegt einer über deiner Grenze, gibt es einen Ton, bei jeder einzelnen schiefen Messung. Gerechnet wird **hier im Browser**: ein Pose-Modell findet 33 Punkte am Körper, die Winkel rechnet die Seite selbst daraus aus. Kein Schlüssel, kein Kontingent, und kein Bild, das dieses Gerät verlässt — auch die Messwerte bleiben in diesem Browser.",
+    "steps": [
+      {
+        "title": "1 · Starten",
+        "text": "Kamera erlauben, Seite offen liegen lassen. Es gibt nichts einzurichten und nichts zu kalibrieren: alle drei Winkel sind Verhältnisse am eigenen Körper, also unabhängig von Körpergröße und für jeden gleich zu lesen. Die Seite misst ab dem ersten Bild und hält den Bildschirm wach, solange sie prüft."
+      },
+      {
+        "title": "2 · Den Takt wählen",
+        "text": "Voreingestellt ist eine Sekunde pro Bild, streckbar bis auf zwei Minuten. Weil alles lokal rechnet, kostet ein schneller Takt nichts außer etwas Strom — es gibt keine Anfragen, die man zählen müsste."
+      },
+      {
+        "title": "3 · Den Ton aussuchen",
+        "text": "Fünf zur Wahl: Furz, Räuspern, Schrei, Fingerknacken und Bada-Bumm-Tss. Voreingestellt ist der Furz — man überhört ihn nicht und er erschreckt einen nicht. Er kommt bei jeder einzelnen schiefen Messung, im Sekundentakt also jede Sekunde, bis du dich aufrichtest. Es sind echte Aufnahmen, sie liegen in der Seite, es wird nichts nachgeladen."
+      },
+      {
+        "title": "4 · Nicht dem Grad glauben, dem Verlauf",
+        "text": "Wie weit der Kopf vorsteht, schätzt eine einzelne Kamera über die Tiefe — die unsicherste Achse, die sie hat. Eine Momentaufnahme ist deshalb weich, der Verlauf nicht. Der Balkenstreifen zeigt den Tag, die Kurve darunter die Tage; drei rote Balken hintereinander heißen etwas, ein roter zwischen grünen ist ein Moment. Bilder ohne Person zählen gar nicht."
+      },
+      {
+        "title": "5 · Nach zwei Wochen schauen",
+        "text": "Ob sich etwas ändert, sieht man nicht an einem Nachmittag. Bei einem Bild pro Sekunde fallen zehntausende Messungen am Tag an, die Einzelwerte werden deshalb nach zwei Tagen aufgeräumt — die Tageszeile daraus bleibt für immer. Der Vergleich „letzte 7 Tage gegen die 7 davor“ ist die eigentliche Antwort auf „werde ich besser“."
+      }
+    ],
+    "sources": [
+      {
+        "id": "mediapipe-pose",
+        "title": "MediaPipe — Pose Landmarker",
+        "url": "https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker",
+        "note": "Googles Dokumentation des Modells, das hier im Browser läuft: 33 Landmarks, je mit Sichtbarkeit. Grundlage dafür, dass die Winkel gerechnet und nicht geschätzt werden.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "cva-cutoff",
+        "title": "Craniovertebral angle — Physiopedia",
+        "url": "https://www.physio-pedia.com/Craniovertebral_angle",
+        "note": "Der einzige breit etablierte Grenzwert zur Kopfhaltung: ein kraniovertebraler Winkel unter 48–50° gilt als Forward Head Posture. Gemessen wird er von C7 zum Tragus im Seitenprofil — weshalb diese Seite ihn nicht messen kann und es auch nicht versucht.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "risk-office",
+        "title": "Risk factors for neck pain in office workers: a prospective study",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1629016/",
+        "note": "Prospektive Untersuchung zu Nackenschmerzen bei Büroarbeit. Die Risikofaktoren sind Dauer und Statik der Haltung, nicht ein einzelner Winkelwert — der Grund, warum diese Seite den Verlauf über Tage betont.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "static-flexion",
+        "title": "Effect of static neck flexion in cervical flexion-relaxation phenomenon",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S1360859215002090",
+        "note": "Schon zehn Minuten gehaltene Nackenbeugung verändern Propriozeption und Ansteuerung messbar. Belegt, dass gehaltene Abweichung das Problem ist und nicht der einzelne schiefe Moment.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "getusermedia",
+        "title": "MDN — MediaDevices.getUserMedia()",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia",
+        "note": "Die Browser-Schnittstelle, über die die Seite an die Kamera kommt, samt der Bedingung, dass das nur in einem sicheren Kontext geht. Deshalb funktioniert die App über https, aber nicht aus einer lokal geöffneten Datei.",
+        "checked": "2026-09-03"
+      },
+      {
+        "id": "rxdb",
+        "title": "RxDB — die lokale Datenbank dieser Seite",
+        "url": "https://rxdb.info/",
+        "note": "Alles, was die Seite sich merkt, liegt in RxDB auf IndexedDB — auf diesem Gerät, über Tabs hinweg live, und nach dem Neuladen noch da. Kein Server ist beteiligt.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "baua-dynamik",
+        "title": "BAuA — Steh-Sitz-Dynamik",
+        "url": "https://www.baua.de/DE/Themen/Arbeitsgestaltung/Digitalisierung-KI/Moderne-Bildschirmarbeit/Steh-Sitz-Dynamik",
+        "note": "Die Bundesanstalt für Arbeitsschutz zum Wechsel zwischen Sitzen und Stehen. Der Punkt, der diese App überhaupt rechtfertigt: nicht eine richtige Haltung zählt, sondern dass man sie regelmäßig ändert.",
+        "checked": "2026-09-03"
+      }
+    ],
+    "gaps": [
+      {
+        "id": "vorlage",
+        "severity": "assumed",
+        "label": "Der Kopf-vor-Schulter-Winkel ist nicht der klinische Wert",
+        "assumed": "Gemessen wird die Linie Schultermitte → Ohrmitte, aus der Senkrechten. Der etablierte Wert dafür ist der kraniovertebrale Winkel, und der wird von C7 zum Tragus gezogen — C7 liegt hinter der Schulterlinie und kommt aus einem Pose-Modell nicht heraus.",
+        "impact": "Gleiche Idee, anderer Ursprung, andere Skala: die 48–50° aus der Literatur lassen sich auf diese Zahl nicht übertragen. Sie taugt für den Vergleich mit dir selbst über den Tag, nicht für einen Befund."
+      },
+      {
+        "id": "tiefe",
+        "severity": "assumed",
+        "label": "Die Tiefe ist die schwächste Achse einer einzelnen Kamera",
+        "assumed": "Wie weit der Kopf vorsteht, schätzt das Modell aus einem einzelnen RGB-Bild ohne Tiefensensor. Seitneigung und Kopfneigung liegen in der Bildebene und sind deutlich stabiler.",
+        "impact": "Eine einzelne Messung des Vorstands ist weich. Der Verlauf über Stunden und Tage ist es nicht — darauf ist die Seite gebaut, und deshalb steht die Kurve unter den Momentanwerten."
+      },
+      {
+        "id": "grenzen",
+        "severity": "assumed",
+        "label": "Für das, was hier gemessen wird, gibt es keinen belegten Grenzwert",
+        "assumed": "18° / 8° / 10° sind gesetzte Toleranzen. Recherchiert am 2026-09-08: der einzige etablierte Grenzwert ist der kraniovertebrale Winkel, und der ist von hier aus nicht messbar. Für seitliche Rumpf- oder Schulterneigung nennt die Literatur überhaupt keine Gradgrenze.",
+        "impact": "Belegt ist, dass die gehaltene Abweichung das Risiko trägt und nicht der einzelne Moment. Die drei Zahlen sind deshalb Stellschrauben: zu oft Ton heißt Grenze hoch. Es piept zu oft oder zu selten — beides sagt dir mehr über den richtigen Wert als jede Zahl, die hier voreingestellt sein könnte.",
+        "ask": "Wie oft piept es nach einem Tag mit den eingestellten Werten?"
+      },
+      {
+        "id": "kamera",
+        "severity": "assumed",
+        "label": "Die Kamera muss ungefähr auf Augenhöhe stehen",
+        "assumed": "Angenommen wird eine normale Webcam-Situation: frontal, Oberkörper im Bild, Kamera ungefähr auf Kopfhöhe.",
+        "impact": "Ein Laptop auf dem Schoß filmt von unten und lässt jeden Kopf vorstehen; eine Kamera weit über dem Kopf tut das Gegenteil. Die Zahl bleibt in sich vergleichbar, solange die Kamera nicht bewegt wird — nach einem Umbau des Arbeitsplatzes ist der Verlauf davor und danach nicht dasselbe."
+      }
+    ]
+  },
+  "en": {
+    "intro": "This page takes one picture from your webcam every second and reads three angles off it: how far your head sits in front of your shoulders, how far your shoulder line is off level, and how far your head is tilted sideways. The first one matters most — a neck carried too far forward is the reason this page exists. If any of them goes past your limit, it makes a noise, on every single crooked reading. The computing happens **here in the browser**: a pose model finds 33 points on your body and the page works out the angles itself. No key, no quota, and no picture leaving this device — the readings stay in this browser too.",
+    "steps": [
+      {
+        "title": "1 · Start it",
+        "text": "Allow the camera and leave the page open. There is nothing to set up and nothing to calibrate: all three angles are ratios measured on your own body, so they do not depend on how tall you are and read the same for anyone. The page measures from the very first frame and keeps the screen awake while it checks."
+      },
+      {
+        "title": "2 · Pick the pace",
+        "text": "One picture a second by default, stretchable to two minutes. Because everything is computed locally, a fast pace costs nothing but a little battery — there are no requests to count."
+      },
+      {
+        "title": "3 · Pick the sound",
+        "text": "Five to choose from: fart, ahem, scream, knuckle crack and rimshot. The fart is the default — you will not miss it and it will not startle you. It plays on every single crooked reading, so at the default pace once a second until you sit up. These are real recordings, they ship inside the page, and nothing is downloaded."
+      },
+      {
+        "title": "4 · Trust the trend, not the degree",
+        "text": "How far your head juts forward is estimated along depth — the least certain axis a single camera has. So a snapshot is soft and the trend is not. The bar strip shows the day, the curve below shows the days; three red bars in a row mean something, one red bar between green ones is a moment. Pictures with nobody in them do not count at all."
+      },
+      {
+        "title": "5 · Look again in two weeks",
+        "text": "Whether anything is changing does not show in one afternoon. At one picture a second a working day is tens of thousands of readings, so the individual ones are cleared after two days — the daily row from them is kept forever. The comparison „last 7 days against the 7 before“ is the real answer to „am I getting better“."
+      }
+    ],
+    "sources": [
+      {
+        "id": "mediapipe-pose",
+        "title": "MediaPipe — Pose Landmarker",
+        "url": "https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker",
+        "note": "Google's documentation for the model that runs in this browser: 33 landmarks, each with a visibility score. The reason the angles here are computed rather than estimated.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "cva-cutoff",
+        "title": "Craniovertebral angle — Physiopedia",
+        "url": "https://www.physio-pedia.com/Craniovertebral_angle",
+        "note": "The one widely established cutoff for head posture: a craniovertebral angle below 48–50° counts as forward head posture. It is measured from C7 to the tragus in a side view — which is why this page cannot measure it, and does not pretend to.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "risk-office",
+        "title": "Risk factors for neck pain in office workers: a prospective study",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1629016/",
+        "note": "A prospective study of neck pain in office workers. The risk factors are duration and static loading, not any single angle — the reason this page emphasises the trend across days.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "static-flexion",
+        "title": "Effect of static neck flexion in cervical flexion-relaxation phenomenon",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S1360859215002090",
+        "note": "Ten minutes of sustained neck flexion already changes proprioception and muscle recruitment measurably. Evidence that held deviation is the problem, not the single crooked moment.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "getusermedia",
+        "title": "MDN — MediaDevices.getUserMedia()",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia",
+        "note": "The browser interface the page uses to reach the camera, including the rule that it only works in a secure context. That is why the app works over https but not from a file opened locally.",
+        "checked": "2026-09-03"
+      },
+      {
+        "id": "rxdb",
+        "title": "RxDB — die lokale Datenbank dieser Seite",
+        "url": "https://rxdb.info/",
+        "note": "Everything the page remembers lives in RxDB on IndexedDB — on this device, live across tabs, and still there after a reload. No server is involved.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "baua-dynamik",
+        "title": "BAuA — Steh-Sitz-Dynamik",
+        "url": "https://www.baua.de/DE/Themen/Arbeitsgestaltung/Digitalisierung-KI/Moderne-Bildschirmarbeit/Steh-Sitz-Dynamik",
+        "note": "The German federal institute for occupational safety on alternating between sitting and standing. The point that justifies this app at all: no single correct posture matters as much as changing it regularly.",
+        "checked": "2026-09-03"
+      }
+    ],
+    "gaps": [
+      {
+        "id": "vorlage",
+        "severity": "assumed",
+        "label": "The head-in-front angle is not the clinical one",
+        "assumed": "What is measured is the line from the shoulder midpoint to the ear midpoint, off the vertical. The established measure is the craniovertebral angle, drawn from C7 to the tragus — and C7 sits behind the shoulder line, where a pose model cannot find it.",
+        "impact": "Same idea, different origin, different scale: the 48–50° from the literature does not transfer to this number. It is good for comparing you against yourself across a day, not for a diagnosis."
+      },
+      {
+        "id": "tiefe",
+        "severity": "assumed",
+        "label": "Depth is the weakest axis a single camera has",
+        "assumed": "How far the head juts forward is estimated from one RGB frame with no depth sensor. Side lean and head tilt lie in the image plane and are considerably more stable.",
+        "impact": "A single reading of the forward angle is soft. The trend across hours and days is not — that is what this page is built on, and why the curve sits below the live numbers."
+      },
+      {
+        "id": "grenzen",
+        "severity": "assumed",
+        "label": "There is no evidence-based cutoff for what this measures",
+        "assumed": "18° / 8° / 10° are set tolerances. Researched 2026-09-08: the only established cutoff is the craniovertebral angle, which cannot be measured from here. For lateral trunk or shoulder tilt the literature gives no degree cutoff at all.",
+        "impact": "What is supported is that sustained deviation carries the risk, not the single moment. The three numbers are dials: beeping too often means raise the limit. Whether it fires too much or too little tells you more about the right value than any preset could.",
+        "ask": "How often does it beep after a day at the current settings?"
+      },
+      {
+        "id": "kamera",
+        "severity": "assumed",
+        "label": "The camera has to sit roughly at eye level",
+        "assumed": "A normal webcam situation is assumed: front-on, upper body in frame, camera about head height.",
+        "impact": "A laptop on your lap films from below and makes every head look like it juts forward; a camera high above you does the opposite. The number stays comparable with itself as long as the camera does not move — after rearranging the desk, the trend before and after is not the same trend."
+      }
+    ]
+  },
+  "es": {
+    "intro": "Esta página toma una imagen de tu webcam cada segundo y le lee tres ángulos: cuánto se te adelanta la cabeza respecto a los hombros, cuánto se desnivela la línea de los hombros y cuánto ladeas la cabeza. El primero es el que más importa — un cuello llevado demasiado adelante es la razón de que esta página exista. Si alguno pasa de tu límite, suena, en cada medición torcida. El cálculo pasa **aquí, en el navegador**: un modelo de pose encuentra 33 puntos de tu cuerpo y la página saca los ángulos por su cuenta. Sin clave, sin cupo y sin que ninguna imagen salga de este aparato — las mediciones también se quedan en este navegador.",
+    "steps": [
+      {
+        "title": "1 · Ponla en marcha",
+        "text": "Da permiso a la cámara y deja la página abierta. No hay nada que configurar ni que calibrar: los tres ángulos son proporciones medidas sobre tu propio cuerpo, así que no dependen de tu estatura y se leen igual para cualquiera. La página mide desde la primera imagen y mantiene la pantalla despierta mientras vigila."
+      },
+      {
+        "title": "2 · Elige el ritmo",
+        "text": "Por defecto una imagen por segundo, estirable hasta dos minutos. Como todo se calcula localmente, un ritmo rápido no cuesta más que un poco de batería — no hay peticiones que contar."
+      },
+      {
+        "title": "3 · Elige el sonido",
+        "text": "Hay cinco: pedo, carraspeo, grito, crujido de nudillos y redoble. El pedo viene por defecto — no se te escapa y tampoco te sobresalta. Suena en cada medición torcida, o sea, al ritmo normal, una vez por segundo hasta que te endereces. Son grabaciones reales, van dentro de la página y no se descarga nada."
+      },
+      {
+        "title": "4 · Fíate de la tendencia, no del grado",
+        "text": "Lo que se adelanta tu cabeza se estima en profundidad — el eje menos fiable que tiene una sola cámara. Por eso una foto suelta es blanda y la tendencia no. La tira de barras enseña el día, la curva de abajo enseña los días; tres barras rojas seguidas significan algo, una barra roja entre verdes es un momento. Las imágenes sin nadie no cuentan."
+      },
+      {
+        "title": "5 · Vuelve a mirar en dos semanas",
+        "text": "Si algo está cambiando no se ve en una tarde. A una imagen por segundo, una jornada son decenas de miles de mediciones, así que las sueltas se borran a los dos días — la fila diaria que sale de ellas se guarda para siempre. La comparación «últimos 7 días contra los 7 anteriores» es la respuesta de verdad a «¿estoy mejorando?»."
+      }
+    ],
+    "sources": [
+      {
+        "id": "mediapipe-pose",
+        "title": "MediaPipe — Pose Landmarker",
+        "url": "https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker",
+        "note": "La documentación de Google del modelo que corre en este navegador: 33 puntos, cada uno con una puntuación de visibilidad. La razón de que aquí los ángulos se calculen en vez de estimarse.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "cva-cutoff",
+        "title": "Craniovertebral angle — Physiopedia",
+        "url": "https://www.physio-pedia.com/Craniovertebral_angle",
+        "note": "El único umbral ampliamente establecido para la postura de la cabeza: un ángulo craneovertebral por debajo de 48–50° cuenta como cabeza adelantada. Se mide de C7 al trago y de perfil — por eso esta página no puede medirlo, y no finge hacerlo.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "risk-office",
+        "title": "Risk factors for neck pain in office workers: a prospective study",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1629016/",
+        "note": "Un estudio prospectivo del dolor de cuello en trabajadores de oficina. Los factores de riesgo son la duración y la carga estática, no un ángulo concreto — de ahí que esta página insista en la tendencia a lo largo de los días.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "static-flexion",
+        "title": "Effect of static neck flexion in cervical flexion-relaxation phenomenon",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S1360859215002090",
+        "note": "Diez minutos de flexión cervical sostenida ya cambian de forma medible la propiocepción y el reclutamiento muscular. La prueba de que el problema es la desviación mantenida, no el momento torcido suelto.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "getusermedia",
+        "title": "MDN — MediaDevices.getUserMedia()",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia",
+        "note": "La interfaz del navegador que usa la página para llegar a la cámara, incluida la regla de que solo funciona en un contexto seguro. Por eso la app va por https pero no desde un archivo abierto en local.",
+        "checked": "2026-09-03"
+      },
+      {
+        "id": "rxdb",
+        "title": "RxDB — die lokale Datenbank dieser Seite",
+        "url": "https://rxdb.info/",
+        "note": "Todo lo que la página recuerda vive en RxDB sobre IndexedDB — en este aparato, en vivo entre pestañas y todavía ahí después de recargar. No hay ningún servidor de por medio.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "baua-dynamik",
+        "title": "BAuA — Steh-Sitz-Dynamik",
+        "url": "https://www.baua.de/DE/Themen/Arbeitsgestaltung/Digitalisierung-KI/Moderne-Bildschirmarbeit/Steh-Sitz-Dynamik",
+        "note": "El instituto federal alemán de seguridad laboral sobre alternar entre estar sentado y de pie. El punto que justifica esta app entera: ninguna postura correcta importa tanto como cambiarla con regularidad.",
+        "checked": "2026-09-03"
+      }
+    ],
+    "gaps": [
+      {
+        "id": "vorlage",
+        "severity": "assumed",
+        "label": "El ángulo de cabeza adelantada no es el clínico",
+        "assumed": "Lo que se mide es la línea del punto medio de los hombros al punto medio de las orejas, respecto a la vertical. La medida establecida es el ángulo craneovertebral, trazado de C7 al trago — y C7 queda detrás de la línea de los hombros, donde un modelo de pose no lo encuentra.",
+        "impact": "Misma idea, otro origen, otra escala: los 48–50° de la literatura no se trasladan a este número. Sirve para compararte contigo mismo a lo largo del día, no para un diagnóstico."
+      },
+      {
+        "id": "tiefe",
+        "severity": "assumed",
+        "label": "La profundidad es el eje más débil de una sola cámara",
+        "assumed": "Lo que se adelanta la cabeza se estima a partir de una imagen RGB sin sensor de profundidad. La inclinación lateral y el ladeo de la cabeza están en el plano de la imagen y son bastante más estables.",
+        "impact": "Una medición suelta del ángulo frontal es blanda. La tendencia a lo largo de horas y días no lo es — sobre eso está construida esta página, y por eso la curva va debajo de los números en vivo."
+      },
+      {
+        "id": "grenzen",
+        "severity": "assumed",
+        "label": "No hay un umbral con base empírica para lo que aquí se mide",
+        "assumed": "18° / 8° / 10° son tolerancias fijadas. Consultado el 2026-09-08: el único umbral establecido es el ángulo craneovertebral, que desde aquí no se puede medir. Para la inclinación lateral del tronco o de los hombros la literatura no da ningún umbral en grados.",
+        "impact": "Lo que sí está respaldado es que el riesgo lo lleva la desviación mantenida, no el momento suelto. Los tres números son mandos: si pita demasiado, sube el límite. Que salte de más o de menos te dice más sobre el valor correcto que cualquier preajuste.",
+        "ask": "¿Cada cuánto pita después de un día con los ajustes actuales?"
+      },
+      {
+        "id": "kamera",
+        "severity": "assumed",
+        "label": "La cámara tiene que estar más o menos a la altura de los ojos",
+        "assumed": "Se da por supuesta una situación normal de webcam: de frente, con el torso en el encuadre y la cámara aproximadamente a la altura de la cabeza.",
+        "impact": "Un portátil sobre las rodillas graba desde abajo y hace que toda cabeza parezca adelantada; una cámara muy por encima hace lo contrario. El número sigue siendo comparable consigo mismo mientras la cámara no se mueva — después de reordenar el escritorio, la tendencia de antes y la de después no son la misma tendencia."
+      }
+    ]
+  },
+  "fr": {
+    "intro": "Cette page prend une image de ta webcam chaque seconde et y lit trois angles : de combien ta tête est en avant de tes épaules, de combien la ligne de tes épaules s’écarte de l’horizontale, et de combien ta tête penche sur le côté. Le premier est le plus important — une nuque portée trop en avant est la raison d’être de cette page. Si l’un d’eux dépasse ta limite, ça fait du bruit, à chaque mesure de travers. Le calcul se fait **ici, dans le navigateur** : un modèle de pose trouve 33 points sur ton corps et la page en déduit les angles elle-même. Pas de clé, pas de quota, et aucune image ne quitte cet appareil — les mesures restent elles aussi dans ce navigateur.",
+    "steps": [
+      {
+        "title": "1 · Lance-la",
+        "text": "Autorise la caméra et laisse la page ouverte. Il n’y a rien à configurer ni à calibrer : les trois angles sont des rapports mesurés sur ton propre corps, ils ne dépendent donc pas de ta taille et se lisent pareil pour tout le monde. La page mesure dès la première image et empêche l’écran de s’éteindre pendant la surveillance."
+      },
+      {
+        "title": "2 · Choisis le rythme",
+        "text": "Une image par seconde par défaut, extensible jusqu’à deux minutes. Comme tout est calculé en local, un rythme rapide ne coûte qu’un peu de batterie — il n’y a aucune requête à compter."
+      },
+      {
+        "title": "3 · Choisis le son",
+        "text": "Cinq au choix : pet, raclement de gorge, cri, craquement de doigts et rimshot. Le pet est le réglage par défaut — tu ne le rateras pas et il ne te fera pas sursauter. Il se déclenche à chaque mesure de travers, donc au rythme par défaut une fois par seconde jusqu’à ce que tu te redresses. Ce sont de vraies prises de son, elles sont embarquées dans la page et rien n’est téléchargé."
+      },
+      {
+        "title": "4 · Fie-toi à la tendance, pas au degré",
+        "text": "De combien ta tête part en avant est estimé en profondeur — l’axe le moins sûr dont dispose une caméra unique. Un instantané est donc mou, la tendance ne l’est pas. La bande de barres montre la journée, la courbe en dessous montre les jours ; trois barres rouges d’affilée veulent dire quelque chose, une barre rouge entre deux vertes est un instant. Les images sans personne dedans ne comptent pas du tout."
+      },
+      {
+        "title": "5 · Reviens voir dans deux semaines",
+        "text": "Savoir si quelque chose change ne se voit pas en un après-midi. À une image par seconde, une journée de travail représente des dizaines de milliers de mesures : les mesures individuelles sont donc effacées au bout de deux jours — la ligne quotidienne qui en sort est gardée pour toujours. La comparaison « 7 derniers jours contre les 7 précédents » est la vraie réponse à « est-ce que je progresse »."
+      }
+    ],
+    "sources": [
+      {
+        "id": "mediapipe-pose",
+        "title": "MediaPipe — Pose Landmarker",
+        "url": "https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker",
+        "note": "La documentation de Google pour le modèle qui tourne dans ce navigateur : 33 points, chacun avec un score de visibilité. La raison pour laquelle les angles sont ici calculés et non estimés.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "cva-cutoff",
+        "title": "Craniovertebral angle — Physiopedia",
+        "url": "https://www.physio-pedia.com/Craniovertebral_angle",
+        "note": "Le seul seuil largement établi pour la posture de la tête : un angle craniovertébral inférieur à 48–50° compte comme antéposition de la tête. Il se mesure de C7 au tragus, de profil — d’où le fait que cette page ne puisse pas le mesurer, et ne prétende pas le faire.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "risk-office",
+        "title": "Risk factors for neck pain in office workers: a prospective study",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1629016/",
+        "note": "Une étude prospective sur les douleurs cervicales chez les employés de bureau. Les facteurs de risque sont la durée et la charge statique, pas un angle en particulier — d’où l’insistance de cette page sur la tendance au fil des jours.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "static-flexion",
+        "title": "Effect of static neck flexion in cervical flexion-relaxation phenomenon",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S1360859215002090",
+        "note": "Dix minutes de flexion cervicale maintenue modifient déjà de façon mesurable la proprioception et le recrutement musculaire. La preuve que le problème est la déviation tenue, pas l’instant de travers isolé.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "getusermedia",
+        "title": "MDN — MediaDevices.getUserMedia()",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia",
+        "note": "L’interface du navigateur que la page utilise pour accéder à la caméra, y compris la règle qui veut qu’elle ne fonctionne que dans un contexte sécurisé. C’est pourquoi l’app marche en https mais pas depuis un fichier ouvert en local.",
+        "checked": "2026-09-03"
+      },
+      {
+        "id": "rxdb",
+        "title": "RxDB — die lokale Datenbank dieser Seite",
+        "url": "https://rxdb.info/",
+        "note": "Tout ce que la page retient vit dans RxDB sur IndexedDB — sur cet appareil, en direct entre les onglets, et toujours là après un rechargement. Aucun serveur n’intervient.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "baua-dynamik",
+        "title": "BAuA — Steh-Sitz-Dynamik",
+        "url": "https://www.baua.de/DE/Themen/Arbeitsgestaltung/Digitalisierung-KI/Moderne-Bildschirmarbeit/Steh-Sitz-Dynamik",
+        "note": "L’institut fédéral allemand pour la sécurité au travail sur l’alternance assis / debout. Le point qui justifie cette app tout entière : aucune posture correcte ne compte autant que le fait d’en changer régulièrement.",
+        "checked": "2026-09-03"
+      }
+    ],
+    "gaps": [
+      {
+        "id": "vorlage",
+        "severity": "assumed",
+        "label": "L’angle de tête en avant n’est pas l’angle clinique",
+        "assumed": "Ce qui est mesuré, c’est la ligne du milieu des épaules au milieu des oreilles, par rapport à la verticale. La mesure établie est l’angle craniovertébral, tracé de C7 au tragus — et C7 se trouve derrière la ligne des épaules, là où un modèle de pose ne peut pas le trouver.",
+        "impact": "Même idée, autre origine, autre échelle : les 48–50° de la littérature ne se transposent pas à ce chiffre. Il sert à te comparer à toi-même sur une journée, pas à poser un diagnostic."
+      },
+      {
+        "id": "tiefe",
+        "severity": "assumed",
+        "label": "La profondeur est l’axe le plus faible d’une caméra unique",
+        "assumed": "De combien la tête part en avant est estimé à partir d’une seule image RVB, sans capteur de profondeur. L’inclinaison latérale et la tête penchée se situent dans le plan de l’image et sont nettement plus stables.",
+        "impact": "Une mesure isolée de l’angle avant est molle. La tendance sur des heures et des jours ne l’est pas — c’est là-dessus que cette page est bâtie, et c’est pourquoi la courbe se trouve sous les chiffres en direct."
+      },
+      {
+        "id": "grenzen",
+        "severity": "assumed",
+        "label": "Il n’existe pas de seuil fondé sur des données pour ce qui est mesuré ici",
+        "assumed": "18° / 8° / 10° sont des tolérances posées. Recherché le 2026-09-08 : le seul seuil établi est l’angle craniovertébral, qui n’est pas mesurable d’ici. Pour l’inclinaison latérale du tronc ou des épaules, la littérature ne donne aucun seuil en degrés.",
+        "impact": "Ce qui est étayé, c’est que le risque tient à la déviation tenue, pas à l’instant isolé. Les trois chiffres sont des molettes : si ça bipe trop souvent, monte la limite. Le fait que ça se déclenche trop ou trop peu t’en dit plus sur la bonne valeur que n’importe quel préréglage.",
+        "ask": "À quelle fréquence ça bipe après une journée avec les réglages actuels ?"
+      },
+      {
+        "id": "kamera",
+        "severity": "assumed",
+        "label": "La caméra doit être à peu près à hauteur des yeux",
+        "assumed": "On suppose une situation de webcam normale : de face, buste dans le cadre, caméra à peu près à hauteur de tête.",
+        "impact": "Un portable posé sur les genoux filme d’en bas et donne à toutes les têtes l’air d’avancer ; une caméra très au-dessus fait l’inverse. Le chiffre reste comparable avec lui-même tant que la caméra ne bouge pas — après un réaménagement du bureau, la tendance d’avant et celle d’après ne sont pas la même tendance."
+      }
+    ]
+  },
+  "it": {
+    "intro": "Questa pagina prende un’immagine dalla tua webcam ogni secondo e ci legge tre angoli: quanto la testa sta davanti alle spalle, quanto la linea delle spalle è fuori squadra e quanto la testa è inclinata di lato. Il primo è quello che conta di più — un collo portato troppo in avanti è il motivo per cui questa pagina esiste. Se uno dei tre supera il tuo limite, suona, a ogni singola misurazione storta. Il calcolo avviene **qui nel browser**: un modello di posa trova 33 punti sul tuo corpo e la pagina ricava gli angoli da sola. Nessuna chiave, nessuna quota e nessuna immagine che lasci questo dispositivo — anche le misurazioni restano in questo browser.",
+    "steps": [
+      {
+        "title": "1 · Avviala",
+        "text": "Dai il permesso alla fotocamera e lascia la pagina aperta. Non c’è niente da impostare e niente da calibrare: i tre angoli sono rapporti misurati sul tuo stesso corpo, quindi non dipendono da quanto sei alto e si leggono uguale per chiunque. La pagina misura dal primo fotogramma e tiene lo schermo sveglio mentre controlla."
+      },
+      {
+        "title": "2 · Scegli il ritmo",
+        "text": "Di base un’immagine al secondo, allungabile fino a due minuti. Siccome tutto viene calcolato in locale, un ritmo veloce non costa altro che un po’ di batteria — non ci sono richieste da contare."
+      },
+      {
+        "title": "3 · Scegli il suono",
+        "text": "Cinque a disposizione: scoreggia, colpo di tosse, urlo, nocche scrocchiate e rimshot. La scoreggia è quella predefinita — non te la perdi e non ti fa sobbalzare. Parte a ogni singola misurazione storta, quindi al ritmo predefinito una volta al secondo finché non ti raddrizzi. Sono registrazioni vere, viaggiano dentro la pagina e non si scarica nulla."
+      },
+      {
+        "title": "4 · Fidati dell’andamento, non del grado",
+        "text": "Quanto la testa sporge in avanti viene stimato lungo la profondità — l’asse meno affidabile che ha una fotocamera sola. Perciò l’istantanea è morbida e l’andamento no. La striscia di barre mostra la giornata, la curva sotto mostra i giorni; tre barre rosse di fila vogliono dire qualcosa, una barra rossa tra due verdi è un momento. Le immagini senza nessuno dentro non contano affatto."
+      },
+      {
+        "title": "5 · Riguarda fra due settimane",
+        "text": "Se qualcosa sta cambiando non si vede in un pomeriggio. A un’immagine al secondo una giornata di lavoro sono decine di migliaia di misurazioni, quindi le singole vengono cancellate dopo due giorni — la riga giornaliera che ne esce resta per sempre. Il confronto «ultimi 7 giorni contro i 7 precedenti» è la vera risposta a «sto migliorando»."
+      }
+    ],
+    "sources": [
+      {
+        "id": "mediapipe-pose",
+        "title": "MediaPipe — Pose Landmarker",
+        "url": "https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker",
+        "note": "La documentazione di Google del modello che gira in questo browser: 33 punti, ognuno con un valore di visibilità. Il motivo per cui qui gli angoli sono calcolati e non stimati.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "cva-cutoff",
+        "title": "Craniovertebral angle — Physiopedia",
+        "url": "https://www.physio-pedia.com/Craniovertebral_angle",
+        "note": "L’unica soglia largamente riconosciuta per la postura della testa: un angolo craniovertebrale sotto i 48–50° conta come testa protratta in avanti. Si misura da C7 al trago di profilo — ecco perché questa pagina non può misurarlo e non finge di farlo.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "risk-office",
+        "title": "Risk factors for neck pain in office workers: a prospective study",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1629016/",
+        "note": "Uno studio prospettico sul dolore cervicale negli impiegati. I fattori di rischio sono la durata e il carico statico, non un singolo angolo — da qui l’insistenza di questa pagina sull’andamento nei giorni.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "static-flexion",
+        "title": "Effect of static neck flexion in cervical flexion-relaxation phenomenon",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S1360859215002090",
+        "note": "Dieci minuti di flessione cervicale mantenuta cambiano già in modo misurabile la propriocezione e il reclutamento muscolare. La prova che il problema è la deviazione tenuta, non il singolo momento storto.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "getusermedia",
+        "title": "MDN — MediaDevices.getUserMedia()",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia",
+        "note": "L’interfaccia del browser che la pagina usa per arrivare alla fotocamera, inclusa la regola per cui funziona solo in un contesto sicuro. È per questo che l’app va in https ma non da un file aperto in locale.",
+        "checked": "2026-09-03"
+      },
+      {
+        "id": "rxdb",
+        "title": "RxDB — die lokale Datenbank dieser Seite",
+        "url": "https://rxdb.info/",
+        "note": "Tutto quello che la pagina ricorda vive in RxDB su IndexedDB — su questo dispositivo, in tempo reale tra le schede e ancora lì dopo un ricaricamento. Nessun server è coinvolto.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "baua-dynamik",
+        "title": "BAuA — Steh-Sitz-Dynamik",
+        "url": "https://www.baua.de/DE/Themen/Arbeitsgestaltung/Digitalisierung-KI/Moderne-Bildschirmarbeit/Steh-Sitz-Dynamik",
+        "note": "L’istituto federale tedesco per la sicurezza sul lavoro sull’alternanza tra stare seduti e in piedi. Il punto che giustifica del tutto questa app: nessuna postura corretta conta quanto il cambiarla con regolarità.",
+        "checked": "2026-09-03"
+      }
+    ],
+    "gaps": [
+      {
+        "id": "vorlage",
+        "severity": "assumed",
+        "label": "L’angolo della testa in avanti non è quello clinico",
+        "assumed": "Quello che si misura è la linea dal punto medio delle spalle al punto medio delle orecchie, rispetto alla verticale. La misura riconosciuta è l’angolo craniovertebrale, tracciato da C7 al trago — e C7 sta dietro la linea delle spalle, dove un modello di posa non lo trova.",
+        "impact": "Stessa idea, origine diversa, scala diversa: i 48–50° della letteratura non si trasferiscono a questo numero. Va bene per confrontarti con te stesso nell’arco di una giornata, non per una diagnosi."
+      },
+      {
+        "id": "tiefe",
+        "severity": "assumed",
+        "label": "La profondità è l’asse più debole di una fotocamera sola",
+        "assumed": "Quanto la testa sporge in avanti viene stimato da un solo fotogramma RGB senza sensore di profondità. L’inclinazione laterale e la testa piegata stanno nel piano dell’immagine e sono parecchio più stabili.",
+        "impact": "Una singola misurazione dell’angolo in avanti è morbida. L’andamento su ore e giorni non lo è — è su quello che questa pagina è costruita, ed è il motivo per cui la curva sta sotto i numeri in diretta."
+      },
+      {
+        "id": "grenzen",
+        "severity": "assumed",
+        "label": "Per quello che si misura qui non esiste una soglia basata su dati",
+        "assumed": "18° / 8° / 10° sono tolleranze poste. Cercato il 2026-09-08: l’unica soglia riconosciuta è l’angolo craniovertebrale, che da qui non si può misurare. Per l’inclinazione laterale del tronco o delle spalle la letteratura non dà alcuna soglia in gradi.",
+        "impact": "Quello che è documentato è che il rischio lo porta la deviazione mantenuta, non il singolo momento. I tre numeri sono manopole: se suona troppo spesso, alza il limite. Che scatti troppo o troppo poco ti dice sul valore giusto più di qualunque preimpostazione.",
+        "ask": "Ogni quanto suona dopo una giornata con le impostazioni attuali?"
+      },
+      {
+        "id": "kamera",
+        "severity": "assumed",
+        "label": "La fotocamera deve stare più o meno all’altezza degli occhi",
+        "assumed": "Si dà per scontata una normale situazione da webcam: di fronte, busto nell’inquadratura, fotocamera più o meno all’altezza della testa.",
+        "impact": "Un portatile sulle ginocchia riprende dal basso e fa sembrare ogni testa protesa in avanti; una fotocamera molto in alto fa il contrario. Il numero resta confrontabile con sé stesso finché la fotocamera non si sposta — dopo aver riorganizzato la scrivania, l’andamento di prima e quello di dopo non sono lo stesso andamento."
+      }
+    ]
+  },
+  "pt": {
+    "intro": "Esta página tira uma imagem da tua webcam a cada segundo e lê-lhe três ângulos: o quanto a cabeça está à frente dos ombros, o quanto a linha dos ombros está fora do nível e o quanto a cabeça está inclinada para o lado. O primeiro é o que mais importa — um pescoço levado demasiado à frente é a razão de esta página existir. Se algum passar o teu limite, faz barulho, em cada medição torta. As contas são feitas **aqui, no navegador**: um modelo de pose encontra 33 pontos no teu corpo e a página tira os ângulos sozinha. Sem chave, sem quota e sem nenhuma imagem a sair deste aparelho — as medições também ficam neste navegador.",
+    "steps": [
+      {
+        "title": "1 · Põe isto a andar",
+        "text": "Dá permissão à câmara e deixa a página aberta. Não há nada para configurar nem para calibrar: os três ângulos são proporções medidas no teu próprio corpo, por isso não dependem da tua altura e leem-se igual para toda a gente. A página mede logo desde o primeiro fotograma e mantém o ecrã acordado enquanto vigia."
+      },
+      {
+        "title": "2 · Escolhe o ritmo",
+        "text": "Por omissão, uma imagem por segundo, esticável até dois minutos. Como tudo é calculado localmente, um ritmo rápido não custa mais do que um bocado de bateria — não há pedidos para contar."
+      },
+      {
+        "title": "3 · Escolhe o som",
+        "text": "Há cinco: peido, pigarro, grito, estalar de dedos e rimshot. O peido vem por omissão — não te escapa e também não te assusta. Toca em cada medição torta, ou seja, no ritmo normal, uma vez por segundo até te endireitares. São gravações reais, vão dentro da página e não se descarrega nada."
+      },
+      {
+        "title": "4 · Confia na tendência, não no grau",
+        "text": "O quanto a cabeça avança é estimado em profundidade — o eixo menos fiável que uma câmara sozinha tem. Por isso um instantâneo é mole e a tendência não. A barra de blocos mostra o dia, a curva por baixo mostra os dias; três blocos vermelhos seguidos querem dizer alguma coisa, um bloco vermelho entre verdes é um momento. As imagens sem ninguém não contam de todo."
+      },
+      {
+        "title": "5 · Volta a olhar daqui a duas semanas",
+        "text": "Se alguma coisa está a mudar não se vê numa tarde. A uma imagem por segundo, um dia de trabalho são dezenas de milhares de medições, por isso as individuais são apagadas ao fim de dois dias — a linha diária que sai delas fica para sempre. A comparação «últimos 7 dias contra os 7 anteriores» é a verdadeira resposta a «estou a melhorar?»."
+      }
+    ],
+    "sources": [
+      {
+        "id": "mediapipe-pose",
+        "title": "MediaPipe — Pose Landmarker",
+        "url": "https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker",
+        "note": "A documentação da Google para o modelo que corre neste navegador: 33 pontos, cada um com uma pontuação de visibilidade. A razão de aqui os ângulos serem calculados e não estimados.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "cva-cutoff",
+        "title": "Craniovertebral angle — Physiopedia",
+        "url": "https://www.physio-pedia.com/Craniovertebral_angle",
+        "note": "O único limite amplamente estabelecido para a postura da cabeça: um ângulo craniovertebral abaixo de 48–50° conta como cabeça projetada à frente. Mede-se de C7 ao trago, de perfil — por isso esta página não o consegue medir, e não finge que mede.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "risk-office",
+        "title": "Risk factors for neck pain in office workers: a prospective study",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1629016/",
+        "note": "Um estudo prospetivo sobre dores de pescoço em trabalhadores de escritório. Os fatores de risco são a duração e a carga estática, não um ângulo em concreto — daí esta página insistir na tendência ao longo dos dias.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "static-flexion",
+        "title": "Effect of static neck flexion in cervical flexion-relaxation phenomenon",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S1360859215002090",
+        "note": "Dez minutos de flexão cervical mantida já alteram de forma mensurável a propriocepção e o recrutamento muscular. A prova de que o problema é o desvio mantido, e não o momento torto isolado.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "getusermedia",
+        "title": "MDN — MediaDevices.getUserMedia()",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia",
+        "note": "A interface do navegador que a página usa para chegar à câmara, incluindo a regra de que só funciona num contexto seguro. É por isso que a app funciona por https mas não a partir de um ficheiro aberto localmente.",
+        "checked": "2026-09-03"
+      },
+      {
+        "id": "rxdb",
+        "title": "RxDB — die lokale Datenbank dieser Seite",
+        "url": "https://rxdb.info/",
+        "note": "Tudo o que a página guarda vive em RxDB sobre IndexedDB — neste aparelho, ao vivo entre separadores e ainda lá depois de recarregar. Não há servidor nenhum envolvido.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "baua-dynamik",
+        "title": "BAuA — Steh-Sitz-Dynamik",
+        "url": "https://www.baua.de/DE/Themen/Arbeitsgestaltung/Digitalisierung-KI/Moderne-Bildschirmarbeit/Steh-Sitz-Dynamik",
+        "note": "O instituto federal alemão de segurança no trabalho sobre alternar entre estar sentado e de pé. O ponto que justifica esta app toda: nenhuma postura correta conta tanto como mudá-la com regularidade.",
+        "checked": "2026-09-03"
+      }
+    ],
+    "gaps": [
+      {
+        "id": "vorlage",
+        "severity": "assumed",
+        "label": "O ângulo da cabeça à frente não é o clínico",
+        "assumed": "O que se mede é a linha do ponto médio dos ombros ao ponto médio das orelhas, em relação à vertical. A medida estabelecida é o ângulo craniovertebral, traçado de C7 ao trago — e C7 fica atrás da linha dos ombros, onde um modelo de pose não o encontra.",
+        "impact": "Mesma ideia, outra origem, outra escala: os 48–50° da literatura não passam para este número. Serve para te comparares contigo próprio ao longo de um dia, não para um diagnóstico."
+      },
+      {
+        "id": "tiefe",
+        "severity": "assumed",
+        "label": "A profundidade é o eixo mais fraco de uma câmara sozinha",
+        "assumed": "O quanto a cabeça avança é estimado a partir de um único fotograma RGB, sem sensor de profundidade. A inclinação lateral e a cabeça inclinada estão no plano da imagem e são bastante mais estáveis.",
+        "impact": "Uma medição isolada do ângulo à frente é mole. A tendência ao longo de horas e dias não é — é sobre isso que esta página está construída, e é por isso que a curva fica por baixo dos números ao vivo."
+      },
+      {
+        "id": "grenzen",
+        "severity": "assumed",
+        "label": "Não existe um limite com base empírica para aquilo que aqui se mede",
+        "assumed": "18° / 8° / 10° são tolerâncias definidas. Pesquisado a 2026-09-08: o único limite estabelecido é o ângulo craniovertebral, que daqui não se consegue medir. Para a inclinação lateral do tronco ou dos ombros a literatura não dá limite nenhum em graus.",
+        "impact": "O que está apoiado é que o risco vem do desvio mantido, não do momento isolado. Os três números são botões: se apitar demasiado, sobe o limite. Disparar de mais ou de menos diz-te mais sobre o valor certo do que qualquer predefinição.",
+        "ask": "Com que frequência apita depois de um dia com as definições atuais?"
+      },
+      {
+        "id": "kamera",
+        "severity": "assumed",
+        "label": "A câmara tem de estar mais ou menos à altura dos olhos",
+        "assumed": "Assume-se uma situação normal de webcam: de frente, tronco no enquadramento, câmara mais ou menos à altura da cabeça.",
+        "impact": "Um portátil ao colo filma de baixo e faz qualquer cabeça parecer projetada à frente; uma câmara bem acima faz o contrário. O número mantém-se comparável consigo próprio enquanto a câmara não se mexer — depois de reorganizar a secretária, a tendência de antes e a de depois não são a mesma tendência."
+      }
+    ]
+  },
+  "nl": {
+    "intro": "Deze pagina neemt elke seconde één beeld van je webcam en leest er drie hoeken uit af: hoe ver je hoofd voor je schouders staat, hoe scheef je schouderlijn ligt, en hoe schuin je hoofd hangt. De eerste is de belangrijkste — een nek die te ver naar voren wordt gedragen is de reden dat deze pagina bestaat. Gaat er één over jouw grens, dan maakt hij geluid, bij elke scheve meting. Het rekenen gebeurt **hier in de browser**: een pose-model vindt 33 punten op je lichaam en de pagina rekent de hoeken zelf uit. Geen sleutel, geen quotum, en geen beeld dat dit apparaat verlaat — de metingen blijven ook in deze browser.",
+    "steps": [
+      {
+        "title": "1 · Zet hem aan",
+        "text": "Geef de camera toestemming en laat de pagina open staan. Er valt niets in te stellen en niets te kalibreren: alle drie de hoeken zijn verhoudingen op je eigen lichaam, dus ze hangen niet af van hoe lang je bent en lezen voor iedereen hetzelfde. De pagina meet vanaf het allereerste beeld en houdt het scherm wakker zolang hij kijkt."
+      },
+      {
+        "title": "2 · Kies het tempo",
+        "text": "Standaard één beeld per seconde, uit te rekken tot twee minuten. Omdat alles lokaal wordt berekend, kost een snel tempo niets behalve een beetje accu — er zijn geen verzoeken om te tellen."
+      },
+      {
+        "title": "3 · Kies het geluid",
+        "text": "Vijf om uit te kiezen: scheet, kuchje, schreeuw, knakkende knokkels en rimshot. De scheet staat standaard aan — je mist hem niet en je schrikt er niet van. Hij komt bij elke scheve meting, op het standaardtempo dus elke seconde tot je weer rechtop zit. Het zijn echte opnames, ze zitten in de pagina en er wordt niets gedownload."
+      },
+      {
+        "title": "4 · Vertrouw op het verloop, niet op de graad",
+        "text": "Hoe ver je hoofd naar voren steekt wordt geschat over de diepte — de minst zekere as die één camera heeft. Een momentopname is dus zacht en het verloop niet. De balkenstrook laat de dag zien, de curve eronder de dagen; drie rode balken achter elkaar betekenen iets, één rode balk tussen groene is een moment. Beelden zonder iemand erin tellen helemaal niet mee."
+      },
+      {
+        "title": "5 · Kijk over twee weken opnieuw",
+        "text": "Of er iets verandert zie je niet op één middag. Bij één beeld per seconde is een werkdag tienduizenden metingen, dus de losse worden na twee dagen opgeruimd — de dagregel die eruit komt blijft voor altijd. De vergelijking „laatste 7 dagen tegen de 7 daarvoor\" is het echte antwoord op „word ik beter\"."
+      }
+    ],
+    "sources": [
+      {
+        "id": "mediapipe-pose",
+        "title": "MediaPipe — Pose Landmarker",
+        "url": "https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker",
+        "note": "Googles documentatie van het model dat in deze browser draait: 33 punten, elk met een zichtbaarheidsscore. De reden dat de hoeken hier berekend worden en niet geschat.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "cva-cutoff",
+        "title": "Craniovertebral angle — Physiopedia",
+        "url": "https://www.physio-pedia.com/Craniovertebral_angle",
+        "note": "De enige breed geaccepteerde grenswaarde voor hoofdhouding: een craniovertebrale hoek onder 48–50° geldt als naar voren gedragen hoofd. Die wordt van C7 naar de tragus gemeten, in zijaanzicht — daarom kan deze pagina hem niet meten en doet ze ook niet alsof.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "risk-office",
+        "title": "Risk factors for neck pain in office workers: a prospective study",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1629016/",
+        "note": "Een prospectieve studie naar nekpijn bij kantoorwerkers. De risicofactoren zijn duur en statische belasting, niet één bepaalde hoek — vandaar dat deze pagina de nadruk legt op het verloop over dagen.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "static-flexion",
+        "title": "Effect of static neck flexion in cervical flexion-relaxation phenomenon",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S1360859215002090",
+        "note": "Tien minuten aangehouden nekflexie verandert propriocepsis en spieraansturing al meetbaar. Het bewijs dat de vastgehouden afwijking het probleem is, en niet het losse scheve moment.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "getusermedia",
+        "title": "MDN — MediaDevices.getUserMedia()",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia",
+        "note": "De browserinterface waarmee de pagina bij de camera komt, inclusief de regel dat het alleen in een beveiligde context werkt. Daarom werkt de app via https, maar niet vanuit een lokaal geopend bestand.",
+        "checked": "2026-09-03"
+      },
+      {
+        "id": "rxdb",
+        "title": "RxDB — die lokale Datenbank dieser Seite",
+        "url": "https://rxdb.info/",
+        "note": "Alles wat de pagina onthoudt staat in RxDB op IndexedDB — op dit apparaat, live over tabbladen heen, en na een herlaadbeurt nog steeds aanwezig. Er komt geen server aan te pas.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "baua-dynamik",
+        "title": "BAuA — Steh-Sitz-Dynamik",
+        "url": "https://www.baua.de/DE/Themen/Arbeitsgestaltung/Digitalisierung-KI/Moderne-Bildschirmarbeit/Steh-Sitz-Dynamik",
+        "note": "Het Duitse federale instituut voor arbeidsveiligheid over afwisselen tussen zitten en staan. Het punt dat deze app überhaupt rechtvaardigt: geen enkele juiste houding telt zo zwaar als hem regelmatig veranderen.",
+        "checked": "2026-09-03"
+      }
+    ],
+    "gaps": [
+      {
+        "id": "vorlage",
+        "severity": "assumed",
+        "label": "De hoek voor het hoofd naar voren is niet de klinische",
+        "assumed": "Gemeten wordt de lijn van het midden tussen de schouders naar het midden tussen de oren, ten opzichte van het lood. De gangbare maat is de craniovertebrale hoek, getrokken van C7 naar de tragus — en C7 ligt achter de schouderlijn, waar een pose-model hem niet kan vinden.",
+        "impact": "Zelfde idee, ander beginpunt, andere schaal: de 48–50° uit de literatuur gaan niet over op dit getal. Het is goed om jezelf met jezelf te vergelijken over een dag, niet voor een diagnose."
+      },
+      {
+        "id": "tiefe",
+        "severity": "assumed",
+        "label": "Diepte is de zwakste as die één camera heeft",
+        "assumed": "Hoe ver het hoofd naar voren steekt wordt geschat uit één RGB-beeld zonder dieptesensor. Zijwaartse helling en een scheef hoofd liggen in het beeldvlak en zijn aanzienlijk stabieler.",
+        "impact": "Eén losse meting van de voorwaartse hoek is zacht. Het verloop over uren en dagen niet — daarop is deze pagina gebouwd, en daarom staat de curve onder de cijfers van nu."
+      },
+      {
+        "id": "grenzen",
+        "severity": "assumed",
+        "label": "Voor wat hier gemeten wordt bestaat geen onderbouwde grenswaarde",
+        "assumed": "18° / 8° / 10° zijn gestelde toleranties. Nagezocht op 2026-09-08: de enige gangbare grenswaarde is de craniovertebrale hoek, en die is van hieruit niet te meten. Voor zijwaartse romp- of schouderhelling geeft de literatuur helemaal geen gradengrens.",
+        "impact": "Wat wel vaststaat: het risico zit in de aangehouden afwijking, niet in het losse moment. De drie getallen zijn knoppen: piept het te vaak, zet de grens hoger. Of hij te veel of te weinig afgaat zegt meer over de juiste waarde dan welke voorinstelling ook.",
+        "ask": "Hoe vaak piept hij na een dag met de huidige instellingen?"
+      },
+      {
+        "id": "kamera",
+        "severity": "assumed",
+        "label": "De camera moet ongeveer op ooghoogte staan",
+        "assumed": "Er wordt uitgegaan van een normale webcamsituatie: recht van voren, bovenlichaam in beeld, camera ongeveer op hoofdhoogte.",
+        "impact": "Een laptop op schoot filmt van onderaf en laat elk hoofd naar voren steken; een camera hoog boven je doet het omgekeerde. Het getal blijft met zichzelf vergelijkbaar zolang de camera niet verschuift — na het herinrichten van je bureau zijn het verloop ervoor en erna niet hetzelfde verloop."
+      }
+    ]
+  },
+  "pl": {
+    "intro": "Ta strona co sekundę pobiera jedną klatkę z kamerki i odczytuje z niej trzy kąty: jak bardzo głowa wysuwa się przed barki, jak bardzo linia barków odchyla się od poziomu i jak mocno głowa jest przechylona na bok. Najważniejszy jest ten pierwszy — kark noszony zbyt daleko z przodu to powód, dla którego ta strona w ogóle powstała. Jeśli któryś przekroczy twoją granicę, rozlega się dźwięk, przy każdym krzywym pomiarze. Liczenie odbywa się **tutaj, w przeglądarce**: model pozy znajduje 33 punkty na twoim ciele, a stronę kąty wylicza sama. Bez klucza, bez limitu i bez ani jednego obrazu opuszczającego to urządzenie — pomiary też zostają w tej przeglądarce.",
+    "steps": [
+      {
+        "title": "1 · Uruchom to",
+        "text": "Zezwól na kamerę i zostaw stronę otwartą. Nie ma nic do ustawiania ani do kalibrowania: wszystkie trzy kąty to proporcje mierzone na twoim własnym ciele, więc nie zależą od wzrostu i czyta się je tak samo u każdego. Strona mierzy od pierwszej klatki i nie pozwala ekranowi zasnąć, dopóki patrzy."
+      },
+      {
+        "title": "2 · Wybierz tempo",
+        "text": "Domyślnie jedna klatka na sekundę, można rozciągnąć do dwóch minut. Ponieważ wszystko liczy się lokalnie, szybkie tempo nie kosztuje nic poza odrobiną baterii — nie ma żadnych zapytań do zliczania."
+      },
+      {
+        "title": "3 · Wybierz dźwięk",
+        "text": "Do wyboru pięć: pierdnięcie, chrząknięcie, krzyk, strzelanie kostkami i rimshot. Domyślne jest pierdnięcie — nie przegapisz go, a jednocześnie nie przestraszy cię. Odzywa się przy każdym krzywym pomiarze, czyli w domyślnym tempie co sekundę, dopóki się nie wyprostujesz. To prawdziwe nagrania, siedzą w środku strony i nic nie jest dociągane."
+      },
+      {
+        "title": "4 · Ufaj tendencji, nie stopniom",
+        "text": "To, jak bardzo głowa wysuwa się do przodu, szacuje się w głąb — na najmniej pewnej osi, jaką ma pojedyncza kamera. Dlatego pojedynczy pomiar jest miękki, a tendencja nie. Pasek słupków pokazuje dzień, krzywa pod nim pokazuje dni; trzy czerwone słupki pod rząd coś znaczą, jeden czerwony między zielonymi to chwila. Klatki, na których nikogo nie ma, nie liczą się wcale."
+      },
+      {
+        "title": "5 · Zajrzyj tu znowu za dwa tygodnie",
+        "text": "Czy coś się zmienia, nie widać w jedno popołudnie. Przy jednej klatce na sekundę dzień pracy to dziesiątki tysięcy pomiarów, więc pojedyncze są usuwane po dwóch dniach — dzienny wiersz, który z nich powstaje, zostaje na zawsze. Porównanie „ostatnie 7 dni do 7 poprzednich\" to prawdziwa odpowiedź na pytanie „czy robię postępy\"."
+      }
+    ],
+    "sources": [
+      {
+        "id": "mediapipe-pose",
+        "title": "MediaPipe — Pose Landmarker",
+        "url": "https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker",
+        "note": "Dokumentacja Google dla modelu, który działa w tej przeglądarce: 33 punkty, każdy z oceną widoczności. Powód, dla którego kąty są tu liczone, a nie szacowane.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "cva-cutoff",
+        "title": "Craniovertebral angle — Physiopedia",
+        "url": "https://www.physio-pedia.com/Craniovertebral_angle",
+        "note": "Jedyna szeroko przyjęta wartość graniczna dla ustawienia głowy: kąt kraniowertebralny poniżej 48–50° liczy się jako wysunięcie głowy do przodu. Mierzy się go od C7 do skrawka ucha z profilu — dlatego ta strona nie potrafi go zmierzyć i nie udaje, że potrafi.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "risk-office",
+        "title": "Risk factors for neck pain in office workers: a prospective study",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1629016/",
+        "note": "Badanie prospektywne bólu szyi u pracowników biurowych. Czynnikami ryzyka są czas trwania i obciążenie statyczne, a nie jakiś konkretny kąt — stąd nacisk tej strony na tendencję przez kolejne dni.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "static-flexion",
+        "title": "Effect of static neck flexion in cervical flexion-relaxation phenomenon",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S1360859215002090",
+        "note": "Dziesięć minut utrzymywanego zgięcia szyi już mierzalnie zmienia propriocepcję i rekrutację mięśni. Dowód, że problemem jest utrzymywane odchylenie, a nie pojedynczy krzywy moment.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "getusermedia",
+        "title": "MDN — MediaDevices.getUserMedia()",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia",
+        "note": "Interfejs przeglądarki, przez który strona sięga do kamery, wraz z zasadą, że działa tylko w bezpiecznym kontekście. Dlatego aplikacja działa po https, ale nie z pliku otwartego lokalnie.",
+        "checked": "2026-09-03"
+      },
+      {
+        "id": "rxdb",
+        "title": "RxDB — die lokale Datenbank dieser Seite",
+        "url": "https://rxdb.info/",
+        "note": "Wszystko, co strona zapamiętuje, leży w RxDB na IndexedDB — na tym urządzeniu, na żywo między kartami i nadal tam po przeładowaniu. Żaden serwer nie bierze w tym udziału.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "baua-dynamik",
+        "title": "BAuA — Steh-Sitz-Dynamik",
+        "url": "https://www.baua.de/DE/Themen/Arbeitsgestaltung/Digitalisierung-KI/Moderne-Bildschirmarbeit/Steh-Sitz-Dynamik",
+        "note": "Niemiecki federalny instytut bezpieczeństwa pracy o naprzemiennym siedzeniu i staniu. Punkt, który usprawiedliwia całą tę aplikację: żadna jedna poprawna postawa nie liczy się tak, jak regularna jej zmiana.",
+        "checked": "2026-09-03"
+      }
+    ],
+    "gaps": [
+      {
+        "id": "vorlage",
+        "severity": "assumed",
+        "label": "Kąt wysunięcia głowy nie jest tym klinicznym",
+        "assumed": "Mierzona jest linia od środka barków do środka uszu, względem pionu. Uznaną miarą jest kąt kraniowertebralny, prowadzony od C7 do skrawka ucha — a C7 leży za linią barków, tam gdzie model pozy go nie znajdzie.",
+        "impact": "Ta sama idea, inny punkt wyjścia, inna skala: 48–50° z literatury nie przekłada się na tę liczbę. Nadaje się do porównywania cię z samym sobą w ciągu dnia, nie do diagnozy."
+      },
+      {
+        "id": "tiefe",
+        "severity": "assumed",
+        "label": "Głębia to najsłabsza oś pojedynczej kamery",
+        "assumed": "To, jak bardzo głowa wysuwa się do przodu, szacuje się z jednej klatki RGB bez czujnika głębi. Przechył na bok i przechylenie głowy leżą w płaszczyźnie obrazu i są znacznie stabilniejsze.",
+        "impact": "Pojedynczy pomiar kąta wysunięcia jest miękki. Tendencja przez godziny i dni już nie — na niej zbudowana jest ta strona i dlatego krzywa leży pod liczbami na żywo."
+      },
+      {
+        "id": "grenzen",
+        "severity": "assumed",
+        "label": "Dla tego, co się tu mierzy, nie ma granicy opartej na dowodach",
+        "assumed": "18° / 8° / 10° to przyjęte tolerancje. Sprawdzone 2026-09-08: jedyną uznaną granicą jest kąt kraniowertebralny, którego stąd zmierzyć się nie da. Dla bocznego przechyłu tułowia albo barków literatura nie podaje żadnej granicy w stopniach.",
+        "impact": "Poparte dowodami jest to, że ryzyko niesie utrzymywane odchylenie, a nie pojedyncza chwila. Te trzy liczby to pokrętła: piszczy za często — podnieś granicę. To, czy odzywa się za dużo czy za mało, mówi ci o właściwej wartości więcej niż jakiekolwiek ustawienie fabryczne.",
+        "ask": "Jak często piszczy po całym dniu przy obecnych ustawieniach?"
+      },
+      {
+        "id": "kamera",
+        "severity": "assumed",
+        "label": "Kamera musi stać mniej więcej na wysokości oczu",
+        "assumed": "Zakłada się zwykłą sytuację z kamerką: na wprost, górna część ciała w kadrze, kamera mniej więcej na wysokości głowy.",
+        "impact": "Laptop na kolanach filmuje od dołu i sprawia, że każda głowa wygląda na wysuniętą; kamera wysoko nad tobą działa odwrotnie. Liczba pozostaje porównywalna sama ze sobą, dopóki kamera się nie przesunie — po przestawieniu biurka tendencja sprzed i po nie jest tą samą tendencją."
+      }
+    ]
+  },
+  "tr": {
+    "intro": "Bu sayfa her saniye web kameranızdan bir kare alır ve ondan üç açı okur: başınız omuzlarınızın ne kadar önünde, omuz çizginiz yataydan ne kadar sapmış ve başınız yana ne kadar eğik. En önemlisi birincisidir — fazla öne taşınan bir boyun, bu sayfanın var olma sebebidir. Bunlardan biri sizin koyduğunuz sınırı aşarsa ses çıkar, her eğri ölçümde. Hesap **burada, tarayıcıda** yapılır: bir duruş modeli vücudunuzda 33 nokta bulur, açıları sayfa kendi çıkarır. Anahtar yok, kota yok ve bu cihazdan çıkan hiçbir görüntü yok — ölçümler de bu tarayıcıda kalır.",
+    "steps": [
+      {
+        "title": "1 · Başlat",
+        "text": "Kameraya izin verin ve sayfayı açık bırakın. Ayarlanacak ya da kalibre edilecek bir şey yok: üç açı da kendi vücudunuz üzerinde ölçülen oranlardır, yani boyunuza bağlı değildir ve herkeste aynı şekilde okunur. Sayfa ilk kareden itibaren ölçer ve baktığı sürece ekranın kapanmasını engeller."
+      },
+      {
+        "title": "2 · Temposunu seç",
+        "text": "Varsayılan saniyede bir kare, iki dakikaya kadar esnetilebilir. Her şey yerelde hesaplandığı için hızlı tempo biraz pilden başka bir şeye mal olmaz — sayılacak istek yoktur."
+      },
+      {
+        "title": "3 · Sesini seç",
+        "text": "Beş tane var: osuruk, boğaz temizleme, çığlık, parmak çıtlatma ve rimshot. Varsayılan osuruktur — kaçırmazsınız ve sizi yerinizden de sıçratmaz. Her eğri ölçümde çalar, yani varsayılan tempoda siz doğrulana kadar saniyede bir. Bunlar gerçek kayıtlardır, sayfanın içinde gelirler ve hiçbir şey indirilmez."
+      },
+      {
+        "title": "4 · Dereceye değil, eğilime güven",
+        "text": "Başın ne kadar öne çıktığı derinlik boyunca tahmin edilir — tek bir kameranın sahip olduğu en belirsiz eksen. Bu yüzden anlık değer yumuşaktır, eğilim değildir. Çubuk şeridi günü gösterir, altındaki eğri günleri; arka arkaya üç kırmızı çubuk bir şey ifade eder, yeşiller arasındaki tek kırmızı çubuk bir andır. İçinde kimse olmayan kareler hiç sayılmaz."
+      },
+      {
+        "title": "5 · İki hafta sonra tekrar bak",
+        "text": "Bir şeyin değişip değişmediği bir öğleden sonrada görünmez. Saniyede bir kareyle bir iş günü on binlerce ölçüm demektir, bu yüzden tek tek ölçümler iki gün sonra silinir — onlardan çıkan günlük satır ise sonsuza dek kalır. „Son 7 gün, önceki 7 güne karşı\" karşılaştırması, „daha iyi oluyor muyum\" sorusunun asıl cevabıdır."
+      }
+    ],
+    "sources": [
+      {
+        "id": "mediapipe-pose",
+        "title": "MediaPipe — Pose Landmarker",
+        "url": "https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker",
+        "note": "Bu tarayıcıda çalışan modelin Google tarafından yazılmış belgeleri: her biri görünürlük puanı taşıyan 33 nokta. Buradaki açıların tahmin edilmek yerine hesaplanmasının sebebi.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "cva-cutoff",
+        "title": "Craniovertebral angle — Physiopedia",
+        "url": "https://www.physio-pedia.com/Craniovertebral_angle",
+        "note": "Baş duruşu için geniş kabul görmüş tek eşik: 48–50° altındaki kraniyovertebral açı öne çıkmış baş sayılır. Yandan bakışta C7 ile tragus arasında ölçülür — bu sayfanın onu ölçememesinin ve ölçüyormuş gibi yapmamasının sebebi budur.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "risk-office",
+        "title": "Risk factors for neck pain in office workers: a prospective study",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1629016/",
+        "note": "Ofis çalışanlarında boyun ağrısı üzerine ileriye dönük bir çalışma. Risk etkenleri süre ve statik yüklenmedir, tek bir açı değil — bu sayfanın günler boyunca eğilimi öne çıkarmasının nedeni.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "static-flexion",
+        "title": "Effect of static neck flexion in cervical flexion-relaxation phenomenon",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S1360859215002090",
+        "note": "On dakika süren boyun fleksiyonu bile propriosepsiyonu ve kas katılımını ölçülebilir biçimde değiştiriyor. Sorunun tek bir eğri an değil, sürdürülen sapma olduğunun kanıtı.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "getusermedia",
+        "title": "MDN — MediaDevices.getUserMedia()",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia",
+        "note": "Sayfanın kameraya ulaşmak için kullandığı tarayıcı arayüzü ve yalnızca güvenli bağlamda çalıştığı kuralı. Uygulamanın https üzerinden çalışıp yerelde açılan bir dosyadan çalışmamasının sebebi budur.",
+        "checked": "2026-09-03"
+      },
+      {
+        "id": "rxdb",
+        "title": "RxDB — die lokale Datenbank dieser Seite",
+        "url": "https://rxdb.info/",
+        "note": "Sayfanın hatırladığı her şey IndexedDB üzerindeki RxDB’de durur — bu cihazda, sekmeler arasında canlı ve sayfa yenilendikten sonra da yerinde. İşin içinde hiçbir sunucu yoktur.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "baua-dynamik",
+        "title": "BAuA — Steh-Sitz-Dynamik",
+        "url": "https://www.baua.de/DE/Themen/Arbeitsgestaltung/Digitalisierung-KI/Moderne-Bildschirmarbeit/Steh-Sitz-Dynamik",
+        "note": "Almanya’nın federal iş güvenliği enstitüsünün oturmayla ayakta durmayı dönüşümlü kullanma üzerine notu. Bu uygulamayı asıl haklı çıkaran nokta: hiçbir doğru duruş, onu düzenli olarak değiştirmek kadar önemli değildir.",
+        "checked": "2026-09-03"
+      }
+    ],
+    "gaps": [
+      {
+        "id": "vorlage",
+        "severity": "assumed",
+        "label": "Baş öne çıkma açısı klinik olan değildir",
+        "assumed": "Ölçülen şey, omuz orta noktasından kulak orta noktasına giden çizginin dikeye göre açısıdır. Yerleşik ölçü, C7 ile tragus arasında çizilen kraniyovertebral açıdır — ve C7 omuz çizgisinin arkasında, bir duruş modelinin bulamayacağı yerde kalır.",
+        "impact": "Aynı fikir, farklı başlangıç noktası, farklı ölçek: literatürdeki 48–50° bu sayıya taşınamaz. Gün içinde kendinizi kendinizle karşılaştırmak için iyidir, teşhis için değil."
+      },
+      {
+        "id": "tiefe",
+        "severity": "assumed",
+        "label": "Derinlik, tek bir kameranın en zayıf eksenidir",
+        "assumed": "Başın ne kadar öne çıktığı, derinlik sensörü olmayan tek bir RGB kareden tahmin edilir. Yana eğim ve baş eğikliği görüntü düzleminde kalır ve belirgin biçimde daha kararlıdır.",
+        "impact": "Öne çıkma açısının tek bir ölçümü yumuşaktır. Saatler ve günler boyunca eğilim değildir — bu sayfa onun üzerine kuruludur, eğrinin canlı sayıların altında durmasının sebebi de budur."
+      },
+      {
+        "id": "grenzen",
+        "severity": "assumed",
+        "label": "Burada ölçülen şey için kanıta dayalı bir eşik yok",
+        "assumed": "18° / 8° / 10° konulmuş toleranslardır. 2026-09-08’de araştırıldı: yerleşik tek eşik, buradan ölçülemeyen kraniyovertebral açıdır. Gövdenin ya da omuzların yana eğimi için literatür derece cinsinden hiçbir eşik vermiyor.",
+        "impact": "Desteklenen tek şey, riski tek bir anın değil sürdürülen sapmanın taşıdığıdır. Üç sayı birer ayar düğmesidir: çok sık ötüyorsa sınırı yükseltin. Fazla mı yoksa az mı ötüyor olması, doğru değeri size herhangi bir hazır ayardan daha iyi anlatır.",
+        "ask": "Şu anki ayarlarla bir gün geçtikten sonra ne sıklıkla ötüyor?"
+      },
+      {
+        "id": "kamera",
+        "severity": "assumed",
+        "label": "Kameranın aşağı yukarı göz hizasında olması gerekir",
+        "assumed": "Sıradan bir web kamerası durumu varsayılıyor: karşıdan, üst gövde kadrajda, kamera aşağı yukarı baş hizasında.",
+        "impact": "Kucaktaki bir dizüstü aşağıdan çeker ve her başı öne çıkmış gösterir; çok yukarıdaki bir kamera bunun tersini yapar. Kamera yerinden oynamadığı sürece sayı kendisiyle karşılaştırılabilir kalır — masayı yeniden düzenledikten sonra, öncesindeki eğilimle sonrasındaki aynı eğilim değildir."
+      }
+    ]
+  },
+  "ru": {
+    "intro": "Эта страница каждую секунду берёт один кадр с веб-камеры и считывает с него три угла: насколько голова вынесена вперёд относительно плеч, насколько линия плеч отклонена от горизонтали и насколько голова наклонена вбок. Важнее всего первый — шея, которую носят слишком далеко вперёд, и есть причина существования этой страницы. Если какой-то из них переходит твой предел, раздаётся звук — при каждом кривом измерении. Все вычисления идут **здесь, в браузере**: модель позы находит 33 точки на твоём теле, а углы страница считает сама. Ни ключа, ни квоты, и ни одного изображения, покидающего это устройство — измерения тоже остаются в этом браузере.",
+    "steps": [
+      {
+        "title": "1 · Запусти",
+        "text": "Разреши камеру и оставь страницу открытой. Настраивать и калибровать нечего: все три угла — это соотношения, измеренные на твоём собственном теле, поэтому они не зависят от роста и читаются одинаково у любого. Страница измеряет с самого первого кадра и не даёт экрану погаснуть, пока следит."
+      },
+      {
+        "title": "2 · Выбери темп",
+        "text": "По умолчанию кадр в секунду, растягивается до двух минут. Поскольку всё считается локально, быстрый темп не стоит ничего, кроме небольшого расхода батареи — запросов, которые нужно было бы считать, здесь нет."
+      },
+      {
+        "title": "3 · Выбери звук",
+        "text": "На выбор пять: пук, покашливание, крик, хруст пальцев и бадум-тсс. По умолчанию стоит пук — его не пропустишь, и он тебя не пугает. Он раздаётся при каждом кривом измерении, то есть на обычном темпе раз в секунду, пока не выпрямишься. Это настоящие записи, они лежат внутри страницы, и ничего не подгружается."
+      },
+      {
+        "title": "4 · Верь динамике, а не градусу",
+        "text": "Насколько голова уходит вперёд, оценивается по глубине — самой ненадёжной оси, какая есть у одной камеры. Поэтому мгновенный снимок мягкий, а динамика — нет. Полоса столбиков показывает день, кривая под ней — дни; три красных столбика подряд что-то значат, один красный между зелёными — это момент. Кадры, где никого нет, не учитываются вовсе."
+      },
+      {
+        "title": "5 · Загляни снова через две недели",
+        "text": "Меняется ли что-то, за один вечер не увидишь. При кадре в секунду рабочий день — это десятки тысяч измерений, поэтому отдельные удаляются через два дня, а дневная строка, которая из них получается, хранится всегда. Сравнение «последние 7 дней против предыдущих 7» — вот настоящий ответ на вопрос «становится ли лучше»."
+      }
+    ],
+    "sources": [
+      {
+        "id": "mediapipe-pose",
+        "title": "MediaPipe — Pose Landmarker",
+        "url": "https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker",
+        "note": "Документация Google по модели, которая работает в этом браузере: 33 точки, у каждой оценка видимости. Причина, по которой углы здесь вычисляются, а не угадываются.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "cva-cutoff",
+        "title": "Craniovertebral angle — Physiopedia",
+        "url": "https://www.physio-pedia.com/Craniovertebral_angle",
+        "note": "Единственный широко принятый порог для положения головы: краниовертебральный угол ниже 48–50° считается передним положением головы. Его измеряют от C7 до козелка в профиль — поэтому эта страница его измерить не может и не притворяется, что может.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "risk-office",
+        "title": "Risk factors for neck pain in office workers: a prospective study",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1629016/",
+        "note": "Проспективное исследование боли в шее у офисных работников. Факторы риска — длительность и статическая нагрузка, а не какой-то один угол; отсюда и упор этой страницы на динамику по дням.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "static-flexion",
+        "title": "Effect of static neck flexion in cervical flexion-relaxation phenomenon",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S1360859215002090",
+        "note": "Десять минут удерживаемого сгибания шеи уже измеримо меняют проприоцепцию и включение мышц. Доказательство того, что проблема — в удерживаемом отклонении, а не в отдельном кривом мгновении.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "getusermedia",
+        "title": "MDN — MediaDevices.getUserMedia()",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia",
+        "note": "Интерфейс браузера, через который страница обращается к камере, включая правило, что он работает только в защищённом контексте. Поэтому приложение работает по https, но не из файла, открытого локально.",
+        "checked": "2026-09-03"
+      },
+      {
+        "id": "rxdb",
+        "title": "RxDB — die lokale Datenbank dieser Seite",
+        "url": "https://rxdb.info/",
+        "note": "Всё, что страница запоминает, живёт в RxDB поверх IndexedDB — на этом устройстве, вживую между вкладками и на месте после перезагрузки. Никакого сервера в этом не участвует.",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "baua-dynamik",
+        "title": "BAuA — Steh-Sitz-Dynamik",
+        "url": "https://www.baua.de/DE/Themen/Arbeitsgestaltung/Digitalisierung-KI/Moderne-Bildschirmarbeit/Steh-Sitz-Dynamik",
+        "note": "Немецкий федеральный институт охраны труда о чередовании сидения и стояния. Довод, который вообще оправдывает это приложение: ни одна правильная поза не значит столько, сколько её регулярная смена.",
+        "checked": "2026-09-03"
+      }
+    ],
+    "gaps": [
+      {
+        "id": "vorlage",
+        "severity": "assumed",
+        "label": "Угол выноса головы — не клинический",
+        "assumed": "Измеряется линия от середины плеч к середине ушей относительно вертикали. Принятая мера — краниовертебральный угол, проведённый от C7 к козелку, а C7 находится позади линии плеч, там, где модель позы его не найдёт.",
+        "impact": "Идея та же, начало другое, шкала другая: 48–50° из литературы на это число не переносятся. Оно годится, чтобы сравнивать тебя с самим собой в течение дня, но не для диагноза."
+      },
+      {
+        "id": "tiefe",
+        "severity": "assumed",
+        "label": "Глубина — самая слабая ось одной камеры",
+        "assumed": "Насколько голова уходит вперёд, оценивается по одному RGB-кадру без датчика глубины. Наклон вбок и наклон головы лежат в плоскости изображения и заметно устойчивее.",
+        "impact": "Отдельное измерение переднего угла мягкое. Динамика за часы и дни — нет; именно на ней построена эта страница, и поэтому кривая стоит под живыми числами."
+      },
+      {
+        "id": "grenzen",
+        "severity": "assumed",
+        "label": "Для того, что здесь измеряется, нет порога, подтверждённого данными",
+        "assumed": "18° / 8° / 10° — это заданные допуски. Проверено 2026-09-08: единственный принятый порог — краниовертебральный угол, который отсюда не измерить. Для бокового наклона корпуса или плеч литература вообще не даёт границы в градусах.",
+        "impact": "Подтверждено лишь то, что риск несёт удерживаемое отклонение, а не отдельное мгновение. Три числа — это ручки: пищит слишком часто — подними предел. Слишком частое или слишком редкое срабатывание скажет о правильном значении больше, чем любая заводская настройка.",
+        "ask": "Как часто оно пищит после дня с нынешними настройками?"
+      },
+      {
+        "id": "kamera",
+        "severity": "assumed",
+        "label": "Камера должна стоять примерно на уровне глаз",
+        "assumed": "Предполагается обычная ситуация с веб-камерой: анфас, верх корпуса в кадре, камера примерно на высоте головы.",
+        "impact": "Ноутбук на коленях снимает снизу, и любая голова выглядит вынесенной вперёд; камера высоко над тобой делает обратное. Число остаётся сравнимым с самим собой, пока камера не сдвинулась — после перестановки стола динамика до и после это уже не одна и та же динамика."
+      }
+    ]
+  },
+  "zh": {
+    "intro": "这个页面每秒从你的摄像头取一张画面，从中读出三个角度：头比肩膀往前多少、肩线偏离水平多少、头往一侧歪了多少。第一个最重要——脖子长期前伸正是这个页面存在的理由。只要有一个超过你设定的上限，就会响一声，每一次坐歪的测量都会响。计算发生在**这里，在浏览器里**：一个姿态模型找出你身上的 33 个点，角度由页面自己算。没有密钥，没有额度，也没有任何画面离开这台设备——测量结果同样留在这个浏览器里。",
+    "steps": [
+      {
+        "title": "1 · 先跑起来",
+        "text": "允许使用摄像头，并让页面开着。没有什么要配置，也没有什么要校准：三个角度都是在你自己身上量出来的比例，所以跟身高无关，对谁读起来都一样。页面从第一张画面就开始测量，并在盯着的时候不让屏幕休眠。"
+      },
+      {
+        "title": "2 · 选节奏",
+        "text": "默认每秒一张，最长可以拉到两分钟。因为一切都在本地计算，快节奏除了多耗一点电以外没有代价——根本没有需要计数的请求。"
+      },
+      {
+        "title": "3 · 选声音",
+        "text": "一共五种：放屁、清嗓子、尖叫、掰手指和咚咚锵。默认是放屁——你不会漏掉它，它也不会吓到你。每一次坐歪的测量都会响，也就是按默认节奏每秒一次，直到你坐直为止。这些都是真实录音，随页面一起带上，不会另外下载。"
+      },
+      {
+        "title": "4 · 相信趋势，别盯着度数",
+        "text": "头往前伸多少是沿着深度方向估算的——那是单个摄像头最没把握的一根轴。所以单次结果是软的，趋势不是。柱条那一行显示这一天，下面的曲线显示这些天；连着三根红柱是有意义的，绿柱之间夹一根红柱只是一瞬间。画面里没有人的那些帧完全不计入。"
+      },
+      {
+        "title": "5 · 两周后再来看",
+        "text": "有没有在改变，一个下午是看不出来的。按每秒一张算，一个工作日就是几万次测量，所以单次记录两天后清掉——由它们汇总出的每日一行则永久保留。「最近 7 天对比之前 7 天」才是「我有没有进步」的真正答案。"
+      }
+    ],
+    "sources": [
+      {
+        "id": "mediapipe-pose",
+        "title": "MediaPipe — Pose Landmarker",
+        "url": "https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker",
+        "note": "Google 为这个在浏览器里运行的模型写的文档：33 个关键点，每个都带一个可见度分数。这也是这里的角度是算出来而不是猜出来的原因。",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "cva-cutoff",
+        "title": "Craniovertebral angle — Physiopedia",
+        "url": "https://www.physio-pedia.com/Craniovertebral_angle",
+        "note": "关于头部姿势唯一被广泛认可的界限：颅椎角低于 48–50° 即算作头部前伸。它要在侧面视角下从 C7 量到耳屏——这正是本页无法测量它、也不假装能测的原因。",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "risk-office",
+        "title": "Risk factors for neck pain in office workers: a prospective study",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1629016/",
+        "note": "一项关于办公室工作者颈痛的前瞻性研究。风险因素是持续时间和静态负荷，而不是某一个角度——这也是本页强调按天看趋势的理由。",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "static-flexion",
+        "title": "Effect of static neck flexion in cervical flexion-relaxation phenomenon",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S1360859215002090",
+        "note": "持续十分钟的颈部前屈，就已经可以测出本体感觉和肌肉募集的变化。这说明问题在于长时间保持的偏离，而不是单独一个歪掉的瞬间。",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "getusermedia",
+        "title": "MDN — MediaDevices.getUserMedia()",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia",
+        "note": "页面用来访问摄像头的浏览器接口，包括它只在安全上下文中可用这条规则。这就是为什么这个应用在 https 下能用，但从本地打开的文件里不行。",
+        "checked": "2026-09-03"
+      },
+      {
+        "id": "rxdb",
+        "title": "RxDB — die lokale Datenbank dieser Seite",
+        "url": "https://rxdb.info/",
+        "note": "页面记住的一切都放在 IndexedDB 上的 RxDB 里——在这台设备上，跨标签页实时同步，刷新之后依然还在。整个过程没有服务器参与。",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "baua-dynamik",
+        "title": "BAuA — Steh-Sitz-Dynamik",
+        "url": "https://www.baua.de/DE/Themen/Arbeitsgestaltung/Digitalisierung-KI/Moderne-Bildschirmarbeit/Steh-Sitz-Dynamik",
+        "note": "德国联邦劳动安全研究所关于坐立交替的说明。这一点才真正为整个应用提供了理由：没有哪一种正确坐姿，比经常换姿势更重要。",
+        "checked": "2026-09-03"
+      }
+    ],
+    "gaps": [
+      {
+        "id": "vorlage",
+        "severity": "assumed",
+        "label": "这里的头部前伸角度不是临床上的那个",
+        "assumed": "实际测量的是两肩中点到两耳中点的连线相对垂直方向的夹角。公认的指标是颅椎角，从 C7 画到耳屏——而 C7 位于肩线后方，姿态模型找不到那里。",
+        "impact": "思路相同，起点不同，量纲也不同：文献里的 48–50° 无法套到这个数字上。它适合让你跟一天里的自己比较，不适合用来下判断。"
+      },
+      {
+        "id": "tiefe",
+        "severity": "assumed",
+        "label": "深度是单个摄像头最弱的一根轴",
+        "assumed": "头往前伸多少，是从一张没有深度传感器的 RGB 画面里估算出来的。侧向倾斜和头部歪斜都落在图像平面内，稳定得多。",
+        "impact": "单次的前伸角度是软的，几个小时和几天的趋势不是——这个页面正是建立在趋势之上，曲线也因此放在实时数字的下方。"
+      },
+      {
+        "id": "grenzen",
+        "severity": "assumed",
+        "label": "对本页所测的东西，并没有基于证据的界限值",
+        "assumed": "18° / 8° / 10° 是设定的容差。2026-09-08 查证：唯一公认的界限是颅椎角，而它在这里测不了。至于躯干或肩膀的侧向倾斜，文献根本没有给出任何角度界限。",
+        "impact": "有依据的只有一点：带来风险的是长时间保持的偏离，而不是单独的一瞬间。这三个数字是旋钮：响得太频繁就把上限调高。它响得过多还是过少，比任何预设都更能告诉你合适的值。",
+        "ask": "按现在的设置用一天下来，它大概多久响一次？"
+      },
+      {
+        "id": "kamera",
+        "severity": "assumed",
+        "label": "摄像头大致要放在视线高度",
+        "assumed": "这里假设的是普通的摄像头场景：正对着人、上半身在画面里、摄像头大约与头同高。",
+        "impact": "笔记本放在腿上是从下往上拍，会让任何人的头看起来都往前伸；摄像头架得很高则相反。只要摄像头不动，这个数字跟自己比就仍然成立——重新收拾过桌面之后，之前的趋势和之后的趋势就不是同一条趋势了。"
+      }
+    ]
+  },
+  "ja": {
+    "intro": "このページは 1 秒ごとにウェブカメラから 1 枚の画像を取り、そこから 3 つの角度を読み取ります。頭が肩よりどれだけ前に出ているか、肩のラインが水平からどれだけ傾いているか、頭が横にどれだけ傾いているか。いちばん重要なのは 1 つめです — 前に出すぎた首こそ、このページがある理由です。どれかがあなたのしきい値を超えると音が鳴ります。姿勢が崩れた測定のたびに、毎回です。計算は**ここ、ブラウザの中**で行われます。姿勢モデルが体の 33 点を見つけ、角度はページ自身が計算します。鍵も、利用量の上限もなく、画像がこの端末から出ていくこともありません — 測定結果もこのブラウザの中に残ります。",
+    "steps": [
+      {
+        "title": "1 · 動かしてみる",
+        "text": "カメラを許可して、ページを開いたままにしておいてください。設定するものも、キャリブレーションするものもありません。3 つの角度はどれも自分の体の上で測った比率なので、身長に左右されず、誰が見ても同じように読めます。ページは最初の 1 枚から測定を始め、見張っているあいだは画面が消えないようにします。"
+      },
+      {
+        "title": "2 · 間隔を決める",
+        "text": "既定は 1 秒に 1 枚で、2 分まで延ばせます。すべてローカルで計算するので、間隔を短くしてもバッテリーが少し減るだけです — 数えるべきリクエストがそもそもありません。"
+      },
+      {
+        "title": "3 · 音を選ぶ",
+        "text": "5 種類から選べます。おなら、せき払い、悲鳴、指の関節、ドンドンパフ。既定はおならです — 聞き逃さないうえに、驚かされることもありません。姿勢が崩れた測定のたびに鳴るので、既定の間隔なら座り直すまで 1 秒に 1 回です。どれも実際の録音で、ページの中に入っており、あとから読み込むことはありません。"
+      },
+      {
+        "title": "4 · 度数ではなく傾向を信じる",
+        "text": "頭がどれだけ前に出ているかは奥行き方向で推定します — 1 台のカメラにとって、いちばん不確かな軸です。だから一瞬の値はあいまいで、傾向はそうではありません。棒の帯はその日を、下の曲線は日々を示します。赤い棒が 3 本続けば意味があり、緑のあいだの赤 1 本はただの一瞬です。誰も写っていない画像はまったく数えません。"
+      },
+      {
+        "title": "5 · 2 週間後にもう一度見る",
+        "text": "何かが変わってきているかどうかは、ひと晩では見えません。1 秒に 1 枚なら 1 日の作業で数万件の測定になるので、個々の測定は 2 日で片づけます — そこから作られる 1 日 1 行の集計はずっと残ります。「直近 7 日」と「その前の 7 日」の比較こそ、「良くなっているのか」への本当の答えです。"
+      }
+    ],
+    "sources": [
+      {
+        "id": "mediapipe-pose",
+        "title": "MediaPipe — Pose Landmarker",
+        "url": "https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker",
+        "note": "このブラウザで動くモデルについての Google の公式ドキュメント。33 個の点があり、それぞれに見えているかどうかのスコアが付きます。ここでの角度が推測ではなく計算である理由です。",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "cva-cutoff",
+        "title": "Craniovertebral angle — Physiopedia",
+        "url": "https://www.physio-pedia.com/Craniovertebral_angle",
+        "note": "頭の姿勢について広く定着している唯一の基準値：頭蓋椎骨角が 48〜50° を下回ると前方頭位とされます。横から見て C7 と耳珠のあいだで測るもので、だからこのページはそれを測れず、測れるふりもしません。",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "risk-office",
+        "title": "Risk factors for neck pain in office workers: a prospective study",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC1629016/",
+        "note": "オフィス勤務者の首の痛みについての前向き研究。危険因子は持続時間と静的な負荷であって、ある特定の角度ではありません — このページが日をまたいだ傾向を重く見る理由です。",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "static-flexion",
+        "title": "Effect of static neck flexion in cervical flexion-relaxation phenomenon",
+        "url": "https://www.sciencedirect.com/science/article/abs/pii/S1360859215002090",
+        "note": "首を曲げたまま 10 分保つだけで、固有感覚と筋の動員がすでに測定できるほど変化します。問題は保たれたずれであって、崩れた一瞬ではないという裏づけです。",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "getusermedia",
+        "title": "MDN — MediaDevices.getUserMedia()",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia",
+        "note": "ページがカメラに触れるために使うブラウザのインターフェースと、安全なコンテキストでしか動かないという決まり。アプリが https では動き、ローカルで開いたファイルからは動かないのはこのためです。",
+        "checked": "2026-09-03"
+      },
+      {
+        "id": "rxdb",
+        "title": "RxDB — die lokale Datenbank dieser Seite",
+        "url": "https://rxdb.info/",
+        "note": "ページが覚えていることはすべて IndexedDB 上の RxDB にあります — この端末の中に、タブをまたいでリアルタイムに、再読み込みしてもそのまま。サーバーは一切関わりません。",
+        "checked": "2026-09-08"
+      },
+      {
+        "id": "baua-dynamik",
+        "title": "BAuA — Steh-Sitz-Dynamik",
+        "url": "https://www.baua.de/DE/Themen/Arbeitsgestaltung/Digitalisierung-KI/Moderne-Bildschirmarbeit/Steh-Sitz-Dynamik",
+        "note": "座位と立位を交互にすることについての、ドイツ連邦労働安全衛生研究所の解説。このアプリ全体を正当化する要点：どんな正しい姿勢も、こまめに変えることほどは効きません。",
+        "checked": "2026-09-03"
+      }
+    ],
+    "gaps": [
+      {
+        "id": "vorlage",
+        "severity": "assumed",
+        "label": "頭の前出しの角度は臨床のそれではありません",
+        "assumed": "測っているのは、両肩の中点から両耳の中点へ引いた線の、垂直からの角度です。確立された指標は頭蓋椎骨角で、C7 から耳珠へ引かれます — その C7 は肩のラインより後ろにあり、姿勢モデルには見つけられません。",
+        "impact": "考え方は同じでも起点が違い、目盛りも違います。文献の 48〜50° はこの数値に持ち込めません。1 日のなかで自分と自分を比べるには向いていますが、診断には向きません。"
+      },
+      {
+        "id": "tiefe",
+        "severity": "assumed",
+        "label": "奥行きは 1 台のカメラでいちばん弱い軸です",
+        "assumed": "頭がどれだけ前に出ているかは、深度センサーのない 1 枚の RGB 画像から推定しています。左右の傾きと頭の傾きは画像の平面内にあり、はるかに安定しています。",
+        "impact": "前出しの角度は 1 回きりの値としてはあいまいです。数時間・数日単位の傾向はそうではありません — このページはそこに立っており、曲線がリアルタイムの数値の下にあるのもそのためです。"
+      },
+      {
+        "id": "grenzen",
+        "severity": "assumed",
+        "label": "ここで測っているものに、根拠のあるしきい値は存在しません",
+        "assumed": "18° / 8° / 10° は決め打ちの許容範囲です。2026-09-08 に調べたところ、確立されたしきい値は頭蓋椎骨角だけで、それはここからは測れません。体幹や肩の左右の傾きについては、文献に角度の基準がそもそもありません。",
+        "impact": "裏づけがあるのは、危険なのは保たれたずれであって単発の瞬間ではない、という点だけです。3 つの数値はつまみです。鳴りすぎるならしきい値を上げてください。鳴りすぎか鳴らなすぎかのほうが、どんな初期値よりも適切な値を教えてくれます。",
+        "ask": "今の設定で 1 日過ごすと、どれくらいの頻度で鳴りますか？"
+      },
+      {
+        "id": "kamera",
+        "severity": "assumed",
+        "label": "カメラはだいたい目の高さに置く必要があります",
+        "assumed": "ごく普通のウェブカメラの状況を前提にしています。正面から、上半身が画角に入り、カメラはおおよそ頭の高さ。",
+        "impact": "膝に載せたノートパソコンは下から写すので、誰の頭も前に出ているように見えます。高い位置のカメラはその逆です。カメラが動かないかぎり、この数値は自分自身とは比べられます — 机を模様替えしたあとでは、その前後の傾向は同じ傾向ではありません。"
+      }
+    ]
+  }
+}

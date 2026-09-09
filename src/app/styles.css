@@ -1,0 +1,67 @@
+/*
+ * Page-specific CSS. Tokens only — no hex codes, no gaps outside the --sN scale
+ * (`.claude/ui/README.md` §3).
+ *
+ * Two things live here because they exist nowhere else in the library: the
+ * camera preview (a `<video>` is not a component and never will be) and the
+ * flash that goes with the signal.
+ */
+
+/* Capped and centred: a 4:3 preview across the full 940 px column is 700 px of
+   webcam, which pushes the numbers below it off the screen — and the numbers
+   are the point. 560 px is big enough to see whether you are in frame. */
+.haltung-kamera {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  margin-inline: auto;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--bg-sunk);
+  border: 1px solid var(--line);
+}
+
+/* Mirrored, because an unmirrored preview of yourself is disorienting. The
+   frame that is sent is taken from the element, not from the CSS, so this
+   does not reach the model.
+
+   **The camera keeps its own shape, nothing is cropped** _(2026-09-08, his
+   call — this replaces the forced 16:9 from the same day)_. `aspect-ratio` is
+   overwritten inline with the real stream ratio as soon as the metadata is
+   there; the 16 / 9 here only holds the box before that, because a `<video>`
+   with no stream reports 2:1 and the preview would visibly jump. `contain`
+   rather than `cover` is the belt to that braces: should the two ever
+   disagree, the picture letterboxes instead of losing an edge. */
+.haltung-kamera video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  transform: scaleX(-1);
+  background: var(--bg-sunk);
+}
+
+.haltung-kamera-aus {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--s5);
+  text-align: center;
+  font-size: var(--t-sm);
+  color: var(--muted);
+  background: var(--bg-sunk);
+}
+
+.haltung-alarm {
+  animation: haltung-puls 0.9s var(--ease) 3;
+}
+
+@keyframes haltung-puls {
+  0%, 100% { box-shadow: var(--sh-1); }
+  50%      { box-shadow: 0 0 0 4px var(--bad); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .haltung-alarm { animation: none; outline: 2px solid var(--bad); }
+}
