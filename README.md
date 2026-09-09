@@ -66,12 +66,19 @@ hips, and in a desk-sized crop they come back with a visibility of 0.01 against
 - **Your data stays yours.** The ⇅ button exports and imports a JSON file, and
   can sync to another device peer-to-peer, to Google Drive or to OneDrive. All
   of it is off until you press something.
+- **It installs, and it works offline.** A service worker precaches the page,
+  the icon and all five sounds, so the alarm still fires with the network gone.
+  The pose model is cached the first time the camera runs rather than up front —
+  it is 17 MB, and paying that during install would look like a hang.
+- **It never asks for the camera on load.** The whole page — the angles, the
+  sounds, the history — is there to read first; `getUserMedia` runs on the
+  ▶ button and nowhere else.
 
 ## Layout
 
 ```
 index.html          the shell; data-accent picks the palette
-vite.config.ts      four path aliases and a build stamp — that is the whole build
+vite.config.ts      four path aliases, a build stamp, and two build-only plugins
 src/
   main.tsx          entry: pulls in the CSS, fills the page payload, mounts
   app/              this app — App.tsx, db.ts, pose.ts, twelve i18n tables,
@@ -80,7 +87,8 @@ src/
                     the design tokens they are all built from
   lib/              the runtime layer: RxDB setup, the ⇅ sync modal, a chart
                     wrapper around Recharts, small hooks
-scripts/            fetch-pose-model.mjs and the digests it enforces
+scripts/            fetch-pose-model.mjs and the digests it enforces;
+                    seo.mjs and pwa.mjs, which only run on `npm run build`
 public/             served as-is: the five alarm sounds, icon, manifest, and
                     (fetched, not committed) the pose model in mp/
 ```
@@ -95,6 +103,39 @@ built for several different pages, and the rest of it — shop listings, maps,
 recipe cards, chat bubbles — was cut rather than carried along, along with the
 CSS that styled it. Nothing here is a general-purpose component kit; it is this
 page's components, and they are free to change shape as this page needs.
+
+## What the build adds
+
+`npm run dev` is the app and nothing else. `npm run build` runs two small
+plugins on top of it, both `apply: 'build'`:
+
+- **`scripts/seo.mjs`** writes the head — title, description, canonical,
+  Open Graph, Twitter, a `SoftwareApplication` JSON-LD block — and renders the
+  intro, the five steps and the sources into `#root` as plain HTML.
+
+  This is prerendering, not server-side rendering, and the difference is the
+  point: the page's claim is that no server exists, so rendering per request is
+  not on the table. Rendering `<App/>` with `renderToString` would return an
+  empty shell anyway — it sits inside `<DatabaseGate>`, which shows its fallback
+  until RxDB opens, which never happens outside a browser. So the crawlable copy
+  is built from `data.json`, the same source the app renders from, and a crawler
+  reads the words a reader sees. React throws the block away on mount, so it
+  doubles as the first paint.
+
+  The three strings live in `src/app/seo.json` because the app needs them too:
+  `Page` sets `document.title`, so without that the tab — and any crawler that
+  runs the JS — would show the h1 instead. The h1 stays the joke; the tab and
+  the search result say what this is.
+
+- **`scripts/pwa.mjs`** emits `sw.js` with a precache list taken from the real
+  bundle, so the hashed filenames are right and a new build retires the old
+  cache by name. A manifest alone does not make a page installable — Chromium
+  wants a service worker with a fetch handler first.
+
+`public/CNAME` carries the domain, and `.github/workflows/deploy.yml` builds
+every push to `master` and force-pushes `dist/` to the `github-pages` branch. It
+refuses to publish a build whose `dist/mp/` is empty, because that failure is
+otherwise silent: the page loads and the camera loop simply never runs.
 
 ## The pose model
 

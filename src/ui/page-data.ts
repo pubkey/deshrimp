@@ -14,6 +14,11 @@ import { applyTheme, readTheme } from './theme';
 
 export type PageMeta = {
     title: string;
+    /**
+     * What the browser tab and a search result should say, when that is not the
+     * same as the h1. Falls back to `title`.
+     */
+    documentTitle?: string;
     subtitle?: string;
     /** The request this page answers, verbatim. */
     task?: string;

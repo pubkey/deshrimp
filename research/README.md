@@ -50,6 +50,9 @@ already out there rather than against a guess.
   the channels that have actually worked for tools like this, the vocabulary
   every competitor has used up, and the two things that can sink it: the camera
   prompt, and the law.
+- [`domain-names.md`](./domain-names.md) — the availability snapshot behind
+  `deshrimp.com`, what is still free, what is already gone, and why `de-` beat
+  `un-`.
 
 ## What the folder concluded
 
