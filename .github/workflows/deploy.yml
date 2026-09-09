@@ -11,6 +11,15 @@
 #    would succeed, the page would deploy, and the camera loop would be dead on
 #    arrival with nothing in the log to say why. The check after the build is
 #    there to make that impossible rather than merely unlikely.
+# 3. **The custom domain is a file in the published tree.** `public/CNAME` holds
+#    `deshrimp.com`, Vite copies it into `dist/`, and GitHub reads it off the
+#    branch on every deploy. Because the publish step below force-pushes a fresh
+#    orphan commit, the previous tree is gone: a build that omits the file does
+#    not leave the old one behind, it clears the custom domain. GitHub then
+#    revokes the Let's Encrypt certificate for the domain and serves its default
+#    `*.github.io` one, so every visitor gets a certificate-name mismatch until
+#    the domain is re-added and a new certificate is issued - an outage that
+#    takes hours to undo. The check below refuses to publish such a build.
 
 name: Deploy to GitHub Pages
 
@@ -48,6 +57,8 @@ jobs:
         run: npm run build
 
       - name: Check the build is complete
+        env:
+          EXPECTED_DOMAIN: deshrimp.com
         run: |
           test -f dist/index.html || { echo "::error::no dist/index.html"; exit 1; }
           test -f dist/sw.js      || { echo "::error::no service worker - the page would not be installable"; exit 1; }
@@ -59,7 +70,16 @@ jobs:
             echo "::error::index.html still says noindex"
             exit 1
           fi
-          echo "index.html $(wc -c < dist/index.html) bytes, $(ls dist/mp | wc -l) model files"
+          # The custom domain lives in this file and nowhere else. Publishing a
+          # tree without it hands the site back to pubkey.github.io and takes
+          # the certificate with it - see the note at the top of this file.
+          test -f dist/CNAME || { echo "::error::no dist/CNAME - the custom domain would be cleared and the HTTPS certificate revoked"; exit 1; }
+          domain="$(tr -d '[:space:]' < dist/CNAME)"
+          if [ "$domain" != "$EXPECTED_DOMAIN" ]; then
+            echo "::error::dist/CNAME says '$domain', expected '$EXPECTED_DOMAIN'"
+            exit 1
+          fi
+          echo "index.html $(wc -c < dist/index.html) bytes, $(ls dist/mp | wc -l) model files, domain $domain"
 
       # Jekyll is on by default for a branch-served site and would drop paths
       # beginning with an underscore.
