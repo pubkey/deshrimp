@@ -9,6 +9,18 @@ build commands they mention belong to that older setup, not to this project.
 ## 2026-09-09 — an ordinary Vite project
 
 ### Geändert
+- **Nur noch die Komponenten, die diese App benutzt.** Aus der geteilten
+  Bibliothek kamen 100 Dateien mit; 48 davon hat keine Seite hier je gerendert
+  (Shop-Listings, Karten, Rezeptkarten, Chat-Blasen, Zeitleisten …). Sie sind
+  raus, dazu drei Datenbank-Komponenten (`Checklist`, `Decision`, `Steps`) und
+  vier ungenutzte Diagrammtypen. **Am Bundle ändert das nichts** — Vite hatte sie
+  ohnehin herausgeworfen; es ändert, was jemand liest, der das Repo aufmacht.
+- **`theme.css` von 1.499 auf 924 Zeilen.** 16 Abschnitte gehörten ausschließlich
+  zu gelöschten Komponenten. Das *ist* eine echte Ersparnis, anders als beim JS:
+  CSS wird nicht baumgeschüttelt, die Regeln wurden bis eben mitgeliefert —
+  gebaut 55,4 → 34,4 KB. Abschnitte mit gemischtem Inhalt blieben unangetastet:
+  einige Klassen dort werden zur Laufzeit zusammengesetzt (`ui-gap-${n}`), und
+  eine statische Suche hielte sie fälschlich für tot.
 - **Die App ist jetzt ein normales JavaScript-Projekt** — `package.json`,
   `vite.config.ts`, `tsconfig.json`, `src/`, `npm run dev`. Vorher wurde die
   Seite von einem Generator gebaut, der React und die Komponenten als Globals in

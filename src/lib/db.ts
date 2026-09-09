@@ -312,12 +312,6 @@ export async function downloadAppData(
 export type { RxCollectionCreator, RxDatabase, RxJsonSchema, RxStorage, WebMCPOptions };
 
 export * from './hooks';
-export { DatabaseGate } from './DatabaseGate';
-export { Decision, type DecisionOption, type DecisionProps } from './Decision';
-export { Checklist, type ChecklistGroup, type ChecklistItem } from './Checklist';
-export { Steps, type StepsProps } from './Steps';
-export { DataSyncButton, type DataSyncButtonProps } from './DataSync';
-export {
-    downloadData, importFromFile, newSyncCode, DEFAULT_SIGNALING_SERVER,
-    type SyncHandle,
-} from './sync';
+export {DatabaseGate} from './DatabaseGate';
+export {DataSyncButton, type DataSyncButtonProps} from './DataSync';
+export {downloadData, importFromFile, newSyncCode, DEFAULT_SIGNALING_SERVER, type SyncHandle,} from './sync';

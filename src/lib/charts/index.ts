@@ -18,17 +18,8 @@
  * to group the tail or split the chart.
  */
 
-export { AreaChart, type AreaChartProps } from './AreaChart';
-export { BarChart, type BarChartProps } from './BarChart';
-export { Donut, type DonutProps } from './Donut';
-export { LineChart, type LineChartProps } from './LineChart';
-export { Sparkline, type SparklineProps } from './Sparkline';
+export {LineChart, type LineChartProps} from './LineChart';
 
-export { ChartFrame, ChartLegend, ChartTooltip } from './parts';
+export {ChartFrame, ChartLegend, ChartTooltip} from './parts';
 
-export {
-    AXIS, GRID, MARK, SERIES_COLORS, SERIES_SLOTS,
-    formatCompact, formatEuro, formatNumber, formatPercent,
-    resolveSeries, seriesColor, withUnit,
-    type Formatter, type ResolvedSeries, type SeriesInput, type SeriesSpec,
-} from './theme';
+export {AXIS, GRID, MARK, SERIES_COLORS, SERIES_SLOTS, formatCompact, formatEuro, formatNumber, formatPercent, resolveSeries, seriesColor, withUnit, type Formatter, type ResolvedSeries, type SeriesInput, type SeriesSpec,} from './theme';

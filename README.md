@@ -76,10 +76,10 @@ src/
   main.tsx          entry: pulls in the CSS, fills the page payload, mounts
   app/              this app — App.tsx, db.ts, pose.ts, twelve i18n tables,
                     styles.css, data.json (the written content), app.config.ts
-  ui/               the component library: ~90 React components + theme.css,
-                    which is the design tokens every component is built from
-  lib/              the runtime layer: RxDB setup, the ⇅ sync modal, chart
-                    wrappers around Recharts, small hooks
+  ui/               the components this app uses — 42 of them — plus theme.css,
+                    the design tokens they are all built from
+  lib/              the runtime layer: RxDB setup, the ⇅ sync modal, a chart
+                    wrapper around Recharts, small hooks
 scripts/            fetch-pose-model.mjs and the digests it enforces
 public/             served as-is: the five alarm sounds, icon, manifest, and
                     (fetched, not committed) the pose model in mp/
@@ -89,6 +89,12 @@ Four aliases keep the app's own imports readable — `@ui` the components, `@db`
 the local database, `@app` the page config, `@charts` the diagrams. They are
 declared once in `vite.config.ts` and once in `tsconfig.json` and point at
 ordinary folders.
+
+`src/ui` holds **only what this app renders**. It came from a shared library
+built for several different pages, and the rest of it — shop listings, maps,
+recipe cards, chat bubbles — was cut rather than carried along, along with the
+CSS that styled it. Nothing here is a general-purpose component kit; it is this
+page's components, and they are free to change shape as this page needs.
 
 ## The pose model
 
