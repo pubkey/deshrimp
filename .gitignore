@@ -2,9 +2,12 @@ node_modules/
 dist/
 
 # The pose model is 17 MB of pinned third-party binary. `npm install` fetches
-# it (see scripts/fetch-pose-model.py); it is not ours to store.
+# it (see scripts/fetch-pose-model.mjs); it is not ours to store.
 public/mp/
 
 __pycache__/
 *.pyc
 .DS_Store
+
+# No lockfile — see .npmrc.
+package-lock.json

@@ -6,6 +6,16 @@ bundler. They are copied here unchanged rather than rewritten, because a
 reconstructed history is worse than an awkward one — but note that paths and
 build commands they mention belong to that older setup, not to this project.
 
+## 2026-09-09 — kein Lockfile
+
+### Geändert
+- **`package-lock.json` ist weg und wird nicht neu geschrieben**
+  _(„disable the package-lock, we do not need that")_. `.npmrc` setzt
+  `package-lock=false`, die Datei steht im `.gitignore`. Ein Install löst die
+  Ranges aus `package.json` jedes Mal neu auf — ein neuer Patch-Stand einer
+  transitiven Abhängigkeit kommt also ungefragt mit, was ohne Lockfile der
+  Handel ist.
+
 ## 2026-09-09 — an ordinary Vite project
 
 ### Geändert
