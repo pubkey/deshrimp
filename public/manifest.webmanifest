@@ -1,13 +1,19 @@
 {
-  "name": "Sit straight shrimp! 🦐",
+  "id": "/",
+  "name": "deshrimp — webcam posture trainer",
   "short_name": "deshrimp",
-  "description": "Posture trainer: one webcam frame a second, three angles, a noise when you fold up.",
+  "description": "A free page that watches your posture through your webcam and makes a noise when you fold up. Nothing leaves your device.",
+  "lang": "en",
+  "dir": "ltr",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#f4f2ee",
   "theme_color": "#0f7b8a",
+  "categories": ["health", "productivity", "lifestyle"],
   "icons": [
-    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
   ]
 }

@@ -1,0 +1,86 @@
+# Build the page and publish it to the `github-pages` branch, which GitHub Pages
+# serves from the root.
+#
+# Two things about this repo shape the workflow, and both bite if ignored:
+#
+# 1. **There is no lockfile**, on purpose — `.npmrc` sets it and `.gitignore`
+#    keeps it out. So this runs `npm install`, never `npm ci`, which needs one.
+# 2. **The pose model is not in git.** It is 17 MB of pinned third-party binary
+#    fetched by the `postinstall` hook into `public/mp/`, from where Vite copies
+#    it into `dist/`. So `--ignore-scripts` must never appear below: the build
+#    would succeed, the page would deploy, and the camera loop would be dead on
+#    arrival with nothing in the log to say why. The check after the build is
+#    there to make that impossible rather than merely unlikely.
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# Pushing the built site to the `github-pages` branch.
+permissions:
+  contents: write
+
+# One deploy at a time. A superseded run has nothing worth finishing.
+concurrency:
+  group: deploy-github-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Runs postinstall, which fetches the pose model and checks it against
+      # `scripts/pose-model.sha256`. A mismatch fails here, which is the point.
+      - name: Install
+        run: npm install --no-audit --no-fund
+
+      # `npm run build` is `tsc --noEmit && vite build`, so this typechecks too.
+      - name: Build
+        run: npm run build
+
+      - name: Check the build is complete
+        run: |
+          test -f dist/index.html || { echo "::error::no dist/index.html"; exit 1; }
+          test -f dist/sw.js      || { echo "::error::no service worker - the page would not be installable"; exit 1; }
+          if [ ! -d dist/mp ] || [ -z "$(ls -A dist/mp)" ]; then
+            echo "::error::dist/mp is empty - the pose model did not make it into the build, so the camera loop would not run"
+            exit 1
+          fi
+          if grep -q 'name="robots"[^>]*noindex' dist/index.html; then
+            echo "::error::index.html still says noindex"
+            exit 1
+          fi
+          echo "index.html $(wc -c < dist/index.html) bytes, $(ls dist/mp | wc -l) model files"
+
+      # Jekyll is on by default for a branch-served site and would drop paths
+      # beginning with an underscore.
+      - name: Add .nojekyll
+        run: touch dist/.nojekyll
+
+      # A fresh single commit each time: this branch is build output, so there
+      # is no history worth keeping and every old bundle would stay in the repo
+      # forever otherwise.
+      - name: Publish to the github-pages branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd dist
+          git init -q
+          git checkout -q -b github-pages
+          git add -A
+          git -c user.name='github-actions[bot]' \
+              -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+              commit -q -m "Deploy ${GITHUB_SHA::7}"
+          git push -q --force \
+            "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+            github-pages
+          echo "Published ${GITHUB_SHA::7} to github-pages"

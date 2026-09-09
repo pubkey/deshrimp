@@ -96,7 +96,11 @@ export function Page(props: PageProps) {
     const meta = PAGE.meta || {};
     const title = props.title != null ? props.title : meta.title;
     const subtitle = props.subtitle != null ? props.subtitle : meta.subtitle;
-    useEffect(() => { if (typeof title === 'string' && title) document.title = title; }, [title]);
+    // The tab title is allowed to differ from the h1: a page can be branded in
+    // the heading and still say what it is in the tab and in a search result.
+    // `meta.documentTitle` wins when it is set, the h1 is the fallback.
+    const docTitle = meta.documentTitle || (typeof title === 'string' ? title : '');
+    useEffect(() => { if (docTitle) document.title = docTitle; }, [docTitle]);
 
     return (
         <div className="ui-shell">
