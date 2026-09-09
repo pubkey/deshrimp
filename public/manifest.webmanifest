@@ -1,0 +1,13 @@
+{
+  "name": "Sit straight shrimp! 🦐",
+  "short_name": "deshrimp",
+  "description": "Posture trainer: one webcam frame a second, three angles, a noise when you fold up.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f2ee",
+  "theme_color": "#0f7b8a",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

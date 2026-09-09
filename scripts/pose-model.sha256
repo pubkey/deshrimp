@@ -1,0 +1,8 @@
+# MediaPipe Tasks Vision 1.0.1 + pose_landmarker_lite float16 v1.
+# Verified at check-in 2026-09-08. fetch_pose_model.py refuses to ship anything
+# whose digest is not in this list — a model with camera access is not something
+# to take on trust from a URL.
+59929e1d1ee95287735ddd833b19cf4ac46d29bc7afddbbf6753c459690d574a  pose_landmarker_lite.task
+d885630c297c0b20b1fe86096cb06291c4c8080876f27852e724f24ac603713f  vision_bundle.mjs
+e170ee67dd4e16c1a6fcd8840a206687e5a59b22c20e4a902bc445b095454d73  vision_wasm_internal.js
+8da277a733926eacd0474b8704b36742d6ec3231c57a860c5b889dff8f1df886  vision_wasm_internal.wasm

@@ -1,0 +1,21 @@
+<!doctype html>
+<!-- data-accent picks the palette out of src/ui/theme.css; the theme itself
+     (light/dark) is restored from localStorage before the first render. -->
+<html lang="en" data-accent="health">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Sit straight shrimp! 🦐</title>
+    <meta name="description" content="Posture trainer: one webcam frame a second, three angles, a noise when you fold up. Runs entirely on your device." />
+    <link rel="icon" href="/icon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#f4f2ee" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#14130f" media="(prefers-color-scheme: dark)" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
