@@ -12,32 +12,32 @@
    redefine values. */
 :root {
   /* surfaces */
-  --bg:            #f4f2ee;   /* page — warm paper, never pure white */
-  --bg-sunk:       #ebe8e1;   /* wells, inset areas, table stripes */
-  --card:          #fffdfa;   /* raised surfaces: panels, cards, rows */
-  --card-hover:    #fffefd;
+  --bg:            #f7f8fa;   /* modern calm base */
+  --bg-sunk:       #eef2f7;   /* wells, inset areas, table stripes */
+  --card:          #ffffff;   /* raised surfaces: panels, cards, rows */
+  --card-hover:    #fdfefe;
 
   /* ink */
-  --ink:           #1c1a17;   /* body text, headings */
-  --ink-soft:      #453f37;   /* secondary body text */
-  --muted:         #6b6459;   /* labels, captions, metadata */
-  --faint:         #9a9287;   /* placeholders, disabled */
+  --ink:           #111827;   /* body text, headings */
+  --ink-soft:      #334155;   /* secondary body text */
+  --muted:         #64748b;   /* labels, captions, metadata */
+  --faint:         #94a3b8;   /* placeholders, disabled */
 
   /* structure */
-  --line:          #e5e0d8;   /* default hairline */
-  --line-strong:   #d3ccc0;   /* emphasised border, input outline */
+  --line:          #e2e8f0;   /* default hairline */
+  --line-strong:   #cbd5e1;   /* emphasised border, input outline */
 
   /* accent — overridden per page, see [data-accent] below */
-  --accent:        #7a5c3e;   /* fills, active states */
-  --accent-ink:    #6b4f34;   /* accent used AS TEXT on --bg/--card (AA) */
-  --accent-soft:   #f0e8de;   /* tinted background wash */
+  --accent:        #ff7a59;   /* shrimp coral fills, active states */
+  --accent-ink:    #b8472c;   /* accent used AS TEXT on --bg/--card (AA) */
+  --accent-soft:   #ffe9e2;   /* tinted background wash */
   --on-accent:     #ffffff;   /* text on an --accent fill */
 
   /* semantic */
-  --rec:           #b98a4b;   /* "our pick" gold — highlight, not a state */
-  --ok:            #2f6d5c;
-  --warn:          #a9662a;
-  --bad:           #a33a30;
+  --rec:           #f97316;   /* "our pick" highlight, not a state */
+  --ok:            #10b981;
+  --warn:          #f59e0b;
+  --bad:           #ef4444;
   --on-semantic:   #ffffff;
 
   /* series — the categorical palette a chart paints with, in fixed order.
@@ -53,10 +53,10 @@
   --series-6:      #4d7d1f;
 
   /* elevation — four steps, no more */
-  --sh-1: 0 1px 2px rgba(40,30,15,.06);
-  --sh-2: 0 4px 16px rgba(40,30,15,.10);
-  --sh-3: 0 8px 40px rgba(40,30,15,.12);
-  --sh-4: 0 18px 60px rgba(40,30,15,.20);
+  --sh-1: 0 1px 2px rgba(15,23,42,.05);
+  --sh-2: 0 6px 20px rgba(15,23,42,.08);
+  --sh-3: 0 12px 36px rgba(15,23,42,.10);
+  --sh-4: 0 20px 56px rgba(15,23,42,.14);
   --ring: 0 0 0 3px color-mix(in srgb, var(--accent) 32%, transparent);
 
   /* radius */
@@ -80,7 +80,7 @@
   --maxw-wide: 1180px;        /* tables, maps, galleries */
 
   /* motion */
-  --dur-1: .12s; --dur-2: .22s; --ease: cubic-bezier(.2,.7,.3,1);
+  --dur-1: .12s; --dur-2: .20s; --ease: cubic-bezier(.2,.7,.3,1);
 
   color-scheme: light dark;
 }
@@ -88,11 +88,11 @@
 /* Dark: system preference, unless the page was explicitly forced to light. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg:#14130f; --bg-sunk:#100f0c; --card:#1f1d18; --card-hover:#262319;
-    --ink:#efe9df; --ink-soft:#d6cec1; --muted:#a49a8a; --faint:#7c7365;
-    --line:#332c24; --line-strong:#493f33;
-    --accent:#d3a978; --accent-ink:#e0bb8f; --accent-soft:#2a2319; --on-accent:#1b1610;
-    --rec:#e0b878; --ok:#7cc0a8; --warn:#e0a35e; --bad:#e8837a; --on-semantic:#1b1610;
+    --bg:#111827; --bg-sunk:#0b1220; --card:#1f2937; --card-hover:#243043;
+    --ink:#f8fafc; --ink-soft:#e2e8f0; --muted:#94a3b8; --faint:#64748b;
+    --line:#334155; --line-strong:#475569;
+    --accent:#ff9b84; --accent-ink:#ffb3a2; --accent-soft:#3b1f1a; --on-accent:#2a130e;
+    --rec:#fb923c; --ok:#34d399; --warn:#fbbf24; --bad:#f87171; --on-semantic:#1b1610;
     --series-1:#5286cc; --series-2:#cf6234; --series-3:#199a82;
     --series-4:#b58a2a; --series-5:#bc6099; --series-6:#789b34;
     --sh-1: 0 1px 2px rgba(0,0,0,.4);
@@ -103,11 +103,11 @@
 }
 /* Explicit choice always wins over the media query, in both directions. */
 :root[data-theme="dark"] {
-  --bg:#14130f; --bg-sunk:#100f0c; --card:#1f1d18; --card-hover:#262319;
-  --ink:#efe9df; --ink-soft:#d6cec1; --muted:#a49a8a; --faint:#7c7365;
-  --line:#332c24; --line-strong:#493f33;
-  --accent:#d3a978; --accent-ink:#e0bb8f; --accent-soft:#2a2319; --on-accent:#1b1610;
-  --rec:#e0b878; --ok:#7cc0a8; --warn:#e0a35e; --bad:#e8837a; --on-semantic:#1b1610;
+  --bg:#111827; --bg-sunk:#0b1220; --card:#1f2937; --card-hover:#243043;
+  --ink:#f8fafc; --ink-soft:#e2e8f0; --muted:#94a3b8; --faint:#64748b;
+  --line:#334155; --line-strong:#475569;
+  --accent:#ff9b84; --accent-ink:#ffb3a2; --accent-soft:#3b1f1a; --on-accent:#2a130e;
+  --rec:#fb923c; --ok:#34d399; --warn:#fbbf24; --bad:#f87171; --on-semantic:#1b1610;
   --series-1:#5286cc; --series-2:#cf6234; --series-3:#199a82;
   --series-4:#b58a2a; --series-5:#bc6099; --series-6:#789b34;
   --sh-1: 0 1px 2px rgba(0,0,0,.4);
@@ -127,6 +127,8 @@
 :root[data-accent="food"]    { --accent:#b4522e; --accent-ink:#9e4728; --accent-soft:#fbeae3; --on-accent:#fff; }
 :root[data-accent="home"]    { --accent:#4a5d8a; --accent-ink:#3f5179; --accent-soft:#e8ecf5; --on-accent:#fff; }
 :root[data-accent="health"]  { --accent:#0f7b8a; --accent-ink:#0c6875; --accent-soft:#e0eff1; --on-accent:#fff; }
+:root[data-accent="shrimp-calm"] { --accent:#ff7a59; --accent-ink:#b8472c; --accent-soft:#ffe9e2; --on-accent:#fff; }
+:root[data-accent="shrimp-warm"] { --accent:#c96a3d; --accent-ink:#9f4e28; --accent-soft:#fbe9df; --on-accent:#fff; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"])[data-accent="fashion"] { --accent:#d3a978; --accent-ink:#e0bb8f; --accent-soft:#2a2319; --on-accent:#1b1610; }
   :root:not([data-theme="light"])[data-accent="travel"]  { --accent:#7cc0a8; --accent-ink:#8fd0b8; --accent-soft:#1a251f; --on-accent:#10201a; }
@@ -135,6 +137,8 @@
   :root:not([data-theme="light"])[data-accent="food"]    { --accent:#e8916b; --accent-ink:#f0a583; --accent-soft:#2b1c15; --on-accent:#241009; }
   :root:not([data-theme="light"])[data-accent="home"]    { --accent:#9aaee0; --accent-ink:#adbfea; --accent-soft:#1a1f2e; --on-accent:#121724; }
   :root:not([data-theme="light"])[data-accent="health"]  { --accent:#5cc3d3; --accent-ink:#78d2df; --accent-soft:#122528; --on-accent:#08191c; }
+  :root:not([data-theme="light"])[data-accent="shrimp-calm"] { --accent:#ff9b84; --accent-ink:#ffb3a2; --accent-soft:#3b1f1a; --on-accent:#2a130e; }
+  :root:not([data-theme="light"])[data-accent="shrimp-warm"] { --accent:#e79168; --accent-ink:#f0ab87; --accent-soft:#2f1e18; --on-accent:#24110b; }
 }
 :root[data-theme="dark"][data-accent="fashion"] { --accent:#d3a978; --accent-ink:#e0bb8f; --accent-soft:#2a2319; --on-accent:#1b1610; }
 :root[data-theme="dark"][data-accent="travel"]  { --accent:#7cc0a8; --accent-ink:#8fd0b8; --accent-soft:#1a251f; --on-accent:#10201a; }
@@ -143,6 +147,8 @@
 :root[data-theme="dark"][data-accent="food"]    { --accent:#e8916b; --accent-ink:#f0a583; --accent-soft:#2b1c15; --on-accent:#241009; }
 :root[data-theme="dark"][data-accent="home"]    { --accent:#9aaee0; --accent-ink:#adbfea; --accent-soft:#1a1f2e; --on-accent:#121724; }
 :root[data-theme="dark"][data-accent="health"]  { --accent:#5cc3d3; --accent-ink:#78d2df; --accent-soft:#122528; --on-accent:#08191c; }
+:root[data-theme="dark"][data-accent="shrimp-calm"] { --accent:#ff9b84; --accent-ink:#ffb3a2; --accent-soft:#3b1f1a; --on-accent:#2a130e; }
+:root[data-theme="dark"][data-accent="shrimp-warm"] { --accent:#e79168; --accent-ink:#f0ab87; --accent-soft:#2f1e18; --on-accent:#24110b; }
 
 /* ------------------------------------------------------------------ reset */
 *, *::before, *::after { box-sizing: border-box; }
