@@ -34,7 +34,7 @@ jobs:
 
       - name: Run tests if configured
         run: |
-          if [ "$(npm pkg get scripts.test)" != "{}" ]; then
+          if npm pkg get scripts.test | grep -qvE '^(\{\}|null)$'; then
             npm test
           else
             echo "No test script defined; skipping"
