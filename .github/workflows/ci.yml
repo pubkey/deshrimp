@@ -33,4 +33,9 @@ jobs:
         run: npm run build
 
       - name: Run tests if configured
-        run: npm run --if-present test
+        run: |
+          if [ "$(npm pkg get scripts.test)" != "{}" ]; then
+            npm test
+          else
+            echo "No test script defined; skipping"
+          fi
