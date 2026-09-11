@@ -146,12 +146,12 @@ function SyncPanel({ database, filename }: { database: RxDatabase<any>; filename
     const picker = useRef<HTMLInputElement | null>(null);
 
     /**
-     * Client ids: the page's own if it was built with one, otherwise whatever
-     * he pasted last. A client id is public by nature, so `localStorage` is the
-     * right shelf — it belongs to this browser, like the data it unlocks.
+     * Client ids: the page's own if this origin is allowed to use it, otherwise
+     * whatever he pasted last. A client id is public by nature, so `localStorage`
+     * is the right shelf — it belongs to this browser, like the data it unlocks.
      */
     const [ids, setIds] = useState<Record<string, string>>(() => ({
-        google: sync.googleClientId || readId(config.appId, 'google'),
+        google: bundledId(sync.googleClientId, sync.googleClientOrigins) || readId(config.appId, 'google'),
         onedrive: sync.microsoftClientId || readId(config.appId, 'onedrive'),
     }));
     /** Which provider is currently showing its id field. */
@@ -417,4 +417,10 @@ function writeId(appId: string, provider: string, id: string): void {
     try {
         localStorage.setItem(idKey(appId, provider), id);
     } catch { /* private window: it just will not stick */ }
+}
+
+function bundledId(id?: string, origins?: string[]): string {
+    if (!id) return '';
+    if (!origins?.length) return id;
+    return origins.indexOf(location.origin) !== -1 ? id : '';
 }
