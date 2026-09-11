@@ -24,4 +24,7 @@ export default defineApp({
     accent: 'health',
     icon: '🦐',
     source: 'app-haltung',
+    sync: {
+        googleClientId: '488620533030-296v9dsbgnlupbbut2gfineg1fc5l71s.apps.googleusercontent.com',
+    },
 });
