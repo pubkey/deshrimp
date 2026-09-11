@@ -17,9 +17,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          # No lockfile is committed, so cache npm from package.json.
-          cache: npm
-          cache-dependency-path: package.json
 
       # `npm install` must run scripts: `postinstall` fetches the pose model into
       # `public/mp/`, which the build expects to exist.
