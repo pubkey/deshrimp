@@ -80,6 +80,14 @@ export type SyncConfig = {
      */
     googleClientId?: string;
     /**
+     * Origins that may use the bundled Google client id.
+     *
+     * A checked-in client id is fine only for deployments whose origin is
+     * actually registered on that OAuth app. Forks and self-hosted copies fall
+     * back to asking for their own id.
+     */
+    googleClientOrigins?: string[];
+    /**
      * Entra ID → App registrations → new registration, platform
      * "Single-page application", redirect URI = the published page URL.
      * Scope used: `Files.ReadWrite.AppFolder`.
