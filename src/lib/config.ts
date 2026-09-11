@@ -14,7 +14,7 @@
  */
 
 /** The accent presets in `.claude/ui/theme.css`. A new domain adds one there. */
-export type Accent = 'fashion' | 'travel' | 'music' | 'ink' | 'food' | 'home' | 'health';
+export type Accent = 'fashion' | 'travel' | 'music' | 'ink' | 'food' | 'home' | 'health' | 'shrimp-calm' | 'shrimp-warm';
 
 export type AppConfig = {
      /**
