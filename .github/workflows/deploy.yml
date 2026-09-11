@@ -45,7 +45,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version-file: .nvmrc
 
       # Runs postinstall, which fetches the pose model and checks it against
       # `scripts/pose-model.sha256`. A mismatch fails here, which is the point.
