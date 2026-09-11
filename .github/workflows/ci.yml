@@ -32,10 +32,5 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Run tests
-        run: |
-          if node -e "process.exit(require('./package.json').scripts?.test ? 0 : 1)"; then
-            npm test
-          else
-            echo "No test script defined; skipping"
-          fi
+      - name: Run tests if configured
+        run: npm run test --if-present
