@@ -103,6 +103,10 @@ export function DataSyncButton({ database, filename, className }: DataSyncButton
             <IconButton
                 icon={<Icon name="sync" size={20} />}
                 label={session ? `${t.syncTitle} · ${t.syncConnected}` : t.syncTitle}
+                /* The visible word is the short one: the connected state is
+                   already on the button as a dot, and „Sync · connected" in the
+                   top bar is a sentence where a label belongs. */
+                text={t.syncTitle}
                 className={cx(className, session ? 'ui-syncing' : undefined)}
                 onClick={() => setOpen(true)}
             />

@@ -1519,7 +1519,11 @@ function Sound(props: SoundProps) {
 function Setup(props: SetupProps) {
     const { settings: s, change } = props;
     const t = useCopy();
-    const atDefaults = s.maxForward === DEFAULTS.maxForward
+    const defaultPaceIndex = Math.max(0, INTERVALS.indexOf(DEFAULTS.intervalSec));
+    const paceIndex = INTERVALS.indexOf(s.intervalSec) >= 0
+        ? INTERVALS.indexOf(s.intervalSec) : defaultPaceIndex;
+    const atDefaults = s.intervalSec === DEFAULTS.intervalSec
+        && s.maxForward === DEFAULTS.maxForward
         && s.maxLean === DEFAULTS.maxLean
         && s.maxHeadTilt === DEFAULTS.maxHeadTilt;
 
@@ -1532,18 +1536,25 @@ function Setup(props: SetupProps) {
                     across 100px is not a dial you can feel your way along.
                     Wide enough that the tile never splits these. */}
                 <Grid min={220}>
-                    <Select
+                    {/* The pace is a slider too _(2026-09-15, his call)_, and
+                        it is the one whose positions are not the number they
+                        stand for: the eight intervals are 1, 2, 5, 10, 15, 30,
+                        60 and 120 seconds, so the slider runs over the index
+                        and `format` writes what that index means. A linear
+                        slider over 1 to 120 would spend seven eighths of its
+                        travel on intervals nobody picks. `indexOf` falls back
+                        to the default's slot rather than -1, so a stored value
+                        that is not on the list cannot push the thumb off the
+                        left-hand end. */}
+                    <Slider
                         label={t.onePictureEvery}
-                        value={String(s.intervalSec)}
-                        onChange={(e: { target: { value: string } }) =>
-                            change({ intervalSec: Number(e.target.value) })}
-                    >
-                        {INTERVALS.map((sec) => (
-                            <option key={sec} value={sec}>
-                                {sec === 1 ? t.oneSecond : t.nSeconds(sec)}
-                            </option>
-                        ))}
-                    </Select>
+                        min={0} max={INTERVALS.length - 1} step={1}
+                        value={paceIndex}
+                        defaultValue={defaultPaceIndex}
+                        format={(i) => (INTERVALS[i] === 1
+                            ? t.oneSecond : t.nSeconds(INTERVALS[i]))}
+                        onChange={(i) => void change({ intervalSec: INTERVALS[i] })}
+                    />
                     {/* Sliders, not number fields _(2026-09-15, his call, and
                         the design system's control for a bounded number)_. A
                         tolerance is a dial you feel your way to rather than a
@@ -1573,12 +1584,14 @@ function Setup(props: SetupProps) {
                         hint={t.signalFromHeadHint}
                     />
                 </Grid>
-                {/* One reset for the three of them _(2026-09-15, his call: not
-                    one per slider)_. It puts back the numbers in `DEFAULTS`,
-                    which is also what each track marks with its hairline, so
-                    the button and the marks cannot disagree. Disabled while all
-                    three are already there: a control that vanishes when it has
-                    nothing to do is a control nobody can find when it does. */}
+                {/* One reset for the tile _(2026-09-15, his call: not one per
+                    slider)_. It covers the pace as well, now that the pace is
+                    a slider too - "all at once" is every dial in the tile. It
+                    puts back the numbers in `DEFAULTS`, which is also what each
+                    track marks with its hairline, so the button and the marks
+                    cannot disagree. Disabled while they are all already there:
+                    a control that vanishes when it has nothing to do is a
+                    control nobody can find when it does. */}
                 <Row justify="end">
                     <Button
                         size="sm"
@@ -1587,6 +1600,7 @@ function Setup(props: SetupProps) {
                         disabled={atDefaults}
                         title={`${t.resetLimits}: ${DEFAULTS.maxForward}° · ${DEFAULTS.maxLean}° · ${DEFAULTS.maxHeadTilt}°`}
                         onClick={() => void change({
+                            intervalSec: DEFAULTS.intervalSec,
                             maxForward: DEFAULTS.maxForward,
                             maxLean: DEFAULTS.maxLean,
                             maxHeadTilt: DEFAULTS.maxHeadTilt,
@@ -1657,6 +1671,7 @@ function Content() {
                             <ConfirmButton
                                 icon={<Icon name="trash" />}
                                 label={t.clearHistory}
+                                text={t.clearHistory}
                                 body={t.clearHistoryBody}
                                 onConfirm={async () => {
                                     if (!readings) return;

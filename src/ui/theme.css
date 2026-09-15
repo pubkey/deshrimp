@@ -371,12 +371,35 @@ a:hover { color: var(--ink); }
   cursor: pointer; background: var(--card); color: var(--muted);
   border: 1px solid var(--line); transition: var(--transition-control); }
 .ui-iconbtn:hover { opacity: .88; }
+/* The top bar's buttons say what they are past 900px and are the glyph alone
+   below it _(2026-09-15, his call)_. The one hard breakpoint in the product,
+   and it is a real one: five labelled buttons need about 600px of bar, which a
+   phone has not got, and the `title` and `aria-label` are on the button at
+   every width, so nothing is lost when the words go.
+
+   Hidden with `display: none` rather than by not rendering it: the width is
+   the browser's business, not React's, so there is no resize listener, no
+   second render and nothing to be wrong about on the first paint. */
+.ui-iconbtn-label { display: none; }
+@media (min-width: 901px) {
+  .ui-iconbtn-wide { width: auto; gap: var(--space-2); padding: 0 var(--space-4); }
+  .ui-iconbtn-label { display: inline; font-size: var(--text-sm); white-space: nowrap; }
+}
+/* A drawn flag, because the emoji are not flags on Windows (Flag.tsx). The
+   hairline is the element's, not the drawing's: Japan and Poland are mostly
+   white and would otherwise have no edge on a light card. */
+.ui-flag { flex: none; display: block; width: 20px; height: 15px;
+  border-radius: 2px; overflow: hidden;
+  border: var(--border-width) solid var(--border-default); }
+/* The file's own `width`/`height` are not set - it carries a viewBox - so the
+   svg has to be told to fill the box the span makes. */
+.ui-flag > svg { display: block; width: 100%; height: 100%; }
 /* The language control. Same round shape as the theme toggle, a flag instead
    of an icon. Sized like an emoji rather than like text, because that is what
    it is - and where a platform cannot draw the flag it falls back to the two
    regional-indicator letters, which still fit. */
 .ui-langtag, .ui-langpick { display: inline-flex; align-items: center; justify-content: center;
-  font-size: 17px; line-height: 1; }
+  line-height: 1; }
 /* With one language it is a label: no hover affordance, no pointer. */
 .ui-langtag { color: var(--muted); cursor: default; }
 .ui-langtag:hover { opacity: 1; }
@@ -483,11 +506,16 @@ a:hover { color: var(--ink); }
    It is placed along the thumb's travel rather than the track's width. The
    thumb is 14px and its centre only reaches from 7px in to 7px short of the
    end, so a plain percentage would sit half a thumb off at the ends and miss
-   the number it is marking. The input is lifted a layer above it, so when the
-   value *is* the default the thumb covers the mark exactly, and an untouched
-   slider shows no mark at all. */
+   the number it is marking.
+
+   **On top of the rail, not behind it** _(2026-09-15, his call)_. It sat under
+   the input at first, which meant the thumb hid it exactly when the value was
+   the default - readable as "untouched", but it also hid it whenever the thumb
+   merely passed over, so the one reference point on the track kept
+   disappearing while you dragged. A reference mark that is sometimes there is
+   worse than one that is always there. */
 .ui-slider-default {
-  position: absolute; top: 50%;
+  position: absolute; top: 50%; z-index: 2;
   left: calc(var(--thumb) / 2 + (100% - var(--thumb)) * var(--mark, 0));
   transform: translate(-50%, -50%);
   width: var(--border-width); height: 12px;
@@ -498,6 +526,9 @@ a:hover { color: var(--ink); }
    while you drag, and a value that reflows as it moves reads as a wobble. */
 .ui-slider-value { font-family: var(--mono); font-variant-numeric: tabular-nums;
   font-size: var(--t-sm); color: var(--ink); }
+/* Mono sets a space as wide as a digit, so a readout carrying a word reads as
+   a typo in it. The interface face, with the figures still tabular. */
+.ui-slider-value.worded { font-family: inherit; }
 .ui-slider-hint { font-size: var(--t-sm); color: var(--muted); }
 
 .ui-slider-range {

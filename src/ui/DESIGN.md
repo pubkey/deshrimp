@@ -196,10 +196,9 @@ slider carries two things besides its track:
 
 - **The default, marked on the track.** A 1px hairline in secondary slate,
   placed along the thumb's travel rather than the track's width, so it lands on
-  the number it names instead of half a thumb off at the ends. The input sits a
-  layer above it, so the thumb covers the mark exactly when the value *is* the
-  default: an untouched slider shows no mark at all, which is the reading you
-  want it to have.
+  the number it names instead of half a thumb off at the ends. It is drawn over
+  the rail and over the thumb, not behind them: a reference mark that
+  disappears under the thumb disappears exactly while you are dragging past it.
 - **A stepper.** Minus and plus either side, 28px rather than the 40px every
   other control is, because a 40px box either side of a 4px track reads as two
   buttons with a line between them. Each is one `step` and each disables at its
@@ -215,6 +214,12 @@ along.
 of the tile as a ghost button, disabled while every slider is already at its
 default, and it puts back the same numbers the marks are drawn from, so the
 button and the marks cannot disagree.
+
+**A slider's positions need not be its values.** The pace is eight intervals
+from one second to two minutes, so the slider runs over the index and `format`
+writes what that index means; a linear slider from 1 to 120 would spend seven
+eighths of its travel on intervals nobody picks. The readout and the mark's
+tooltip go through the same `format`, so they cannot say different things.
 
 ---
 

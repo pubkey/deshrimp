@@ -64,6 +64,8 @@ export type ConfirmButtonProps = {
     /** With `label` and no children: an icon button for the top bar. */
     icon?: ReactNode;
     label?: string;
+    /** Passed to `<IconButton>`: show the words too, past 900px. */
+    text?: ReactNode | boolean;
     /** The trigger's look. The confirmation inside is always `danger`. */
     variant?: 'primary' | 'ghost' | 'danger';
     size?: 'sm' | 'lg';
@@ -104,6 +106,7 @@ export function ConfirmButton(props: ConfirmButtonProps) {
             <IconButton
                 icon={props.icon}
                 label={props.label || ''}
+                text={props.text}
                 disabled={props.disabled}
                 className={props.className}
                 onClick={() => setOpen(true)}

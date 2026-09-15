@@ -16,11 +16,14 @@
  *   value that is *over* its tolerance, not merely high; the accent is a
  *   budget (src/ui/DESIGN.md).
  * - `hint` - one line under the track, for what the number means in practice.
+ * - `format` - writes the readout, for a slider whose positions index a list
+ *   rather than being the value themselves.
  * - `defaultValue` - draws a **hairline across the track** where the default
  *   sits _(2026-09-15, his call)_. Dragging tells you where you are and not
  *   where you started, and the number you were given is the one reference
- *   point a tolerance has. The thumb covers the mark exactly when the value is
- *   the default, so "no mark visible" reads as "untouched".
+ *   point a tolerance has. It is drawn over the rail and over the thumb _(his
+ *   call, once he had seen it behind them)_: a mark that vanishes under the
+ *   thumb vanishes exactly while you are dragging past it.
  * - `stepper` - a minus and a plus either side of the track _(2026-09-15, his
  *   call)_, each one `step`, each disabled at its end of the range. Dragging
  *   is for finding a value and the stepper is for landing on it; a range input
@@ -42,9 +45,10 @@
  *
  * ## Changelog
  * - 2026-09-15 Own file. The thresholds were number inputs before; his call.
- * - 2026-09-15 A stepper, and the default marked on the track. A reset button
- *   per slider was tried first and taken out again: he asked for one reset for
- *   all of them instead, which is in the tile, not in here.
+ * - 2026-09-15 A stepper, and the default marked on the track, over it rather
+ *   than under. A reset button per slider was tried first and taken out again:
+ *   he asked for one reset for all of them instead, which is in the tile, not
+ *   in here.
  */
 
 import { useId } from 'react';
@@ -61,6 +65,13 @@ export type SliderProps = Base & {
     step?: number;
     /** Appended to the readout: `"°"`, `" s"`. Never part of the label. */
     unit?: string;
+    /**
+     * Writes the readout itself, for a slider whose positions are not the
+     * number they stand for: an index into a list of intervals reads as "30
+     * seconds", never as "5". Used for the default mark's title too, so the
+     * two cannot say different things.
+     */
+    format?: (value: number) => string;
     hint?: ReactNode;
     /** Marks this number on the track with a hairline. */
     defaultValue?: number;
@@ -73,7 +84,7 @@ export type SliderProps = Base & {
 };
 
 export function Slider({
-    label, value, min = 0, max = 100, step = 1, unit = '', hint,
+    label, value, min = 0, max = 100, step = 1, unit = '', hint, format,
     defaultValue, stepper = true, disabled, breached, onChange,
     className, id, style,
 }: SliderProps) {
@@ -89,6 +100,7 @@ export function Slider({
        at each end and miss the value it is marking. */
     const markAt = defaultValue == null || span === 0
         ? null : (defaultValue - min) / span;
+    const show = (v: number) => (format ? format(v) : `${v}${unit}`);
 
     const nudge = (by: number) => {
         if (!onChange) return;
@@ -101,7 +113,15 @@ export function Slider({
             {label ? (
                 <div className="ui-slider-top">
                     <label htmlFor={inputId}>{label}</label>
-                    <span className="ui-slider-value">{value}{unit}</span>
+                    {/* A readout that is a number wears mono; one that is a
+                        number *and a word* wears the interface face with
+                        tabular figures. Monospace puts a full character's width
+                        into the space, so "2 seconds" reads as a typo. The
+                        figures stay tabular either way, which is the part that
+                        matters while you drag. */}
+                    <span className={cx('ui-slider-value', format && 'worded')}>
+                        {show(value)}
+                    </span>
                 </div>
             ) : null}
             <div className="ui-slider-row">
@@ -135,7 +155,7 @@ export function Slider({
                     {markAt == null ? null : (
                         <span
                             className="ui-slider-default"
-                            title={`${t.defaultMark}: ${defaultValue}${unit}`}
+                            title={`${t.defaultMark}: ${show(defaultValue as number)}`}
                             style={{ '--mark': markAt } as React.CSSProperties}
                         />
                     )}

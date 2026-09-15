@@ -43,12 +43,13 @@ export function ThemeToggle() {
 
     return (
         <button
-            className="ui-iconbtn"
+            className="ui-iconbtn ui-iconbtn-wide"
             title={label}
             aria-label={label}
             onClick={() => { const next = dark ? 'light' : 'dark'; applyTheme(next); set(next); }}
         >
             <Icon name={dark ? 'sun' : 'moon'} size={20} />
+            <span className="ui-iconbtn-label">{label}</span>
         </button>
     );
 }

@@ -38,8 +38,8 @@
  * - 2026-09-15 „Zu dieser Seite" is gone - his call, „wir brauchen das nicht".
  *   With it went the task box, the „Datengrundlage" and „Quellen" tabs and the
  *   build stamp, and the `task` / `gaps` / `sources` / `footer` props that fed
- *   them. The sources still reach a crawler: `scripts/seo.mjs` renders them
- *   into the prerendered HTML, which never depended on this block.
+ *   them. The sources outlived it in `scripts/seo.mjs`, where only a crawler
+ *   could read them, and are gone from there too _(2026-09-15, his call)_.
  * - 2026-09-08 `<LanguagePicker>` in the top bar, right of the theme toggle.
  * - 2026-09-08 `lang` switches the frame's fixed labels to English.
  * - 2026-08-31 Own file.

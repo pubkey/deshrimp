@@ -2,8 +2,9 @@
  * # ShareButton - the share glyph, top right
  *
  * ## What it does and how it looks
- * A 40px icon button in the page's top bar, carrying the share glyph and
- * nothing else _(2026-09-15, his call)_. Pressing it opens `<ShareDialog>`.
+ * An icon button in the page's top bar: the share glyph alone on a phone, the
+ * glyph and the word past 900px _(2026-09-15, his calls, in that order)_.
+ * Pressing it opens `<ShareDialog>`.
  *
  * The word survives as the `title` and the `aria-label`, which is the whole
  * reason an icon-only button is allowed to be one: the tray-and-arrow is the
@@ -58,13 +59,14 @@ export function ShareButton({ url, title, text, label }: ShareButtonProps) {
     return (
         <>
             <button
-                className="ui-iconbtn"
+                className="ui-iconbtn ui-iconbtn-wide"
                 onClick={() => setOpen(true)}
                 title={l}
                 aria-label={l}
                 aria-haspopup="dialog"
             >
                 <Icon name="share" size={20} />
+                <span className="ui-iconbtn-label">{l}</span>
             </button>
             <ShareDialog open={open} onClose={() => setOpen(false)}
                 url={href} title={title} text={text} />

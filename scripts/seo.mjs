@@ -9,8 +9,8 @@
  * happens outside a browser.
  *
  * So the crawlable copy is built straight from `data.json`, which is the same
- * source the app renders from (`App.tsx`: `written.intro`, `written.steps`,
- * `written.sources`). What a crawler reads and what a reader sees are the same
+ * source the app renders from (`App.tsx`: `written.intro`, `written.steps`).
+ * What a crawler reads and what a reader sees are the same
  * words, which is the only version of this that is honest.
  *
  * React replaces `#root` on mount, so the prerendered block is also the first
@@ -79,9 +79,12 @@ function body() {
     const steps = en.steps.map((s) => (
         `<section><h2>${esc(s.title)}</h2><p>${inline(s.text)}</p></section>`
     )).join('');
-    const sources = en.sources.map((s) => (
-        `<li><a href="${esc(s.url)}" rel="nofollow noopener">${esc(s.title)}</a> - ${inline(s.note)}</li>`
-    )).join('');
+    // The sources list is gone from here _(2026-09-15, his call: remove the
+    // sources section)_. It was the last place it was rendered - the app
+    // stopped showing it when the closing meta block went - so this was a
+    // crawler reading a section no reader could see. `data.json` keeps the
+    // entries: they are the research behind the copy, and removing the section
+    // is not the same as throwing out what it cited.
 
     // `data-prerendered` is a marker for anyone wondering why #root is not
     // empty in the shipped HTML. React throws all of it away on mount.
@@ -89,7 +92,6 @@ function body() {
         + `<h1>${esc(TITLE.split(' - ')[0])} - ${esc('Sit straight shrimp')}</h1>`
         + `<p>${inline(en.intro)}</p>`
         + steps
-        + `<h2>Sources</h2><ul>${sources}</ul>`
         + `</div>`;
 }
 
