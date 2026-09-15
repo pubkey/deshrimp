@@ -43,7 +43,6 @@ export {Panel} from './Panel';
 export {Progress} from './Progress';
 export {QRCode} from './QRCode';
 export {Row} from './Row';
-export {Section} from './Section';
 export {Select} from './Select';
 export {ShareButton} from './ShareButton';
 export {ShareDialog} from './ShareDialog';
@@ -52,6 +51,7 @@ export {Stat} from './Stat';
 export {StatusStrip} from './StatusStrip';
 export {Table} from './Table';
 export {Text} from './Text';
+export {Tiles} from './Tiles';
 export {ThemeToggle} from './ThemeToggle';
 export {Wrap} from './Wrap';
 

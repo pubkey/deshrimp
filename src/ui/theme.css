@@ -111,6 +111,34 @@ a:hover { color: var(--ink); }
    page that no longer looks like the rest. */
 .ui-grid { display: grid; gap: var(--grid-gap);
            grid-template-columns: repeat(auto-fit, minmax(var(--min, 240px), 1fr)); }
+
+/* The page itself, as one grid of tiles: at least 330px and at most 660px
+   wide, as many as fit, sharing whatever is left over — no breakpoints.
+
+   The 660px cap is on the TILE, not on the track, and that is not a detail.
+   `auto-fit` counts its tracks from the track's max sizing function whenever
+   that is a definite length, so `minmax(330px, 660px)` asks for as many 660px
+   columns as fit and answers "two" on a 1352px page — the opposite of what is
+   wanted. `1fr` is indefinite, so the count comes from the 330px minimum and
+   the tracks then share the row.
+
+   `min(330px, 100%)` keeps a 320px phone from scrolling sideways: a bare 330px
+   minimum is wider than the screen. Centring the tracks stops a lone tile from
+   sitting pinned to the left of a wide window. Nothing spans two columns — two
+   columns plus the gap is 684px, past what a tile may be. Prose version and
+   the reasoning in src/ui/Tiles.tsx. */
+.ui-tiles {
+  display: grid;
+  gap: var(--grid-gap);
+  grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr));
+  justify-content: center;
+  align-items: stretch;
+}
+.ui-tiles > * { max-width: 660px; }
+/* A tile fills the height of its row (the grid's own `stretch`), so a row
+   reads as one band rather than as a ragged edge. Nothing more is needed to
+   keep its content at the top: a panel is a flex column, so its children take
+   their natural heights and the slack falls to the bottom of the card. */
 .ui-gap-0 { gap: 0 } .ui-gap-1 { gap: var(--s1) } .ui-gap-2 { gap: var(--s2) }
 .ui-gap-3 { gap: var(--s3) } .ui-gap-4 { gap: var(--s4) } .ui-gap-5 { gap: var(--s5) }
 .ui-gap-6 { gap: var(--s6) }
@@ -202,7 +230,7 @@ a:hover { color: var(--ink); }
 .ui-wrap.full > .ui-header .ui-sub { margin: var(--s1) 0 0; max-width: 70ch; }
 @media (max-width: 860px) { .ui-wrap.full > .ui-header { max-width: none; } }
 /* ----------------------------------------------------------------- panels */
-/* Same reasoning as `.ui-section` below: a panel owns the spacing between its
+/* A panel owns the spacing between its
    own children, so a page that drops a <Grid>, a <Row> and two <Text>s into one
    does not get them glued together. */
 .ui-panel { background: var(--card); border: 1px solid var(--line);
@@ -223,18 +251,6 @@ a:hover { color: var(--ink); }
   text-transform: uppercase; color: var(--muted); }
 .ui-card { background: var(--card); border: 1px solid var(--line);
   border-radius: var(--r-lg); overflow: hidden; }
-/* A section owns the spacing between its own children.
-   Before 2026-09-08 it did not, and a page that put two blocks straight into a
-   <Section> — a <Callout> above a <Grid>, say — got them flush against each
-   other, which reads as a rendering bug rather than as a layout. The
-   convention was "wrap it in <Col gap={4}>", and a convention every page has to
-   remember is one some page will forget. A flex column with a gap cannot be
-   forgotten. A <Col> inside is then a single child, so it never doubles up. */
-.ui-section { display: flex; flex-direction: column; gap: var(--s4);
-  margin: var(--s6) 0 0; }
-/* The gap now carries this; a margin on top of it would space the heading
-   twice as far as everything else. */
-.ui-section-head { margin-bottom: 0; }
 .ui-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3);
   background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
   padding: var(--s3) var(--s4); }

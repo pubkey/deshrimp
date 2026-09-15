@@ -32,10 +32,10 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import {
-    Badge, Button, Callout, Checkbox, Col, ConfirmButton, Details, Empty,
+    Badge, Button, Callout, Checkbox, ConfirmButton, Empty,
     Grid, Icon, IconButton, Input, LoadingOverlay, Muted, Page, Panel,
-    preferredUiLang, Progress, Row, Section, Select,
-    Stat, StatusStrip, type StatusTone, Table, Text,
+    preferredUiLang, Progress, Row, Select,
+    Stat, StatusStrip, type StatusTone, Table, Text, Tiles,
     pageData, toast,
 } from '@ui';
 import {
@@ -908,98 +908,106 @@ function Live() {
                 label={t.loadingModel}
             />
 
-            {/* No heading over the live block _(2026-09-09: „remove these texts
+            {/* No heading over the camera _(2026-09-09: „remove these texts
                 we do not need them: ‚Right now / One picture every second'")_.
-                The camera, the verdict and the three numbers are the first
-                thing on the page and need nobody to announce them; the cadence
-                is a setting, and it is stated where it is set. */}
-            <Section>
-                <Callout icon={<Icon name="info" size={20} />} title={t.whatThisDoes}>{t.leaveOpen}</Callout>
-                <Col gap={4}>
-                    {verdict ? (
-                        <Callout
-                            tone={verdict === 'good' ? undefined : verdict === 'bad' ? 'bad' : 'warn'}
-                            icon={<Icon size={20} name={verdict === 'good' ? 'check-circle'
-                                : verdict === 'bad' ? 'alert' : 'eye'} />}
-                            title={t.verdictTitle[verdict]}
-                            className={flash ? 'haltung-alarm' : undefined}
-                        >
-                            {adviceText(last?.advice, t)}
-                        </Callout>
+                The picture and the verdict need nobody to announce them, so
+                this tile and the control tile beside it are the two that carry
+                no eyebrow. */}
+            <Panel id="video" className="haltung-videotile">
+                {verdict ? (
+                    <Callout
+                        tone={verdict === 'good' ? undefined : verdict === 'bad' ? 'bad' : 'warn'}
+                        icon={<Icon size={20} name={verdict === 'good' ? 'check-circle'
+                            : verdict === 'bad' ? 'alert' : 'eye'} />}
+                        title={t.verdictTitle[verdict]}
+                        className={flash ? 'haltung-alarm' : undefined}
+                    >
+                        {adviceText(last?.advice, t)}
+                    </Callout>
+                ) : null}
+
+                <div className={`haltung-kamera${flash ? ' haltung-alarm' : ''}`}>
+                    <video ref={camera.videoRef} muted playsInline autoPlay />
+                    {!camera.on ? (
+                        <div className="haltung-kamera-aus">{t.cameraOff}</div>
                     ) : null}
+                </div>
 
-                    <div className={`haltung-kamera${flash ? ' haltung-alarm' : ''}`}>
-                        <video ref={camera.videoRef} muted playsInline autoPlay />
-                        {!camera.on ? (
-                            <div className="haltung-kamera-aus">{t.cameraOff}</div>
-                        ) : null}
-                    </div>
+                {camera.error ? <Callout tone="bad" title={t.cameraTitle}>{camera.error}</Callout> : null}
+                {apiError ? <Callout tone="bad" title={t.analysisFailed}>{apiError}</Callout> : null}
+                {note ? <Muted>{note}</Muted> : null}
+            </Panel>
 
-                    <Row gap={3} wrap justify="between" align="bottom">
-                        <Row gap={2} wrap>
-                            {/* The xl trigger: 64px, uppercase, tracked. The
-                                design system keeps this size for the one
-                                button a view leads with, and on this page that
-                                is the button that turns the camera on. */}
-                            {running
-                                ? <Button size="lg" variant="danger" icon={<Icon name="stop" size={20} />}
-                                    onClick={stop}>{t.stop}</Button>
-                                : <Button size="lg" variant="primary" icon={<Icon name="play" size={20} />}
-                                    onClick={start}>{t.start}</Button>}
-                            <Button icon={<Icon name="refresh" />} onClick={() => void check()}
-                                disabled={!camera.on || checking}>
-                                {t.checkNow}
-                            </Button>
-                        </Row>
-                        <Muted>
-                            {checking ? t.checking
-                                : running ? t.nextIn(secondsLeft)
-                                    : last ? t.lastAt(clockTime(last.t, lang)) : ''}
-                        </Muted>
+            {/* Running the camera and choosing the noise it makes are one tile
+                _(2026-09-15, his call)_: both are „what this thing does while I
+                sit here", and the sound is the setting you reach for in the
+                same breath as the stop button. */}
+            <Panel id="controls">
+                <Row gap={3} wrap justify="between" align="bottom">
+                    <Row gap={2} wrap>
+                        {/* The xl trigger: 64px, uppercase, tracked. The design
+                            system keeps this size for the one button a view
+                            leads with, and on this page that is the button
+                            that turns the camera on. */}
+                        {running
+                            ? <Button size="lg" variant="danger" icon={<Icon name="stop" size={20} />}
+                                onClick={stop}>{t.stop}</Button>
+                            : <Button size="lg" variant="primary" icon={<Icon name="play" size={20} />}
+                                onClick={start}>{t.start}</Button>}
+                        <Button icon={<Icon name="refresh" />} onClick={() => void check()}
+                            disabled={!camera.on || checking}>
+                            {t.checkNow}
+                        </Button>
                     </Row>
+                    <Muted>
+                        {checking ? t.checking
+                            : running ? t.nextIn(secondsLeft)
+                                : last ? t.lastAt(clockTime(last.t, lang)) : ''}
+                    </Muted>
+                </Row>
 
-                    {running ? (
-                        <Progress
-                            value={(interval - secondsLeft) / interval}
-                            tone={verdict === 'bad' ? undefined : 'ok'}
-                            label={t.untilNext}
-                            valueLabel={checking ? t.now : t.seconds(secondsLeft)}
-                        />
-                    ) : null}
+                {running ? (
+                    <Progress
+                        value={(interval - secondsLeft) / interval}
+                        tone={verdict === 'bad' ? undefined : 'ok'}
+                        label={t.untilNext}
+                        valueLabel={checking ? t.now : t.seconds(secondsLeft)}
+                    />
+                ) : null}
 
-                    {camera.error ? <Callout tone="bad" title={t.cameraTitle}>{camera.error}</Callout> : null}
-                    {apiError ? (
-                        <Callout tone="bad" title={t.analysisFailed}>
-                            {apiError}
-                        </Callout>
-                    ) : null}
-                    {note ? <Muted>{note}</Muted> : null}
+                <Sound
+                    settings={settings}
+                    change={change}
+                    prepareSound={beep.prepare}
+                    playSound={beep.play}
+                />
+            </Panel>
 
-                    {last ? (
-                        <Grid min={160}>
-                            {/* An axis over its tolerance is the one place the
-                                accent is allowed to appear on a readout: the
-                                number and its label go coral and pulse, and
-                                the two that are still inside stay white. That
-                                is the whole severity system — whether the
-                                accent is there, not which colour it is. */}
-                            <Stat label={t.statForward} value={deg(last.forward)}
-                                className={breach(last.forward, settings.maxForward)}
-                                hint={t.limit(deg(settings.maxForward))} />
-                            <Stat label={t.statLean} value={deg(last.lean)}
-                                className={breach(last.lean, settings.maxLean)}
-                                hint={`${t.sideLabel[last.leanSide]} · ${t.limit(deg(settings.maxLean))}`} />
-                            <Stat label={t.statHeadTilt} value={deg(last.headTilt)}
-                                className={breach(last.headTilt, settings.maxHeadTilt)}
-                                hint={t.limit(deg(settings.maxHeadTilt))} />
-                            <Stat label={t.statConfidence} value={`${Math.round(last.confidence * 100)} %`}
-                                hint={poseReady() ? t.computedLocally : t.modelLoading} />
-                        </Grid>
-                    ) : (
-                        <Empty title={t.noReadingYet} hint={t.noReadingYetHint} />
-                    )}
-                </Col>
-            </Section>
+            <Panel id="readout">
+                {last ? (
+                    <Grid min={140}>
+                        {/* An axis over its tolerance is the one place the
+                            accent is allowed to appear on a readout: the number
+                            and its label go coral and pulse, and the two that
+                            are still inside stay white. That is the whole
+                            severity system — whether the accent is there, not
+                            which colour it is. */}
+                        <Stat label={t.statForward} value={deg(last.forward)}
+                            className={breach(last.forward, settings.maxForward)}
+                            hint={t.limit(deg(settings.maxForward))} />
+                        <Stat label={t.statLean} value={deg(last.lean)}
+                            className={breach(last.lean, settings.maxLean)}
+                            hint={`${t.sideLabel[last.leanSide]} · ${t.limit(deg(settings.maxLean))}`} />
+                        <Stat label={t.statHeadTilt} value={deg(last.headTilt)}
+                            className={breach(last.headTilt, settings.maxHeadTilt)}
+                            hint={t.limit(deg(settings.maxHeadTilt))} />
+                        <Stat label={t.statConfidence} value={`${Math.round(last.confidence * 100)} %`}
+                            hint={poseReady() ? t.computedLocally : t.modelLoading} />
+                    </Grid>
+                ) : (
+                    <Empty title={t.noReadingYet} hint={t.noReadingYetHint} />
+                )}
+            </Panel>
 
             <Recent readings={today} windowMin={settings.windowMin}
                 change={change} />
@@ -1008,12 +1016,7 @@ function Live() {
 
             <Trend />
 
-            <Setup
-                settings={settings}
-                change={change}
-                prepareSound={beep.prepare}
-                playSound={beep.play}
-            />
+            <Setup settings={settings} change={change} />
         </>
     );
 }
@@ -1100,13 +1103,17 @@ function Recent({ readings, windowMin, change }: {
     );
 
     return (
-        <Section title={t.recentTitle} subtitle={t.recentSubtitle(minutes)}>
-            {picker}
-            {rows.length < 2 ? (
-                <Empty title={t.recentEmpty} hint={t.recentEmptyHint(minutes)} />
-            ) : (
-                <Col gap={4}>
-                    <Panel title={t.recentAngles}>
+        <>
+            {/* Two charts that both answer „the last while", so both tiles say
+                so: the grid has no section heading above them any more, and
+                „Share of time sitting straight" appears again further down
+                against whole days. A tile title has to carry its own scope. */}
+            <Panel id="recentangles" title={`${t.recentTitle} · ${t.recentAngles}`}>
+                {picker}
+                {rows.length < 2 ? (
+                    <Empty title={t.recentEmpty} hint={t.recentEmptyHint(minutes)} />
+                ) : (
+                    <>
                         <LineChart
                             data={rows}
                             x="zeit"
@@ -1120,22 +1127,25 @@ function Recent({ readings, windowMin, change }: {
                             height={220}
                         />
                         <Text small muted>{t.recentNote}</Text>
-                    </Panel>
+                    </>
+                )}
+            </Panel>
 
-                    <Panel title={t.shareStraight}>
-                        <LineChart
-                            data={rows}
-                            x="zeit"
-                            series={[{ key: 'gerade', label: t.seriesStraight }]}
-                            format={withUnit(formatNumber, '%')}
-                            zero
-                            legend={false}
-                            height={180}
-                        />
-                    </Panel>
-                </Col>
+            {rows.length < 2 ? null : (
+                <Panel id="recentshare" title={`${t.recentTitle} · ${t.shareStraight}`}>
+                    <Text small muted>{t.recentSubtitle(minutes)}</Text>
+                    <LineChart
+                        data={rows}
+                        x="zeit"
+                        series={[{ key: 'gerade', label: t.seriesStraight }]}
+                        format={withUnit(formatNumber, '%')}
+                        zero
+                        legend={false}
+                        height={180}
+                    />
+                </Panel>
             )}
-        </Section>
+        </>
     );
 }
 
@@ -1190,18 +1200,20 @@ function Trend() {
 
     if (!rows.length) {
         return (
-            <Section title={t.trendTitle} subtitle={t.trendSubtitleEmpty}>
+            <Panel id="trendstats" title={t.trendTitle}>
+                <Text small muted>{t.trendSubtitleEmpty}</Text>
                 <Empty title={t.trendEmpty} hint={t.trendEmptyHint} />
-            </Section>
+            </Panel>
         );
     }
 
     const best = rows.reduce((a, r) => (r.gerade > a.gerade ? r : a), rows[0]);
 
     return (
-        <Section title={t.trendTitle} subtitle={t.trendDays(rows.length)}>
-            <Col gap={4}>
-                <Grid min={160}>
+        <>
+            <Panel id="trendstats" title={t.trendTitle}>
+                <Text small muted>{t.trendDays(rows.length)}</Text>
+                <Grid min={140}>
                     <Stat label={t.lastStraight}
                         value={`${rows[rows.length - 1].gerade} %`}
                         hint={rows[rows.length - 1].tag} />
@@ -1215,36 +1227,36 @@ function Trend() {
                                 : change < 0 ? t.worseThanBefore
                                     : t.unchanged} />
                 </Grid>
+            </Panel>
 
-                <Panel title={t.shareStraight}>
-                    <LineChart
-                        data={rows}
-                        x="tag"
-                        series={[{ key: 'gerade', label: t.seriesStraight }]}
-                        format={withUnit(formatNumber, '%')}
-                        zero
-                        legend={false}
-                        height={240}
-                    />
-                </Panel>
+            <Panel id="daychart" title={`${t.trendTitle} · ${t.shareStraight}`}>
+                <LineChart
+                    data={rows}
+                    x="tag"
+                    series={[{ key: 'gerade', label: t.seriesStraight }]}
+                    format={withUnit(formatNumber, '%')}
+                    zero
+                    legend={false}
+                    height={240}
+                />
+            </Panel>
 
-                <Panel title={t.averageDeviation}>
-                    <LineChart
-                        data={rows}
-                        x="tag"
-                        series={[
-                            { key: 'vorlage', label: t.statForward },
-                            { key: 'seitlich', label: t.statLean },
-                            { key: 'kopf', label: t.statHeadTilt },
-                        ]}
-                        format={withUnit(formatNumber, '°')}
-                        zero
-                        height={240}
-                    />
-                    <Text small muted>{t.lessIsBetter}</Text>
-                </Panel>
-            </Col>
-        </Section>
+            <Panel id="daydeviation" title={t.averageDeviation}>
+                <LineChart
+                    data={rows}
+                    x="tag"
+                    series={[
+                        { key: 'vorlage', label: t.statForward },
+                        { key: 'seitlich', label: t.statLean },
+                        { key: 'kopf', label: t.statHeadTilt },
+                    ]}
+                    format={withUnit(formatNumber, '°')}
+                    zero
+                    height={240}
+                />
+                <Text small muted>{t.lessIsBetter}</Text>
+            </Panel>
+        </>
     );
 }
 
@@ -1287,27 +1299,46 @@ function History({ readings, intervalSec }: { readings: Reading[]; intervalSec: 
     const rows = readings.slice(-60).reverse();
 
     return (
-        <Section title={t.todayTitle} subtitle={t.todaySubtitle}>
-            {readings.length === 0 ? (
-                <Empty title={t.todayEmpty} hint={t.todayEmptyHint} />
-            ) : (
-                <Col gap={4}>
-                    <Grid min={160}>
-                        <Stat label={t.satWell} value={`${Math.round(numbers.share * 100)} %`}
-                            hint={t.ofReadings(numbers.good, numbers.total)} />
-                        <Stat label={t.longestRun} value={minutes(numbers.bestMs, t)}
-                            hint={t.longestRunHint} />
-                        <Stat label={t.signals} value={String(numbers.signals)}
-                            hint={t.signalsHint} />
-                    </Grid>
+        <>
+            <Panel id="today" title={t.todayTitle}>
+                <Text small muted>{t.todaySubtitle}</Text>
+                {readings.length === 0 ? (
+                    <Empty title={t.todayEmpty} hint={t.todayEmptyHint} />
+                ) : (
+                    <>
+                        <Grid min={140}>
+                            <Stat label={t.satWell} value={`${Math.round(numbers.share * 100)} %`}
+                                hint={t.ofReadings(numbers.good, numbers.total)} />
+                            <Stat label={t.longestRun} value={minutes(numbers.bestMs, t)}
+                                hint={t.longestRunHint} />
+                            <Stat label={t.signals} value={String(numbers.signals)}
+                                hint={t.signalsHint} />
+                        </Grid>
 
-                    <StatusStrip items={bars} label={t.lastSixty} hint={t.lastSixtyHint} />
+                        <StatusStrip items={bars} label={t.lastSixty} hint={t.lastSixtyHint} />
 
-                    <Progress value={numbers.share}
-                        tone={numbers.share >= 0.8 ? 'ok' : numbers.share >= 0.5 ? 'warn' : undefined}
-                        label={t.shareToday} />
+                        <Progress value={numbers.share}
+                            tone={numbers.share >= 0.8 ? 'ok' : numbers.share >= 0.5 ? 'warn' : undefined}
+                            label={t.shareToday} />
+                    </>
+                )}
+            </Panel>
 
-                    <Details summary={t.showAll} count={rows.length}>
+            {/* The table is its own tile: six columns do not belong under the
+                three numbers that summarise them, and in a 330px column it
+                scrolls sideways inside its own card rather than widening the
+                grid. */}
+            {readings.length === 0 ? null : (
+                <Panel id="daytable" title={`${t.todayTitle} · ${t.showAll}`}>
+                    {/* A scrolling log rather than a disclosure. Sixty rows
+                        unfolded inside a tile would set the height of its whole
+                        row and leave its two neighbours as tall empty cards —
+                        tiles stretch to their row. Capped and scrolling, the
+                        tile keeps its size whatever the day held, and the
+                        sticky header means the columns stay named while you
+                        scroll. The disclosure this replaced also duplicated
+                        the tile title, which carries „Show all" on its own. */}
+                    <div className="haltung-log">
                         <Table
                             sortable={false}
                             dense
@@ -1335,10 +1366,10 @@ function History({ readings, intervalSec }: { readings: Reading[]; intervalSec: 
                             ]}
                             rows={rows}
                         />
-                    </Details>
-                </Col>
+                    </div>
+                </Panel>
             )}
-        </Section>
+        </>
     );
 }
 
@@ -1347,10 +1378,53 @@ function History({ readings, intervalSec }: { readings: Reading[]; intervalSec: 
 type SetupProps = {
     settings: Settings;
     change: (patch: Partial<Settings>) => Promise<unknown>;
+};
+
+type SoundProps = SetupProps & {
     /** So „Anhören" can make the same noise the signal makes. */
     prepareSound: () => void;
     playSound: (name: SoundName) => void;
 };
+
+/**
+ * Everything about the noise: whether it sounds, which one, and a button to
+ * hear it.
+ *
+ * It sits in the control tile next to Start and Stop _(2026-09-15, his call:
+ * „move the settings with the sounds and the start/stop into the same tile")_
+ * rather than down among the thresholds. The two belong together: the sound is
+ * what the page does while it runs, and it is the setting you reach for in the
+ * same breath as the stop button.
+ */
+function Sound(props: SoundProps) {
+    const { settings: s, change } = props;
+    const t = useCopy();
+
+    return (
+        <>
+            <Checkbox label={t.soundOnSignal} checked={s.sound}
+                onChange={(on) => void change({ sound: on })} />
+            <Row gap={2} align="bottom" stack>
+                <Select
+                    label={t.soundLabel}
+                    value={s.soundName}
+                    onChange={(e: { target: { value: string } }) =>
+                        void change({ soundName: e.target.value as SoundName })}
+                    hint={t.soundHint}
+                >
+                    {SOUND_ORDER.map((key) => (
+                        <option key={key} value={key}>{t.soundName[key]}</option>
+                    ))}
+                </Select>
+                <Button icon={<Icon name="volume" />}
+                    onClick={() => { props.prepareSound(); props.playSound(s.soundName); }}>
+                    {t.listen}
+                </Button>
+            </Row>
+            <Text small muted>{t.soundNote}</Text>
+        </>
+    );
+}
 
 function Setup(props: SetupProps) {
     const { settings: s, change } = props;
@@ -1368,78 +1442,53 @@ function Setup(props: SetupProps) {
     };
 
     return (
-        <Section title={t.settingsTitle} subtitle={t.settingsSubtitle}>
-            <Col gap={4}>
+        <>
+            <Panel id="thresholds" title={t.paceAndLimits}>
+                <Grid min={140}>
+                    <Select
+                        label={t.onePictureEvery}
+                        value={String(s.intervalSec)}
+                        onChange={(e: { target: { value: string } }) =>
+                            change({ intervalSec: Number(e.target.value) })}
+                    >
+                        {INTERVALS.map((sec) => (
+                            <option key={sec} value={sec}>
+                                {sec === 1 ? t.oneSecond : t.nSeconds(sec)}
+                            </option>
+                        ))}
+                    </Select>
+                    <Input
+                        label={t.signalFromForward} type="number" min={5} max={45} step={1}
+                        value={s.maxForward}
+                        onChange={(e: { target: { value: string } }) =>
+                            change({ maxForward: Number(e.target.value) || DEFAULTS.maxForward })}
+                        hint={t.signalFromForwardHint}
+                    />
+                    <Input
+                        label={t.signalFromLean} type="number" min={3} max={45} step={1}
+                        value={s.maxLean}
+                        onChange={(e: { target: { value: string } }) =>
+                            change({ maxLean: Number(e.target.value) || DEFAULTS.maxLean })}
+                        hint={t.signalFromLeanHint}
+                    />
+                    <Input
+                        label={t.signalFromHead} type="number" min={3} max={45} step={1}
+                        value={s.maxHeadTilt}
+                        onChange={(e: { target: { value: string } }) =>
+                            change({ maxHeadTilt: Number(e.target.value) || DEFAULTS.maxHeadTilt })}
+                        hint={t.signalFromHeadHint}
+                    />
+                </Grid>
+                <Checkbox label={t.alsoNotify} checked={s.notify}
+                    onChange={(on) => void toggleNotify(on)} />
+                <Text small muted>{t.paceNote}</Text>
+                <Text small muted>{t.thresholdNote}</Text>
+            </Panel>
 
-                <Panel title={t.paceAndLimits}>
-                    <Grid min={220}>
-                        <Select
-                            label={t.onePictureEvery}
-                            value={String(s.intervalSec)}
-                            onChange={(e: { target: { value: string } }) =>
-                                change({ intervalSec: Number(e.target.value) })}
-                        >
-                            {INTERVALS.map((sec) => (
-                                <option key={sec} value={sec}>
-                                    {sec === 1 ? t.oneSecond : t.nSeconds(sec)}
-                                </option>
-                            ))}
-                        </Select>
-                        <Input
-                            label={t.signalFromForward} type="number" min={5} max={45} step={1}
-                            value={s.maxForward}
-                            onChange={(e: { target: { value: string } }) =>
-                                change({ maxForward: Number(e.target.value) || DEFAULTS.maxForward })}
-                            hint={t.signalFromForwardHint}
-                        />
-                        <Input
-                            label={t.signalFromLean} type="number" min={3} max={45} step={1}
-                            value={s.maxLean}
-                            onChange={(e: { target: { value: string } }) =>
-                                change({ maxLean: Number(e.target.value) || DEFAULTS.maxLean })}
-                            hint={t.signalFromLeanHint}
-                        />
-                        <Input
-                            label={t.signalFromHead} type="number" min={3} max={45} step={1}
-                            value={s.maxHeadTilt}
-                            onChange={(e: { target: { value: string } }) =>
-                                change({ maxHeadTilt: Number(e.target.value) || DEFAULTS.maxHeadTilt })}
-                            hint={t.signalFromHeadHint}
-                        />
-                    </Grid>
-                    <Row gap={4} wrap>
-                        <Checkbox label={t.soundOnSignal} checked={s.sound}
-                            onChange={(on) => void change({ sound: on })} />
-                        <Checkbox label={t.alsoNotify} checked={s.notify}
-                            onChange={(on) => void toggleNotify(on)} />
-                    </Row>
-                    <Text small muted>{t.paceNote}</Text>
-                    <Text small muted>{t.thresholdNote}</Text>
-                </Panel>
-
-                <Panel title={t.whichSound}>
-                    <Row gap={2} align="bottom" stack>
-                        <Select
-                            label={t.soundLabel}
-                            value={s.soundName}
-                            onChange={(e: { target: { value: string } }) =>
-                                void change({ soundName: e.target.value as SoundName })}
-                            hint={t.soundHint}
-                        >
-                            {SOUND_ORDER.map((key) => (
-                                <option key={key} value={key}>{t.soundName[key]}</option>
-                            ))}
-                        </Select>
-                        <Button icon={<Icon name="volume" />} onClick={() => { props.prepareSound(); props.playSound(s.soundName); }}>
-                            {t.listen}
-                        </Button>
-                    </Row>
-                    <Text small muted>{t.soundNote}</Text>
-                </Panel>
-
-                <Callout icon={<Icon name="lock" size={20} />} title={t.leavesTitle}>{t.leavesText}</Callout>
-            </Col>
-        </Section>
+            <Panel id="privacy" title={t.leavesTitle}>
+                <Text small>{t.leavesText}</Text>
+            </Panel>
+        </>
     );
 }
 
@@ -1470,6 +1519,7 @@ function Content() {
         <LangContext.Provider value={lang}>
             <CopyContext.Provider value={t}>
                 <Page
+                    width="full"
                     lang={lang}
                     languages={LANGUAGES.map((l) => l.value)}
                     onLangChange={(next) => void writeSettings({
@@ -1504,20 +1554,36 @@ function Content() {
                         </>
                     }
                 >
-                    {/* The live state first: this page is a tool, and what it is
-                        for is what it currently says. The explanation sits below. */}
-                    <Live />
+                    {/* One grid, not a stack of sections _(2026-09-15, his
+                        call)_. Every tile below is a direct child of it: the
+                        order here is the order they flow in, and reading order
+                        is the only thing that still decides what comes first,
+                        because the number of columns is the window's business
+                        rather than ours.
 
-                    <Section title={t.howItWorks}>
-                        <Callout title={t.inShort}>{written.intro}</Callout>
-                        <Grid min={240}>
-                            {written.steps.map((step) => (
-                                <Panel key={step.title} title={step.title} flat>
-                                    <Text small>{step.text}</Text>
-                                </Panel>
-                            ))}
-                        </Grid>
-                    </Section>
+                        The live state leads — this page is a tool, and what it
+                        is for is what it currently says. The explanation is
+                        last. Each tile carries a stable id so it can be linked
+                        to and named; the ids are not translated, the titles
+                        are. */}
+                    <Tiles>
+                        <Live />
+
+                        <Panel id="inshort" title={t.inShort}>
+                            <Text small>{written.intro}</Text>
+                        </Panel>
+
+                        {/* The five steps are five tiles rather than a grid
+                            inside one: each is two lines, and five small tiles
+                            are exactly what fills the ragged end of a wide
+                            row. The id is positional because the titles are
+                            translated and an id must not be. */}
+                        {written.steps.map((step, i) => (
+                            <Panel key={step.title} id={`step${i + 1}`} title={step.title}>
+                                <Text small>{step.text}</Text>
+                            </Panel>
+                        ))}
+                    </Tiles>
                 </Page>
             </CopyContext.Provider>
         </LangContext.Provider>

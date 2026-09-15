@@ -22,7 +22,9 @@ src/ui/tokens/
   theme-light.css  the inversion
 src/ui/fonts/      the woff2 files
 src/ui/theme.css   the imports, then how components spend the tokens
-src/app/styles.css the camera well and the breach state — the only page CSS
+src/ui/Tiles.tsx   the page grid, and why its two bounds are held where they are
+src/app/styles.css the camera well, the breach state and the readings log —
+                   the only page CSS
 public/brand/      logo and mark, five variants
 ```
 
@@ -117,7 +119,33 @@ constants** — deviating from them is the fastest way to break the look.
 Generous negative space inside cards: a card with three rows of content and 24px
 padding is correct; a card with twelve is two cards.
 
-24px page gutter, 1400px maximum content width on a full-bleed view.
+24px page gutter, 1400px maximum content width.
+
+### The page is one grid
+
+Not a stack of sections. Every readout is a **tile** in a single grid whose
+columns are **at least 330px and at most 660px**, as many as fit, sharing the
+row between them — one column on a phone, two on a tablet, three on a desk
+monitor, with no breakpoint written anywhere. `Tiles.tsx` holds the mechanism
+and the reason the 660px cap sits on the tile rather than on the track.
+
+Tiles stretch to the height of their row, so a row reads as one band. That is
+also the constraint on what may go in one: anything that grows without a bound
+— a table of every reading — is capped and scrolls inside its own tile, because
+otherwise it sets the height of its whole row and leaves its neighbours as tall
+empty cards.
+
+Every tile carries a **stable, untranslated id** (`video`, `daychart`,
+`thresholds`), so it can be linked to and named. Titles are translated; ids are
+not. Nothing spans two columns: two columns plus the gap is 684px, past what a
+tile is allowed to be.
+
+Because there are no section headings any more, **a tile title carries its own
+scope**. Two charts both plot "share of time sitting straight" — one over the
+last half hour, one over whole days — so their titles are composed from the
+words that used to be the section heading: `The last while · Share of time
+sitting straight` against `Trend across the days · Share of time sitting
+straight`.
 
 ---
 

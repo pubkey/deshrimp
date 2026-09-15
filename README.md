@@ -103,6 +103,12 @@ ordinary folders.
 
 ## How it looks
 
+**The page is one grid of tiles**, not a stack of sections. Columns are at least
+330px and at most 660px, as many as fit, sharing the row between them — one
+column on a phone, three on a desk monitor, and no breakpoint written anywhere.
+Every tile has a stable id (`video`, `controls`, `daychart`, `thresholds`), so
+one can be pointed at by name.
+
 The interface is the **deshrimp design system**: a clinical instrument rather
 than a wellness app. Six colours, locked — slate ground, slate card, hairline
 border, white ink, slate-blue secondary ink, and a coral accent that is a budget

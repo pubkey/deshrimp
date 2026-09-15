@@ -97,3 +97,16 @@
 @media (prefers-reduced-motion: reduce) {
   .haltung-alarm { animation: none; }
 }
+
+/* ------------------------------------------------------------ readings log */
+/* The day's readings, inside a tile. A tile stretches to the height of its
+ * grid row, so an unbounded table would set that height and leave its two
+ * neighbours as tall empty cards. Capping it keeps the tile the size of its
+ * neighbours whatever the day held; the table's own sticky header keeps the
+ * columns named while it scrolls, and `.ui-table-wrap` inside still handles
+ * the sideways scroll on a narrow column. */
+.haltung-log {
+  max-height: 420px;
+  overflow: auto;
+  border-radius: var(--radius-md);
+}
