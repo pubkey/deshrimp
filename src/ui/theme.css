@@ -201,29 +201,6 @@ a:hover { color: var(--ink); }
 .ui-wrap.full > .ui-header .ui-h1 { margin: 0; max-width: none; }
 .ui-wrap.full > .ui-header .ui-sub { margin: var(--s1) 0 0; max-width: 70ch; }
 @media (max-width: 860px) { .ui-wrap.full > .ui-header { max-width: none; } }
-.ui-taskbox {
-  display: inline-block; text-align: left; margin: var(--s4) auto 0; max-width: 680px;
-  background: var(--bg-sunk); border: 1px solid var(--line); border-radius: var(--r-md);
-  padding: var(--s3) var(--s4); font-size: var(--t-sm);
-}
-.ui-taskbox b { display: block; margin-bottom: var(--s1); font-size: var(--t-xs); font-weight: 600;
-  letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--muted); }
-.ui-taskbox .ui-taskbody { color: var(--ink-soft); white-space: pre-wrap; }
-
-/* The closing block: everything *about* the page, never above it (PageMeta). */
-.ui-pagefoot { padding-bottom: var(--s6); }
-.ui-meta { margin-top: var(--s7); padding-top: var(--s6); border-top: 1px solid var(--line); }
-/* In the header the task box was a centred island; here it is a full-width row. */
-.ui-meta .ui-taskbox { display: block; max-width: none; margin: 0; }
-/* The parts are tabs, so they start at the heading's edge rather than centred.
-   Two classes deep on purpose: `.ui-tabs` sets both further down the file. */
-.ui-meta .ui-meta-tabs { justify-content: flex-start; padding: 0; }
-.ui-meta-panel { margin-top: var(--s4); }
-.ui-meta-note { margin: 0 0 var(--s3); }
-.ui-meta-stamp { margin-top: var(--s6); text-align: center;
-  color: var(--faint); font-size: var(--t-sm); }
-.ui-meta-stamp a { color: var(--faint); }
-
 /* ----------------------------------------------------------------- panels */
 /* Same reasoning as `.ui-section` below: a panel owns the spacing between its
    own children, so a page that drops a <Grid>, a <Row> and two <Text>s into one
@@ -372,8 +349,6 @@ a:hover { color: var(--ink); }
   opacity: 0; cursor: pointer; border: 0; padding: 0; -webkit-appearance: none; appearance: none; }
 .ui-share { gap: var(--s2); width: auto; padding: 0 var(--s4); border-radius: var(--r-sm); }
 
-.ui-tabs { display: flex; flex-wrap: wrap; gap: var(--s2); justify-content: flex-start;
-  padding: var(--s5) 0 var(--s2); }
 .ui-badge { display: inline-block; font-size: var(--t-xs); font-weight: 600; white-space: nowrap;
   padding: 3px 9px; border-radius: var(--r-pill);
   background: var(--rec); color: var(--on-semantic); }
@@ -382,13 +357,6 @@ a:hover { color: var(--ink); }
 .ui-badge.warn{ background: var(--warn);color: var(--on-semantic); }
 .ui-badge.bad { background: var(--bad); color: var(--on-semantic); }
 .ui-badge.quiet { background: transparent; color: var(--muted); border: 1px solid var(--line); }
-.ui-tag { font: inherit; font-size: var(--t-xs); letter-spacing: .04em; cursor: pointer;
-  padding: 3px 10px; border-radius: var(--r-pill); border: 1px solid var(--line);
-  background: transparent; color: var(--ink);
-  transition: var(--transition-control); }
-.ui-tag:hover { opacity: .88; }
-.ui-tag.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-.ui-tag[disabled] { cursor: default; color: var(--muted); }
 
 /* ----------------------------------------------------------------- inputs */
 .ui-field { display: flex; flex-direction: column; gap: 5px; }
@@ -517,53 +485,6 @@ a:hover { color: var(--ink); }
   padding: var(--s2) var(--s3); word-break: break-all; user-select: all;
   max-height: 5.4em; overflow-y: auto; }
 
-/* ------------------------------------------------------------- data gaps */
-/* Was die Seite NICHT weiss. Jede Seite hier ist aus einem unvollständigen
-   Repo gebaut; diese Blöcke machen die Lücken sichtbar, statt sie unter einer
-   glatten Antwort verschwinden zu lassen. */
-.ui-gaps { display: flex; flex-direction: column; gap: var(--s4); }
-.ui-gaps-head { display: flex; flex-wrap: wrap; align-items: baseline;
-  justify-content: space-between; gap: var(--s3); }
-.ui-gaps-counts { display: flex; flex-wrap: wrap; gap: var(--s2); }
-.ui-gaps-list { display: flex; flex-direction: column; gap: var(--s3); }
-
-.ui-gaps-item { scroll-margin-top: var(--s8); border: 1px solid var(--line); border-left: 3px solid var(--faint);
-  border-radius: var(--r-sm); background: var(--card); padding: var(--s3) var(--s4);
-  display: flex; flex-direction: column; gap: var(--s2); }
-.ui-gaps-item.missing { border-left-color: var(--bad); }
-.ui-gaps-item.assumed { border-left-color: var(--warn); }
-.ui-gaps-item.stale   { border-left-color: var(--muted); }
-
-.ui-gaps-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s2); }
-.ui-gaps-label { font-weight: 600; }
-.ui-gaps-sev { flex: none; font-size: var(--t-xs); font-weight: 700;
-  letter-spacing: var(--track-caps); text-transform: uppercase;
-  padding: 2px var(--s2); border-radius: var(--r-pill);
-  border: 1px solid currentColor; color: var(--faint); }
-.ui-gaps-item.missing .ui-gaps-sev { color: var(--bad); }
-.ui-gaps-item.assumed .ui-gaps-sev { color: var(--warn); }
-.ui-gaps-item.stale   .ui-gaps-sev { color: var(--muted); }
-
-.ui-gaps-line { font-size: var(--t-sm); color: var(--ink-soft); }
-.ui-gaps-line .k { color: var(--muted); font-weight: 600; }
-.ui-gaps-ask { font-size: var(--t-sm); color: var(--ink);
-  background: var(--bg-sunk); border: 1px solid var(--line); border-radius: var(--r-xs);
-  padding: var(--s2) var(--s3); }
-.ui-gaps-where { font-family: var(--mono); font-size: var(--t-xs); color: var(--muted); }
-
-/* Inline-Marker: sitzt direkt neben dem Wert, den er kennzeichnet, weil ein
-   Hinweis am Seitenende den Leser nicht mehr erreicht (PAGE-SPEC). */
-.ui-assumed { display: inline-flex; align-items: center; gap: 3px; vertical-align: baseline;
-  font-size: var(--t-xs); font-weight: 700; line-height: 1;
-  padding: 2px 6px; border-radius: var(--r-pill); text-decoration: none;
-  border: 1px solid currentColor; color: var(--warn); background: transparent;
-  cursor: help; white-space: nowrap; }
-a.ui-assumed:hover { background: var(--accent-soft); }
-.ui-assumed.missing { color: var(--bad); }
-.ui-assumed.stale   { color: var(--muted); }
-
-@media print { .ui-gaps-item { break-inside: avoid; } }
-
 /* --------------------------------------------------------------- feedback */
 .ui-toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom));
   transform: translateX(-50%); z-index: 60; padding: 10px 18px; border-radius: var(--r-sm);
@@ -579,7 +500,7 @@ a.ui-assumed:hover { background: var(--accent-soft); }
   .ui-panel, .ui-card, .ui-table-wrap { box-shadow: none; break-inside: avoid; }
 }
 
-/* --- Evidence: Because, AsOf, Confidence, SourceList --------------------- */
+/* --- Evidence: Because, AsOf, Confidence --------------------------------- */
 /* Four markers that answer the same four questions on every page: why this,
    as of when, how sure, from where. Small on purpose — they sit next to the
    statement they qualify and must not outweigh it. */
@@ -641,31 +562,6 @@ a.ui-assumed:hover { background: var(--accent-soft); }
 .ui-conf.unverified { color: var(--bad);  border-color: color-mix(in srgb, var(--bad) 45%, var(--line)); }
 .ui-conf-date { color: var(--muted); font-family: var(--mono);
   font-variant-numeric: tabular-nums; }
-
-.ui-sources { list-style: none; margin: 0; padding: 0; counter-reset: src; }
-.ui-sources-item {
-  counter-increment: src;
-  position: relative;
-  padding: var(--s3) 0 var(--s3) var(--s6);
-  border-bottom: 1px solid var(--line);
-}
-.ui-sources-item:last-child { border-bottom: 0; }
-.ui-sources-item::before {
-  content: "[" counter(src) "]";
-  position: absolute; left: 0; top: var(--s3);
-  font-size: var(--t-xs);
-  font-family: var(--mono);
-  color: var(--muted);
-}
-.ui-sources-top { display: flex; gap: var(--s2); align-items: baseline; flex-wrap: wrap; }
-.ui-sources-title { font-weight: 600; color: var(--ink); text-decoration: none; }
-a.ui-sources-title:hover { opacity: .88; text-decoration: underline; }
-.ui-sources-url {
-  font-size: var(--t-xs); font-family: var(--mono); color: var(--faint);
-  overflow-wrap: anywhere;
-}
-.ui-sources-note { font-size: var(--t-sm); color: var(--ink-soft); margin-top: var(--s1); }
-.ui-sources-item:target { background: var(--accent-soft); border-radius: var(--r-sm); }
 
 /* --- Details ------------------------------------------------------------- */
 /* Native <details>: it prints open, works without JavaScript, and the caret

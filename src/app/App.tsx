@@ -33,9 +33,9 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import {
     Badge, Button, Callout, Checkbox, Col, ConfirmButton, Details, Empty,
-    type Gap, Grid, Icon, IconButton, Input, LoadingOverlay, Muted, Page, Panel,
+    Grid, Icon, IconButton, Input, LoadingOverlay, Muted, Page, Panel,
     preferredUiLang, Progress, Row, Section, Select,
-    type Source, Stat, StatusStrip, type StatusTone, Table, Text,
+    Stat, StatusStrip, type StatusTone, Table, Text,
     pageData, toast,
 } from '@ui';
 import {
@@ -57,8 +57,14 @@ import {
 type Written = {
     intro: string;
     steps: { title: string; text: string }[];
-    sources: Source[];
-    gaps: Gap[];
+    /**
+     * Not rendered by the app any more — „Zu dieser Seite" is gone. They are
+     * still typed, and still in `data.json`, because `scripts/seo.mjs` reads
+     * them straight out of the file at build time and writes them into the
+     * prerendered HTML a crawler sees. Dropping them there would quietly take
+     * the page's citations off the web.
+     */
+    sources: { id?: string; title?: string; url?: string; note?: string; checked?: string }[];
 };
 
 /** `data.json` carries the whole written answer once per language. */
@@ -1443,9 +1449,9 @@ function Setup(props: SetupProps) {
  * The page shell, and the one place the language is decided.
  *
  * It reads the settings document itself rather than taking the language from
- * `<Live>`: the title, the intro and the meta block all sit outside `<Live>`,
- * and they have to switch with everything else. `<Page lang>` carries it into
- * the frame components so „Zu dieser Seite" turns into „About this page" too.
+ * `<Live>`: the title and the intro both sit outside `<Live>`, and they have to
+ * switch with everything else. `<Page lang>` carries it into the frame so the
+ * share button and the confirm dialog switch with them.
  */
 function Content() {
     const data = pageData<Data>();
@@ -1482,8 +1488,6 @@ function Content() {
                             {t.subtitleB}
                         </>
                     }
-                    gaps={written.gaps}
-                    sources={written.sources}
                     actions={
                         <>
                             <DataSyncButton database={database} filename="sitzhaltung.json" />
