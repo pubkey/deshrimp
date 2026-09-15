@@ -49,8 +49,8 @@ import {
 import { LineChart, formatNumber, withUnit } from '@charts';
 import { copyFor, localeFor, LANGUAGES, type Copy, type Lang } from './i18n';
 import {
-    analysePose, frameOf as canvasFrame, loadPose, poseReady,
-    PoseError, preloadPose, type Analysis,
+    analysePose, frameOf as canvasFrame, loadPose, onPoseProgress, poseProgress,
+    poseReady, PoseError, preloadPose, type Analysis,
 } from './pose';
 
 /* ------------------------------------------------------------------ types */
@@ -680,6 +680,9 @@ function Live() {
      * vanished after half a second while a retry was still loading.
      */
     const [loadingModel, setLoadingModel] = useState(false);
+    /* How far the 17 MB has got, 0 to 1, or null when the response carried no
+       Content-Length and there is no denominator to divide by. */
+    const [modelProgress, setModelProgress] = useState<number | null>(poseProgress());
 
     const { data: storedSettings } = useQuery<Settings>('settings', {
         selector: { id: SETTINGS_ID },
@@ -862,6 +865,14 @@ function Live() {
         return () => window.clearInterval(id);
     }, [running, check, interval]);
 
+    /* The download reports from outside React. Subscribed only while the
+       overlay is up, so nothing is listening once the model is in memory. */
+    useEffect(() => {
+        if (!loadingModel) return;
+        setModelProgress(poseProgress());
+        return onPoseProgress(setModelProgress);
+    }, [loadingModel]);
+
     /* The screen lock is dropped when the tab goes away; take it back. */
     useEffect(() => {
         if (!running) return;
@@ -922,6 +933,7 @@ function Live() {
                 open={loadingModel}
                 title={t.loadingModelTitle}
                 label={t.loadingModel}
+                progress={modelProgress}
             />
 
             {/* No heading over the camera _(2026-09-09: „remove these texts

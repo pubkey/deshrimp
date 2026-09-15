@@ -25,6 +25,10 @@
  * - `label` - what is being waited for, in the page's own words. Say the size
  *   and whether it is a one-off if you know: that is what someone needs in
  *   order to decide whether to wait.
+ * - `progress` - 0 to 1 when the wait can be measured, which turns the spinner
+ *   into a bar with a percentage. Pass `null` or leave it out when it cannot:
+ *   an indeterminate wait drawn as an empty bar reads as "stuck at zero", and
+ *   the spinner is the honest shape for one.
  * - `role="status"` + `aria-live="polite"` on the inner spinner, so the wait is
  *   announced once instead of read as a spinning box.
  *
@@ -36,11 +40,14 @@
  * ```
  *
  * ## Changelog
+ * - 2026-09-15 `progress`, so a download that can be measured says how far it
+ *   has got rather than only that it is happening.
  * - 2026-09-08 First version, replacing the inline spinner on `app-haltung`.
  */
 
 import { useEffect, useRef } from 'react';
 import { cx } from './cx';
+import { Progress } from './Progress';
 import { Spinner } from './Spinner';
 import type { ReactNode } from './_types';
 
@@ -48,10 +55,12 @@ export type LoadingOverlayProps = {
     open?: boolean;
     title?: ReactNode;
     label?: ReactNode;
+    /** 0 to 1 when the wait can be measured; `null` or absent when it cannot. */
+    progress?: number | null;
     className?: string;
 };
 
-export function LoadingOverlay({ open, title, label, className }: LoadingOverlayProps) {
+export function LoadingOverlay({ open, title, label, progress, className }: LoadingOverlayProps) {
     const ref = useRef<HTMLDialogElement>(null);
     // Read inside the listener, which is registered once and must not close
     // over a stale `open`.
@@ -101,7 +110,21 @@ export function LoadingOverlay({ open, title, label, className }: LoadingOverlay
             {open ? (
                 <div className="ui-loadcard">
                     {title ? <div className="ui-loadcard-title">{title}</div> : null}
-                    <Spinner label={label} />
+                    {/* A measurable wait gets a bar and a number; one that
+                        cannot be measured keeps the spinner. Drawing an
+                        unknown wait as a bar at zero says "stuck", which is
+                        the one thing it does not know. */}
+                    {typeof progress === 'number' ? (
+                        <div className="ui-loadcard-progress" role="status" aria-live="polite">
+                            <Progress
+                                value={progress}
+                                label={label}
+                                valueLabel={`${Math.round(progress * 100)} %`}
+                            />
+                        </div>
+                    ) : (
+                        <Spinner label={label} />
+                    )}
                 </div>
             ) : null}
         </dialog>

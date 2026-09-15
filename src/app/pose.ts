@@ -103,6 +103,32 @@ export type Analysis = {
 /** Where `fetch_pose_model.py` puts the wasm, the loader and the model. */
 const ASSET_DIR = 'mp';
 
+/**
+ * The wasm build that is actually shipped. Named here because two places have
+ * to agree on it: the download that measures progress, and the check that the
+ * loader asked for this one before it is handed those bytes.
+ */
+const WASM_BINARY = 'vision_wasm_internal.wasm';
+
+/**
+ * How big the two big files are, in bytes, decompressed.
+ *
+ * These are a denominator, not a check: `scripts/pose-model.sha256` pins both
+ * by digest and `fetch-pose-model.mjs` refuses to ship anything else, so the
+ * sizes cannot drift without that pin changing first.
+ *
+ * They are needed because `Content-Length` is not dependable here. It counts
+ * bytes *on the wire*, so a server that gzips the body reports the compressed
+ * size while the reader yields decompressed ones, and Vite's preview server
+ * does exactly that to the `.task` file: no `Content-Length` at all, because
+ * the response is chunked. Dividing by the wire size would have the bar finish
+ * early or never; dividing by this has it finish exactly once.
+ */
+const EXPECTED_BYTES: Record<string, number> = {
+    'vision_wasm_internal.wasm': 11756954,
+    'pose_landmarker_lite.task': 5777746,
+};
+
 /** Landmark indices we use. MediaPipe's pose topology, verified 2026-09-08. */
 const EYE_L = 2;
 const EAR_L = 7;
@@ -156,6 +182,104 @@ let landmarkerPromise: Promise<any> | null = null;
  */
 let landmarkerLoaded = false;
 
+/* ------------------------------------------------------------- progress */
+
+/**
+ * How much of the download is done, 0 to 1, or `null` when that cannot be
+ * known.
+ *
+ * `null` is not zero and the UI must not draw it as an empty bar: it means a
+ * response arrived without a `Content-Length`, so there is no denominator and
+ * an honest answer is "still working" rather than a number.
+ */
+let modelProgress: number | null = null;
+const progressListeners = new Set<(value: number | null) => void>();
+
+function setProgress(value: number | null): void {
+    modelProgress = value;
+    for (const listener of progressListeners) listener(value);
+}
+
+/** The last reported value, for a component mounting mid-download. */
+export function poseProgress(): number | null {
+    return modelProgress;
+}
+
+/** Subscribe to the download progress. Returns the unsubscribe. */
+export function onPoseProgress(listener: (value: number | null) => void): () => void {
+    progressListeners.add(listener);
+    return () => { progressListeners.delete(listener); };
+}
+
+/**
+ * Fetch several files at once and report the share of bytes that have arrived.
+ *
+ * The point is the denominator. The wait people actually sit through is about
+ * 17 MB, and only 5.8 MB of it is the model: `vision_wasm_internal.wasm` is
+ * 11.8 MB on its own. Measuring the model alone would race to 100 percent and
+ * then leave a full bar sitting there for two thirds of the wait, which is a
+ * worse answer than no bar at all. So both are counted, against the sum of
+ * their `Content-Length` headers.
+ *
+ * Every response is streamed rather than awaited whole, because
+ * `arrayBuffer()` resolves once, at the end, and there is nothing to report in
+ * between.
+ *
+ * A file whose size cannot be established at all makes the sum meaningless, so
+ * the whole thing goes indeterminate rather than guessing.
+ */
+function sizeOf(res: Response): number {
+    /* A declared length is only usable when nothing re-encoded the body: with
+       `Content-Encoding` it describes the compressed bytes and the reader
+       counts decompressed ones. Otherwise fall back to the pinned size. */
+    if (!res.headers.get('content-encoding')) {
+        const declared = Number(res.headers.get('content-length')) || 0;
+        if (declared > 0) return declared;
+    }
+    return EXPECTED_BYTES[res.url.split('/').pop() || ''] || 0;
+}
+
+async function fetchWithProgress(urls: string[]): Promise<(Uint8Array | null)[]> {
+    setProgress(0);
+    const responses = await Promise.all(urls.map((u) => fetch(u)));
+    for (const res of responses) {
+        if (!res.ok) throw new Error(`${res.status} ${res.statusText} for ${res.url}`);
+    }
+
+    const sizes = responses.map(sizeOf);
+    const total = sizes.every((n) => n > 0) ? sizes.reduce((a, b) => a + b, 0) : 0;
+    if (!total) setProgress(null);
+
+    let loaded = 0;
+    const read = async (res: Response): Promise<Uint8Array | null> => {
+        // No streaming body (an old browser, or a synthetic response): take it
+        // whole and count it in one go rather than failing over a progress bar.
+        if (!res.body) {
+            const whole = new Uint8Array(await res.arrayBuffer());
+            loaded += whole.length;
+            if (total) setProgress(Math.min(1, loaded / total));
+            return whole;
+        }
+        const reader = res.body.getReader();
+        const chunks: Uint8Array[] = [];
+        for (;;) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(value);
+            loaded += value.length;
+            if (total) setProgress(Math.min(1, loaded / total));
+        }
+        const out = new Uint8Array(chunks.reduce((n, c) => n + c.length, 0));
+        let at = 0;
+        for (const chunk of chunks) { out.set(chunk, at); at += chunk.length; }
+        return out;
+    };
+
+    const bytes = await Promise.all(responses.map(read));
+    setProgress(1);
+    return bytes;
+}
+
 /**
  * Import the ES module at runtime instead of bundling it.
  *
@@ -177,23 +301,61 @@ function assetUrl(file: string): string {
 export function loadPose(): Promise<any> {
     if (!landmarkerPromise) {
         landmarkerPromise = (async () => {
+            /* Both big files are pulled here, together, so the page can say
+               how far along it is. MediaPipe offers no progress callback of
+               its own: `forVisionTasks` fetches the wasm inside the glue code
+               and `modelAssetPath` fetches the model, and neither reports a
+               byte until it is finished.
+
+               Neither file is then fetched a second time. The model goes in
+               as `modelAssetBuffer`, and the wasm is handed over as a blob URL
+               through the fileset's `wasmBinaryPath`, which the loader reads
+               in its `locateFile` hook. Warming a cache and hoping would have
+               worked in production, where the service worker stores it on the
+               way past, and cost a second 11.8 MB download wherever that
+               missed. */
+            const [wasmBytes, modelBytes] = await fetchWithProgress([
+                assetUrl(WASM_BINARY),
+                assetUrl('pose_landmarker_lite.task'),
+            ]);
+
             const mp = await importModule(assetUrl('vision_bundle.mjs'));
             const fileset = await mp.FilesetResolver.forVisionTasks(
                 new URL(`${ASSET_DIR}/`, location.href).href,
             );
+
+            /* Only redirect the binary if MediaPipe asked for the same one we
+               downloaded. `forVisionTasks` picks a `_nosimd` build on a
+               browser without SIMD, and handing it the SIMD bytes under that
+               name would be a far worse failure than a second download. In
+               that case the override is skipped and it fetches as it always
+               did. (That path is already broken here for another reason: only
+               the SIMD files are fetched at build time, so a nosimd browser
+               404s either way. Worth knowing, not worth pretending about.) */
+            let blobUrl = '';
+            if (wasmBytes && String(fileset.wasmBinaryPath || '').endsWith(WASM_BINARY)) {
+                blobUrl = URL.createObjectURL(
+                    new Blob([wasmBytes as BlobPart], { type: 'application/wasm' }),
+                );
+                fileset.wasmBinaryPath = blobUrl;
+            }
             const landmarker = await mp.PoseLandmarker.createFromOptions(fileset, {
                 baseOptions: {
-                    modelAssetPath: assetUrl('pose_landmarker_lite.task'),
+                    modelAssetBuffer: modelBytes ?? undefined,
                     delegate: 'GPU',
                 },
                 runningMode: 'IMAGE',
                 numPoses: 1,
             });
+            // The bytes are in the wasm instance now; the URL was only the
+            // handle the loader needed to reach them.
+            if (blobUrl) URL.revokeObjectURL(blobUrl);
             landmarkerLoaded = true;
             return landmarker;
         })().catch((err) => {
             landmarkerPromise = null;
             landmarkerLoaded = false;
+            setProgress(null);
             // The page prints `t.modelFailed` for a PoseError; `detail` is the
             // browser's own words, appended so a real diagnosis is not lost.
             throw new PoseError(String(err?.message || ''));
