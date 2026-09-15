@@ -69,8 +69,6 @@ const de = {
     recentSubtitle: (m: number) => `Gleitender Durchschnitt über die letzten ${m} Minuten.`,
     recentAngles: 'Winkel im Mittel',
     recentNote: 'Geglättet über je drei Minuten. Ein einzelnes Bild schwankt um ein, zwei Grad - was zählt, ist ob eine Linie über eine Viertelstunde steigt.',
-    recentEmpty: 'Noch zu wenig gemessen',
-    recentEmptyHint: (m: number) => `Sobald ein paar Minuten aufgezeichnet sind, steht hier der Verlauf der letzten ${m} Minuten.`,
     windowLabel: 'Zeitfenster',
     lastMinutes: (m: number) => `letzte ${m} Minuten`,
 
@@ -81,9 +79,6 @@ const de = {
     checking: 'Bild wird ausgewertet …',
     nextIn: (s: number) => `Nächste Prüfung in ${s} s`,
     lastAt: (t: string) => `Zuletzt ${t}`,
-    untilNext: 'Bis zum nächsten Bild',
-    now: 'jetzt',
-    seconds: (s: number) => `${s} s`,
 
     cameraTitle: 'Kamera',
     analysisFailed: 'Die Auswertung hat nicht geklappt',
@@ -176,7 +171,6 @@ const de = {
     signalFromHeadHint: 'Grad, Kopf gegen die Schulterlinie',
     soundOnSignal: 'Ton beim Signal',
     alsoNotify: 'Zusätzlich ein Hinweisfenster',
-    paceNote: 'Eine Sekunde ist nur deshalb bezahlbar, weil hier gerechnet wird - es geht keine Anfrage raus und nichts wird abgerechnet. Dauert eine Auswertung mal länger als der Takt, wird der nächste Tick übersprungen statt aufgestaut.',
     thresholdNote: 'Die drei Grenzen sind gesetzte Toleranzen, keine Normwerte - für das, was eine Frontalkamera messen kann, gibt es keine. Piept es zu oft, dreh die Grenze hoch; das ist die einzige richtige Art, sie einzustellen.',
 
     whichSound: 'Welches Geräusch',
@@ -229,8 +223,6 @@ const en: Copy = {
     recentSubtitle: (m: number) => `Moving average over the last ${m} minutes.`,
     recentAngles: 'Angles on average',
     recentNote: 'Smoothed over three minutes at a time. A single frame wobbles by a degree or two - what matters is whether a line climbs across a quarter of an hour.',
-    recentEmpty: 'Not enough measured yet',
-    recentEmptyHint: (m: number) => `Once a few minutes are recorded, the last ${m} minutes show up here.`,
     windowLabel: 'Time window',
     lastMinutes: (m: number) => `last ${m} minutes`,
 
@@ -241,9 +233,6 @@ const en: Copy = {
     checking: 'Reading the picture …',
     nextIn: (s: number) => `Next check in ${s} s`,
     lastAt: (t: string) => `Last at ${t}`,
-    untilNext: 'Until the next picture',
-    now: 'now',
-    seconds: (s: number) => `${s} s`,
 
     cameraTitle: 'Camera',
     analysisFailed: 'The analysis did not work',
@@ -333,7 +322,6 @@ const en: Copy = {
     signalFromHeadHint: 'degrees, head against the shoulder line',
     soundOnSignal: 'Sound on signal',
     alsoNotify: 'Also show a notification',
-    paceNote: 'One second a picture is only affordable because the computing happens here - no request goes out and nothing is billed. If a reading takes longer than the interval, the next tick is skipped rather than queued.',
     thresholdNote: 'The three limits are set tolerances, not clinical norms - for what a front-facing camera can measure, there are none. If it beeps too often, raise the limit; that is the only right way to tune them.',
 
     whichSound: 'Which sound',
@@ -372,7 +360,7 @@ const en: Copy = {
 const COPY: Record<Lang, Copy> = { de, en, es, fr, it, pt, nl, pl, tr, ru, zh, ja };
 
 export function copyFor(lang: Lang | undefined): Copy {
-    return COPY[lang as Lang] || COPY.de;
+    return COPY[lang as Lang] || COPY.en;
 }
 
 /**
@@ -380,8 +368,8 @@ export function copyFor(lang: Lang | undefined): Copy {
  * looking for Polish should not have to find „Polnisch" first.
  */
 export const LANGUAGES: { value: Lang; label: string }[] = [
-    { value: 'de', label: 'Deutsch' },
     { value: 'en', label: 'English' },
+    { value: 'de', label: 'Deutsch' },
     { value: 'es', label: 'Español' },
     { value: 'fr', label: 'Français' },
     { value: 'it', label: 'Italiano' },
@@ -401,5 +389,5 @@ const LOCALE: Record<Lang, string> = {
 };
 
 export function localeFor(lang: Lang | undefined): string {
-    return LOCALE[lang as Lang] || LOCALE.de;
+    return LOCALE[lang as Lang] || LOCALE.en;
 }

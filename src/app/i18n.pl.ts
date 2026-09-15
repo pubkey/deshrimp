@@ -13,8 +13,6 @@ export const pl: Copy = {
     recentSubtitle: (m: number) => `Średnia krocząca z ostatnich ${m} minut.`,
     recentAngles: 'Kąty średnio',
     recentNote: 'Wygładzone po trzy minuty. Pojedyncza klatka waha się o stopień lub dwa - liczy się to, czy linia rośnie przez kwadrans.',
-    recentEmpty: 'Za mało pomiarów',
-    recentEmptyHint: (m: number) => `Gdy zbierze się kilka minut, pojawi się tu przebieg ostatnich ${m} minut.`,
     windowLabel: 'Okno czasu',
     lastMinutes: (m: number) => `ostatnie ${m} minut`,
 
@@ -25,9 +23,6 @@ export const pl: Copy = {
     checking: 'Analizowanie klatki …',
     nextIn: (s: number) => `Następne sprawdzenie za ${s} s`,
     lastAt: (t: string) => `Ostatnio o ${t}`,
-    untilNext: 'Do następnej klatki',
-    now: 'teraz',
-    seconds: (s: number) => `${s} s`,
 
     cameraTitle: 'Kamera',
     analysisFailed: 'Analiza się nie udała',
@@ -117,7 +112,6 @@ export const pl: Copy = {
     signalFromHeadHint: 'stopnie, głowa względem linii barków',
     soundOnSignal: 'Dźwięk przy sygnale',
     alsoNotify: 'Dodatkowo pokaż powiadomienie',
-    paceNote: 'Jedna klatka na sekundę jest do udźwignięcia tylko dlatego, że liczy się tutaj - żadne zapytanie nie wychodzi i nic nie jest naliczane. Jeśli analiza potrwa dłużej niż odstęp, następny takt jest pomijany, a nie kolejkowany.',
     thresholdNote: 'Trzy granice to przyjęte tolerancje, a nie normy kliniczne - dla tego, co potrafi zmierzyć kamera z przodu, takich norm nie ma. Jeśli piszczy za często, podnieś granicę; to jedyny właściwy sposób ich ustawiania.',
 
     whichSound: 'Jaki dźwięk',

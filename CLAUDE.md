@@ -19,8 +19,13 @@ signed, so editing a `<title>` to remove a dash invalidates the credential.
 To check before committing:
 
 ```bash
-grep -rnP '\x{2014}|\x{2013}' src/ scripts/ *.md index.html public/manifest.webmanifest
+# The locale prefix is not optional: without it grep's PCRE refuses a
+# \x{} above 0xFF with "character code point value is too large".
+LC_ALL=C.UTF-8 grep -rnP '\x{2014}|\x{2013}' \
+  src/ scripts/ *.md index.html public/manifest.webmanifest
 ```
+
+It exits 1 and prints nothing when the repo is clean.
 
 ## Design system
 

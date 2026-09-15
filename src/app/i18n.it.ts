@@ -13,8 +13,6 @@ export const it: Copy = {
     recentSubtitle: (m: number) => `Media mobile sugli ultimi ${m} minuti.`,
     recentAngles: 'Angoli in media',
     recentNote: 'Livellato su tre minuti alla volta. Una singola immagine oscilla di un grado o due - quello che conta è se una linea sale nell’arco di un quarto d’ora.',
-    recentEmpty: 'Ancora troppe poche misurazioni',
-    recentEmptyHint: (m: number) => `Appena ci sono qualche minuto di registrazione, qui compaiono gli ultimi ${m} minuti.`,
     windowLabel: 'Finestra temporale',
     lastMinutes: (m: number) => `ultimi ${m} minuti`,
 
@@ -25,9 +23,6 @@ export const it: Copy = {
     checking: 'Analisi dell’immagine …',
     nextIn: (s: number) => `Prossimo controllo tra ${s} s`,
     lastAt: (t: string) => `Ultimo alle ${t}`,
-    untilNext: 'Alla prossima immagine',
-    now: 'adesso',
-    seconds: (s: number) => `${s} s`,
 
     cameraTitle: 'Fotocamera',
     analysisFailed: 'L’analisi non ha funzionato',
@@ -117,7 +112,6 @@ export const it: Copy = {
     signalFromHeadHint: 'gradi, testa contro la linea delle spalle',
     soundOnSignal: 'Suono al segnale',
     alsoNotify: 'Mostra anche una notifica',
-    paceNote: 'Un’immagine al secondo è sostenibile solo perché il calcolo avviene qui - non parte nessuna richiesta e non viene fatturato niente. Se un’analisi dura più dell’intervallo, il giro successivo viene saltato invece di accodarsi.',
     thresholdNote: 'I tre limiti sono tolleranze poste, non valori clinici - per quello che una fotocamera frontale può misurare non ne esistono. Se suona troppo spesso, alza il limite; è l’unico modo giusto di regolarli.',
 
     whichSound: 'Quale suono',

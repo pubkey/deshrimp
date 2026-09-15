@@ -203,7 +203,7 @@ export const DEFAULTS: Settings = {
     maxForward: 18,
     maxHeadTilt: 10,
     windowMin: 30,
-    lang: 'de',
+    lang: 'en',
     sound: true,
     soundName: 'furz',
     notify: false,

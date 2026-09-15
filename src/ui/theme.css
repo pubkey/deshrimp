@@ -260,8 +260,17 @@ a:hover { color: var(--ink); }
 .ui-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3);
   background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
   padding: var(--s3) var(--s4); }
+/* A callout holds a message that changes while you watch, so its height is
+   reserved rather than measured _(2026-09-15, his call: it must not flip around
+   its size)_. 8.2em is a title plus three wrapped lines, which is the longest
+   any of them gets: the worst case in the product is the head-forward advice
+   at the narrowest tile (282px of inner width), and English is the longest of
+   the twelve at 98 characters. Past that it still grows, because clipping a
+   sentence that tells you what to do with your neck is worse than a tile that
+   moves. */
 .ui-callout { display: flex; gap: var(--s3); border-radius: var(--r-md); padding: var(--s3) var(--s4);
-  background: var(--accent-soft); border: 1px solid var(--line); }
+  background: var(--accent-soft); border: 1px solid var(--line);
+  min-height: 8.2em; }
 /* The icon sits on the first line of the title, not floating above it, and
    it is secondary ink - the words carry the message. A `bad` callout is the
    exception: there the icon marks a breach and takes the accent with it. */
@@ -856,11 +865,6 @@ a:hover { color: var(--ink); }
 .ui-chart-tip-value { font-family: var(--mono); font-variant-numeric: tabular-nums;
   font-weight: 500; }
 
-.ui-chart-empty {
-  display: grid; place-items: center; border: 1px solid var(--line);
-  border-radius: var(--r-md); color: var(--muted); font-size: var(--t-sm);
-  background: var(--bg-sunk);
-}
 .ui-sparkline { display: inline-block; vertical-align: middle; }
 
 /* A sync that keeps running after its modal closed needs somewhere to say so,

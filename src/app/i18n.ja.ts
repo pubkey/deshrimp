@@ -13,8 +13,6 @@ export const ja: Copy = {
     recentSubtitle: (m: number) => `直近 ${m} 分の移動平均。`,
     recentAngles: '角度の平均',
     recentNote: '3 分ずつならしています。1 枚の画像は 1〜2 度ぶれるもので、大事なのは 15 分かけて線が上がっていくかどうかです。',
-    recentEmpty: 'まだ測定が足りません',
-    recentEmptyHint: (m: number) => `数分ぶん記録されれば、直近 ${m} 分の推移がここに出ます。`,
     windowLabel: '時間の幅',
     lastMinutes: (m: number) => `直近 ${m} 分`,
 
@@ -25,9 +23,6 @@ export const ja: Copy = {
     checking: '画像を解析中 …',
     nextIn: (s: number) => `次のチェックまで ${s} 秒`,
     lastAt: (t: string) => `最後は ${t}`,
-    untilNext: '次の画像まで',
-    now: 'いま',
-    seconds: (s: number) => `${s} 秒`,
 
     cameraTitle: 'カメラ',
     analysisFailed: '解析できませんでした',
@@ -117,7 +112,6 @@ export const ja: Copy = {
     signalFromHeadHint: '度数、頭と肩のラインの関係',
     soundOnSignal: '通知時に音を鳴らす',
     alsoNotify: '通知も表示する',
-    paceNote: '1 秒に 1 枚が現実的なのは、計算がこの端末で行われるからです - 外へのリクエストはなく、課金もありません。解析が間隔より長くかかったときは、次の 1 回を積み上げずに飛ばします。',
     thresholdNote: '3 つのしきい値は決め打ちの許容範囲であって、臨床の基準値ではありません - 正面のカメラで測れるものについて、そもそも基準値は存在しません。鳴りすぎるならしきい値を上げてください。それが唯一正しい調整のしかたです。',
 
     whichSound: 'どの音にするか',

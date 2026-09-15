@@ -8,12 +8,12 @@
  * `<ConfirmButton>`) read their fixed labels out of it instead of hard-coding
  * German.
  *
- * Every page in this repo is German, and that stays the default: a page that
- * never mentions a language renders exactly what it rendered before this file
- * existed. The one page that needs otherwise (`app-haltung`, which he asked to
- * be switchable to English on 2026-09-08) sets `<Page lang="en">` and the whole
- * frame follows - otherwise an English app would sit inside a German shell,
- * with „Teilen" and „Sicher?" around an English answer.
+ * **English is the default** _(2026-09-15, his call)_. It was German, from
+ * when every page in this repo was; a page that never mentions a language now
+ * renders English instead. A page that does name one sets `<Page lang>` and
+ * the whole frame follows, so an English app never sits inside a German shell
+ * with „Teilen" and „Sicher?" around an English answer, and a German one does
+ * not sit inside an English shell either.
  *
  * ## Core parts
  * - `setUiLang(lang)` - `<Page>` calls this while rendering, before its subtree
@@ -35,6 +35,9 @@
  * ```
  *
  * ## Changelog
+ * - 2026-09-15 English is the default rather than German, and heads the
+ *   picker. Browser detection is unchanged: a German browser still gets
+ *   German, because that is a match rather than a fallback.
  * - 2026-09-15 The labels of the „Zu dieser Seite" block left with it: the
  *   meta, task, gaps, severity and sources words are gone from all twelve
  *   tables. What remains is what the top bar and the dialogs still say.
@@ -63,7 +66,7 @@ export type UiLang =
 
 /** Every language, in the order a picker should list them. */
 export const UI_LANGS: UiLang[] =
-    ['de', 'en', 'es', 'fr', 'it', 'pt', 'nl', 'pl', 'tr', 'ru', 'zh', 'ja'];
+    ['en', 'de', 'es', 'fr', 'it', 'pt', 'nl', 'pl', 'tr', 'ru', 'zh', 'ja'];
 
 import { TEXT } from './lang-text';
 
@@ -164,8 +167,9 @@ export type UiText = {
  * What is left is someone whose browser says French, or says nothing at all,
  * and for them English is the better guess than German.
  *
- * Note that this is *not* the default for the page frame: `current` below stays
- * German, because every other page in this repo is German and does not ask.
+ * It is also the frame's own default _(2026-09-15, his call: the default
+ * language must be English)_. `current` below starts at English, so a page
+ * that never calls `setUiLang` is English rather than German.
  *
  * `navigator.languages` is read in order, so a browser set to
  * `['en-GB', 'de']` gets English. Tags are matched on their primary subtag -
@@ -192,7 +196,7 @@ export function preferredUiLang(available?: UiLang[]): UiLang {
     return lastResort();
 }
 
-let current: UiLang = 'de';
+let current: UiLang = 'en';
 
 export function setUiLang(lang: UiLang | undefined): void {
     if (lang && UI_LANGS.indexOf(lang) >= 0) current = lang;
@@ -203,7 +207,7 @@ export function uiLang(): UiLang {
 }
 
 export function uiText(): UiText {
-    return TEXT[current] || TEXT.de;
+    return TEXT[current] || TEXT.en;
 }
 
 /**
@@ -219,5 +223,5 @@ const LOCALE: Record<UiLang, string> = {
 };
 
 export function uiLocale(): string {
-    return LOCALE[current] || LOCALE.de;
+    return LOCALE[current] || LOCALE.en;
 }

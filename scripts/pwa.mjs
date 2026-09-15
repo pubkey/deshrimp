@@ -30,6 +30,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 /** Served as-is out of `public/`, so Vite's bundle does not list them. */
 const STATIC = [
     'icon.svg',
+    'icon-maskable.svg',
     'manifest.webmanifest',
     'brand/logo.svg',
     'brand/mark.svg',

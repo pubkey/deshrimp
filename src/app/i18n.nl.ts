@@ -13,8 +13,6 @@ export const nl: Copy = {
     recentSubtitle: (m: number) => `Voortschrijdend gemiddelde over de laatste ${m} minuten.`,
     recentAngles: 'Hoeken gemiddeld',
     recentNote: 'Uitgemiddeld over telkens drie minuten. Eén beeld schommelt een graad of twee - wat telt is of een lijn over een kwartier omhoog kruipt.',
-    recentEmpty: 'Nog te weinig gemeten',
-    recentEmptyHint: (m: number) => `Zodra er een paar minuten zijn opgenomen, staan hier de laatste ${m} minuten.`,
     windowLabel: 'Tijdvenster',
     lastMinutes: (m: number) => `laatste ${m} minuten`,
 
@@ -25,9 +23,6 @@ export const nl: Copy = {
     checking: 'Beeld wordt bekeken …',
     nextIn: (s: number) => `Volgende controle over ${s} s`,
     lastAt: (t: string) => `Laatst om ${t}`,
-    untilNext: 'Tot het volgende beeld',
-    now: 'nu',
-    seconds: (s: number) => `${s} s`,
 
     cameraTitle: 'Camera',
     analysisFailed: 'De analyse is niet gelukt',
@@ -117,7 +112,6 @@ export const nl: Copy = {
     signalFromHeadHint: 'graden, hoofd tegen de schouderlijn',
     soundOnSignal: 'Geluid bij het signaal',
     alsoNotify: 'Ook een melding tonen',
-    paceNote: 'Eén beeld per seconde is alleen betaalbaar omdat er hier gerekend wordt - er gaat geen verzoek de deur uit en er wordt niets afgerekend. Duurt een analyse langer dan het interval, dan wordt de volgende tik overgeslagen in plaats van opgestapeld.',
     thresholdNote: 'De drie grenzen zijn gestelde toleranties, geen klinische normen - voor wat een camera van voren kan meten bestaan die niet. Piept het te vaak, zet de grens hoger; dat is de enige juiste manier om ze af te stellen.',
 
     whichSound: 'Welk geluid',

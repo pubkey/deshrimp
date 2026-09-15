@@ -13,8 +13,6 @@ export const tr: Copy = {
     recentSubtitle: (m: number) => `Son ${m} dakikanın hareketli ortalaması.`,
     recentAngles: 'Ortalama açılar',
     recentNote: 'Üçer dakikalık dilimlerle yumuşatıldı. Tek bir kare bir iki derece oynar - asıl önemli olan, bir çizginin çeyrek saat boyunca yükselip yükselmediği.',
-    recentEmpty: 'Henüz yeterli ölçüm yok',
-    recentEmptyHint: (m: number) => `Birkaç dakika kaydedilir kaydedilmez son ${m} dakikanın seyri burada görünür.`,
     windowLabel: 'Zaman aralığı',
     lastMinutes: (m: number) => `son ${m} dakika`,
 
@@ -25,9 +23,6 @@ export const tr: Copy = {
     checking: 'Kare inceleniyor …',
     nextIn: (s: number) => `Sonraki kontrole ${s} sn`,
     lastAt: (t: string) => `Son ${t}`,
-    untilNext: 'Sonraki kareye',
-    now: 'şimdi',
-    seconds: (s: number) => `${s} sn`,
 
     cameraTitle: 'Kamera',
     analysisFailed: 'İnceleme başarısız oldu',
@@ -117,7 +112,6 @@ export const tr: Copy = {
     signalFromHeadHint: 'derece, baş omuz çizgisine karşı',
     soundOnSignal: 'Sinyalde ses',
     alsoNotify: 'Ayrıca bir bildirim göster',
-    paceNote: 'Saniyede bir kare yalnızca hesap burada yapıldığı için karşılanabilir - dışarı istek gitmez ve hiçbir şey faturalanmaz. Bir inceleme aralıktan uzun sürerse sonraki tur kuyruğa alınmaz, atlanır.',
     thresholdNote: 'Üç sınır konulmuş toleranslardır, klinik ölçüt değil - önden bakan bir kameranın ölçebildiği şey için böyle bir ölçüt yok. Çok sık ötüyorsa sınırı yükselt; onları ayarlamanın tek doğru yolu budur.',
 
     whichSound: 'Hangi ses',

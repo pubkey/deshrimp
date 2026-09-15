@@ -99,7 +99,7 @@ const DETECTED: Lang = preferredUiLang(LANGUAGES.map((l) => l.value)) as Lang;
 const INITIAL_SETTINGS: Settings = { ...DEFAULTS, lang: DETECTED };
 
 const CopyContext = createContext<Copy>(copyFor(DETECTED));
-const LangContext = createContext<Lang>('de');
+const LangContext = createContext<Lang>('en');
 
 const useCopy = () => useContext(CopyContext);
 const useLang = () => useContext(LangContext);
@@ -163,6 +163,16 @@ const runGapMs = (intervalSec: number) => Math.max(30_000, intervalSec * 3_000);
 
 /** The shortest interval the loop will honour, whatever the setting says. */
 const MIN_INTERVAL = 1;
+
+/**
+ * The corner radius of the countdown ring, in CSS pixels.
+ *
+ * It has to match the well's own 8px (`--radius-lg`) or the ring cuts its
+ * corners inside the border it is drawn on. A number rather than the token
+ * because `rx` is an SVG geometry attribute: `var()` in one is honoured by
+ * Chromium and ignored by Safari, which would square the corners there.
+ */
+const RING_RADIUS = 8;
 
 const INTERVALS = [1, 2, 5, 10, 15, 30, 60, 120];
 
@@ -276,23 +286,6 @@ function cameraErrorText(error: unknown, t: Copy): string {
 
 /* ----------------------------------------------------------------- camera */
 
-/**
- * Give the element the aspect ratio of the stream it is actually showing, so
- * the preview is the camera's own picture rather than a crop of it. The CSS
- * cannot do this on its own: it has to name *some* ratio up front, because a
- * `<video>` without a stream reports the 300×150 default and the box would
- * jump the moment the picture arrives.
- *
- * Called on the `loadedmetadata` and `resize` events - the first is where the
- * numbers land, the second is a camera changing mode mid-stream (rotation, a
- * resolution downgrade under load) - and once directly on start, for a stream
- * that is already decoded and fires neither.
- */
-function fitToStream(video: HTMLVideoElement): void {
-    if (!video.videoWidth || !video.videoHeight) return;
-    video.style.aspectRatio = `${video.videoWidth} / ${video.videoHeight}`;
-}
-
 function useCamera(t: Copy) {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const streamRef = useRef<MediaStream | null>(null);
@@ -325,7 +318,6 @@ function useCamera(t: Copy) {
             streamRef.current = stream;
             if (videoRef.current) {
                 videoRef.current.srcObject = stream;
-                fitToStream(videoRef.current);
                 await videoRef.current.play().catch(() => { /* autoplay quirks */ });
             }
             setOn(true);
@@ -335,20 +327,6 @@ function useCamera(t: Copy) {
             setOn(false);
             return false;
         }
-    }, []);
-
-    // Registered once, not per start: `start` can run many times on the same
-    // element, and a listener added there would stack up a copy each time.
-    useEffect(() => {
-        const video = videoRef.current;
-        if (!video) return;
-        const apply = () => fitToStream(video);
-        video.addEventListener('loadedmetadata', apply);
-        video.addEventListener('resize', apply);
-        return () => {
-            video.removeEventListener('loadedmetadata', apply);
-            video.removeEventListener('resize', apply);
-        };
     }, []);
 
     useEffect(() => stop, [stop]);
@@ -676,6 +654,11 @@ function Live() {
     const [running, setRunning] = useState(false);
     const [checking, setChecking] = useState(false);
     const [secondsLeft, setSecondsLeft] = useState(0);
+    /* Seconds until the next picture, and whether the loop was already running
+       on the previous pass. Refs rather than state: the tick reads and writes
+       them every second and must not re-render the page to do it. */
+    const left = useRef(0);
+    const wasRunning = useRef(false);
     const [apiError, setApiError] = useState<string | null>(null);
     const [note, setNote] = useState<string | null>(null);
     const [flash, setFlash] = useState(false);
@@ -695,6 +678,10 @@ function Live() {
     // Not DEFAULTS: writing any setting on a fresh device must persist the
     // detected language, not silently pin it to German.
     const settings: Settings = storedSettings[0] || INITIAL_SETTINGS;
+    /* Declared here rather than down with the render values: the tick effect
+       below takes it as a dependency, which is what makes a new pace restart
+       the wait instead of serving out the old one. */
+    const interval = Math.max(MIN_INTERVAL, settings.intervalSec);
     const { upsert: writeSettings } = useCollection<Settings>('settings');
 
     const since = useMemo(startOfToday, []);
@@ -826,24 +813,43 @@ function Live() {
 
     /* ----------------------------------------------------------- the loop */
 
+    /**
+     * The tick.
+     *
+     * `interval` is a dependency, so **changing the pace restarts the wait
+     * rather than serving out the old one** _(2026-09-15, his call)_. Before
+     * this the loop read the setting only when it reloaded the counter, so
+     * going from two minutes to one second left you watching the old two
+     * minutes drain before anything changed.
+     *
+     * A restart is not a start, though, and the two want different things: the
+     * button should take a picture immediately, a new pace should not. That is
+     * what `wasRunning` separates - on the first pass after Start the counter
+     * begins at zero and fires at once; on a later pass it begins at the new
+     * interval and counts it down.
+     */
     useEffect(() => {
         runningRef.current = running;
-        if (!running) return;
-        let left = 0;                       // the first check runs immediately
-        setSecondsLeft(0);
+        if (!running) {
+            wasRunning.current = false;
+            return;
+        }
+        left.current = wasRunning.current ? interval : 0;
+        wasRunning.current = true;
+        setSecondsLeft(left.current);
         const id = window.setInterval(() => {
             if (!runningRef.current || busy.current) return;
-            if (left > 0) {
-                left -= 1;
-                setSecondsLeft(left);
+            if (left.current > 0) {
+                left.current -= 1;
+                setSecondsLeft(left.current);
                 return;
             }
-            left = Math.max(MIN_INTERVAL, live.current.settings.intervalSec);
-            setSecondsLeft(left);
+            left.current = interval;
+            setSecondsLeft(left.current);
             void check();
         }, 1000);
         return () => window.clearInterval(id);
-    }, [running, check]);
+    }, [running, check, interval]);
 
     /* The screen lock is dropped when the tab goes away; take it back. */
     useEffect(() => {
@@ -894,7 +900,11 @@ function Live() {
     /* --------------------------------------------------------- rendering */
 
     const verdict: Verdict | null = last && running ? last.verdict : null;
-    const interval = Math.max(MIN_INTERVAL, settings.intervalSec);
+    /* How much of the well's border is drawn. While a check is running the
+       ring is full rather than part-way: the wait is over, the work is what is
+       left, and a ring sliding backwards to zero under it would read as a
+       reset rather than as a reading being taken. */
+    const ringPct = checking ? 100 : ((interval - secondsLeft) / interval) * 100;
     useVerdictFavicon(verdict);
 
     return (
@@ -919,29 +929,53 @@ function Live() {
                     {!camera.on ? (
                         <div className="haltung-kamera-aus">{t.cameraOff}</div>
                     ) : null}
+                    {/* The countdown to the next picture, drawn as the well's
+                        own border filling up _(2026-09-15, his call, in place
+                        of a labelled bar)_. `pathLength="100"` is what makes it
+                        exact: it renormalises the perimeter to 100 units
+                        whatever the box measures, so the dash offset is the
+                        percentage directly and no JavaScript has to measure
+                        anything. The rect starts at its top left corner and
+                        runs clockwise. */}
+                    {running ? (
+                        <svg className="haltung-tick" aria-hidden="true">
+                            <rect
+                                width="100%" height="100%"
+                                rx={RING_RADIUS} pathLength={100}
+                                style={{ strokeDashoffset: 100 - Math.round(ringPct) }}
+                            />
+                        </svg>
+                    ) : null}
                 </div>
 
                 {/* The verdict reads under the picture, not over it _(2026-09-15,
                     his call)_. The camera well is what the tile is for and it
                     should be the first thing in it; a line of prose above it
                     pushed the picture down and moved it every time the wording
-                    changed length. Below, the well stays put and the sentence
-                    grows downwards. */}
-                {verdict ? (
-                    <Callout
-                        tone={verdict === 'good' ? undefined : verdict === 'bad' ? 'bad' : 'warn'}
-                        icon={<Icon size={20} name={verdict === 'good' ? 'check-circle'
-                            : verdict === 'bad' ? 'alert' : 'eye'} />}
-                        title={t.verdictTitle[verdict]}
-                        className={flash ? 'haltung-alarm' : undefined}
-                    >
-                        {adviceText(last?.advice, t)}
-                    </Callout>
-                ) : null}
+                    changed length.
 
-                {camera.error ? <Callout tone="bad" title={t.cameraTitle}>{camera.error}</Callout> : null}
-                {apiError ? <Callout tone="bad" title={t.analysisFailed}>{apiError}</Callout> : null}
-                {note ? <Muted>{note}</Muted> : null}
+                    The slot keeps its height whether or not there is anything
+                    in it, so the tile does not grow when the first reading
+                    lands or when the advice wraps to another line. On a grid,
+                    a tile that changes height moves every neighbour in its
+                    row. */}
+                <div className="haltung-verdict">
+                    {verdict ? (
+                        <Callout
+                            tone={verdict === 'good' ? undefined : verdict === 'bad' ? 'bad' : 'warn'}
+                            icon={<Icon size={20} name={verdict === 'good' ? 'check-circle'
+                                : verdict === 'bad' ? 'alert' : 'eye'} />}
+                            title={t.verdictTitle[verdict]}
+                            className={flash ? 'haltung-alarm' : undefined}
+                        >
+                            {adviceText(last?.advice, t)}
+                        </Callout>
+                    ) : null}
+
+                    {camera.error ? <Callout tone="bad" title={t.cameraTitle}>{camera.error}</Callout> : null}
+                    {apiError ? <Callout tone="bad" title={t.analysisFailed}>{apiError}</Callout> : null}
+                    {note ? <Muted>{note}</Muted> : null}
+                </div>
             </Panel>
 
             {/* Running the camera and choosing the noise it makes are one tile
@@ -971,15 +1005,6 @@ function Live() {
                                 : last ? t.lastAt(clockTime(last.t, lang)) : ''}
                     </Muted>
                 </Row>
-
-                {running ? (
-                    <Progress
-                        value={(interval - secondsLeft) / interval}
-                        tone={verdict === 'bad' ? undefined : 'ok'}
-                        label={t.untilNext}
-                        valueLabel={checking ? t.now : t.seconds(secondsLeft)}
-                    />
-                ) : null}
 
                 <Sound
                     settings={settings}
@@ -1116,41 +1141,39 @@ function Recent({ readings, windowMin, change }: {
                 against whole days. A tile title has to carry its own scope. */}
             <Panel id="recentangles" title={`${t.recentTitle} · ${t.recentAngles}`}>
                 {picker}
-                {rows.length < 2 ? (
-                    <Empty title={t.recentEmpty} hint={t.recentEmptyHint(minutes)} />
-                ) : (
-                    <>
-                        <LineChart
-                            data={rows}
-                            x="zeit"
-                            series={[
-                                { key: 'vorlage', label: t.statForward },
-                                { key: 'seitlich', label: t.statLean },
-                                { key: 'kopf', label: t.statHeadTilt },
-                            ]}
-                            format={withUnit(formatNumber, '°')}
-                            zero
-                            height={220}
-                        />
-                        <Text small muted>{t.recentNote}</Text>
-                    </>
-                )}
+                {/* The chart is always drawn, however little it has to draw
+                    _(2026-09-15, his call: never show "not enough measured
+                    yet")_. An empty axis is still a readout - it says the
+                    scale and that nothing has arrived on it - and swapping it
+                    for a paragraph made the tile change height the moment the
+                    second reading landed. */}
+                <LineChart
+                    data={rows}
+                    x="zeit"
+                    series={[
+                        { key: 'vorlage', label: t.statForward },
+                        { key: 'seitlich', label: t.statLean },
+                        { key: 'kopf', label: t.statHeadTilt },
+                    ]}
+                    format={withUnit(formatNumber, '°')}
+                    zero
+                    height={220}
+                />
+                <Text small muted>{t.recentNote}</Text>
             </Panel>
 
-            {rows.length < 2 ? null : (
-                <Panel id="recentshare" title={`${t.recentTitle} · ${t.shareStraight}`}>
-                    <Text small muted>{t.recentSubtitle(minutes)}</Text>
-                    <LineChart
-                        data={rows}
-                        x="zeit"
-                        series={[{ key: 'gerade', label: t.seriesStraight }]}
-                        format={withUnit(formatNumber, '%')}
-                        zero
-                        legend={false}
-                        height={180}
-                    />
-                </Panel>
-            )}
+            <Panel id="recentshare" title={`${t.recentTitle} · ${t.shareStraight}`}>
+                <Text small muted>{t.recentSubtitle(minutes)}</Text>
+                <LineChart
+                    data={rows}
+                    x="zeit"
+                    series={[{ key: 'gerade', label: t.seriesStraight }]}
+                    format={withUnit(formatNumber, '%')}
+                    zero
+                    legend={false}
+                    height={180}
+                />
+            </Panel>
         </>
     );
 }
@@ -1499,7 +1522,6 @@ function Setup(props: SetupProps) {
                         hint={t.signalFromHeadHint}
                     />
                 </Grid>
-                <Text small muted>{t.paceNote}</Text>
                 <Text small muted>{t.thresholdNote}</Text>
             </Panel>
 
@@ -1531,7 +1553,7 @@ function Content() {
     const { upsert: writeSettings } = useCollection<Settings>('settings');
     const lang: Lang = storedSettings[0]?.lang || DETECTED;
     const t = copyFor(lang);
-    const written = data[lang] || data.de;
+    const written = data[lang] || data.en;
 
     return (
         <LangContext.Provider value={lang}>

@@ -1,19 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="deshrimp">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="deshrimp">
   <!--
-    The deshrimp mark: a vertebral stack of four white bars on a forward curve
-    with a coral marker at the head. Geometry taken from the design system's
-    brand/mark.svg, laid on the slate ground and scaled into the maskable safe
-    zone (the inner 80%) so a platform that crops to a circle keeps all of it.
-    The credentialed original of the mark is served alongside this file at
-    brand/mark.svg.
+    The favicon, and the one asset in the product that has to work on a ground
+    we do not control: browser chrome is light or dark by the user's choice, not
+    by ours. So it carries no plate and flips its own ink instead, which is what
+    the stylesheet below is for. The two inks are the design system's own: the
+    slate ground colour on a light chrome, the white ink on a dark one, exactly
+    as brand/mark.svg and brand/mark-inverse.svg have them.
+
+    The coral marker does not flip. The brand keeps it at #ff8257 on both
+    grounds (see brand/mark-inverse.svg), and it is the one part of the mark
+    that is supposed to read as the same colour wherever it lands.
+
+    Support is not universal: Firefox and Safari have honoured a media query
+    inside an SVG favicon for years, Chromium only since 108. An older browser
+    takes the light-mode ink, which is the declaration outside the query.
+
+    The installed app icon is NOT this file. It is icon-maskable.svg, which
+    keeps the slate plate: a maskable icon is composited onto a platform colour
+    and has to fill its safe zone, so a transparent one is the wrong shape.
   -->
   <title>deshrimp</title>
-  <rect width="512" height="512" rx="96" fill="#0F172A"/>
-  <g transform="translate(59.8 57.7) scale(8.53)">
-    <rect x="20" y="38" width="14" height="4" rx="2" fill="#F8FAFC"/>
-    <rect x="15" y="30" width="14" height="4" rx="2" fill="#F8FAFC"/>
-    <rect x="12" y="22" width="14" height="4" rx="2" fill="#F8FAFC"/>
-    <rect x="14" y="14" width="14" height="4" rx="2" fill="#F8FAFC"/>
-    <circle cx="27" cy="8" r="3.5" fill="#ff8257"/>
-  </g>
+  <style>
+    .mark { fill: #0F172A; }
+    @media (prefers-color-scheme: dark) {
+      .mark { fill: #F8FAFC; }
+    }
+  </style>
+  <rect class="mark" x="20" y="38" width="14" height="4" rx="2"/>
+  <rect class="mark" x="15" y="30" width="14" height="4" rx="2"/>
+  <rect class="mark" x="12" y="22" width="14" height="4" rx="2"/>
+  <rect class="mark" x="14" y="14" width="14" height="4" rx="2"/>
+  <circle cx="27" cy="8" r="3.5" fill="#ff8257"/>
 </svg>

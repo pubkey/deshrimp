@@ -13,8 +13,6 @@ export const zh: Copy = {
     recentSubtitle: (m: number) => `最近 ${m} 分钟的移动平均。`,
     recentAngles: '角度平均值',
     recentNote: '每三分钟平滑一次。单张画面本来就会晃一两度，真正要看的是一条线在一刻钟里有没有往上走。',
-    recentEmpty: '测得还太少',
-    recentEmptyHint: (m: number) => `只要记录满几分钟，这里就会显示最近 ${m} 分钟的走势。`,
     windowLabel: '时间窗口',
     lastMinutes: (m: number) => `最近 ${m} 分钟`,
 
@@ -25,9 +23,6 @@ export const zh: Copy = {
     checking: '正在分析画面 …',
     nextIn: (s: number) => `${s} 秒后再次检查`,
     lastAt: (t: string) => `上一次 ${t}`,
-    untilNext: '距离下一张画面',
-    now: '现在',
-    seconds: (s: number) => `${s} 秒`,
 
     cameraTitle: '摄像头',
     analysisFailed: '分析没有成功',
@@ -117,7 +112,6 @@ export const zh: Copy = {
     signalFromHeadHint: '度数，头相对肩线',
     soundOnSignal: '提示时发声',
     alsoNotify: '同时弹出一条通知',
-    paceNote: '每秒一张之所以划算，是因为计算就在本地，不会发出任何请求，也不会产生任何费用。如果一次分析比间隔还慢，下一拍会被跳过，而不是排队堆积。',
     thresholdNote: '这三个上限是设定的容差，不是临床标准，对于正面摄像头能测到的东西，本来就没有标准。响得太频繁就把上限调高；这是调它们唯一正确的方式。',
 
     whichSound: '用哪种声音',

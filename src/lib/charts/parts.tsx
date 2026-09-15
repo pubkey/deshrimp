@@ -3,7 +3,7 @@
  * tooltip.
  *
  * They are shared rather than per-chart so that a bar chart and a line chart on
- * the same page cannot drift apart - same tooltip, same legend, same empty
+ * the same page cannot drift apart - same tooltip, same legend, same
  * state, same paddings.
  */
 
@@ -16,21 +16,19 @@ import { formatNumber } from './theme';
 
 export type FrameProps = {
     height?: number;
-    /** Rendered instead of the chart when there is nothing to draw. */
-    empty?: ReactNode;
-    isEmpty?: boolean;
     className?: string;
     children: ReactNode;
 };
 
-export function ChartFrame({ height = 280, empty, isEmpty, className, children }: FrameProps) {
-    if (isEmpty) {
-        return (
-            <div className="ui-chart-empty" style={{ height }}>
-                {empty ?? 'Keine Daten'}
-            </div>
-        );
-    }
+/**
+ * **A chart with nothing in it is still drawn** _(2026-09-15, his call: always
+ * show the chart, even when it has too little data)_. There used to be an
+ * empty branch here that replaced it with a box reading „Keine Daten", which
+ * was wrong twice over: an axis with no line on it still says what is being
+ * measured and on what scale, and swapping the two made the tile change height
+ * the moment a second reading landed.
+ */
+export function ChartFrame({ height = 280, className, children }: FrameProps) {
     return (
         <div className={className ? `ui-chart ${className}` : 'ui-chart'}>
             <ResponsiveContainer width="100%" height={height}>

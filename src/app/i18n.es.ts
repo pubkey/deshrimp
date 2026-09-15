@@ -13,8 +13,6 @@ export const es: Copy = {
     recentSubtitle: (m: number) => `Media móvil de los últimos ${m} minutos.`,
     recentAngles: 'Ángulos de media',
     recentNote: 'Suavizado de tres en tres minutos. Una sola imagen baila un grado o dos - lo que cuenta es si una línea sube a lo largo de un cuarto de hora.',
-    recentEmpty: 'Aún hay pocas mediciones',
-    recentEmptyHint: (m: number) => `En cuanto haya unos minutos grabados, aquí aparecen los últimos ${m} minutos.`,
     windowLabel: 'Ventana de tiempo',
     lastMinutes: (m: number) => `últimos ${m} minutos`,
 
@@ -25,9 +23,6 @@ export const es: Copy = {
     checking: 'Analizando la imagen …',
     nextIn: (s: number) => `Próxima comprobación en ${s} s`,
     lastAt: (t: string) => `Última a las ${t}`,
-    untilNext: 'Hasta la próxima imagen',
-    now: 'ahora',
-    seconds: (s: number) => `${s} s`,
 
     cameraTitle: 'Cámara',
     analysisFailed: 'El análisis no ha funcionado',
@@ -117,7 +112,6 @@ export const es: Copy = {
     signalFromHeadHint: 'grados, cabeza contra la línea de los hombros',
     soundOnSignal: 'Sonido al avisar',
     alsoNotify: 'Mostrar además una notificación',
-    paceNote: 'Una imagen por segundo solo sale a cuenta porque el cálculo se hace aquí - no sale ninguna petición y no se factura nada. Si un análisis tarda más que el intervalo, el siguiente turno se salta en vez de acumularse.',
     thresholdNote: 'Los tres límites son tolerancias fijadas, no normas clínicas - para lo que puede medir una cámara frontal no las hay. Si pita demasiado, sube el límite; esa es la única forma correcta de ajustarlos.',
 
     whichSound: 'Qué sonido',

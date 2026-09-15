@@ -56,13 +56,12 @@ export type LineChartProps = {
     /** Start the y axis at zero even when the data sits high above it. */
     zero?: boolean;
     legend?: boolean;
-    empty?: string;
 };
 
 export function LineChart({
     data, series, x = 'x', height = 280, format = formatNumber,
     formatAxis, formatLabel, smooth = false, dots,
-    zero = false, legend = true, empty,
+    zero = false, legend = true,
 }: LineChartProps) {
     const resolved = resolveSeries(series);
     // Dots on every point turn a long series into a dotted mess; on a short one
@@ -71,7 +70,7 @@ export function LineChart({
 
     return (
         <>
-            <ChartFrame height={height} isEmpty={!data.length} empty={empty}>
+            <ChartFrame height={height}>
                 <RLineChart data={data} margin={{ top: 8, right: 12, bottom: 0, left: 0 }}>
                     <CartesianGrid {...GRID} vertical={false} />
                     <XAxis dataKey={x} {...AXIS} minTickGap={16} />

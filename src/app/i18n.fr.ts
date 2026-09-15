@@ -13,8 +13,6 @@ export const fr: Copy = {
     recentSubtitle: (m: number) => `Moyenne glissante sur les ${m} dernières minutes.`,
     recentAngles: 'Angles en moyenne',
     recentNote: 'Lissé par tranches de trois minutes. Une image isolée bouge d’un ou deux degrés - ce qui compte, c’est si une courbe monte sur un quart d’heure.',
-    recentEmpty: 'Pas encore assez de mesures',
-    recentEmptyHint: (m: number) => `Dès que quelques minutes sont enregistrées, les ${m} dernières minutes s’affichent ici.`,
     windowLabel: 'Fenêtre de temps',
     lastMinutes: (m: number) => `${m} dernières minutes`,
 
@@ -25,9 +23,6 @@ export const fr: Copy = {
     checking: 'Analyse de l’image …',
     nextIn: (s: number) => `Prochaine vérification dans ${s} s`,
     lastAt: (t: string) => `Dernière à ${t}`,
-    untilNext: 'Avant la prochaine image',
-    now: 'maintenant',
-    seconds: (s: number) => `${s} s`,
 
     cameraTitle: 'Caméra',
     analysisFailed: 'L’analyse n’a pas fonctionné',
@@ -117,7 +112,6 @@ export const fr: Copy = {
     signalFromHeadHint: 'degrés, tête contre la ligne des épaules',
     soundOnSignal: 'Son au signal',
     alsoNotify: 'Afficher aussi une notification',
-    paceNote: 'Une image par seconde n’est abordable que parce que le calcul se fait ici - aucune requête ne part et rien n’est facturé. Si une analyse dure plus longtemps que l’intervalle, le tour suivant est sauté plutôt que mis en file.',
     thresholdNote: 'Les trois limites sont des tolérances posées, pas des normes cliniques - pour ce qu’une caméra de face peut mesurer, il n’en existe pas. Si ça bipe trop souvent, monte la limite ; c’est la seule bonne façon de les régler.',
 
     whichSound: 'Quel son',

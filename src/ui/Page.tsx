@@ -34,6 +34,7 @@
  * ```
  *
  * ## Changelog
+ * - 2026-09-15 The frame's default language is English, not German.
  * - 2026-09-15 „Zu dieser Seite" is gone - his call, „wir brauchen das nicht".
  *   With it went the task box, the „Datengrundlage" and „Quellen" tabs and the
  *   build stamp, and the `task` / `gaps` / `sources` / `footer` props that fed
@@ -64,10 +65,10 @@ export type PageProps = {
     theme?: boolean;
     /**
      * The language of the page frame - the labels this component and the ones
-     * in the top bar own, not the page's own copy. Defaults to German, which is
-     * what every page in this repo is; `"en"` exists because `app-haltung` can
-     * be switched (2026-09-08) and a German label over an English answer reads
-     * like a bug.
+     * in the top bar own, not the page's own copy. Defaults to English
+     * (2026-09-15); pass one of the twelve to switch the frame with the
+     * content, because a label in one language over an answer in another
+     * reads like a bug.
      */
     lang?: UiLang;
     /**
@@ -106,7 +107,7 @@ export function Page(props: PageProps) {
                     page has one language, a picker when it has several. */}
                 <LanguagePicker
                     value={props.lang}
-                    languages={props.languages || (props.lang ? [props.lang] : ['de'])}
+                    languages={props.languages || (props.lang ? [props.lang] : ['en'])}
                     onChange={props.onLangChange}
                 />
             </div>
