@@ -1,5 +1,5 @@
 /**
- * # DataSyncButton — the ⇅ in the top bar, and everything behind it
+ * # DataSyncButton - the ⇅ in the top bar, and everything behind it
  *
  * ## What it does and how it looks
  * One round icon button next to the theme toggle. It opens a modal with four
@@ -8,7 +8,7 @@
  *
  * It replaces the plain download button every page used to carry _(asked for
  * 2026-09-09: „anstatt direkt zu download öffnet er ein modal")_. The reason a
- * modal beats a download is not the extra options — it is that a download is a
+ * modal beats a download is not the extra options - it is that a download is a
  * one-way door. A page whose only export is a file you can never load back is a
  * page that watched you for three months and then shrugged.
  *
@@ -28,7 +28,7 @@
  * - **Two codes, not one, on the P2P side** _(same day: „it need an input field
  *   where i can paste the code from someone else")_. The page generates *his*
  *   code to hand out, and takes *theirs* in a second field. One box doing both
- *   jobs meant overwriting his own code to join someone — and losing it.
+ *   jobs meant overwriting his own code to join someone - and losing it.
  * - **The P2P code is the password.** 128 bits of randomness names the room;
  *   whoever has the string replicates with him. Same bargain as the published
  *   page URL, and the modal says so in those words.
@@ -36,7 +36,7 @@
  *   sync was started it should remember the token and auto-restart on reload of
  *   the page. also it should continue syncing when the modal is closed")_. The
  *   handle lives in `sync.ts`, in module scope, because `<Modal>` unmounts its
- *   children — a sync owned by the modal was a sync that could not be left on.
+ *   children - a sync owned by the modal was a sync that could not be left on.
  *   The P2P room is remembered and picked back up on the next visit; *Stop* is
  *   also what forgets it. The clouds are not resumed: their tokens expire after
  *   an hour and come from a popup, so trying would mean a sign-in window on
@@ -89,7 +89,7 @@ export function DataSyncButton({ database, filename, className }: DataSyncButton
     const sync = (config as any).sync || {};
 
     // Pick a P2P session back up where the last visit left it. Runs once, on the
-    // button — which is mounted for as long as the page is, unlike the modal.
+    // button - which is mounted for as long as the page is, unlike the modal.
     useEffect(() => {
         void resumeP2P(database, {
             appId: config.appId,
@@ -103,6 +103,10 @@ export function DataSyncButton({ database, filename, className }: DataSyncButton
             <IconButton
                 icon={<Icon name="sync" size={20} />}
                 label={session ? `${t.syncTitle} · ${t.syncConnected}` : t.syncTitle}
+                /* The visible word is the short one: the connected state is
+                   already on the button as a dot, and „Sync · connected" in the
+                   top bar is a sentence where a label belongs. */
+                text={t.syncTitle}
                 className={cx(className, session ? 'ui-syncing' : undefined)}
                 onClick={() => setOpen(true)}
             />
@@ -134,7 +138,7 @@ function SyncPanel({ database, filename }: { database: RxDatabase<any>; filename
     const running: SyncTarget | null = session?.target ?? null;
     const [busy, setBusy] = useState<SyncTarget | null>(null);
     /**
-     * His own room, to hand out — and the one he was handed, if any. **Both are
+     * His own room, to hand out - and the one he was handed, if any. **Both are
      * remembered** _(„remember the copied and pasted p2p code")_: his own is an
      * address he may already have given away, and a code he pasted should still
      * be in the field after a reload rather than leaving him looking at a room
@@ -148,7 +152,7 @@ function SyncPanel({ database, filename }: { database: RxDatabase<any>; filename
     /**
      * Client ids: the page's own if this origin is allowed to use it, otherwise
      * whatever he pasted last. A client id is public by nature, so `localStorage`
-     * is the right shelf — it belongs to this browser, like the data it unlocks.
+     * is the right shelf - it belongs to this browser, like the data it unlocks.
      */
     const [ids, setIds] = useState<Record<string, string>>(() => ({
         google: bundledId(sync.googleClientId, sync.googleClientOrigins) || readId(config.appId, 'google'),
@@ -374,7 +378,7 @@ function Block({ title, note, children }: {
 }
 
 /**
- * One provider — always pressable. Without a client id the press opens the
+ * One provider - always pressable. Without a client id the press opens the
  * field to paste one, which is the only thing that could have unblocked it
  * anyway; a disabled button just left the reader with nowhere to go.
  */

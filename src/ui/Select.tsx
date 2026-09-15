@@ -1,5 +1,5 @@
 /**
- * # Select — pick one from a list
+ * # Select - pick one from a list
  *
  * ## What it does and how it looks
  * A native `<select>`, styled to match the other controls. Native on purpose:
@@ -7,7 +7,7 @@
  * than any custom dropdown, and it works before the JavaScript has settled.
  *
  * ## Core parts
- * - `children` — plain `<option>` elements. No `options` prop: the native
+ * - `children` - plain `<option>` elements. No `options` prop: the native
  *   markup already supports groups, disabled entries and everything else.
  * - `label` / `hint` / `error`, as with `<Input>`.
  *

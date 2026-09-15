@@ -1,5 +1,5 @@
 /**
- * # Icon — the only glyphs in the system
+ * # Icon - the only glyphs in the system
  *
  * ## What it does and how it looks
  * A 24×24 stroked outline at `stroke-width: 1.5`, painted in `currentColor`, so
@@ -7,8 +7,8 @@
  * sizes: 16px inside a line of text or a button, 20px standing alone.
  *
  * ## Why it exists
- * The design system is deliberately near-iconless — status is carried by 6px
- * dots, uppercase labels, borders and numbers — and it bans two things
+ * The design system is deliberately near-iconless - status is carried by 6px
+ * dots, uppercase labels, borders and numbers - and it bans two things
  * outright: emoji as an icon, and unicode symbols (✓ ✕ ▲) as UI affordances.
  * A glyph borrowed from the text stream is at the mercy of the platform's font,
  * renders in full colour on a phone and in outline on a desktop, and cannot be
@@ -22,12 +22,12 @@
  * The paths are inlined rather than pulled from the CDN the design system
  * suggests. This page installs and has to keep working with the network gone,
  * and an icon set that arrives over the wire is an icon set that is missing on
- * the offline load — the one where the user is looking at an alarm.
+ * the offline load - the one where the user is looking at an alarm.
  *
  * ## Core parts
- * - `name` — which glyph. The set is closed on purpose: adding one is a design
+ * - `name` - which glyph. The set is closed on purpose: adding one is a design
  *   decision, so it happens here rather than inline at a call site.
- * - `size` — 16 (default) or 20.
+ * - `size` - 16 (default) or 20.
  * - Always `aria-hidden`. An icon here never carries meaning on its own; the
  *   button it sits in has the words, or a `label`.
  *
@@ -39,6 +39,10 @@
  *
  * ## Changelog
  * - 2026-09-15 Own file, and the end of emoji in the interface.
+ * - 2026-09-15 `minus` and `plus`, for the slider's stepper. Drawn rather than
+ *   the characters, for the reason at the top of this file: `+` and `-` out of
+ *   the text stream come at whatever weight the platform's font has, which next
+ *   to a 1.5 stroke is visibly wrong.
  */
 
 import type { CSSProperties } from 'react';
@@ -148,13 +152,16 @@ const PATHS = {
             <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
         </>
     ),
+    /* The tray with an arrow coming out of it, not the three-node graph
+       _(2026-09-15, his call: "the official share icon that other websites
+       use")_. Both are Lucide's, and the node graph is the one that reads as
+       "share" only once you already know the convention; this one is what iOS
+       put on every share sheet and what the web copied. */
     share: (
         <>
-            <circle cx="18" cy="5" r="3" />
-            <circle cx="6" cy="12" r="3" />
-            <circle cx="18" cy="19" r="3" />
-            <path d="m8.59 13.51 6.83 3.98" />
-            <path d="m15.41 6.51-6.82 3.98" />
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+            <path d="m8 6 4-4 4 4" />
+            <path d="M12 2v14" />
         </>
     ),
     pencil: (
@@ -164,6 +171,13 @@ const PATHS = {
         </>
     ),
     chevron: <path d="m9 18 6-6-6-6" />,
+    minus: <path d="M5 12h14" />,
+    plus: (
+        <>
+            <path d="M5 12h14" />
+            <path d="M12 5v14" />
+        </>
+    ),
     x: (
         <>
             <path d="M18 6 6 18" />

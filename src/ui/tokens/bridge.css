@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------------------
-   bridge.css — the old token names, defined in terms of the new ones.
+   bridge.css - the old token names, defined in terms of the new ones.
 
    The component library was written against a different vocabulary (`--ink`,
    `--card`, `--s4`, `--r-md`). Rather than touch forty-five components to
@@ -8,7 +8,7 @@
    keep working because the right-hand sides are themselves themed.
 
    This is a translation layer, not a second palette: nothing below invents a
-   value. Where the old vocabulary was finer than the new one, names collapse —
+   value. Where the old vocabulary was finer than the new one, names collapse -
    that is the point. The system has six colours; a component asking for a
    seventh gets the nearest one it is allowed to have.
 
@@ -50,7 +50,7 @@
      the accent appears, which as a three-step ladder is: white ink (within
      tolerance) → slate (worth noticing) → coral (breached). The information
      survives; the hues do not.
-     `--rec` was an "our pick" gold — a highlight, not a state — so it becomes
+     `--rec` was an "our pick" gold - a highlight, not a state - so it becomes
      the plain white ink rather than spending accent budget. */
   --rec:         var(--text-primary);
   --ok:          var(--text-primary);
@@ -63,8 +63,8 @@
   /* No categorical palette exists in a six-value system, and inventing one
      would be inventing a brand. Charts here plot at most three lines, so the
      three legible values are spent in order: white, slate, coral. A third
-     simultaneous line does spend the accent budget — past three series the
-     answer is to split the chart, not to add a hue. Slots 4–6 are the darker
+     simultaneous line does spend the accent budget - past three series the
+     answer is to split the chart, not to add a hue. Slots 4-6 are the darker
      slates and read as "rest". */
   --series-1: var(--fill-default);
   --series-2: var(--text-secondary);
@@ -85,11 +85,11 @@
 
   /* --- radius ------------------------------------------------------------ */
   /* Nothing above 8px on a container, so the old 14/20/28 ladder tops out. */
-  --r-xs:   var(--radius-sm);   /*  4px — bars, small tiles */
-  --r-sm:   var(--radius-md);   /*  6px — buttons, fields, stat tiles */
-  --r-md:   var(--radius-lg);   /*  8px — cards, wells */
+  --r-xs:   var(--radius-sm);   /*  4px - bars, small tiles */
+  --r-sm:   var(--radius-md);   /*  6px - buttons, fields, stat tiles */
+  --r-md:   var(--radius-lg);   /*  8px - cards, wells */
   --r-lg:   var(--radius-lg);   /*  8px */
-  --r-xl:   var(--radius-lg);   /*  8px — capped */
+  --r-xl:   var(--radius-lg);   /*  8px - capped */
   --r-pill: var(--radius-pill);
 
   /* --- space -------------------------------------------------------------- */

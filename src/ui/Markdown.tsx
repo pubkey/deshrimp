@@ -1,10 +1,10 @@
 /**
- * # Markdown — researched prose, safely
+ * # Markdown - researched prose, safely
  *
  * ## What it does and how it looks
  * Renders a short passage of Markdown-lite as body copy: paragraphs separated
  * by a blank line, with `**bold**`, `*italic*`, `` `code` `` and links inside
- * them. It looks like ordinary running text at the page's reading width — no
+ * them. It looks like ordinary running text at the page's reading width - no
  * frame, no background, nothing that says „this is a widget".
  *
  * The reason it exists rather than a `<p>{text}</p>` is safety: everything a
@@ -14,9 +14,9 @@
  * link.
  *
  * ## Core parts
- * - `text` — the source. Empty or missing renders nothing at all, so a page can
+ * - `text` - the source. Empty or missing renders nothing at all, so a page can
  *   pass an optional field straight in without guarding it.
- * - `inline()` from `_inline.tsx` — the shared span-level parser, used here and
+ * - `inline()` from `_inline.tsx` - the shared span-level parser, used here and
  *   by every component that renders one line of researched prose.
  * - block splitting on a blank line is the only block-level rule there is:
  *   no headings, no lists, no tables. A page that needs those has components.

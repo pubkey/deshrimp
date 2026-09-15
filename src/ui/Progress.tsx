@@ -1,23 +1,23 @@
 /**
- * # Progress — how far along something is
+ * # Progress - how far along something is
  *
  * ## What it does and how it looks
  * A label line with the value at its right, and a rounded track under it filled
  * to that fraction in the accent colour. Nothing else: no percentage inside the
  * bar, no stripes, no animation beyond the fill sliding when the number moves.
  *
- * Use it for a fraction of a known whole — kilometres of a route, days of a
+ * Use it for a fraction of a known whole - kilometres of a route, days of a
  * plan, a budget spent. Not for „it is loading": a page in this repo is a
  * finished answer, so there is nothing to wait for.
  *
  * ## Core parts
- * - `value` — `0`…`1`, clamped. Anything else is the caller's arithmetic bug,
+ * - `value` - `0`…`1`, clamped. Anything else is the caller's arithmetic bug,
  *   not the bar's business.
- * - `label` — what is progressing. `valueLabel` is the right-hand side of that
+ * - `label` - what is progressing. `valueLabel` is the right-hand side of that
  *   line; without it the percentage is printed.
- * - `hint` — the quiet line underneath: what is left, what it is measured
+ * - `hint` - the quiet line underneath: what is left, what it is measured
  *   against.
- * - `tone` — `"ok"` when the thing is finished, `"warn"` when it is running
+ * - `tone` - `"ok"` when the thing is finished, `"warn"` when it is running
  *   out. Default is the page accent.
  * - it is a real `role="progressbar"` with `aria-valuenow`, so it is not just a
  *   coloured div to a screen reader.

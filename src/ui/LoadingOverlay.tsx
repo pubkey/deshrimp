@@ -1,18 +1,18 @@
 /**
- * # LoadingOverlay — the page is not ready yet, and nothing else should be
+ * # LoadingOverlay - the page is not ready yet, and nothing else should be
  *
  * ## What it does and how it looks
  * A dimmed, blurred sheet over the whole page with a card in the middle: a
  * spinner, an optional title, and a line saying what is being waited for.
  *
- * Use it only for a wait that genuinely **blocks the page** — a model or a
+ * Use it only for a wait that genuinely **blocks the page** - a model or a
  * dataset that everything below depends on. For a wait that leaves the rest of
  * the page usable, an inline `<Spinner>` is the honest signal and an overlay is
  * a lie about how stuck things are.
  *
  * It is a native `<dialog>` opened with `showModal()`, which is the entire
  * design decision: the top layer, the inert background and the focus trap come
- * from the browser. **Escape is deliberately blocked** — dismissing the overlay
+ * from the browser. **Escape is deliberately blocked** - dismissing the overlay
  * would not cancel the download it is reporting, it would only hide it, and a
  * page that looks ready while it is not is worse than one that says it is busy.
  * That is also why there is no ✕ and no backdrop click, unlike `<Modal>`.
@@ -20,11 +20,15 @@
  * event for `<dialog>`, so a JSX `onCancel` prop is never called at all.
  *
  * ## Core parts
- * - `open` — controlled. Nothing renders while closed.
- * - `title` — optional bold line, for when „loading" alone is too little.
- * - `label` — what is being waited for, in the page's own words. Say the size
+ * - `open` - controlled. Nothing renders while closed.
+ * - `title` - optional bold line, for when „loading" alone is too little.
+ * - `label` - what is being waited for, in the page's own words. Say the size
  *   and whether it is a one-off if you know: that is what someone needs in
  *   order to decide whether to wait.
+ * - `progress` - 0 to 1 when the wait can be measured, which turns the spinner
+ *   into a bar with a percentage. Pass `null` or leave it out when it cannot:
+ *   an indeterminate wait drawn as an empty bar reads as "stuck at zero", and
+ *   the spinner is the honest shape for one.
  * - `role="status"` + `aria-live="polite"` on the inner spinner, so the wait is
  *   announced once instead of read as a spinning box.
  *
@@ -32,15 +36,18 @@
  * ```tsx
  * <LoadingOverlay open={loadingModel}
  *     title="Einen Moment"
- *     label="Das Erkennungsmodell wird geladen — 17 MB, nur beim ersten Mal." />
+ *     label="Das Erkennungsmodell wird geladen - 17 MB, nur beim ersten Mal." />
  * ```
  *
  * ## Changelog
+ * - 2026-09-15 `progress`, so a download that can be measured says how far it
+ *   has got rather than only that it is happening.
  * - 2026-09-08 First version, replacing the inline spinner on `app-haltung`.
  */
 
 import { useEffect, useRef } from 'react';
 import { cx } from './cx';
+import { Progress } from './Progress';
 import { Spinner } from './Spinner';
 import type { ReactNode } from './_types';
 
@@ -48,10 +55,12 @@ export type LoadingOverlayProps = {
     open?: boolean;
     title?: ReactNode;
     label?: ReactNode;
+    /** 0 to 1 when the wait can be measured; `null` or absent when it cannot. */
+    progress?: number | null;
     className?: string;
 };
 
-export function LoadingOverlay({ open, title, label, className }: LoadingOverlayProps) {
+export function LoadingOverlay({ open, title, label, progress, className }: LoadingOverlayProps) {
     const ref = useRef<HTMLDialogElement>(null);
     // Read inside the listener, which is registered once and must not close
     // over a stale `open`.
@@ -62,7 +71,7 @@ export function LoadingOverlay({ open, title, label, className }: LoadingOverlay
      * Block Escape with a **native** listener, not React's `onCancel`.
      *
      * React 18 has no synthetic `cancel` event for `<dialog>`, so a JSX
-     * `onCancel` prop is silently never called — the overlay closed on Escape
+     * `onCancel` prop is silently never called - the overlay closed on Escape
      * and the test caught it. `addEventListener` is the only thing that works
      * on both React 18 and 19.
      */
@@ -71,7 +80,7 @@ export function LoadingOverlay({ open, title, label, className }: LoadingOverlay
         if (!d) return;
         const block = (e: Event) => e.preventDefault();
         // Belt and braces: `preventDefault()` on `cancel` is specified to keep
-        // the dialog open, and in a real browser it did not — Escape still
+        // the dialog open, and in a real browser it did not - Escape still
         // closed it, which the test caught. So the `close` event re-opens it
         // whenever the page still says it is loading. Whichever of the two the
         // browser honours, the overlay stays up.
@@ -101,7 +110,21 @@ export function LoadingOverlay({ open, title, label, className }: LoadingOverlay
             {open ? (
                 <div className="ui-loadcard">
                     {title ? <div className="ui-loadcard-title">{title}</div> : null}
-                    <Spinner label={label} />
+                    {/* A measurable wait gets a bar and a number; one that
+                        cannot be measured keeps the spinner. Drawing an
+                        unknown wait as a bar at zero says "stuck", which is
+                        the one thing it does not know. */}
+                    {typeof progress === 'number' ? (
+                        <div className="ui-loadcard-progress" role="status" aria-live="polite">
+                            <Progress
+                                value={progress}
+                                label={label}
+                                valueLabel={`${Math.round(progress * 100)} %`}
+                            />
+                        </div>
+                    ) : (
+                        <Spinner label={label} />
+                    )}
                 </div>
             ) : null}
         </dialog>

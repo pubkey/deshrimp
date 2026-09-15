@@ -1,5 +1,5 @@
 /**
- * # Modal — a dialog, from the browser
+ * # Modal - a dialog, from the browser
  *
  * ## What it does and how it looks
  * A centred card over a dimmed backdrop, with a title row and a ✕ on the right.
@@ -11,7 +11,7 @@
  * that would get one of them subtly wrong.
  *
  * ## Core parts
- * - `open` / `onClose` — controlled. The `close` event is forwarded, so Esc and
+ * - `open` / `onClose` - controlled. The `close` event is forwarded, so Esc and
  *   the backdrop both go through the same callback as the ✕.
  * - the backdrop test is `e.target === the dialog itself`: the card fills the
  *   element, so any click on content has a child as its target.

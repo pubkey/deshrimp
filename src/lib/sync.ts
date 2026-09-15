@@ -1,5 +1,5 @@
 /**
- * Getting the data of an app-builder page off the device it is on — and back.
+ * Getting the data of an app-builder page off the device it is on - and back.
  *
  * Every page from this blueprint keeps what the reader does in RxDB on *that*
  * browser. That is the point (`README.md` §5), and it is also the whole problem:
@@ -9,7 +9,7 @@
  *
  * | | needs | keeps working when |
  * | --- | --- | --- |
- * | **file** | nothing | forever — it is a JSON file on his disk |
+ * | **file** | nothing | forever - it is a JSON file on his disk |
  * | **P2P** | both devices online at once | the signalling server is up |
  * | **Google Drive** | an OAuth client id | Google keeps the API |
  * | **OneDrive** | an OAuth client id | Microsoft keeps the API |
@@ -20,7 +20,7 @@
  *
  * **Nothing here runs unless he asks for it.** No token is fetched, no socket is
  * opened and no plugin is even touched until a button in `<DataSyncButton>` is
- * pressed — a page that syncs by itself would be a page that phones home, which
+ * pressed - a page that syncs by itself would be a page that phones home, which
  * is the opposite of what these pages promise.
  *
  * The one exception is **resuming a P2P session he already started**
@@ -54,7 +54,7 @@ export async function downloadData(db: RxDatabase<any>, filename: string): Promi
 /**
  * Read a file the reader picked and merge it in.
  *
- * **Merge, not replace** — `importAppData` upserts. Importing a backup onto a
+ * **Merge, not replace** - `importAppData` upserts. Importing a backup onto a
  * device that has kept measuring since does not throw the newer rows away, and
  * importing the same file twice changes nothing. The cost is that a document
  * deleted on one device comes back from an older export, which is the right
@@ -83,7 +83,7 @@ export async function importFromFile(db: RxDatabase<any>, file: File): Promise<n
 /**
  * `simple-peer` is a browser port of a Node library and still reaches for
  * `process.nextTick`. esbuild bundles for the browser, where there is no
- * `process`, so the call would throw the moment a peer connects — the RxDB
+ * `process`, so the call would throw the moment a peer connects - the RxDB
  * plugin even has a check that says so in as many words.
  *
  * A microtask is the right stand-in: `nextTick` means "after this turn, before
@@ -146,7 +146,7 @@ const GOOGLE_GSI = 'https://accounts.google.com/gsi/client';
 /**
  * The narrowest scope that can do the job: `drive.appdata` reaches **only** a
  * hidden folder that belongs to this one OAuth client. It cannot read his
- * documents, his photos or anything else in his Drive — which is the difference
+ * documents, his photos or anything else in his Drive - which is the difference
  * between "sync my posture readings" and "give a web page your Drive".
  */
 const GOOGLE_SCOPE = 'https://www.googleapis.com/auth/drive.appdata';
@@ -160,7 +160,7 @@ const GOOGLE_SCOPE = 'https://www.googleapis.com/auth/drive.appdata';
  *
  * The token lives about an hour. There is no refresh token in this flow by
  * design, so a sync that has been running all afternoon will eventually fail
- * with 401 — the modal shows that and he presses connect again.
+ * with 401 - the modal shows that and he presses connect again.
  */
 export function googleAccessToken(clientId: string): Promise<string> {
     return loadScript(GOOGLE_GSI).then(() => new Promise<string>((resolve, reject) => {
@@ -208,7 +208,7 @@ export async function syncGoogleDrive(
 
 /**
  * `Files.ReadWrite.AppFolder` is Microsoft's equivalent of Google's appdata
- * scope — a folder of this app's own under "Apps", and nothing else.
+ * scope - a folder of this app's own under "Apps", and nothing else.
  */
 const MS_SCOPE = 'Files.ReadWrite.AppFolder offline_access';
 const MS_AUTHORITY = 'https://login.microsoftonline.com/consumers/oauth2/v2.0';
@@ -223,7 +223,7 @@ function base64url(bytes: ArrayBuffer): string {
  *
  * Not MSAL: the library is larger than everything else this module adds
  * together, and the flow it wraps is the eighty lines below. Not the implicit
- * flow either — Microsoft does not accept it for single-page apps any more.
+ * flow either - Microsoft does not accept it for single-page apps any more.
  *
  * The popup lands back on this very page (`redirect_uri` is our own URL), which
  * is what lets us read the code straight out of `popup.location`: same origin,
@@ -321,7 +321,7 @@ export const DEFAULT_SIGNALING_SERVER = 'wss://signaling.rxdb.info/';
  *
  * 128 bits of randomness, printed in base36. Anyone who joins the same room
  * replicates with him, and the *only* thing standing between his readings and a
- * stranger is that the name cannot be guessed — the same bargain the published
+ * stranger is that the name cannot be guessed - the same bargain the published
  * page URL makes (`CLAUDE.md` §9), for the same reason: there is no server here
  * that could hold an account.
  */
@@ -335,7 +335,7 @@ export function newSyncCode(): string {
  *
  * The signalling server only introduces the two browsers; once they have found
  * each other the documents travel straight from device to device and the server
- * sees none of them. It has to be **running at the same time on both ends** —
+ * sees none of them. It has to be **running at the same time on both ends** -
  * this is a live connection, not a mailbox.
  */
 export async function syncP2P(
@@ -368,7 +368,7 @@ export async function syncP2P(
 
    A running replication belongs to the page, not to the modal that started it.
    Keeping the handle in `<SyncPanel>` meant it died the moment the modal closed
-   — `<Modal>` unmounts its children — which is exactly the bug he reported
+   - `<Modal>` unmounts its children - which is exactly the bug he reported
    _(„it should continue syncing when the modal is closed")_. So it lives here,
    in module scope, and React subscribes to it rather than owning it. */
 
@@ -429,7 +429,7 @@ export async function setSync(target: SyncTarget, begin: () => Promise<SyncHandl
      someone may open the link tomorrow. A code regenerated on the next page load
      would silently make the one he already gave away point at nobody.
    - **`join`** is the code he was given. Worth keeping so the field is still
-     filled after a reload — otherwise the page resumes a room whose name it can
+     filled after a reload - otherwise the page resumes a room whose name it can
      no longer show him.
    - **`room`** is what was actually running. Its *presence* is the flag that
      says „resume this on the next visit", and *Stop* is what removes it.
@@ -454,7 +454,7 @@ function writeLocal(key: string, value: string): void {
 }
 
 /**
- * His own room — generated once, then kept for good.
+ * His own room - generated once, then kept for good.
  *
  * This is the closest thing the page has to an address, so it has to outlive
  * the tab: a code he copied last week must still reach him today.
@@ -483,7 +483,7 @@ export function setJoinP2PCode(appId: string, code: string): void {
     writeLocal(p2pKey(appId, 'join'), code);
 }
 
-/** The room that is running — its presence is what `resumeP2P` acts on. */
+/** The room that is running - its presence is what `resumeP2P` acts on. */
 export function rememberP2P(appId: string, code: string): void {
     writeLocal(p2pKey(appId, 'room'), code);
 }

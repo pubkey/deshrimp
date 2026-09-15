@@ -1,5 +1,5 @@
 /**
- * # QRCode — the link, for a phone camera
+ * # QRCode - the link, for a phone camera
  *
  * ## What it does and how it looks
  * A crisp square SVG QR code, **always dark on white in both themes**. That is
@@ -8,12 +8,12 @@
  * so it looks the same in dark mode as in light.
  *
  * ## Core parts
- * - `value` — the URL. Too long a URL yields no matrix; the component then
+ * - `value` - the URL. Too long a URL yields no matrix; the component then
  *   renders `fallback`, or nothing when there is none.
- * - `fallback` — what to show instead when the value does not fit into a code.
+ * - `fallback` - what to show instead when the value does not fit into a code.
  *   Worth passing wherever the QR is the point of the block: a silent gap
  *   leaves the reader thinking the page is broken.
- * - `size` — pixel size of the square, default 208.
+ * - `size` - pixel size of the square, default 208.
  * - the encoder is `qr.js`, ours, loaded on the same tier as the library and
  *   read off `window.QR`.
  *

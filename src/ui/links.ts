@@ -33,7 +33,7 @@ export function mapsUrl(x: Place | string | null | undefined): string {
  *
  * A plain string is accepted as well as a `Place`, and that is not sugar: every
  * caller in this repo passed a bare place name, which the object-only version
- * turned into `origin=undefined` — a link that opened Maps with nothing in it.
+ * turned into `origin=undefined` - a link that opened Maps with nothing in it.
  * The type surfaced it; accepting a string fixes it wherever it is called.
  */
 export function directionsUrl(

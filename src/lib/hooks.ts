@@ -95,7 +95,7 @@ export function useCollection<T = any>(name: string) {
     return { collection: collection as RxCollection<T> | null, insert, upsert, patch, remove };
 }
 
-/** The database itself — for `exportAppData`, `resetAppDatabase` and the like. */
+/** The database itself - for `exportAppData`, `resetAppDatabase` and the like. */
 export function useDatabase(): RxDatabase<any> {
     return useRxDatabase<any>();
 }
@@ -114,7 +114,7 @@ export type UseDecisionResult = {
     /** Flip the tick. */
     toggleDone: () => Promise<unknown>;
     setDone: (done: boolean) => Promise<unknown>;
-    /** 1–5; setting the current value clears it back to 0. */
+    /** 1-5; setting the current value clears it back to 0. */
     rate: (rating: number) => Promise<unknown>;
     setNote: (note: string) => Promise<unknown>;
     /** Anything at once, when a page needs its own combination. */
@@ -127,7 +127,7 @@ export type UseDecisionResult = {
  *     const { decision, choose, setNote } = useDecision(option.id);
  *     <Button active={decision.choice === 'buy'} onClick={() => choose('buy')}>
  *
- * Reads live, writes through. `updatedAt` is stamped for you — five skills
+ * Reads live, writes through. `updatedAt` is stamped for you - five skills
  * used to write that line by hand.
  */
 export function useDecision(id: string): UseDecisionResult {
@@ -156,7 +156,7 @@ export function useDecision(id: string): UseDecisionResult {
     };
 }
 
-/** Every decision on the page — for a counter, or a "what did I keep" list. */
+/** Every decision on the page - for a counter, or a "what did I keep" list. */
 export function useDecisions(): DecisionDoc[] {
     const { data } = useQuery<DecisionDoc>(DECISIONS, {});
     return data;

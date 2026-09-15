@@ -1,7 +1,7 @@
 /**
  * The local database layer: RxDB, wired the way every page here needs it.
  *
- * A generated page is a finished answer — the researched payload sits in
+ * A generated page is a finished answer - the researched payload sits in
  * `PAGE_DATA` and never changes. But the reader *uses* the page: he ticks off
  * a shopping list, rates an option, writes a note, marks a stop as done. That
  * state has to survive a reload, and there is no server: the page is one HTML
@@ -12,7 +12,7 @@
  * ## Storage: always Dexie
  *
  * Every page uses IndexedDB through `storage-dexie`, and a page does not get to
- * pick — there is no `storage` option to pass. One storage across all pages
+ * pick - there is no `storage` option to pass. One storage across all pages
  * means one set of behaviours to know: asynchronous, quota in the hundreds of
  * megabytes rather than localStorage's ~5 MB, and no ceiling a page can walk
  * into once it starts holding images or a few thousand documents.
@@ -22,7 +22,7 @@
  * All pages live on the same origin (`pubkey.github.io`), so IndexedDB is
  * shared between *all* of them. Two apps that both call their database `app`
  * would read each other's documents. `createAppDatabase` therefore prefixes
- * every name with `me-` and demands an app id that is unique per page —
+ * every name with `me-` and demands an app id that is unique per page -
  * `app.config.ts` in the blueprint holds it, and `new_app.py` fills it from the
  * folder name.
  *
@@ -33,7 +33,7 @@
  * it, count it, follow its changes and write to it. That is what makes the
  * state more than a private scribble: „was ist auf der Packliste noch offen"
  * is answerable without him exporting anything. It is on by default and turns
- * itself off in a browser that has no registry — `webmcp: false` or
+ * itself off in a browser that has no registry - `webmcp: false` or
  * `{ readOnly: true }` in `createAppDatabase` narrows it.
  */
 
@@ -89,8 +89,8 @@ export type AppCollections = Record<string, RxCollectionCreator<any>>;
  *
  * Every page here turns out to need the same shape: an id, a choice out of a
  * small set, a tick, sometimes a rating, sometimes a note. Before this existed
- * five skills had invented six names for it — `SlideVerdict`, `OptionVerdict`,
- * `ShoppingTick`, `TrackVerdict`, `StopState`, `ItemState` — each with its own
+ * five skills had invented six names for it - `SlideVerdict`, `OptionVerdict`,
+ * `ShoppingTick`, `TrackVerdict`, `StopState`, `ItemState` - each with its own
  * schema and its own hand-written upsert. Worse than the duplication: „Kaufe
  * ich" on a shopping page and „Behalte ich" on a listening page were stored
  * under different schemas, so nothing could ever ask what he actually decided.
@@ -105,7 +105,7 @@ export type DecisionDoc = {
     choice: string;
     /** The tick: bought, booked, packed, done. */
     done: boolean;
-    /** 0 = not rated, 1–5. */
+    /** 0 = not rated, 1-5. */
     rating: number;
     note: string;
     updatedAt: number;
@@ -157,8 +157,8 @@ let devModeAdded = false;
 
 /**
  * Dev mode: readable error messages and RxDB's own correct-usage checks.
- * `build_app.py --dev` turns it on. It is *not* what validates documents —
- * that happens in every build, see `createAppDatabase` — so the published page
+ * `build_app.py --dev` turns it on. It is *not* what validates documents -
+ * that happens in every build, see `createAppDatabase` - so the published page
  * ships without dev mode but never without validation.
  */
 async function enableDevMode(): Promise<void> {
@@ -172,7 +172,7 @@ async function enableDevMode(): Promise<void> {
 /**
  * The one storage every page uses: Dexie, wrapped in the schema validator.
  *
- * Both are settled here rather than per app — see the header for Dexie, and
+ * Both are settled here rather than per app - see the header for Dexie, and
  * `createAppDatabase` for why validation is not optional.
  */
 function appStorage(): RxStorage<any, any> {
@@ -182,7 +182,7 @@ function appStorage(): RxStorage<any, any> {
 /**
  * Open (or create) this page's database.
  *
- * Call it once — `DatabaseGate` does that for you and hands the result to the
+ * Call it once - `DatabaseGate` does that for you and hands the result to the
  * component tree.
  */
 export async function createAppDatabase<C extends AppCollections>(
@@ -190,7 +190,7 @@ export async function createAppDatabase<C extends AppCollections>(
 ): Promise<RxDatabase<any>> {
     const { appId, collections } = options;
 
-    // Schema validation, in every build — asked for explicitly on 2026-08-29.
+    // Schema validation, in every build - asked for explicitly on 2026-08-29.
     // A page writes what the reader types into it, so a schema that does not
     // match the data fails at the write, with the field named, rather than
     // silently storing something the next render chokes on. RxDB's storages do
@@ -220,7 +220,7 @@ export async function createAppDatabase<C extends AppCollections>(
     // `autoMigrate` defaults to true, so a collection whose schema version rose
     // migrates its documents here, before the page renders. A version that rose
     // *without* a strategy for it throws (RxDB code DM3) and a schema that
-    // changed *without* the version rising throws too (DB6) — both of those are
+    // changed *without* the version rising throws too (DB6) - both of those are
     // the author's mistake and belong on screen, not swallowed. Earlier this
     // function caught them and deleted the database; that quietly threw away
     // what the reader had entered, which is the one thing it must not do.
@@ -245,7 +245,7 @@ export async function createAppDatabase<C extends AppCollections>(
  * anything created after this point.
  *
  * A failing tool call is reported to the caller by the tool itself, so the
- * subscription here is only so it is not *also* invisible in the console —
+ * subscription here is only so it is not *also* invisible in the console -
  * without it, a rejected write from an agent leaves no trace on the page side.
  */
 function registerWebMCP(db: RxDatabase<any>, options: WebMCPOptions): void {
@@ -255,7 +255,7 @@ function registerWebMCP(db: RxDatabase<any>, options: WebMCPOptions): void {
     if (typeof __DEV__ !== 'undefined' && __DEV__ && !getModelContext(options)) {
         // The normal case in a plain browser, and the reason a missing registry
         // must not throw: no agent is present, so no tools were registered.
-        console.info('[webmcp] no model context in this browser — no tools registered');
+        console.info('[webmcp] no model context in this browser - no tools registered');
     }
 }
 
@@ -265,7 +265,7 @@ export async function resetAppDatabase(appId: string): Promise<void> {
 }
 
 /**
- * Every document of every collection as plain JSON — for a "Daten sichern"
+ * Every document of every collection as plain JSON - for a "Daten sichern"
  * button, or to hand the state back to the agent so it can be written into the
  * repo. Deliberately not the `json-dump` plugin: this is ten lines and keeps
  * the bundle smaller.

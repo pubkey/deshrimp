@@ -1,13 +1,13 @@
 /**
- * # Text — a paragraph
+ * # Text - a paragraph
  *
  * ## What it does and how it looks
  * One paragraph at body size and the sheet's line height. The default text
  * element of every page; anything longer than a line belongs in one.
  *
  * ## Core parts
- * - `muted` — secondary colour, for a line that supports the one above it.
- * - `small` — one step down, for metadata rather than prose.
+ * - `muted` - secondary colour, for a line that supports the one above it.
+ * - `small` - one step down, for metadata rather than prose.
  * - for researched copy with bold or links, use `<Markdown>` instead: this
  *   renders its children verbatim and does not parse anything.
  *

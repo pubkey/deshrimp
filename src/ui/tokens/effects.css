@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------------------
-   effects.css — radii, hairlines, focus, motion.
+   effects.css - radii, hairlines, focus, motion.
 
    The system separates with borders, not elevation. `--shadow-card` exists for
    an overlay that genuinely leaves the page (a modal in the top layer) and is
@@ -13,7 +13,7 @@
 :root {
   --radius-sm:   4px;   /* bars, small tiles */
   --radius-md:   6px;   /* buttons, fields, stat tiles */
-  --radius-lg:   8px;   /* cards, camera well — nothing on a container is larger */
+  --radius-lg:   8px;   /* cards, camera well - nothing on a container is larger */
   --radius-pill: 999px; /* switches, status pills, telemetry tracks */
 
   --border-width:       1px;

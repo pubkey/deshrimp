@@ -1,12 +1,12 @@
 /**
- * `@charts` — the chart components, on Recharts 3.
+ * `@charts` - the chart components, on Recharts 3.
  *
  * **Why this is not in `.claude/ui/components/`.** That folder is bundled into
  * *every* page `build_page.py` writes, and Recharts is 465 KB minified. A
  * packing list would carry a charting engine it never draws with. So the charts
  * live here, behind their own alias, and only an app that imports `@charts`
- * pays for them. Everything else about them — tokens, classes, the design sheet
- * — is `.claude/ui` like any other component.
+ * pays for them. Everything else about them - tokens, classes, the design sheet
+ * - is `.claude/ui` like any other component.
  *
  * ```tsx
  * import { BarChart, Donut, LineChart, formatEuro } from '@charts';

@@ -1,18 +1,18 @@
 /**
- * # Panel — one thing, on its own surface
+ * # Panel - one thing, on its own surface
  *
  * ## What it does and how it looks
  * A raised card with a hairline border, a soft shadow and a heading row: an
  * `h4` on the left, anything you like on the right (a price, a badge, a
- * button). It is the workhorse of every page here — an option, a hotel, a
+ * button). It is the workhorse of every page here - an option, a hotel, a
  * recipe, a day of a plan is a panel.
  *
  * ## Core parts
- * - `title` / `aside` — the heading row. With neither, the row is not rendered.
- * - `tone="rec"` — the gold „our pick" treatment. One per page, or it stops
+ * - `title` / `aside` - the heading row. With neither, the row is not rendered.
+ * - `tone="rec"` - the gold „our pick" treatment. One per page, or it stops
  *   meaning anything.
- * - `flat` / `sunk` — no shadow, or an inset well instead of a raised card.
- * - `pad` — a smaller or larger inside than the default.
+ * - `flat` / `sunk` - no shadow, or an inset well instead of a raised card.
+ * - `pad` - a smaller or larger inside than the default.
  *
  * ## Examples
  * ```tsx

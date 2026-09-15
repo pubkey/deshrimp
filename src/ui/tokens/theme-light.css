@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------------------
-   theme-light.css — the inversion.
+   theme-light.css - the inversion.
 
    Dark is the brief and the default. Light was added on request, and it is a
    value ladder flipped in place: structure, spacing, radii and motion do not
@@ -7,7 +7,7 @@
 
    Two deliberate deviations from the locked palette, because the originals are
    unreadable on white (both flagged in DESIGN.md):
-     · secondary ink is #475569, not #94A3B8 — the original measures 2.2:1 on
+     · secondary ink is #475569, not #94A3B8 - the original measures 2.2:1 on
        #F8FAFC, which is not text.
      · coral deepens to #E14E1D for strokes, fills and accent buttons. The
        original #ff8257 survives as --accent-bright for a large fill on a dark
@@ -15,7 +15,7 @@
 
    Three selectors for two states: the media query is what a page shows before
    anyone has pressed anything, and the attribute is an explicit choice that has
-   to win in *both* directions — a user on a light system who asks for dark must
+   to win in *both* directions - a user on a light system who asks for dark must
    get dark.
    ------------------------------------------------------------------------- */
 
@@ -42,6 +42,10 @@
     --control-inactive: var(--slate-300);
     --scrim:            rgba(248, 250, 252, .82);
     --shadow-card:      0 1px 2px rgba(15, 23, 42, .08);
+
+    /* The platform draws the dropdown, the scrollbar and the focus ring
+       itself; this is the only thing that tells it which way round we are. */
+    color-scheme: light;
   }
 }
 
@@ -67,4 +71,6 @@
   --control-inactive: var(--slate-300);
   --scrim:            rgba(248, 250, 252, .82);
   --shadow-card:      0 1px 2px rgba(15, 23, 42, .08);
+
+  color-scheme: light;
 }

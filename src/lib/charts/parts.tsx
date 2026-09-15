@@ -3,7 +3,7 @@
  * tooltip.
  *
  * They are shared rather than per-chart so that a bar chart and a line chart on
- * the same page cannot drift apart — same tooltip, same legend, same empty
+ * the same page cannot drift apart - same tooltip, same legend, same
  * state, same paddings.
  */
 
@@ -16,26 +16,35 @@ import { formatNumber } from './theme';
 
 export type FrameProps = {
     height?: number;
-    /** Rendered instead of the chart when there is nothing to draw. */
-    empty?: ReactNode;
-    isEmpty?: boolean;
     className?: string;
+    /** Laid over the plot when there is nothing at all to plot. */
+    empty?: ReactNode;
     children: ReactNode;
 };
 
-export function ChartFrame({ height = 280, empty, isEmpty, className, children }: FrameProps) {
-    if (isEmpty) {
-        return (
-            <div className="ui-chart-empty" style={{ height }}>
-                {empty ?? 'Keine Daten'}
-            </div>
-        );
-    }
+/**
+ * **A chart with nothing in it is still drawn** _(2026-09-15, his call: always
+ * show the chart, even when it has too little data)_. There used to be an
+ * empty branch here that replaced it with a box reading „Keine Daten", which
+ * was wrong twice over: an axis with no line on it still says what is being
+ * measured and on what scale, and swapping the two made the tile change height
+ * the moment a second reading landed.
+ *
+ * `empty` is the other half of that _(2026-09-15, his call: say so when there
+ * is no data at all)_, and it is laid **over** the axes rather than put in
+ * their place. The two calls only look opposed: an empty grid answers "what is
+ * this measuring", and it does not answer "why is it blank". The overlay costs
+ * no height, so the tile still does not move when the first reading lands, and
+ * it is for a chart with *nothing* in it - one point is data, and gets no
+ * caption.
+ */
+export function ChartFrame({ height = 280, className, empty, children }: FrameProps) {
     return (
         <div className={className ? `ui-chart ${className}` : 'ui-chart'}>
             <ResponsiveContainer width="100%" height={height}>
                 {children as any}
             </ResponsiveContainer>
+            {empty ? <div className="ui-chart-empty"><span>{empty}</span></div> : null}
         </div>
     );
 }
@@ -74,7 +83,7 @@ export type TooltipProps = {
     format?: Formatter;
     /** Turns the category into the tooltip's heading. */
     formatLabel?: (label: any) => string;
-    /** Hides the heading — for a pie, where the row already names the slice. */
+    /** Hides the heading - for a pie, where the row already names the slice. */
     head?: boolean;
 };
 
@@ -103,6 +112,6 @@ export function ChartTooltip({
     );
 }
 
-/** The cursor behind the tooltip — a wash, never a second colour. */
+/** The cursor behind the tooltip - a wash, never a second colour. */
 export const CURSOR_FILL = { fill: 'var(--bg-sunk)' };
 export const CURSOR_LINE = { stroke: 'var(--line)', strokeDasharray: '3 3' };

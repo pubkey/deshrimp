@@ -1,9 +1,9 @@
 /* -------------------------------------------------------------------------
-   fonts.css — IBM Plex Sans (interface) + IBM Plex Mono (every numeral).
+   fonts.css - IBM Plex Sans (interface) + IBM Plex Mono (every numeral).
 
    The design system ships these as a Google Fonts @import. This page installs
    and has to keep working with the network gone, and a render-blocking request
-   to a third party is the one thing that cannot survive that — so the files are
+   to a third party is the one thing that cannot survive that - so the files are
    vendored and served from our own origin. Vite hashes them, and the service
    worker precaches them, so the type is there on the first offline load too.
 
@@ -13,7 +13,7 @@
 
    Subsets: Sans carries the interface in twelve languages and keeps Cyrillic
    for Russian; Mono only ever sets digits, so latin is the whole job. Chinese
-   and Japanese fall through to the system stack — IBM Plex has no CJK here.
+   and Japanese fall through to the system stack - IBM Plex has no CJK here.
    Greek and Vietnamese are dropped: no locale needs them.
    ------------------------------------------------------------------------- */
 

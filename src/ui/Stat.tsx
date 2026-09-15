@@ -1,5 +1,5 @@
 /**
- * # Stat — one number, made large
+ * # Stat - one number, made large
  *
  * ## What it does and how it looks
  * A small label with a big value under it, and optionally a quieter line of
@@ -7,13 +7,13 @@
  * or two figures a page is actually about.
  *
  * ## Core parts
- * - `label` — what the number is. Above the number, small.
- * - `value` — the number itself, at display size.
- * - `hint` — the line underneath: what it is measured against, or since when.
- * - `delta` + `deltaTone` — the change against a named period. The tone is set
+ * - `label` - what the number is. Above the number, small.
+ * - `value` - the number itself, at display size.
+ * - `hint` - the line underneath: what it is measured against, or since when.
+ * - `delta` + `deltaTone` - the change against a named period. The tone is set
  *   by the caller and not derived from the sign, because on a page like the
  *   posture dashboard „+3°" is worse and „+3 %" is better.
- * - `size="hero"` — the one big number a dashboard leads with. Exactly one per
+ * - `size="hero"` - the one big number a dashboard leads with. Exactly one per
  *   view; a second hero is two heroes, which is none.
  *
  * ## Examples
@@ -39,7 +39,7 @@ export type StatProps = {
     /** The change, already formatted: „+4 Pkt.", „−2°". Shown under the value. */
     delta?: ReactNode;
     /**
-     * Whether that change is good news. Set it explicitly — for half the
+     * Whether that change is good news. Set it explicitly - for half the
      * numbers on a page, up is the bad direction, so it cannot be read off the
      * sign. `"flat"` (or omitting it) prints the delta in muted ink.
      */

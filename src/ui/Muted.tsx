@@ -1,10 +1,10 @@
 /**
- * # Muted — quieter text, inline
+ * # Muted - quieter text, inline
  *
  * ## What it does and how it looks
  * A `<span>` in the secondary ink colour, for a fragment inside a line: a
  * count, a unit, an aside after a name. Inline, so it sits *within* a sentence
- * — the block-level version is `<Text muted>`.
+ * - the block-level version is `<Text muted>`.
  *
  * ## Core parts
  * - just `children`, in `--muted`.

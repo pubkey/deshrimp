@@ -3,7 +3,7 @@
  * settings behind them, and one row per day so the series outlives them.
  *
  * Three collections rather than the built-in `decisions`, because none of this
- * is a decision about one option — it is a measurement series, its parameters,
+ * is a decision about one option - it is a measurement series, its parameters,
  * and a daily roll-up so the series can be read as a
  * trend long after the raw rows have been pruned.
  *
@@ -12,7 +12,7 @@
  * keep. Nothing is synchronised anywhere.
  *
  * Every collection is published as WebMCP tools with its schema attached, so an
- * agent standing in the browser can query any of them — which is fine for
+ * agent standing in the browser can query any of them - which is fine for
  * measurements and settings, and is the reason there is nothing secret in here
  * to begin with.
  */
@@ -41,10 +41,10 @@ export type Reading = {
     forward: number;
     /** Head tilt against the shoulder line, degrees. */
     headTilt: number;
-    /** 0–1, the model's own confidence in the estimate. */
+    /** 0-1, the model's own confidence in the estimate. */
     confidence: number;
     /**
-     * Which sentence to print — an `AdviceKey`, not the sentence.
+     * Which sentence to print - an `AdviceKey`, not the sentence.
      *
      * Stored as a key so a reading recorded in German still reads correctly
      * after he switches the page to English. Rows written before v1 hold a
@@ -83,7 +83,7 @@ const readingSchema: RxJsonSchema<Reading> = {
  * v1 drops `forward`.
  *
  * Forward lean was only ever measurable against a reference photo, and the
- * reference is gone _(2026-09-08: „remove the Referenz stuff its confusing")_ —
+ * reference is gone _(2026-09-08: „remove the Referenz stuff its confusing")_ -
  * without it the field was hard-coded to zero, which is worse than absent
  * because it looks like a measurement. The rest of the reading is untouched.
  */
@@ -94,7 +94,7 @@ const readingMigrations = {
     },
     // v2 brings it back, measured differently: v1's `forward` came off the nose
     // and only meant anything against a reference photo, so it is not carried
-    // over — those rows get 0 and age out within two days anyway.
+    // over - those rows get 0 and age out within two days anyway.
     2: (old: Record<string, unknown>) => ({ ...old, forward: 0 }),
 };
 
@@ -104,7 +104,7 @@ const readingMigrations = {
 export type Settings = {
     id: string;
     /**
-     * Seconds between two checks. One by default _(asked for 2026-09-08)_ —
+     * Seconds between two checks. One by default _(asked for 2026-09-08)_ -
      * affordable only because the model runs locally: at a second apart the
      * page reacts while he is still moving, and a check that overruns its tick
      * is skipped rather than queued.
@@ -118,7 +118,7 @@ export type Settings = {
      *
      * Researched 2026-09-08, and the finding was mostly negative: the one
      * established cutoff in the literature is the craniovertebral angle
-     * (< 48–50° = forward head posture), and this page cannot measure it — CVA
+     * (< 48-50° = forward head posture), and this page cannot measure it - CVA
      * needs C7 and the tragus in a *side* view, and the camera is frontal. For
      * lateral trunk or shoulder tilt there is no degree cutoff at all; the
      * research uses asymmetry distances and continuous sway instead. What is
@@ -133,12 +133,12 @@ export type Settings = {
      */
     maxLean: number;
     /**
-     * Degrees of forward head — the reason this page exists _(2026-09-08: „i
+     * Degrees of forward head - the reason this page exists _(2026-09-08: „i
      * need this because my neck posture is a bit too much to the front")_.
      *
      * Measured from the vertical at the shoulder, so 0° is an ear straight
      * above its shoulder. **Not** the craniovertebral angle: that is drawn from
-     * C7, which a pose model does not give, so the 48–50° from the literature
+     * C7, which a pose model does not give, so the 48-50° from the literature
      * does not transfer. There is no validated cutoff for what is measured
      * here, which is exactly why it is a setting.
      *
@@ -168,7 +168,7 @@ export type Settings = {
      * document exists yet.
      *
      * `DEFAULTS.lang` below stays `'de'` as the schema's own default, but the
-     * app never starts from it directly — `INITIAL_SETTINGS` in `index.tsx`
+     * app never starts from it directly - `INITIAL_SETTINGS` in `index.tsx`
      * overlays the detected language, so the first write persists what was
      * detected rather than pinning a fresh device to German.
      *
@@ -185,11 +185,11 @@ export type Settings = {
 };
 
 /**
- * The signals he can pick from. The default is the rude one — he asked for it
+ * The signals he can pick from. The default is the rude one - he asked for it
  * by name, and a noise you find funny is a noise you leave switched on.
  */
 /**
- * The alarm sounds — the recordings he sent _(2026-09-08)_. Real ones beat a
+ * The alarm sounds - the recordings he sent _(2026-09-08)_. Real ones beat a
  * longer list of synthesised ones, so this list grows only when he sends a file.
  */
 export type SoundName = 'furz' | 'schrei' | 'knacken' | 'rimshot' | 'raeuspern';
@@ -203,7 +203,7 @@ export const DEFAULTS: Settings = {
     maxForward: 18,
     maxHeadTilt: 10,
     windowMin: 30,
-    lang: 'de',
+    lang: 'en',
     sound: true,
     soundName: 'furz',
     notify: false,
@@ -244,7 +244,7 @@ const settingsSchema: RxJsonSchema<Settings> = {
  * `maxForward` back for the ear-based forward-head measure; v7 adds the
  * averaging window for the live curve; v8 widens the sound enum; v9 widens the
  * language enum from two to twelve.
- * Every step keeps the thresholds he set — a schema change must never be the
+ * Every step keeps the thresholds he set - a schema change must never be the
  * thing that resets his settings, and v3 in particular must not change the
  * language a device is already showing.
  */
@@ -273,7 +273,7 @@ const settingsMigrations = {
     // against the new one, so everyone starts from the current default.
     6: (old: Record<string, unknown>) => ({ ...old, maxForward: 18 }),
     7: (old: Record<string, unknown>) => ({ ...old, windowMin: 30 }),
-    // v8 only widens the sound enum, so nothing has to change — but the schema
+    // v8 only widens the sound enum, so nothing has to change - but the schema
     // version has to move or RxDB will reject the stored document.
     8: (old: Record<string, unknown>) => old,
     // v9 widens the language enum the same way. A device already on 'de' or
@@ -293,7 +293,7 @@ const settingsMigrations = {
  * reading updates the row without re-reading the day.
  */
 export type Day = {
-    /** `YYYY-MM-DD` in local time — the day as he lived it, not as UTC saw it. */
+    /** `YYYY-MM-DD` in local time - the day as he lived it, not as UTC saw it. */
     id: string;
     /** Local midnight of that day, ms since epoch. */
     t: number;
@@ -341,7 +341,7 @@ const dayMigrations = {
         const { forwardSum, ...keep } = old;
         return keep;
     },
-    // v2 restores the column. Old days get 0 rather than a made-up figure —
+    // v2 restores the column. Old days get 0 rather than a made-up figure -
     // they were recorded before anything measured this, and the chart skips a
     // day whose sum is 0 rather than drawing a flat line that never happened.
     2: (old: Record<string, unknown>) => ({ ...old, forwardSum: 0 }),

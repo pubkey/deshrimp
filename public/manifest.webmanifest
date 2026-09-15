@@ -1,6 +1,6 @@
 {
   "id": "/",
-  "name": "deshrimp — webcam posture trainer",
+  "name": "deshrimp - webcam posture trainer",
   "short_name": "deshrimp",
   "description": "A free page that watches your posture through your webcam and makes a noise when you fold up. Nothing leaves your device.",
   "lang": "en",
@@ -18,13 +18,13 @@
   ],
   "icons": [
     {
-      "src": "./icon.svg",
+      "src": "./icon-maskable.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "./icon.svg",
+      "src": "./icon-maskable.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "maskable"

@@ -1,16 +1,16 @@
 /**
- * # Empty — nothing here, said properly
+ * # Empty - nothing here, said properly
  *
  * ## What it does and how it looks
  * A centred, quiet block for a list with no entries: a heading, and a line
  * underneath saying why it is empty or what to do about it. It replaces the
- * failure mode it is named after — a blank area where the reader cannot tell
+ * failure mode it is named after - a blank area where the reader cannot tell
  * whether there is nothing, or whether the page is broken.
  *
  * ## Core parts
- * - `title` — default „Nichts gefunden". Say what is missing when you can.
- * - `hint` — the line underneath: the reason, or the next step.
- * - `children` — room for a button, when there is something to press.
+ * - `title` - default „Nichts gefunden". Say what is missing when you can.
+ * - `hint` - the line underneath: the reason, or the next step.
+ * - `children` - room for a button, when there is something to press.
  *
  * ## Examples
  * ```tsx

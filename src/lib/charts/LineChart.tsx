@@ -1,5 +1,5 @@
 /**
- * # LineChart — a value over time
+ * # LineChart - a value over time
  *
  * ## What it does and how it looks
  * One line per series over a shared category axis: weight per week, calories
@@ -8,12 +8,14 @@
  * point, and an HTML legend below as soon as there are two of them.
  *
  * ## Core parts
- * - `data` — the rows, one per point on the x axis.
- * - `x` — which property of a row is the category (default `'x'`).
- * - `series` — `['kcal']` or `[{ key: 'kcal', label: 'Kalorien' }]`.
- * - `format` / `formatAxis` — tooltip and tick formatting; `withUnit` adds one.
- * - `smooth` — monotone curve instead of straight segments. Off by default:
+ * - `data` - the rows, one per point on the x axis.
+ * - `x` - which property of a row is the category (default `'x'`).
+ * - `series` - `['kcal']` or `[{ key: 'kcal', label: 'Kalorien' }]`.
+ * - `format` / `formatAxis` - tooltip and tick formatting; `withUnit` adds one.
+ * - `smooth` - monotone curve instead of straight segments. Off by default:
  *   a curve invents values between two measured points.
+ * - `empty` - a line of text laid over the grid while `data` is empty. The
+ *   chart is drawn either way; this only says why it is blank.
  *
  * ## Examples
  * ```tsx
@@ -25,9 +27,11 @@
  * ```
  *
  * ## Changelog
+ * - 2026-09-15 `empty`, for a chart that has no rows yet; his call.
  * - 2026-09-03 First version, with the charts library.
  */
 
+import type { ReactNode } from 'react';
 import {
     CartesianGrid, Line, LineChart as RLineChart, Tooltip, XAxis, YAxis,
 } from 'recharts';
@@ -51,18 +55,23 @@ export type LineChartProps = {
     formatAxis?: Formatter;
     /** Heading of the tooltip, from the x value. */
     formatLabel?: (label: any) => string;
+    /**
+     * Shown over the empty grid when `data` has no rows at all. Passed in
+     * rather than built here, because this library holds no copy and does not
+     * know what language the page is in.
+     */
+    empty?: ReactNode;
     smooth?: boolean;
     dots?: boolean;
     /** Start the y axis at zero even when the data sits high above it. */
     zero?: boolean;
     legend?: boolean;
-    empty?: string;
 };
 
 export function LineChart({
     data, series, x = 'x', height = 280, format = formatNumber,
-    formatAxis, formatLabel, smooth = false, dots,
-    zero = false, legend = true, empty,
+    formatAxis, formatLabel, empty, smooth = false, dots,
+    zero = false, legend = true,
 }: LineChartProps) {
     const resolved = resolveSeries(series);
     // Dots on every point turn a long series into a dotted mess; on a short one
@@ -71,7 +80,7 @@ export function LineChart({
 
     return (
         <>
-            <ChartFrame height={height} isEmpty={!data.length} empty={empty}>
+            <ChartFrame height={height} empty={data.length === 0 ? empty : null}>
                 <RLineChart data={data} margin={{ top: 8, right: 12, bottom: 0, left: 0 }}>
                     <CartesianGrid {...GRID} vertical={false} />
                     <XAxis dataKey={x} {...AXIS} minTickGap={16} />
