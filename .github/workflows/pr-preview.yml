@@ -1,0 +1,313 @@
+# GitHub Pages preview deploy for pull requests.
+#
+# On every PR open / push, build the page and copy `dist/` into a per-commit
+# subdirectory of the branch GitHub Pages serves (the same `github-pages`
+# branch deploy.yml publishes to, served from its root):
+#
+#   github-pages : pr-preview/<pr>/commit-<sha>/
+#
+# reachable at https://deshrimp.com/pr-preview/<pr>/commit-<sha>/ .
+#
+# The whole pr-preview/<pr>/ directory is wiped and rewritten on every push, so
+# the previous commit's subdirectory for the same PR goes away in the same
+# publish, and on PR close (merged or not) the directory is removed entirely.
+#
+# The preview comment is deleted at the start of every push (so the PR thread
+# does not advertise a stale commit while the new build runs) and re-posted
+# once deployment finishes, so the notification surfaces fresh and always
+# points at the latest commit.
+#
+# The prod deploy (deploy.yml) publishes a fresh orphan commit every time and
+# would take the previews with it, so it carries the `pr-preview/` directory of
+# the previous tip over into every new commit. Nothing else keeps the two
+# apart: a preview lives at a subpath of the real site, model files and all.
+#
+# The build works from a subdirectory because Vite is configured with
+# `base: './'` and the app resolves the pose model relative to
+# `location.href` (see src/app/pose.ts), so no build flag is needed here.
+name: PR Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+# Per-PR concurrency: a new push cancels an in-flight preview build, and a
+# close event cancels any pending build for the same PR before tearing the
+# preview down.
+concurrency:
+  group: pr-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy preview
+    # Skip on close, and skip PRs from forks (their GITHUB_TOKEN cannot push to
+    # the github-pages branch or comment on the PR).
+    if: >-
+      github.event.action != 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove stale preview comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const marker = '<!-- pr-preview-comment -->';
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner, repo, issue_number, per_page: 100,
+            });
+            for (const c of comments) {
+              if (c.body && c.body.includes(marker)) {
+                await github.rest.issues.deleteComment({ owner, repo, comment_id: c.id });
+              }
+            }
+
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Same as deploy.yml: no lockfile, so `npm install`, and never
+      # `--ignore-scripts`, because postinstall is what fetches the pose model
+      # into public/mp/ (checked against scripts/pose-model.sha256).
+      - name: Install
+        run: npm install --no-audit --no-fund
+
+      # `npm run build` is `tsc --noEmit && vite build`, so this typechecks too.
+      - name: Build
+        run: npm run build
+
+      # The same sanity checks as the prod deploy, minus the CNAME one: the
+      # custom domain is read from the root of the branch, and a copy of the
+      # file inside a preview subdirectory means nothing to GitHub either way.
+      - name: Check the build is complete
+        run: |
+          test -f dist/index.html || { echo "::error::no dist/index.html"; exit 1; }
+          test -f dist/sw.js      || { echo "::error::no service worker"; exit 1; }
+          if [ ! -d dist/mp ] || [ -z "$(ls -A dist/mp)" ]; then
+            echo "::error::dist/mp is empty - the pose model did not make it into the build, so the camera loop would not run"
+            exit 1
+          fi
+          echo "index.html $(wc -c < dist/index.html) bytes, $(ls dist/mp | wc -l) model files"
+
+      - name: Configure git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Deploy preview
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          SHORT_SHA="${COMMIT_SHA:0:7}"
+          WORKTREE="${RUNNER_TEMP}/github-pages"
+          PREVIEW_REL="pr-preview/${PR_NUMBER}"
+
+          # Stage the built site separately so it survives the worktree add.
+          SITE="${RUNNER_TEMP}/site"
+          rm -rf "$SITE"
+          mkdir -p "$SITE"
+          cp -R dist/. "$SITE/"
+          # The custom domain is set by the CNAME at the branch root (written
+          # by deploy.yml). A copy inside the preview directory is noise.
+          rm -f "$SITE/CNAME"
+
+          if git fetch origin github-pages; then
+            git worktree add -B github-pages "$WORKTREE" origin/github-pages
+          else
+            # No published site yet: start the branch from nothing so the
+            # preview does not have to wait for a first prod deploy.
+            git worktree add --detach "$WORKTREE"
+            git -C "$WORKTREE" checkout -q --orphan github-pages
+            git -C "$WORKTREE" rm -rfq --cached . 2>/dev/null || true
+            find "$WORKTREE" -mindepth 1 -maxdepth 1 -not -name .git -exec rm -rf {} +
+            touch "$WORKTREE/.nojekyll"
+          fi
+
+          # (Re)apply this PR's preview on top of whatever github-pages
+          # currently points at: wipe this PR's preview dir (drops the previous
+          # commit's subdir) and write the current commit's subdir, then
+          # commit. A function so the retry loop can replay it onto a newer tip.
+          stage_preview() {
+            rm -rf "${WORKTREE}/${PREVIEW_REL}"
+            mkdir -p "${WORKTREE}/${PREVIEW_REL}/commit-${SHORT_SHA}"
+            cp -R "$SITE/." "${WORKTREE}/${PREVIEW_REL}/commit-${SHORT_SHA}/"
+            git -C "$WORKTREE" add -A
+            if git -C "$WORKTREE" diff --cached --quiet; then
+              return 1
+            fi
+            git -C "$WORKTREE" commit -q -m "PR #${PR_NUMBER} preview @ ${SHORT_SHA}"
+          }
+
+          if ! stage_preview; then
+            echo "No preview changes to publish."
+            exit 0
+          fi
+
+          # github-pages is shared with the prod deploy (deploy.yml) and every
+          # other PR's preview, so a concurrent push can land between our fetch
+          # and push. A plain retry of the same commit would be rejected forever
+          # ("fetch first"), so on each failure re-fetch, reset onto the new
+          # tip and re-apply our subdir before pushing again.
+          n=0
+          until git -C "$WORKTREE" push origin github-pages; do
+            n=$((n + 1))
+            if [ "$n" -ge 5 ]; then
+              echo "Push failed after retries" >&2
+              exit 1
+            fi
+            sleep $((2 ** n))
+            git -C "$WORKTREE" fetch origin github-pages
+            git -C "$WORKTREE" reset -q --hard origin/github-pages
+            if ! stage_preview; then
+              echo "Preview already up to date on latest github-pages."
+              exit 0
+            fi
+          done
+
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        with:
+          script: |
+            const marker = '<!-- pr-preview-comment -->';
+            const sha = process.env.HEAD_SHA.slice(0, 7);
+            const prNumber = process.env.PR_NUMBER;
+            const url = `https://deshrimp.com/pr-preview/${prNumber}/commit-${sha}/`;
+            const runUrl = process.env.RUN_URL;
+            const updated = new Date().toISOString();
+            const body = [
+              marker,
+              '## 🦐 PR Preview',
+              '',
+              `A preview of commit \`${sha}\` is deployed to: ${url}`,
+              '',
+              '| | |',
+              '| --- | --- |',
+              `| Commit | \`${sha}\` |`,
+              `| Updated | ${updated} |`,
+              `| Workflow | [run](${runUrl}) |`,
+              `| Status | Deployed |`,
+              '',
+              'GitHub Pages may take a minute to publish the changes. Each push gets a fresh URL keyed on the head commit; previous previews are removed automatically.',
+              '',
+              'If you are a coding agent or llm (claude, codex, antigravity, etc.), show this url to your operator as a preview link.'
+            ].join('\n');
+
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner, repo, issue_number, per_page: 100,
+            });
+            for (const c of comments) {
+              if (c.body && c.body.includes(marker)) {
+                await github.rest.issues.deleteComment({ owner, repo, comment_id: c.id });
+              }
+            }
+            await github.rest.issues.createComment({ owner, repo, issue_number, body });
+
+  remove:
+    name: Remove preview
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Remove preview subdirectory
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          WORKTREE="${RUNNER_TEMP}/github-pages"
+          PREVIEW_REL="pr-preview/${PR_NUMBER}"
+
+          if ! git fetch origin github-pages; then
+            echo "No github-pages branch, so no preview to remove."
+            exit 0
+          fi
+          git worktree add -B github-pages "$WORKTREE" origin/github-pages
+
+          # Remove this PR's preview dir on top of the current github-pages
+          # tip. A function so the retry loop can replay it after a concurrent
+          # push.
+          stage_removal() {
+            rm -rf "${WORKTREE}/${PREVIEW_REL}"
+            git -C "$WORKTREE" add -A
+            if git -C "$WORKTREE" diff --cached --quiet; then
+              return 1
+            fi
+            git -C "$WORKTREE" commit -q -m "Remove PR #${PR_NUMBER} preview"
+          }
+
+          if ! stage_removal; then
+            echo "No preview to remove."
+            exit 0
+          fi
+
+          # github-pages is shared, so a concurrent push can move it between
+          # our fetch and push. On rejection, re-fetch, reset onto the new tip
+          # and re-apply the removal rather than retrying a now-stale commit.
+          n=0
+          until git -C "$WORKTREE" push origin github-pages; do
+            n=$((n + 1))
+            if [ "$n" -ge 5 ]; then
+              echo "Push failed after retries" >&2
+              exit 1
+            fi
+            sleep $((2 ** n))
+            git -C "$WORKTREE" fetch origin github-pages
+            git -C "$WORKTREE" reset -q --hard origin/github-pages
+            if ! stage_removal; then
+              echo "Preview already gone from latest github-pages."
+              exit 0
+            fi
+          done
+
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        env:
+          MERGED: ${{ github.event.pull_request.merged }}
+        with:
+          script: |
+            const marker = '<!-- pr-preview-comment -->';
+            const merged = process.env.MERGED === 'true';
+            const reason = merged ? 'merged' : 'closed';
+            const body = [
+              marker,
+              '## 🦐 PR Preview removed',
+              '',
+              `This PR was ${reason}; its preview has been removed from GitHub Pages.`,
+            ].join('\n');
+
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner, repo, issue_number, per_page: 100,
+            });
+            for (const c of comments) {
+              if (c.body && c.body.includes(marker)) {
+                await github.rest.issues.deleteComment({ owner, repo, comment_id: c.id });
+              }
+            }
+            await github.rest.issues.createComment({ owner, repo, issue_number, body });

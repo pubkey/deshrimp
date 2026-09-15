@@ -159,6 +159,27 @@ every push to `master` and force-pushes `dist/` to the `github-pages` branch. It
 refuses to publish a build whose `dist/mp/` is empty, because that failure is
 otherwise silent: the page loads and the camera loop simply never runs.
 
+### Pull request previews
+
+Every pull request from this repository gets a deployed preview of its latest
+commit, built by `.github/workflows/pr-preview.yml` and published to a subpath
+of the live site on the same `github-pages` branch:
+
+    https://deshrimp.com/pr-preview/<pr>/commit-<sha>/
+
+The workflow posts the URL as a comment on the PR and re-posts it on every push,
+so the comment always names the current commit. The previous commit's directory
+is removed in the same publish, and closing or merging the PR removes the
+preview altogether. Previews are full builds (pose model included) and work from
+the subpath because Vite is configured with `base: './'` and the app resolves
+`mp/` relative to `location.href`.
+
+The prod deploy carries the `pr-preview/` directory over into each fresh
+`github-pages` commit and pushes with `--force-with-lease`, retrying onto the new
+tip when a preview lands mid-deploy, so a push to `master` never takes an open
+PR's preview down. PRs from forks get no preview: their token cannot push to the
+branch.
+
 ## The pose model
 
 `npm install` runs `scripts/fetch-pose-model.mjs`, which puts four files into
