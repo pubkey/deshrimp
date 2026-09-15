@@ -1,6 +1,7 @@
 /**
- * The page's identity, in one place: what it is called, what it was asked, what
- * colour it wears — and the id its local database is namespaced under.
+ * The page's identity, in one place: what it is called, what it was asked —
+ * and the id its local database is namespaced under. What colour it wears is no
+ * longer a question a page gets to answer: the palette is locked.
  *
  * This module **touches no browser global**, because `build_app.py` also
  * imports it in Node to turn the config into the flags for
@@ -12,9 +13,6 @@
  * down as a prop. Harmless in Node — it is a variable, not a global — and it is
  * what lets `<DataSyncButton>` find its OAuth client ids on its own.
  */
-
-/** The accent presets in `.claude/ui/theme.css`. A new domain adds one there. */
-export type Accent = 'fashion' | 'travel' | 'music' | 'ink' | 'food' | 'home' | 'health';
 
 export type AppConfig = {
      /**
@@ -53,9 +51,9 @@ export type AppConfig = {
     task: string;
     /** Label above the task text, when „Aufgabe" is not the right word. */
     taskLabel?: string;
-    accent: Accent;
-    /** Emoji for the favicon and the installed app icon. */
-    icon: string;
+    /* `accent` and `icon` are gone. The design system locks one accent — a
+       per-page hue was a second brand — and the favicon is the brand mark in
+       public/icon.svg rather than an emoji the platform draws its own way. */
     /** The skill that produced the page. Shown in the footer. */
     source: string;
     lang?: string;

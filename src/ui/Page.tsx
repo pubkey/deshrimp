@@ -36,7 +36,8 @@
  * ## Examples
  * ```tsx
  * <Page gaps={data.gaps} sources={data.sources}>{sections}</Page>
- * <Page width="wide" actions={<IconButton icon="⤓" label="Sichern" onClick={save} />}>…</Page>
+ * <Page width="wide" actions={<IconButton icon={<Icon name="download" size={20} />}
+ *     label="Sichern" onClick={save} />}>…</Page>
  * ```
  *
  * ## Changelog

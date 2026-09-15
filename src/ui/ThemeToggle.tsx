@@ -22,12 +22,16 @@
  * ```
  *
  * ## Changelog
+ * - 2026-09-15 A drawn sun and moon rather than ☀ and ☾: the design
+ *   system does not use unicode symbols as affordances, and the two glyphs
+ *   rendered at different weights on every platform anyway.
  * - 2026-09-08 Fixed labels come from `lang.ts`, so an English page is
  *   English all the way into the frame. German is still the default.
  * - 2026-08-31 Own file.
  */
 
 import { useState } from 'react';
+import { Icon } from './Icon';
 import { applyTheme, readTheme, systemIsDark } from './theme';
 import { uiText } from './lang';
 
@@ -44,7 +48,7 @@ export function ThemeToggle() {
             aria-label={label}
             onClick={() => { const next = dark ? 'light' : 'dark'; applyTheme(next); set(next); }}
         >
-            {dark ? '☀' : '☾'}
+            <Icon name={dark ? 'sun' : 'moon'} size={20} />
         </button>
     );
 }

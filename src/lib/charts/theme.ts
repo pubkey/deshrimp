@@ -7,6 +7,15 @@
  * takes `var(--series-1)` — so the light/dark switch is the browser's job and
  * costs no code at all. That is the whole reason this library is Recharts and
  * not a canvas engine.
+ *
+ * **What those six variables now resolve to has changed.** The design system
+ * locks the product to six colours in total, and a categorical chart palette is
+ * not one of the things they are spent on — so the slots are the three legible
+ * values in order (white ink, slate, coral) with the darker slates behind them,
+ * not six hues checked for protan/deutan separation. Three lines is what this
+ * product plots and three lines is what this reads well at. The fourth is
+ * already a slate telling a slate apart; past that the answer is to split the
+ * chart, which is what `seriesColor` below enforces.
  */
 
 /** The categorical slots, in fixed order. Never cycled — see `seriesColor`. */
@@ -21,9 +30,9 @@ export const SERIES_COLORS: string[] = Array.from(
  * The colour of slot `i`.
  *
  * Past the sixth series it stops handing out new colours and returns
- * `--muted`: a seventh hue is one the palette was never checked for, and two
- * lines nobody can tell apart are worse than one grey line labelled „Rest".
- * Seven series is the signal to group the tail together or split the chart.
+ * `--muted`: there is no seventh value to hand out, and two lines nobody can
+ * tell apart are worse than one slate line labelled „Rest". Seven series is the
+ * signal to group the tail together or split the chart.
  */
 export function seriesColor(i: number): string {
     return i < SERIES_SLOTS ? SERIES_COLORS[i] : 'var(--muted)';
@@ -87,12 +96,23 @@ export function withUnit(fmt: Formatter, unit: string): Formatter {
 
 /* ------------------------------------------------------------- chart chrome */
 
-/** Axis defaults. Recessive: the data is the ink, the axis is furniture. */
+/**
+ * Axis defaults. Recessive: the data is the ink, the axis is furniture.
+ *
+ * Ticks are set in the mono face with tabular figures, like every other number
+ * in the product — an axis whose labels change width as the scale moves is an
+ * axis that appears to twitch.
+ */
 export const AXIS = {
-    stroke: 'var(--line-strong)',
+    stroke: 'var(--line)',
     tickLine: false,
     axisLine: false,
-    tick: { fill: 'var(--muted)', fontSize: 11 },
+    tick: {
+        fill: 'var(--muted)',
+        fontSize: 11,
+        fontFamily: 'var(--mono)',
+        style: { fontVariantNumeric: 'tabular-nums' },
+    },
 } as const;
 
 export const GRID = {
@@ -102,9 +122,12 @@ export const GRID = {
 
 /** Marks. Thin lines, visible dots, a 2px surface gap between stacked fills. */
 export const MARK = {
+    /* 2px: heavier than the 1px hairlines the layout is built from, so the data
+       sits in front of the furniture rather than beside it. */
     strokeWidth: 2,
-    dotRadius: 4,
-    activeDotRadius: 5,
+    dotRadius: 3,
+    activeDotRadius: 4,
+    /* 4px — the small-tile radius. A bar is a tile lying down. */
     barRadius: 4,
     /** Painted in the surface colour so touching segments read as separate. */
     separator: 'var(--card)',

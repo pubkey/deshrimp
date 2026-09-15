@@ -77,26 +77,48 @@ hips, and in a desk-sized crop they come back with a visibility of 0.01 against
 ## Layout
 
 ```
-index.html          the shell; data-accent picks the palette
+index.html          the shell
 vite.config.ts      four path aliases, a build stamp, and two build-only plugins
 src/
   main.tsx          entry: pulls in the CSS, fills the page payload, mounts
   app/              this app — App.tsx, db.ts, pose.ts, twelve i18n tables,
                     styles.css, data.json (the written content), app.config.ts
-  ui/               the components this app uses — 42 of them — plus theme.css,
-                    the design tokens they are all built from
+  ui/               the components this app uses — 43 of them — plus theme.css
+                    and tokens/, the design system they are all built from,
+                    fonts/ (IBM Plex, vendored), and DESIGN.md, the rules in
+                    prose
   lib/              the runtime layer: RxDB setup, the ⇅ sync modal, a chart
                     wrapper around Recharts, small hooks
 scripts/            fetch-pose-model.mjs and the digests it enforces;
                     seo.mjs and pwa.mjs, which only run on `npm run build`
-public/             served as-is: the five alarm sounds, icon, manifest, and
-                    (fetched, not committed) the pose model in mp/
+public/             served as-is: the five alarm sounds, icon, manifest,
+                    brand/ (logo and mark), and (fetched, not committed) the
+                    pose model in mp/
 ```
 
 Four aliases keep the app's own imports readable — `@ui` the components, `@db`
 the local database, `@app` the page config, `@charts` the diagrams. They are
 declared once in `vite.config.ts` and once in `tsconfig.json` and point at
 ordinary folders.
+
+## How it looks
+
+The interface is the **deshrimp design system**: a clinical instrument rather
+than a wellness app. Six colours, locked — slate ground, slate card, hairline
+border, white ink, slate-blue secondary ink, and a coral accent that is a budget
+rather than a palette entry. IBM Plex Sans for words, IBM Plex Mono with tabular
+figures for every number, so a value does not reflow while it ticks. Borders
+instead of shadows, nothing rounder than 8px, no gradients, and motion only
+where it carries information.
+
+Severity is carried by *whether* the coral appears, not by a range of colours:
+there is no success green and no warning amber anywhere in the product. The one
+dramatic moment is a breach — the camera well's hairline snaps to a 3px coral
+stroke and the offending readout pulses. Nothing moves, nothing shakes.
+
+Dark is what it was drawn for; light is a scoped inversion and the toggle still
+works in both directions. The rules, the tokens and the three things still
+waiting on a decision from him are in **`src/ui/DESIGN.md`**.
 
 `src/ui` holds **only what this app renders**. It came from a shared library
 built for several different pages, and the rest of it — shop listings, maps,

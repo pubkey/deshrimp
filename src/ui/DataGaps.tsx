@@ -48,6 +48,7 @@
 
 import { Button } from './Button';
 import { Callout } from './Callout';
+import { Icon } from './Icon';
 import { Markdown } from './Markdown';
 import { Section } from './Section';
 import { cx } from './cx';
@@ -214,7 +215,7 @@ export function DataGaps(props: DataGapsProps) {
             </div>
 
             {props.ask !== false ? (
-                <Callout tone="warn" icon="✎"
+                <Callout tone="warn" icon={<Icon name="pencil" size={20} />}
                     title={props.askTitle || uiText().gapsAskTitle}>
                     {props.ask || uiText().gapsAskText}
                 </Callout>

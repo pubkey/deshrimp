@@ -1,0 +1,43 @@
+/* -------------------------------------------------------------------------
+   colors.css — the locked palette.
+
+   Six values and nothing else: deep slate ground, raised card, border slate,
+   crisp white ink, slate-blue secondary ink, coral accent. No second hue, no
+   success green, no warning amber. Severity is carried by *whether* the accent
+   appears, not by a range of colours — see DESIGN.md §"The 10% rule".
+
+   Dark is the default and the brief; light is a scoped inversion further down
+   in theme-light.css.
+   ------------------------------------------------------------------------- */
+
+:root {
+  /* base palette — locked, do not deviate */
+  --slate-950: #0F172A;
+  --slate-800: #1E293B;
+  --slate-750: #273549;
+  --slate-700: #334155;
+  --slate-650: #3E4C63;
+  --slate-400: #94A3B8;
+  --slate-50:  #F8FAFC;
+  --coral-500: #ff8257;
+  --coral-700: #E14E1D;
+
+  /* semantic aliases — components reference these, never the raw ramp */
+  --bg-app:           var(--slate-950);
+  --bg-inset:         var(--slate-950);
+  --surface-card:     var(--slate-750);
+  --surface-inset:    var(--slate-800);
+  --border-default:   var(--slate-650);
+  --border-alert:     var(--coral-500);
+  --track-default:    var(--slate-650);
+  --fill-default:     var(--slate-50);
+  --fill-alert:       var(--coral-500);
+  --text-primary:     var(--slate-50);
+  --text-secondary:   var(--slate-400);
+  --text-on-accent:   #ffffff;
+  --accent:           var(--coral-500);
+  --accent-bright:    var(--coral-500);
+  --accent-soft:      rgba(255, 130, 87, .14);
+  --scrim:            rgba(15, 23, 42, .78);
+  --control-inactive: var(--slate-700);
+}

@@ -1,0 +1,33 @@
+/* -------------------------------------------------------------------------
+   typography.css
+
+   IBM Plex Sans for interface text, IBM Plex Mono with tabular figures for
+   *every* number in the product, captions included — a number that reflows
+   while it ticks reads as a glitch rather than as a measurement.
+   ------------------------------------------------------------------------- */
+
+:root {
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system,
+               'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-core: var(--font-sans);
+
+  --text-display:    28px;   /* page title */
+  --text-metric-xl:  56px;   /* the one session metric a view leads with */
+  --text-metric:     32px;   /* telemetry readout */
+  --text-lg:         18px;   /* xl button */
+  --text-base:       14px;
+  --text-sm:         13px;
+  --text-label:      11px;   /* uppercase tracked eyebrow */
+
+  --leading-tight:  1.1;     /* numerals and titles */
+  --leading-normal: 1.45;    /* prose */
+
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  --tracking-label:   .09em;
+  --tracking-display: -.02em;
+}

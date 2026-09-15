@@ -1,148 +1,28 @@
 /* =========================================================================
    theme.css — the design sheet, as code.
-   Every HTML page a skill in this repo generates loads exactly this file.
-   Prose version + rationale: .claude/ui/DESIGN.md
-   Nothing here is page-specific. If you need a one-off rule, put it in your
-   skill's own stylesheet (build_page.py --css), never in here.
+
+   The palette, type, spacing, radii and motion are the deshrimp design system;
+   they live in `tokens/` and are imported below, in load order. Everything
+   after the imports is how *this* library's components spend them.
+
+   Prose version, the rules and the two flagged substitutions: src/ui/DESIGN.md
+
+   Nothing here is page-specific. A one-off rule belongs in the app's own
+   stylesheet (src/app/styles.css), never in here.
    ========================================================================= */
 
-/* ---------------------------------------------------------------- tokens */
-/* Light is the base definition. Every colour is defined HERE, on bare :root,
-   so a token can never be undefined in one theme; the dark blocks only
-   redefine values. */
-:root {
-  /* surfaces */
-  --bg:            #f4f2ee;   /* page — warm paper, never pure white */
-  --bg-sunk:       #ebe8e1;   /* wells, inset areas, table stripes */
-  --card:          #fffdfa;   /* raised surfaces: panels, cards, rows */
-  --card-hover:    #fffefd;
+@import './tokens/fonts.css';
+@import './tokens/colors.css';
+@import './tokens/typography.css';
+@import './tokens/spacing.css';
+@import './tokens/effects.css';
+/* Legacy names → design-system values. Read tokens/bridge.css before adding
+   a rule that uses one of the short names (--ink, --card, --s4, --r-md). */
+@import './tokens/bridge.css';
+/* Last: it redefines the semantic aliases the four files above set up. */
+@import './tokens/theme-light.css';
 
-  /* ink */
-  --ink:           #1c1a17;   /* body text, headings */
-  --ink-soft:      #453f37;   /* secondary body text */
-  --muted:         #6b6459;   /* labels, captions, metadata */
-  --faint:         #9a9287;   /* placeholders, disabled */
-
-  /* structure */
-  --line:          #e5e0d8;   /* default hairline */
-  --line-strong:   #d3ccc0;   /* emphasised border, input outline */
-
-  /* accent — overridden per page, see [data-accent] below */
-  --accent:        #7a5c3e;   /* fills, active states */
-  --accent-ink:    #6b4f34;   /* accent used AS TEXT on --bg/--card (AA) */
-  --accent-soft:   #f0e8de;   /* tinted background wash */
-  --on-accent:     #ffffff;   /* text on an --accent fill */
-
-  /* semantic */
-  --rec:           #b98a4b;   /* "our pick" gold — highlight, not a state */
-  --ok:            #2f6d5c;
-  --warn:          #a9662a;
-  --bad:           #a33a30;
-  --on-semantic:   #ffffff;
-
-  /* series — the categorical palette a chart paints with, in fixed order.
-     Not the accent: one page has one accent, and a chart with six lines needs
-     six colours that stay apart. Light and dark are picked separately, and both
-     sets are checked rather than eyeballed — OKLCH lightness band, chroma floor,
-     protan/deutan separation of neighbouring slots, contrast against --card. */
-  --series-1:      #2f6fb5;
-  --series-2:      #c2521f;
-  --series-3:      #1a8a72;
-  --series-4:      #a8791b;
-  --series-5:      #9c3d7a;
-  --series-6:      #4d7d1f;
-
-  /* elevation — four steps, no more */
-  --sh-1: 0 1px 2px rgba(40,30,15,.06);
-  --sh-2: 0 4px 16px rgba(40,30,15,.10);
-  --sh-3: 0 8px 40px rgba(40,30,15,.12);
-  --sh-4: 0 18px 60px rgba(40,30,15,.20);
-  --ring: 0 0 0 3px color-mix(in srgb, var(--accent) 32%, transparent);
-
-  /* radius */
-  --r-xs: 6px;  --r-sm: 10px;  --r-md: 14px;  --r-lg: 20px;  --r-xl: 28px;
-  --r-pill: 999px;
-
-  /* space — 4px base, the only allowed gaps */
-  --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px; --s5: 24px;
-  --s6: 32px; --s7: 48px; --s8: 64px;
-
-  /* type */
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-  --t-xs: 11px; --t-sm: 13px; --t-md: 14px; --t-base: 16px; --t-lg: 18px;
-  --lh: 1.55;
-  --track-caps: .12em;        /* letter-spacing for the uppercase eyebrow */
-
-  /* layout */
-  --maxw: 940px;              /* default content column */
-  --maxw-narrow: 720px;       /* reading-width column (text-heavy pages) */
-  --maxw-wide: 1180px;        /* tables, maps, galleries */
-
-  /* motion */
-  --dur-1: .12s; --dur-2: .22s; --ease: cubic-bezier(.2,.7,.3,1);
-
-  color-scheme: light dark;
-}
-
-/* Dark: system preference, unless the page was explicitly forced to light. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg:#14130f; --bg-sunk:#100f0c; --card:#1f1d18; --card-hover:#262319;
-    --ink:#efe9df; --ink-soft:#d6cec1; --muted:#a49a8a; --faint:#7c7365;
-    --line:#332c24; --line-strong:#493f33;
-    --accent:#d3a978; --accent-ink:#e0bb8f; --accent-soft:#2a2319; --on-accent:#1b1610;
-    --rec:#e0b878; --ok:#7cc0a8; --warn:#e0a35e; --bad:#e8837a; --on-semantic:#1b1610;
-    --series-1:#5286cc; --series-2:#cf6234; --series-3:#199a82;
-    --series-4:#b58a2a; --series-5:#bc6099; --series-6:#789b34;
-    --sh-1: 0 1px 2px rgba(0,0,0,.4);
-    --sh-2: 0 4px 16px rgba(0,0,0,.45);
-    --sh-3: 0 8px 40px rgba(0,0,0,.55);
-    --sh-4: 0 18px 60px rgba(0,0,0,.65);
-  }
-}
-/* Explicit choice always wins over the media query, in both directions. */
-:root[data-theme="dark"] {
-  --bg:#14130f; --bg-sunk:#100f0c; --card:#1f1d18; --card-hover:#262319;
-  --ink:#efe9df; --ink-soft:#d6cec1; --muted:#a49a8a; --faint:#7c7365;
-  --line:#332c24; --line-strong:#493f33;
-  --accent:#d3a978; --accent-ink:#e0bb8f; --accent-soft:#2a2319; --on-accent:#1b1610;
-  --rec:#e0b878; --ok:#7cc0a8; --warn:#e0a35e; --bad:#e8837a; --on-semantic:#1b1610;
-  --series-1:#5286cc; --series-2:#cf6234; --series-3:#199a82;
-  --series-4:#b58a2a; --series-5:#bc6099; --series-6:#789b34;
-  --sh-1: 0 1px 2px rgba(0,0,0,.4);
-  --sh-2: 0 4px 16px rgba(0,0,0,.45);
-  --sh-3: 0 8px 40px rgba(0,0,0,.55);
-  --sh-4: 0 18px 60px rgba(0,0,0,.65);
-}
-
-/* --------------------------------------------------------- accent presets */
-/* One page = one accent. Set it with build_page.py --accent <name|#hex>.
-   Each preset needs a light AND a dark value, because a colour that reads on
-   paper rarely reads on near-black. */
-:root[data-accent="fashion"] { --accent:#7a5c3e; --accent-ink:#6b4f34; --accent-soft:#f0e8de; --on-accent:#fff; }
-:root[data-accent="travel"]  { --accent:#2f6d5c; --accent-ink:#2a5f50; --accent-soft:#e3ede9; --on-accent:#fff; }
-:root[data-accent="music"]   { --accent:#1db954; --accent-ink:#0d7a36; --accent-soft:#e4f4e9; --on-accent:#fff; }
-:root[data-accent="ink"]     { --accent:#2f3336; --accent-ink:#2f3336; --accent-soft:#e9eaeb; --on-accent:#fff; }
-:root[data-accent="food"]    { --accent:#b4522e; --accent-ink:#9e4728; --accent-soft:#fbeae3; --on-accent:#fff; }
-:root[data-accent="home"]    { --accent:#4a5d8a; --accent-ink:#3f5179; --accent-soft:#e8ecf5; --on-accent:#fff; }
-:root[data-accent="health"]  { --accent:#0f7b8a; --accent-ink:#0c6875; --accent-soft:#e0eff1; --on-accent:#fff; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"])[data-accent="fashion"] { --accent:#d3a978; --accent-ink:#e0bb8f; --accent-soft:#2a2319; --on-accent:#1b1610; }
-  :root:not([data-theme="light"])[data-accent="travel"]  { --accent:#7cc0a8; --accent-ink:#8fd0b8; --accent-soft:#1a251f; --on-accent:#10201a; }
-  :root:not([data-theme="light"])[data-accent="music"]   { --accent:#1db954; --accent-ink:#4ade80; --accent-soft:#14231a; --on-accent:#08150c; }
-  :root:not([data-theme="light"])[data-accent="ink"]     { --accent:#c9ccce; --accent-ink:#d9dcde; --accent-soft:#22252700; --on-accent:#16181a; }
-  :root:not([data-theme="light"])[data-accent="food"]    { --accent:#e8916b; --accent-ink:#f0a583; --accent-soft:#2b1c15; --on-accent:#241009; }
-  :root:not([data-theme="light"])[data-accent="home"]    { --accent:#9aaee0; --accent-ink:#adbfea; --accent-soft:#1a1f2e; --on-accent:#121724; }
-  :root:not([data-theme="light"])[data-accent="health"]  { --accent:#5cc3d3; --accent-ink:#78d2df; --accent-soft:#122528; --on-accent:#08191c; }
-}
-:root[data-theme="dark"][data-accent="fashion"] { --accent:#d3a978; --accent-ink:#e0bb8f; --accent-soft:#2a2319; --on-accent:#1b1610; }
-:root[data-theme="dark"][data-accent="travel"]  { --accent:#7cc0a8; --accent-ink:#8fd0b8; --accent-soft:#1a251f; --on-accent:#10201a; }
-:root[data-theme="dark"][data-accent="music"]   { --accent:#1db954; --accent-ink:#4ade80; --accent-soft:#14231a; --on-accent:#08150c; }
-:root[data-theme="dark"][data-accent="ink"]     { --accent:#c9ccce; --accent-ink:#d9dcde; --accent-soft:#222527; --on-accent:#16181a; }
-:root[data-theme="dark"][data-accent="food"]    { --accent:#e8916b; --accent-ink:#f0a583; --accent-soft:#2b1c15; --on-accent:#241009; }
-:root[data-theme="dark"][data-accent="home"]    { --accent:#9aaee0; --accent-ink:#adbfea; --accent-soft:#1a1f2e; --on-accent:#121724; }
-:root[data-theme="dark"][data-accent="health"]  { --accent:#5cc3d3; --accent-ink:#78d2df; --accent-soft:#122528; --on-accent:#08191c; }
+:root { color-scheme: dark light; }
 
 /* ------------------------------------------------------------------ reset */
 *, *::before, *::after { box-sizing: border-box; }
@@ -152,13 +32,15 @@ body {
   background: var(--bg);
   color: var(--ink);
   font: var(--t-base)/var(--lh) var(--font);
+  -webkit-font-smoothing: antialiased;
   overflow-wrap: break-word;
   /* iOS safe areas — pages are installed as PWAs and run full-bleed */
   padding: env(safe-area-inset-top) env(safe-area-inset-right)
            env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 img, svg, video { max-width: 100%; display: block; }
-a { color: var(--accent-ink); }
+a { color: var(--accent); }
+a:hover { color: var(--ink); }
 :focus-visible { outline: none; box-shadow: var(--ring); border-radius: var(--r-xs); }
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: .001ms !important; transition-duration: .001ms !important;
@@ -167,13 +49,16 @@ a { color: var(--accent-ink); }
 
 /* ------------------------------------------------------- layout utilities */
 .ui-shell   { min-height: 100vh; display: flex; flex-direction: column; }
-.ui-wrap    { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 var(--s4); }
+.ui-wrap    { width: 100%; max-width: var(--maxw); margin: 0 auto;
+              padding: 0 var(--page-gutter); }
 .ui-wrap.narrow { max-width: var(--maxw-narrow); }
 .ui-wrap.wide   { max-width: var(--maxw-wide); }
 /* Edge to edge, for dashboards. Still keeps the side padding — content that
    touches the window edge reads as broken, not as full-width. */
-.ui-wrap.full   { max-width: none; padding: 0 var(--s5); }
-@media (max-width: 640px) { .ui-wrap.full { padding: 0 var(--s4); } }
+.ui-wrap.full   { max-width: var(--content-max); padding: 0 var(--page-gutter); }
+@media (max-width: 640px) {
+  .ui-wrap, .ui-wrap.full { padding: 0 var(--s4); }
+}
 .ui-main    { flex: 1; padding-bottom: var(--s7); }
 
 .ui-row  { display: flex; flex-direction: row; align-items: center; gap: var(--s3); }
@@ -222,7 +107,9 @@ a { color: var(--accent-ink); }
   .ui-row.stack > * { flex: 1 1 auto !important; width: 100%; max-width: 100%; }
 }
 .ui-col  { display: flex; flex-direction: column; gap: var(--s3); }
-.ui-grid { display: grid; gap: var(--s4);
+/* 24px is the grid gap and it is structural — a page that picks its own is a
+   page that no longer looks like the rest. */
+.ui-grid { display: grid; gap: var(--grid-gap);
            grid-template-columns: repeat(auto-fit, minmax(var(--min, 240px), 1fr)); }
 .ui-gap-0 { gap: 0 } .ui-gap-1 { gap: var(--s1) } .ui-gap-2 { gap: var(--s2) }
 .ui-gap-3 { gap: var(--s3) } .ui-gap-4 { gap: var(--s4) } .ui-gap-5 { gap: var(--s5) }
@@ -232,14 +119,23 @@ a { color: var(--accent-ink); }
 
 .ui-scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
-/* Elevation + radius as standalone classes, usable on any bare <div>. */
+/* The two utilities the design system hands out by name. */
+.ds-tnum { font-family: var(--mono); font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1; }
+.ds-label { font-size: var(--t-xs); letter-spacing: var(--track-caps);
+  text-transform: uppercase; color: var(--muted); font-weight: 500; }
+
+/* Radius as standalone classes, usable on any bare <div>. The four elevation
+   classes stay so old markup still parses, but three of the four steps now
+   resolve to `none`: the system separates with hairlines. Reach for a border,
+   not for `.ui-sh-2`. */
 .ui-sh-0 { box-shadow: none }
 .ui-sh-1 { box-shadow: var(--sh-1) }
 .ui-sh-2 { box-shadow: var(--sh-2) }
 .ui-sh-3 { box-shadow: var(--sh-3) }
 .ui-sh-4 { box-shadow: var(--sh-4) }
-.ui-lift { transition: transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease); }
-.ui-lift:hover { transform: translateY(-2px); box-shadow: var(--sh-4); }
+.ui-lift { transition: opacity var(--dur-1) var(--ease); }
+.ui-lift:hover { opacity: .88; }
 .ui-r-xs { border-radius: var(--r-xs) } .ui-r-sm { border-radius: var(--r-sm) }
 .ui-r-md { border-radius: var(--r-md) } .ui-r-lg { border-radius: var(--r-lg) }
 .ui-r-xl { border-radius: var(--r-xl) } .ui-r-pill { border-radius: var(--r-pill) }
@@ -247,45 +143,56 @@ a { color: var(--accent-ink); }
    aus. Beide Helfer bringen deshalb ihr eigenes Innenmaß mit — überschreibbar
    mit <Box pad="..."> oder einer eigenen padding-Regel. */
 .ui-surface { background: var(--card); border: 1px solid var(--line);
-  padding: var(--s3) var(--s4); }
+  border-radius: var(--r-md); padding: var(--s5); }
+/* An inset steps back DOWN the value ladder — it never nests at the same
+   surface value as the card around it. */
 .ui-sunk    { background: var(--bg-sunk); border: 1px solid var(--line);
-  padding: var(--s3) var(--s4); }
+  border-radius: var(--r-sm); padding: var(--s3) var(--s4); }
 
 /* -------------------------------------------------------------- typography */
 .ui-h1, .ui-h2, .ui-h3, .ui-h4, .ui-h5, .ui-h6 {
-  margin: 0; font-weight: 650; line-height: 1.2; letter-spacing: -.01em; color: var(--ink);
+  margin: 0; font-weight: 700; line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-display); color: var(--ink);
 }
-.ui-h1 { font-size: clamp(24px, 4.2vw, 34px); letter-spacing: -.02em; }
-.ui-h2 { font-size: clamp(20px, 3vw, 26px); }
-.ui-h3 { font-size: 19px; }
-.ui-h4 { font-size: 16px; }
-.ui-h5 { font-size: var(--t-md); }
+/* 28px is the page title and the top of the scale. Nothing between it and the
+   11px label needs its own size, so the middle of the ladder is tight. */
+.ui-h1 { font-size: var(--text-display); }
+.ui-h2 { font-size: 22px; }
+.ui-h3 { font-size: var(--t-lg); }
+.ui-h4 { font-size: 16px; letter-spacing: 0; }
+.ui-h5 { font-size: var(--t-md); letter-spacing: 0; }
 .ui-h6 { font-size: var(--t-xs); font-weight: 600; letter-spacing: var(--track-caps);
          text-transform: uppercase; color: var(--muted); }
-.ui-lead   { font-size: var(--t-lg); color: var(--ink-soft); margin: 0; max-width: 70ch; }
+.ui-lead   { font-size: var(--t-lg); color: var(--ink-soft); margin: 0; max-width: 70ch;
+             line-height: var(--lh); letter-spacing: 0; }
 .ui-text   { margin: 0; max-width: 74ch; }
 .ui-muted  { color: var(--muted); }
 .ui-small  { font-size: var(--t-sm); }
 .ui-eyebrow{ font-size: var(--t-xs); font-weight: 600; letter-spacing: var(--track-caps);
-             text-transform: uppercase; color: var(--accent-ink); }
+             text-transform: uppercase; color: var(--muted); }
 .ui-mono   { font-family: var(--mono); font-size: .92em; }
 .ui-prose p { margin: 0 0 var(--s3); max-width: 74ch; }
 .ui-prose p:last-child { margin-bottom: 0; }
 .ui-prose b, .ui-prose strong { font-weight: 650; }
-.ui-prose a { color: var(--accent-ink); text-decoration-thickness: 1px;
+.ui-prose a { color: var(--accent); text-decoration-thickness: 1px;
               text-underline-offset: 2px; }
+/* Numerals inside prose are still numerals. */
+.ui-prose .ui-mono, .ui-num { font-family: var(--mono);
+  font-variant-numeric: tabular-nums; }
 
 /* ------------------------------------------------------------ page header */
 .ui-topbar { position: sticky; top: 0; z-index: 20; display: flex; justify-content: flex-end;
-  gap: var(--s2); padding: var(--s3) var(--s4) 0;
-  /* Fades the content out behind the floating actions instead of boxing them. */
-  background: linear-gradient(var(--bg) 62%, transparent);
+  gap: var(--s2); padding: var(--s3) var(--s5) 0;
+  /* Flat, never a fade: the system has no gradients. The bar sits on the page
+     ground and the hairline under it is what separates the two. */
+  background: var(--bg);
   pointer-events: none;
 }
 .ui-topbar > * { pointer-events: auto; }
-.ui-header { text-align: center; padding: var(--s2) var(--s4) 0; }
-.ui-header .ui-h1 { margin: 0 auto; max-width: 22ch; }
-.ui-header .ui-sub { margin: var(--s2) auto 0; color: var(--muted); max-width: 60ch; }
+.ui-header { text-align: left; padding: var(--s5) 0 0; }
+.ui-header .ui-h1 { margin: 0; max-width: 28ch; }
+.ui-header .ui-sub { margin: var(--s2) 0 0; color: var(--muted); max-width: 70ch;
+  font-size: var(--t-sm); }
 /* On a full-bleed page the header is a bar, not a title page: a centred line
    floating over 1600 px of tiles reads as a document that lost its margins.
    Left-aligned, and pulled in from the action bar so the two do not collide. */
@@ -296,11 +203,11 @@ a { color: var(--accent-ink); }
 @media (max-width: 860px) { .ui-wrap.full > .ui-header { max-width: none; } }
 .ui-taskbox {
   display: inline-block; text-align: left; margin: var(--s4) auto 0; max-width: 680px;
-  background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
-  padding: var(--s2) var(--s4); font-size: var(--t-md); box-shadow: var(--sh-2);
+  background: var(--bg-sunk); border: 1px solid var(--line); border-radius: var(--r-md);
+  padding: var(--s3) var(--s4); font-size: var(--t-sm);
 }
-.ui-taskbox b { display: block; margin-bottom: 2px; font-size: var(--t-xs); font-weight: 600;
-  letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--accent-ink); }
+.ui-taskbox b { display: block; margin-bottom: var(--s1); font-size: var(--t-xs); font-weight: 600;
+  letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--muted); }
 .ui-taskbox .ui-taskbody { color: var(--ink-soft); white-space: pre-wrap; }
 
 /* The closing block: everything *about* the page, never above it (PageMeta). */
@@ -322,18 +229,23 @@ a { color: var(--accent-ink); }
    own children, so a page that drops a <Grid>, a <Row> and two <Text>s into one
    does not get them glued together. */
 .ui-panel { background: var(--card); border: 1px solid var(--line);
-  border-radius: var(--r-md); box-shadow: var(--sh-2); padding: var(--s4);
-  display: flex; flex-direction: column; gap: var(--s3); }
-.ui-panel.pad-0 { padding: 0 } .ui-panel.pad-sm { padding: var(--s3) }
-.ui-panel.pad-lg { padding: var(--s5) }
-.ui-panel.flat { box-shadow: none }
-.ui-panel.sunk { background: var(--bg-sunk); box-shadow: none }
+  border-radius: var(--r-md); padding: var(--card-padding);
+  display: flex; flex-direction: column; gap: var(--s5); }
+.ui-panel.pad-0 { padding: 0 } .ui-panel.pad-sm { padding: var(--s4) }
+.ui-panel.pad-lg { padding: var(--s6) }
+/* `flat` used to mean "same card, no shadow". There are no shadows now, so it
+   means the quieter surface — a block that is grouped but not raised. */
+.ui-panel.flat { background: transparent; border-color: var(--line); }
+.ui-panel.sunk { background: var(--bg-sunk); }
 .ui-panel.rec  { border-left: 3px solid var(--rec); }
 .ui-panel.accent { border-left: 3px solid var(--accent); }
 .ui-panel-head { display: flex; align-items: baseline; justify-content: space-between;
-  gap: var(--s3); margin-bottom: var(--s3); }
+  gap: var(--s3); margin-bottom: 0; }
+.ui-panel-head .ui-h3, .ui-panel-head .ui-h4, .ui-panel-head .ui-h5 {
+  font-size: var(--t-xs); font-weight: 600; letter-spacing: var(--track-caps);
+  text-transform: uppercase; color: var(--muted); }
 .ui-card { background: var(--card); border: 1px solid var(--line);
-  border-radius: var(--r-lg); box-shadow: var(--sh-3); overflow: hidden; }
+  border-radius: var(--r-lg); overflow: hidden; }
 /* A section owns the spacing between its own children.
    Before 2026-09-08 it did not, and a page that put two blocks straight into a
    <Section> — a <Callout> above a <Grid>, say — got them flush against each
@@ -348,14 +260,21 @@ a { color: var(--accent-ink); }
 .ui-section-head { margin-bottom: 0; }
 .ui-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3);
   background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md);
-  padding: var(--s3) var(--s4); box-shadow: var(--sh-1); }
+  padding: var(--s3) var(--s4); }
 .ui-callout { display: flex; gap: var(--s3); border-radius: var(--r-md); padding: var(--s3) var(--s4);
   background: var(--accent-soft); border: 1px solid var(--line); }
-.ui-callout .ui-callout-icon { font-size: 18px; line-height: 1.3; }
+/* The icon sits on the first line of the title, not floating above it, and
+   it is secondary ink — the words carry the message. A `bad` callout is the
+   exception: there the icon marks a breach and takes the accent with it. */
+.ui-callout .ui-callout-icon { flex: none; display: flex; padding-top: 2px;
+  color: var(--muted); }
+.ui-callout.bad .ui-callout-icon { color: var(--accent); }
 /* Title and body were flush; a callout with both reads as one run-on line. */
 .ui-callout > .ui-grow { display: flex; flex-direction: column; gap: var(--s2); }
+.ui-callout { background: var(--bg-sunk); }
 .ui-callout.warn { border-color: var(--warn); }
-.ui-callout.bad  { border-color: var(--bad); }
+.ui-callout.bad  { border-color: var(--bad); border-width: var(--border-width-alert);
+                   background: var(--accent-soft); }
 .ui-empty { text-align: center; color: var(--muted); padding: var(--s7) var(--s4); }
 
 /* A wait with no number on it. The ring is decoration and the label is the
@@ -376,8 +295,10 @@ a { color: var(--accent-ink); }
    by accident while the page is not ready. */
 .ui-loadwrap { border: 0; padding: 0; background: transparent; max-width: none;
   max-height: none; width: 100%; height: 100%; overflow: hidden; }
-.ui-loadwrap::backdrop { background: color-mix(in srgb, var(--ink) 55%, transparent);
-  backdrop-filter: blur(2px); }
+/* Blur is sanctioned only over live video (the camera-well status pill); a
+   dialog scrim is a flat value, written out because ::backdrop does not
+   reliably inherit custom properties. */
+.ui-loadwrap::backdrop { background: rgba(15, 23, 42, .78); }
 .ui-loadcard { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
   display: flex; flex-direction: column; align-items: center; gap: var(--s4);
   width: min(420px, calc(100vw - var(--s6) * 2)); box-sizing: border-box;
@@ -399,29 +320,40 @@ a { color: var(--accent-ink); }
 .ui-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--s2);
   font: inherit; font-weight: 600; line-height: 1.1; text-decoration: none; cursor: pointer;
-  padding: 10px 18px; border-radius: var(--r-pill); border: 1px solid var(--line-strong);
-  background: var(--card); color: var(--ink); white-space: nowrap;
-  transition: background var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease),
-              color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
+  height: var(--control-height); padding: 0 var(--s4); letter-spacing: .02em;
+  border-radius: var(--r-sm); border: 1px solid var(--line);
+  background: transparent; color: var(--ink); white-space: nowrap;
+  transition: var(--transition-control);
 }
-.ui-btn:hover { border-color: var(--accent); color: var(--accent-ink); }
-.ui-btn:active { transform: translateY(1px); }
-.ui-btn[disabled], .ui-btn.disabled { opacity: .5; pointer-events: none; }
+/* The only hover in the system. */
+.ui-btn:hover { opacity: .88; }
+.ui-btn[disabled], .ui-btn.disabled { opacity: .4; cursor: not-allowed; pointer-events: none; }
+/* One accent fill in view at a time — it is the primary trigger in its default
+   state, and that is one of the six places the budget may be spent. */
 .ui-btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-.ui-btn.primary:hover { color: var(--on-accent); filter: brightness(1.07); }
-.ui-btn.ghost { background: transparent; border-color: transparent; }
-.ui-btn.ghost:hover { background: var(--accent-soft); }
-.ui-btn.danger { border-color: var(--bad); color: var(--bad); }
-.ui-btn.danger:hover { background: var(--bad); color: var(--on-semantic); }
-.ui-btn.sm { padding: 6px 13px; font-size: var(--t-sm); }
-.ui-btn.lg { padding: 13px 24px; font-size: var(--t-lg); }
+.ui-btn.ghost { background: transparent; border-color: transparent; color: var(--muted); }
+/* The inactive control slate: an action that is available but is not the one
+   being offered. Danger is not a colour here — a destructive action is stated
+   in words and confirmed (see ConfirmButton), not painted red. */
+.ui-btn.danger { background: var(--control-inactive); border-color: var(--control-inactive);
+  color: var(--ink); }
+.ui-btn.sm { height: 32px; padding: 0 var(--s3); font-size: var(--t-sm); }
+/* The xl trigger: 64px, uppercase, tracked. The one button a dashboard leads
+   with — Start, Stop. */
+.ui-btn.lg { height: var(--button-height-xl); padding: 0 var(--s6);
+  font-size: var(--t-lg); text-transform: uppercase;
+  letter-spacing: var(--track-caps); }
 .ui-btn.block { display: flex; width: 100%; }
+/* The glyph in a button is furniture: it never takes the accent and it never
+   grows with the label. */
+.ui-btn > svg { flex: none; }
 .ui-btn.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-.ui-iconbtn { width: 40px; height: 40px; padding: 0; border-radius: 50%;
+.ui-iconbtn { width: var(--control-height); height: var(--control-height); padding: 0;
+  border-radius: var(--r-sm);
   display: inline-flex; align-items: center; justify-content: center; font: inherit;
-  cursor: pointer; background: var(--card); color: var(--ink);
-  border: 1px solid var(--line); box-shadow: var(--sh-2); }
-.ui-iconbtn:hover { border-color: var(--accent); color: var(--accent-ink); }
+  cursor: pointer; background: var(--card); color: var(--muted);
+  border: 1px solid var(--line); transition: var(--transition-control); }
+.ui-iconbtn:hover { opacity: .88; }
 /* The language control. Same round shape as the theme toggle, a flag instead
    of an icon. Sized like an emoji rather than like text, because that is what
    it is — and where a platform cannot draw the flag it falls back to the two
@@ -430,7 +362,7 @@ a { color: var(--accent-ink); }
   font-size: 17px; line-height: 1; }
 /* With one language it is a label: no hover affordance, no pointer. */
 .ui-langtag { color: var(--muted); cursor: default; }
-.ui-langtag:hover { border-color: var(--line); color: var(--muted); }
+.ui-langtag:hover { opacity: 1; }
 /* With several it is a picker: a real <select> laid invisibly over the button,
    so the keyboard, the mobile wheel and Esc all come from the browser. */
 .ui-langpick { position: relative; cursor: pointer; }
@@ -438,9 +370,9 @@ a { color: var(--accent-ink); }
 .ui-filterbar > * { min-width: 180px; max-width: 260px; }
 .ui-langpick select { position: absolute; inset: 0; width: 100%; height: 100%;
   opacity: 0; cursor: pointer; border: 0; padding: 0; -webkit-appearance: none; appearance: none; }
-.ui-share { gap: var(--s2); width: auto; padding: 0 var(--s4); border-radius: var(--r-pill); }
+.ui-share { gap: var(--s2); width: auto; padding: 0 var(--s4); border-radius: var(--r-sm); }
 
-.ui-tabs { display: flex; flex-wrap: wrap; gap: var(--s2); justify-content: center;
+.ui-tabs { display: flex; flex-wrap: wrap; gap: var(--s2); justify-content: flex-start;
   padding: var(--s5) 0 var(--s2); }
 .ui-badge { display: inline-block; font-size: var(--t-xs); font-weight: 600; white-space: nowrap;
   padding: 3px 9px; border-radius: var(--r-pill);
@@ -452,36 +384,43 @@ a { color: var(--accent-ink); }
 .ui-badge.quiet { background: transparent; color: var(--muted); border: 1px solid var(--line); }
 .ui-tag { font: inherit; font-size: var(--t-xs); letter-spacing: .04em; cursor: pointer;
   padding: 3px 10px; border-radius: var(--r-pill); border: 1px solid var(--line);
-  background: transparent; color: var(--accent-ink); }
-.ui-tag:hover { border-color: var(--accent); }
+  background: transparent; color: var(--ink);
+  transition: var(--transition-control); }
+.ui-tag:hover { opacity: .88; }
 .ui-tag.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .ui-tag[disabled] { cursor: default; color: var(--muted); }
 
 /* ----------------------------------------------------------------- inputs */
 .ui-field { display: flex; flex-direction: column; gap: 5px; }
-.ui-field > label { font-size: var(--t-sm); font-weight: 600; color: var(--muted); }
+/* Every label in the system is the same 11px tracked uppercase eyebrow. */
+.ui-field > label { font-size: var(--t-xs); font-weight: 500; color: var(--muted);
+  letter-spacing: var(--track-caps); text-transform: uppercase; }
 .ui-field .ui-hint { font-size: var(--t-sm); color: var(--faint); }
 .ui-field .ui-error { font-size: var(--t-sm); color: var(--bad); }
 .ui-input, .ui-textarea, .ui-select {
-  font: inherit; width: 100%; color: var(--ink); background: var(--card);
-  border: 1px solid var(--line-strong); border-radius: var(--r-sm);
-  padding: 10px var(--s3); transition: border-color var(--dur-1) var(--ease);
+  font: inherit; width: 100%; color: var(--ink); background: var(--bg-sunk);
+  border: 1px solid var(--line); border-radius: var(--r-sm);
+  padding: 0 var(--s3); height: var(--control-height);
+  transition: var(--transition-control);
 }
+/* A field that holds a number holds it in tabular mono, like every other
+   number in the product. */
+.ui-input[type="number"] { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 .ui-input::placeholder, .ui-textarea::placeholder { color: var(--faint); }
-.ui-input:hover, .ui-textarea:hover, .ui-select:hover { border-color: var(--accent); }
-.ui-textarea { min-height: 96px; resize: vertical; line-height: var(--lh); }
-.ui-select { appearance: none; padding-right: var(--s6);
-  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
-                    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
-  background-position: calc(100% - 20px) 52%, calc(100% - 15px) 52%;
-  background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; }
+.ui-input:hover, .ui-textarea:hover, .ui-select:hover { opacity: .88; }
+.ui-textarea { min-height: 96px; height: auto; resize: vertical; line-height: var(--lh);
+  padding: var(--s3); }
+.ui-select { appearance: none; padding-right: var(--s8); cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-position: right var(--s3) center; background-size: 12px 12px;
+  background-repeat: no-repeat; }
 .ui-check { display: inline-flex; align-items: center; gap: var(--s2); cursor: pointer; }
 .ui-check input { width: 17px; height: 17px; accent-color: var(--accent); margin: 0; }
 
 
 /* ----------------------------------------------------------------- tables */
 .ui-table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r-md);
-  background: var(--card); box-shadow: var(--sh-2); }
+  background: var(--card); }
 .ui-table { width: 100%; border-collapse: collapse; font-size: var(--t-md); }
 .ui-table caption { caption-side: top; text-align: left; padding: var(--s3) var(--s4);
   color: var(--muted); font-size: var(--t-sm); }
@@ -491,46 +430,59 @@ a { color: var(--accent-ink); }
   font-size: var(--t-xs); letter-spacing: var(--track-caps); text-transform: uppercase;
   color: var(--muted); font-weight: 600; white-space: nowrap; }
 .ui-table thead th.sortable { cursor: pointer; user-select: none; }
-.ui-table thead th.sortable:hover { color: var(--accent-ink); }
+.ui-table thead th.sortable:hover { opacity: .88; }
 .ui-table thead th .ui-sortmark { opacity: .45; margin-left: 4px; }
-.ui-table thead th.on .ui-sortmark { opacity: 1; color: var(--accent-ink); }
+.ui-table thead th.on .ui-sortmark { opacity: 1; color: var(--accent); }
 .ui-table tbody tr:last-child td { border-bottom: 0; }
 .ui-table tbody tr.rec { background: var(--accent-soft); }
 .ui-table.striped tbody tr:nth-child(even) { background: var(--bg-sunk); }
 .ui-table.dense th, .ui-table.dense td { padding: var(--s2) var(--s3); }
-.ui-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ui-table .num { text-align: right; font-family: var(--mono);
+  font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 .ui-facts { display: flex; flex-wrap: wrap; gap: var(--s2); }
-.ui-fact { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-sm);
-  padding: var(--s2) var(--s3); min-width: 96px; }
+.ui-fact { background: var(--bg-sunk); border: 1px solid var(--line); border-radius: var(--r-sm);
+  padding: var(--s4); min-width: 96px;
+  display: flex; flex-direction: column; gap: var(--s2); }
 .ui-fact .k { display: block; font-size: var(--t-xs); letter-spacing: var(--track-caps);
-  text-transform: uppercase; color: var(--muted); }
-.ui-fact .v { font-weight: 600; }
+  text-transform: uppercase; color: var(--muted); font-weight: 500; }
+.ui-fact .v { font-weight: 500; font-family: var(--mono);
+  font-variant-numeric: tabular-nums; line-height: var(--leading-tight); }
 /* The one number a dashboard leads with. Exactly one per view: a second hero
    is two heroes, which is none. Same sans as everything else — a display face
    here reads as decoration rather than as data. */
-.ui-stat.hero .v { font-size: clamp(44px, 6vw, 68px); line-height: 1.05; }
-.ui-stat.hero .k { font-size: var(--t-sm); }
+.ui-stat.hero .v { font-size: var(--text-metric-xl); line-height: var(--leading-tight); }
+.ui-stat.hero .k { font-size: var(--t-xs); }
 /* The change against a named period. Direction is the arrow; whether that
    direction is good is the colour, and the two are set separately because for
    half these numbers up is bad. */
-.ui-stat-delta { font-size: var(--t-sm); font-weight: 600; display: inline-flex;
-  align-items: baseline; gap: .3em; }
+.ui-stat-delta { font-size: var(--t-sm); font-weight: 500; display: inline-flex;
+  align-items: baseline; gap: .3em; font-family: var(--mono);
+  font-variant-numeric: tabular-nums; }
 .ui-stat-delta.up { color: var(--ok); }
 .ui-stat-delta.down { color: var(--bad); }
 .ui-stat-delta.flat { color: var(--muted); }
-.ui-stat .v { font-size: clamp(22px, 3vw, 30px); font-weight: 650; letter-spacing: -.02em;
-  font-variant-numeric: tabular-nums; }
+.ui-stat .v { font-size: var(--text-metric); font-weight: 500; letter-spacing: 0;
+  font-family: var(--mono); font-variant-numeric: tabular-nums;
+  line-height: var(--leading-tight); }
+/* The one number a breach is reported on: coral, and the 900ms opacity pulse.
+   Nothing moves, nothing shakes, nothing enlarges. */
+.ui-stat.breach .v, .ui-stat.breach .k { color: var(--accent); }
+.ui-stat.breach { background: var(--accent-soft); border-color: var(--border-alert);
+  animation: ds-breach-flash 900ms var(--ease) infinite; }
+@keyframes ds-breach-flash { 0%, 100% { opacity: 1 } 50% { opacity: .45 } }
+@media (prefers-reduced-motion: reduce) { .ui-stat.breach { animation: none } }
 
 /* -------------------------------------------------------------- carousel */
 .ui-carousel { position: relative; overflow: hidden; border-radius: var(--r-lg); }
 .ui-track { display: flex; transition: transform var(--dur-2) var(--ease); }
 .ui-track > * { flex: 0 0 100%; min-width: 100%; }
 .ui-nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
-  width: 44px; height: 44px; border-radius: 50%; cursor: pointer; font-size: 22px;
+  width: var(--control-height); height: var(--control-height); border-radius: var(--r-sm);
+  cursor: pointer; font-size: 18px;
   display: flex; align-items: center; justify-content: center;
-  background: var(--card); color: var(--ink); border: 1px solid var(--line); box-shadow: var(--sh-3); }
-.ui-nav:hover { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+  background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.ui-nav:hover { opacity: .88; }
 .ui-nav.prev { left: 10px } .ui-nav.next { right: 10px }
 .ui-thumbs { display: flex; gap: var(--s2); overflow-x: auto; padding: var(--s3) 2px;
   justify-content: center; }
@@ -540,21 +492,24 @@ a { color: var(--accent-ink); }
 .ui-modal { border: 0; padding: 0; background: transparent; margin: auto;
   max-width: min(430px, 92vw); width: 100%; color: var(--ink); }
 .ui-modal::backdrop {
-  /* ::backdrop does not reliably inherit custom properties — literal scrim. */
-  background: rgba(18, 14, 8, .55);
+  /* ::backdrop does not reliably inherit custom properties — literal scrim,
+     and it is the design system's --scrim value written out. */
+  background: rgba(15, 23, 42, .78);
 }
+/* One of the two sanctioned shadows: a dialog is in the top layer and has
+   genuinely left the page, so a hairline alone cannot place it. */
 .ui-modal-card { background: var(--card); border: 1px solid var(--line);
-  border-radius: var(--r-lg); box-shadow: var(--sh-4); padding: var(--s5); }
+  border-radius: var(--r-lg); box-shadow: var(--sh-4); padding: var(--card-padding); }
 .ui-modal-head { display: flex; align-items: center; justify-content: space-between;
   gap: var(--s3); margin-bottom: var(--s4); }
 .ui-modal-foot { margin-top: var(--s4); padding-top: var(--s3);
   border-top: 1px solid var(--line); }
-.ui-modal[open] { animation: ui-modal-in var(--dur-2) var(--ease); }
-@keyframes ui-modal-in { from { opacity: 0; transform: translateY(8px) scale(.98); } }
+/* No entrance animation: the dialog being there is the state change, and a
+   thing that slides in is a thing you wait for. */
 
 /* --------------------------------------------------------------------- QR */
 .ui-qr-wrap { display: flex; flex-direction: column; align-items: center; gap: var(--s2); }
-.ui-qr { display: block; border-radius: var(--r-sm); box-shadow: var(--sh-1);
+.ui-qr { display: block; border-radius: var(--r-sm);
   /* The white quiet zone is part of the code — never let a theme tint it. */
   background: #fff; max-width: 100%; height: auto; }
 .ui-urlbox { font-family: var(--mono); font-size: var(--t-sm); line-height: 1.45;
@@ -592,7 +547,7 @@ a { color: var(--accent-ink); }
 .ui-gaps-line { font-size: var(--t-sm); color: var(--ink-soft); }
 .ui-gaps-line .k { color: var(--muted); font-weight: 600; }
 .ui-gaps-ask { font-size: var(--t-sm); color: var(--ink);
-  background: var(--bg-sunk); border-radius: var(--r-xs);
+  background: var(--bg-sunk); border: 1px solid var(--line); border-radius: var(--r-xs);
   padding: var(--s2) var(--s3); }
 .ui-gaps-where { font-family: var(--mono); font-size: var(--t-xs); color: var(--muted); }
 
@@ -611,7 +566,7 @@ a.ui-assumed:hover { background: var(--accent-soft); }
 
 /* --------------------------------------------------------------- feedback */
 .ui-toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom));
-  transform: translateX(-50%); z-index: 60; padding: 10px 18px; border-radius: var(--r-pill);
+  transform: translateX(-50%); z-index: 60; padding: 10px 18px; border-radius: var(--r-sm);
   background: var(--ink); color: var(--bg); font-size: var(--t-md); box-shadow: var(--sh-4);
   opacity: 0; transition: opacity var(--dur-2) var(--ease); pointer-events: none; }
 .ui-toast.on { opacity: 1; }
@@ -642,7 +597,7 @@ a.ui-assumed:hover { background: var(--accent-soft); }
   font-size: var(--t-xs);
   text-transform: uppercase;
   letter-spacing: var(--track-caps);
-  color: var(--accent-ink);
+  color: var(--muted);
   font-weight: 600;
   padding-top: 1px;
 }
@@ -656,6 +611,7 @@ a.ui-assumed:hover { background: var(--accent-soft); }
   font-size: var(--t-xs);
   color: var(--muted);
   white-space: nowrap;
+  font-family: var(--mono);
   font-variant-numeric: tabular-nums;
 }
 .ui-asof-label { text-transform: uppercase; letter-spacing: .04em; }
@@ -679,11 +635,12 @@ a.ui-assumed:hover { background: var(--accent-soft); }
   cursor: help;
   white-space: nowrap;
 }
-.ui-conf-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.ui-conf-dot { width: 6px; height: 6px; border-radius: var(--r-pill); background: currentColor; }
 .ui-conf.verified   { color: var(--ok);   border-color: color-mix(in srgb, var(--ok) 45%, var(--line)); }
 .ui-conf.estimated  { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 45%, var(--line)); }
 .ui-conf.unverified { color: var(--bad);  border-color: color-mix(in srgb, var(--bad) 45%, var(--line)); }
-.ui-conf-date { color: var(--muted); font-variant-numeric: tabular-nums; }
+.ui-conf-date { color: var(--muted); font-family: var(--mono);
+  font-variant-numeric: tabular-nums; }
 
 .ui-sources { list-style: none; margin: 0; padding: 0; counter-reset: src; }
 .ui-sources-item {
@@ -702,7 +659,7 @@ a.ui-assumed:hover { background: var(--accent-soft); }
 }
 .ui-sources-top { display: flex; gap: var(--s2); align-items: baseline; flex-wrap: wrap; }
 .ui-sources-title { font-weight: 600; color: var(--ink); text-decoration: none; }
-a.ui-sources-title:hover { color: var(--accent-ink); text-decoration: underline; }
+a.ui-sources-title:hover { opacity: .88; text-decoration: underline; }
 .ui-sources-url {
   font-size: var(--t-xs); font-family: var(--mono); color: var(--faint);
   overflow-wrap: anywhere;
@@ -727,9 +684,10 @@ a.ui-sources-title:hover { color: var(--accent-ink); text-decoration: underline;
   border-radius: var(--r-md);
 }
 .ui-details-summary::-webkit-details-marker { display: none; }
-.ui-details-summary:hover { color: var(--accent-ink); }
+.ui-details-summary:hover { opacity: .88; }
 .ui-details-summary:focus-visible { outline: none; box-shadow: var(--ring); }
-.ui-details-caret { color: var(--muted); transition: transform var(--dur-1) var(--ease); }
+.ui-details-caret { flex: none; display: flex; color: var(--muted);
+  transition: transform var(--dur-1) var(--ease); }
 .ui-details[open] > .ui-details-summary > .ui-details-caret { transform: rotate(90deg); }
 .ui-details-count {
   margin-left: auto;
@@ -750,19 +708,23 @@ a.ui-sources-title:hover { color: var(--accent-ink); text-decoration: underline;
   display: flex; align-items: baseline; justify-content: space-between; gap: var(--s3);
   font-size: var(--t-sm); color: var(--ink-soft);
 }
-.ui-progress-value { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink); }
+.ui-progress-value { font-weight: 500; font-family: var(--mono);
+  font-variant-numeric: tabular-nums; color: var(--ink); }
 .ui-progress-track {
-  height: 10px; border-radius: var(--r-pill);
-  background: var(--bg-sunk); border: 1px solid var(--line);
+  height: var(--track-height); border-radius: var(--r-pill);
+  background: var(--track-default);
   overflow: hidden;
 }
+/* White, not accent: a bar that is merely full is not a breach, and painting
+   every track coral is how the 10% budget gets spent on nothing. */
 .ui-progress-fill {
   height: 100%; border-radius: var(--r-pill);
-  background: var(--accent);
+  background: var(--fill-default);
   transition: width var(--dur-2) var(--ease);
 }
-.ui-progress.ok   .ui-progress-fill { background: var(--ok); }
+.ui-progress.ok   .ui-progress-fill { background: var(--fill-default); }
 .ui-progress.warn .ui-progress-fill { background: var(--warn); }
+.ui-progress.bad  .ui-progress-fill { background: var(--fill-alert); }
 .ui-progress-hint { font-size: var(--t-xs); color: var(--muted); }
 
 /* --- StatusStrip --------------------------------------------------------- */
@@ -771,18 +733,25 @@ a.ui-sources-title:hover { color: var(--accent-ink); text-decoration: underline;
 .ui-strip-track {
   display: flex; gap: 2px; align-items: stretch;
   height: 28px; padding: var(--s1);
-  border-radius: var(--r-sm);
+  border-radius: var(--r-xs);
   background: var(--bg-sunk); border: 1px solid var(--line);
   overflow: hidden;
 }
+/* Sixty seconds as sixty bars, and the one place the severity ladder is read
+   upside down. On a single readout white ink means "within tolerance"; across
+   sixty bars it would mean a wall of white with the breach lost inside it. So
+   here "within tolerance" is the quiet inactive slate, "worth noticing" is the
+   lighter secondary slate, and coral is still the only thing that carries a
+   breach — which is what the 10% rule is actually for. */
 .ui-strip-bar {
-  flex: 1 1 0; min-width: 2px; border-radius: 2px;
-  background: var(--line-strong);
+  flex: 1 1 0; min-width: 2px; border-radius: 1px;
+  background: var(--track-default);
+  transition: background var(--dur-2) var(--ease);
 }
-.ui-strip-bar.ok   { background: var(--ok); }
-.ui-strip-bar.warn { background: var(--warn); }
-.ui-strip-bar.bad  { background: var(--bad); }
-.ui-strip-bar.none { background: var(--line-strong); opacity: .5; }
+.ui-strip-bar.ok   { background: var(--control-inactive); }
+.ui-strip-bar.warn { background: var(--text-secondary); }
+.ui-strip-bar.bad  { background: var(--fill-alert); }
+.ui-strip-bar.none { background: var(--track-default); }
 .ui-strip-hint { font-size: var(--t-xs); color: var(--muted); }
 
 /* --- Voyage -------------------------------------------------------------- */
@@ -796,8 +765,7 @@ a.ui-sources-title:hover { color: var(--accent-ink); text-decoration: underline;
   position: relative; width: 100%;
   display: flex; flex-direction: column;
   border: 1px solid var(--line); border-radius: var(--r-lg);
-  background: linear-gradient(180deg, var(--accent-soft), var(--card) 78%);
-  box-shadow: var(--sh-1);
+  background: var(--card);
   overflow: hidden;
   transition: opacity var(--dur-2) var(--ease);
 }
@@ -834,10 +802,9 @@ a.ui-sources-title:hover { color: var(--accent-ink); text-decoration: underline;
   0%, 100% { transform: translateY(-3px) rotate(-4deg); }
   50%      { transform: translateY(3px)  rotate(4deg); }
 }
-.ui-voyage-cloud {
-  position: absolute; border-radius: var(--r-pill);
-  background: var(--card); opacity: .45; filter: blur(5px);
-}
+/* Blur is sanctioned in exactly two places and this is not one of them; the
+   clouds stay in the markup and stop being drawn. */
+.ui-voyage-cloud { display: none; }
 .ui-voyage-cloud.c1 { width: 90px;  height: 16px; left: 10%; top: 44%; animation: ui-voyage-drift 34s linear infinite; }
 .ui-voyage-cloud.c2 { width: 130px; height: 20px; left: 48%; top: 30%; animation: ui-voyage-drift 52s linear infinite; }
 .ui-voyage-cloud.c3 { width: 70px;  height: 14px; left: 76%; top: 52%; animation: ui-voyage-drift 44s linear infinite; }
@@ -884,12 +851,12 @@ a.ui-sources-title:hover { color: var(--accent-ink); text-decoration: underline;
   font-size: var(--t-sm); color: var(--ink-soft);
 }
 .ui-chart-legend-item { display: inline-flex; align-items: center; gap: 6px; }
-.ui-chart-swatch { flex: none; width: 10px; height: 10px; border-radius: 3px; }
+.ui-chart-swatch { flex: none; width: 10px; height: 10px; border-radius: var(--r-xs); }
 
 .ui-chart-tip {
-  background: var(--card); border: 1px solid var(--line-strong);
-  border-radius: var(--r-sm); box-shadow: var(--sh-2);
-  padding: var(--s2) var(--s3); font-size: var(--t-sm); color: var(--ink);
+  background: var(--bg-sunk); border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: var(--s3); font-size: var(--t-sm); color: var(--ink);
   min-width: 120px;
 }
 .ui-chart-tip-head { color: var(--muted); font-size: var(--t-xs);
@@ -898,10 +865,11 @@ a.ui-sources-title:hover { color: var(--accent-ink); text-decoration: underline;
   justify-content: space-between; }
 .ui-chart-tip-label { display: inline-flex; align-items: center; gap: 6px;
   color: var(--ink-soft); }
-.ui-chart-tip-value { font-variant-numeric: tabular-nums; font-weight: 600; }
+.ui-chart-tip-value { font-family: var(--mono); font-variant-numeric: tabular-nums;
+  font-weight: 500; }
 
 .ui-chart-empty {
-  display: grid; place-items: center; border: 1px dashed var(--line-strong);
+  display: grid; place-items: center; border: 1px solid var(--line);
   border-radius: var(--r-md); color: var(--muted); font-size: var(--t-sm);
   background: var(--bg-sunk);
 }
@@ -916,9 +884,9 @@ a.ui-sources-title:hover { color: var(--accent-ink); text-decoration: underline;
   position: absolute;
   top: 6px;
   right: 6px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-pill);
   background: var(--accent);
   box-shadow: 0 0 0 2px var(--card);
 }

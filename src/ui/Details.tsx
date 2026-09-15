@@ -30,6 +30,7 @@
  * - 2026-08-30 First version.
  */
 
+import { Icon } from './Icon';
 import { cx } from './cx';
 import type { Base, ReactNode } from './_types';
 import { uiText } from './lang';
@@ -45,7 +46,7 @@ export function Details({ summary, open, count, className, children, id }: Detai
     return (
         <details className={cx('ui-details', className)} open={open || undefined} id={id}>
             <summary className="ui-details-summary">
-                <span className="ui-details-caret" aria-hidden="true">›</span>
+                <span className="ui-details-caret" aria-hidden="true"><Icon name="chevron" /></span>
                 <span className="ui-details-label">{summary || uiText().more}</span>
                 {count != null ? <span className="ui-details-count">{count}</span> : null}
             </summary>

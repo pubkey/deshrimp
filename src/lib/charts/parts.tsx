@@ -105,4 +105,4 @@ export function ChartTooltip({
 
 /** The cursor behind the tooltip — a wash, never a second colour. */
 export const CURSOR_FILL = { fill: 'var(--bg-sunk)' };
-export const CURSOR_LINE = { stroke: 'var(--line-strong)', strokeDasharray: '3 3' };
+export const CURSOR_LINE = { stroke: 'var(--line)', strokeDasharray: '3 3' };

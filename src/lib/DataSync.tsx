@@ -64,7 +64,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import {
-    Button, Callout, Col, IconButton, Input, Modal, Muted, Row, Text, toast, uiText,
+    Button, Callout, Col, Icon, IconButton, Input, Modal, Muted, Row, Text, toast, uiText,
 } from '@ui';
 import { appConfig } from '@app';
 import type { RxDatabase } from 'rxdb';
@@ -101,7 +101,7 @@ export function DataSyncButton({ database, filename, className }: DataSyncButton
     return (
         <>
             <IconButton
-                icon="⇅"
+                icon={<Icon name="sync" size={20} />}
                 label={session ? `${t.syncTitle} · ${t.syncConnected}` : t.syncTitle}
                 className={cx(className, session ? 'ui-syncing' : undefined)}
                 onClick={() => setOpen(true)}
@@ -213,12 +213,12 @@ function SyncPanel({ database, filename }: { database: RxDatabase<any>; filename
                 <Row gap={2} wrap>
                     <Button
                         variant="primary"
-                        icon="⤓"
+                        icon={<Icon name="download" />}
                         onClick={async () => { await downloadData(database, file); }}
                     >
                         {t.syncExport}
                     </Button>
-                    <Button icon="⤒" onClick={() => picker.current?.click()}>
+                    <Button icon={<Icon name="upload" />} onClick={() => picker.current?.click()}>
                         {t.syncImport}
                     </Button>
                 </Row>
@@ -307,7 +307,7 @@ function SyncPanel({ database, filename }: { database: RxDatabase<any>; filename
                         readOnly
                     />
                     <Button
-                        icon={copied ? '✓' : '⧉'}
+                        icon={<Icon name={copied ? 'check' : 'copy'} />}
                         onClick={async () => {
                             try {
                                 await navigator.clipboard.writeText(code);
@@ -321,7 +321,7 @@ function SyncPanel({ database, filename }: { database: RxDatabase<any>; filename
                         {copied ? t.syncCopied : t.syncCopy}
                     </Button>
                     <Button
-                        icon="⟳"
+                        icon={<Icon name="refresh" />}
                         disabled={running === 'p2p'}
                         onClick={() => { setCode(newOwnP2PCode(config.appId)); setCopied(false); }}
                     >
