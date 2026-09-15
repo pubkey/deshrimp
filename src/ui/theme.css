@@ -387,8 +387,6 @@ a:hover { color: var(--ink); }
 .ui-filterbar > * { min-width: 180px; max-width: 260px; }
 .ui-langpick select { position: absolute; inset: 0; width: 100%; height: 100%;
   opacity: 0; cursor: pointer; border: 0; padding: 0; -webkit-appearance: none; appearance: none; }
-.ui-share { gap: var(--s2); width: auto; padding: 0 var(--s4); border-radius: var(--r-sm); }
-
 .ui-badge { display: inline-block; font-size: var(--t-xs); font-weight: 600; white-space: nowrap;
   padding: 3px 9px; border-radius: var(--r-pill);
   background: var(--rec); color: var(--on-semantic); }
@@ -450,31 +448,52 @@ a:hover { color: var(--ink); }
    vendor pseudo-element, which is why this is here rather than inline on the
    component: a style attribute cannot reach `::-webkit-slider-thumb`, and the
    alternative is one <style> tag in the document per slider rendered. */
-.ui-slider { display: flex; flex-direction: column; gap: var(--s2); }
+.ui-slider { --thumb: 14px; display: flex; flex-direction: column; gap: var(--s2); }
 .ui-slider-top { display: flex; align-items: baseline; justify-content: space-between;
   gap: var(--s3); }
 .ui-slider-top > label { font-size: var(--t-xs); font-weight: 500; color: var(--muted);
   letter-spacing: var(--track-caps); text-transform: uppercase; cursor: pointer; }
-/* The hint and the reset share one line under the track. The reset is here
-   rather than up beside the readout because the label is the long string in
-   this product and a third item in the top row wrapped it. */
-.ui-slider-foot { display: flex; align-items: baseline;
-  justify-content: space-between; gap: var(--space-3); }
-/* Reset. Label type, secondary ink, no box: it has to be there when the value
-   has moved off its default and to be the quietest thing in the tile the rest
-   of the time. Not accent, and not a bordered button either - the accent is a
-   budget and this is nobody's primary action. */
-.ui-slider-reset {
-  flex: none;
-  appearance: none; -webkit-appearance: none;
-  background: none; border: 0; padding: 0;
-  font-family: inherit; font-size: var(--text-label);
-  font-weight: var(--weight-medium); letter-spacing: var(--tracking-label);
-  text-transform: uppercase; color: var(--text-secondary); cursor: pointer;
+
+/* The stepper and the track share one line. */
+.ui-slider-row { display: flex; align-items: center; gap: var(--space-3); }
+/* The positioning context for the default mark, and the only flexible thing in
+   the row: `min-width: 0` because a flex item will not shrink past its content
+   otherwise, and at 330px there is nothing to spare. */
+.ui-slider-track { position: relative; flex: 1; min-width: 0;
+  display: flex; align-items: center; }
+
+/* Minus and plus. 28px rather than the 40px every other control is: it flanks a
+   4px track and a 40px box either side would read as two buttons with a line
+   between them. Hairline and 6px, so it is the same shape as a field. */
+.ui-slider-step {
+  flex: none; display: grid; place-items: center;
+  width: 28px; height: 28px; padding: 0;
+  background: none; color: var(--text-secondary);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md); cursor: pointer;
 }
-.ui-slider-reset:hover { opacity: .88; }
-.ui-slider-reset:disabled { opacity: .4; cursor: not-allowed; }
-.ui-slider-reset:focus-visible { box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+.ui-slider-step:hover { opacity: .88; }
+.ui-slider-step:disabled { opacity: .4; cursor: not-allowed; }
+.ui-slider-step:focus-visible { box-shadow: var(--focus-ring); }
+
+/* Where the default sits _(2026-09-15, his call)_. A hairline across the track
+   in the secondary slate: it is a reference mark, not a value, so it never
+   takes the ink the fill has and never takes the accent.
+
+   It is placed along the thumb's travel rather than the track's width. The
+   thumb is 14px and its centre only reaches from 7px in to 7px short of the
+   end, so a plain percentage would sit half a thumb off at the ends and miss
+   the number it is marking. The input is lifted a layer above it, so when the
+   value *is* the default the thumb covers the mark exactly, and an untouched
+   slider shows no mark at all. */
+.ui-slider-default {
+  position: absolute; top: 50%;
+  left: calc(var(--thumb) / 2 + (100% - var(--thumb)) * var(--mark, 0));
+  transform: translate(-50%, -50%);
+  width: var(--border-width); height: 12px;
+  background: var(--text-secondary);
+  pointer-events: none;
+}
 /* Every number in the product is tabular mono, this one included: it changes
    while you drag, and a value that reflows as it moves reads as a wobble. */
 .ui-slider-value { font-family: var(--mono); font-variant-numeric: tabular-nums;
@@ -483,6 +502,7 @@ a:hover { color: var(--ink); }
 
 .ui-slider-range {
   -webkit-appearance: none; appearance: none;
+  position: relative; z-index: 1;
   width: 100%; height: var(--track-height); margin: var(--s2) 0;
   border-radius: var(--r-pill); outline: none; cursor: pointer;
   background: linear-gradient(to right,
@@ -501,11 +521,11 @@ a:hover { color: var(--ink); }
    selector list when it does not know one of them. */
 .ui-slider-range::-webkit-slider-thumb {
   -webkit-appearance: none; appearance: none;
-  width: 14px; height: 14px; border: 0; border-radius: var(--r-pill);
+  width: var(--thumb); height: var(--thumb); border: 0; border-radius: var(--r-pill);
   background: var(--fill-default); cursor: pointer;
 }
 .ui-slider-range::-moz-range-thumb {
-  width: 14px; height: 14px; border: 0; border-radius: var(--r-pill);
+  width: var(--thumb); height: var(--thumb); border: 0; border-radius: var(--r-pill);
   background: var(--fill-default); cursor: pointer;
 }
 .ui-slider.breach .ui-slider-range::-webkit-slider-thumb { background: var(--fill-alert); }
@@ -873,8 +893,28 @@ a:hover { color: var(--ink); }
 /* The components live in `.claude/app-builder/lib/charts` (`@charts`), not in
    components/, because Recharts weighs 465 KB and only a page that draws
    something should carry it. The look belongs here with everything else. */
-.ui-chart { width: 100%; }
+.ui-chart { position: relative; width: 100%; }
 .ui-chart + .ui-chart-legend { margin-top: var(--s2); }
+
+/* Said over an empty grid, not in place of it _(2026-09-15, his call)_: the
+   axes still name what is being measured, and the overlay says why there is no
+   line on them. Absolute, so it costs the tile no height and nothing moves when
+   the first reading lands. `pointer-events: none` keeps the chart's own
+   crosshair and tooltip reachable the moment there is something to hover. */
+.ui-chart-empty {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  padding: var(--space-6);
+  pointer-events: none;
+}
+.ui-chart-empty > span {
+  max-width: 28ch; text-align: center;
+  font-size: var(--text-sm); line-height: 1.45; color: var(--text-secondary);
+  background: var(--surface-card);
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+}
 
 .ui-chart-legend {
   display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4);

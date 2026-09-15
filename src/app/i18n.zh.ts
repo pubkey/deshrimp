@@ -110,6 +110,8 @@ export const zh: Copy = {
     signalFromLeanHint: '度数，肩线相对水平方向',
     signalFromHead: '头部歪斜多少度时提示',
     signalFromHeadHint: '度数，头相对肩线',
+    resetLimits: '重置',
+    noDataYet: '还没有数据，开始测量后图表就会填上。',
     soundOnSignal: '提示时发声',
     alsoNotify: '同时弹出一条通知',
     thresholdNote: '这三个上限是设定的容差，不是临床标准，对于正面摄像头能测到的东西，本来就没有标准。响得太频繁就把上限调高；这是调它们唯一正确的方式。',

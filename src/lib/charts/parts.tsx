@@ -17,6 +17,8 @@ import { formatNumber } from './theme';
 export type FrameProps = {
     height?: number;
     className?: string;
+    /** Laid over the plot when there is nothing at all to plot. */
+    empty?: ReactNode;
     children: ReactNode;
 };
 
@@ -27,13 +29,22 @@ export type FrameProps = {
  * was wrong twice over: an axis with no line on it still says what is being
  * measured and on what scale, and swapping the two made the tile change height
  * the moment a second reading landed.
+ *
+ * `empty` is the other half of that _(2026-09-15, his call: say so when there
+ * is no data at all)_, and it is laid **over** the axes rather than put in
+ * their place. The two calls only look opposed: an empty grid answers "what is
+ * this measuring", and it does not answer "why is it blank". The overlay costs
+ * no height, so the tile still does not move when the first reading lands, and
+ * it is for a chart with *nothing* in it - one point is data, and gets no
+ * caption.
  */
-export function ChartFrame({ height = 280, className, children }: FrameProps) {
+export function ChartFrame({ height = 280, className, empty, children }: FrameProps) {
     return (
         <div className={className ? `ui-chart ${className}` : 'ui-chart'}>
             <ResponsiveContainer width="100%" height={height}>
                 {children as any}
             </ResponsiveContainer>
+            {empty ? <div className="ui-chart-empty"><span>{empty}</span></div> : null}
         </div>
     );
 }

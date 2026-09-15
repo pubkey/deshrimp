@@ -110,6 +110,8 @@ export const it: Copy = {
     signalFromLeanHint: 'gradi, linea delle spalle contro l’orizzontale',
     signalFromHead: 'Segnale da testa piegata',
     signalFromHeadHint: 'gradi, testa contro la linea delle spalle',
+    resetLimits: 'Reimposta',
+    noDataYet: 'Ancora nessun dato. Il grafico si riempie appena parte la misurazione.',
     soundOnSignal: 'Suono al segnale',
     alsoNotify: 'Mostra anche una notifica',
     thresholdNote: 'I tre limiti sono tolleranze poste, non valori clinici - per quello che una fotocamera frontale può misurare non ne esistono. Se suona troppo spesso, alza il limite; è l’unico modo giusto di regolarli.',

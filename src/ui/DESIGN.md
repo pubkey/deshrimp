@@ -192,15 +192,29 @@ slate behind, white fill in front) and the value sits above it, right aligned,
 in tabular mono because it changes while you drag.
 
 A dial you feel your way to is also a dial you can lose your place on, so a
-slider with a default carries a **reset** at the right-hand end of its hint
-line. It is label type in secondary slate with no box: it has to be reachable
-without ever competing, and the accent is a budget nobody's undo gets to spend.
-It sits under the track rather than beside the readout because the label is the
-long string in this product and a third item in the top row wraps it. At the
-default it is disabled rather than hidden - a control that appears only once
-you have moved something is a control you cannot find when you go looking for
-it - and the disabled 0.4 opacity is quiet enough that three of them read as
-furniture until one of them means something.
+slider carries two things besides its track:
+
+- **The default, marked on the track.** A 1px hairline in secondary slate,
+  placed along the thumb's travel rather than the track's width, so it lands on
+  the number it names instead of half a thumb off at the ends. The input sits a
+  layer above it, so the thumb covers the mark exactly when the value *is* the
+  default: an untouched slider shows no mark at all, which is the reading you
+  want it to have.
+- **A stepper.** Minus and plus either side, 28px rather than the 40px every
+  other control is, because a 40px box either side of a 4px track reads as two
+  buttons with a line between them. Each is one `step` and each disables at its
+  end of the range. Dragging is for finding a value, the stepper is for landing
+  on it.
+
+The stepper takes 80px out of the row, which is why the tile holding the three
+tolerances is one column rather than two: at two, a slider had about 100px of
+track left, and 40 degrees across 100px is not a dial you can feel your way
+along.
+
+**Reset is one button for the group, not one per slider.** It sits at the foot
+of the tile as a ghost button, disabled while every slider is already at its
+default, and it puts back the same numbers the marks are drawn from, so the
+button and the marks cannot disagree.
 
 ---
 
@@ -248,6 +262,16 @@ system suggests, for the same offline reason as the fonts.
 - Never filled or duotone styles.
 - Never an icon in accent unless it marks a breach.
 
+Where an icon stands alone it takes the words as its `title` and `aria-label`,
+which is the whole of what makes an icon-only button acceptable. The share
+button is the one that earns it: the tray with an arrow out of it is the most
+conventional glyph on the web, so it carries no visible label. It is Lucide's
+`share` rather than the three-node graph, which reads as "share" only to
+someone who already knows the convention.
+
+Two `<Table>` sort arrows (`▲ ▼ ↕`) are still unicode. They predate this file
+and are the last of them.
+
 ---
 
 ## Charts
@@ -261,6 +285,15 @@ the answer there is to split the chart.
 
 Axes are furniture: hairline, no tick lines, no axis line, 11px mono ticks with
 tabular figures.
+
+**A chart with no rows is still drawn, and says so.** The grid and the axes are
+never replaced by a paragraph - an axis names what is being measured and on
+what scale, and swapping the two makes a tile jump the moment the first reading
+lands. A chart with *nothing* in it carries one line of text laid over the grid
+instead, in a bordered chip so it reads against the gridlines. One point is
+data and gets no caption. The tile itself is rendered either way: a whole tile
+that appears on the fourth day is a page that rearranges itself under the
+person reading it.
 
 ---
 

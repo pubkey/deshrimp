@@ -110,6 +110,8 @@ export const tr: Copy = {
     signalFromLeanHint: 'derece, omuz çizgisi yataya karşı',
     signalFromHead: 'Baş eğilince sinyal',
     signalFromHeadHint: 'derece, baş omuz çizgisine karşı',
+    resetLimits: 'Sıfırla',
+    noDataYet: 'Henüz veri yok. Ölçüm başlayınca grafik dolmaya başlar.',
     soundOnSignal: 'Sinyalde ses',
     alsoNotify: 'Ayrıca bir bildirim göster',
     thresholdNote: 'Üç sınır konulmuş toleranslardır, klinik ölçüt değil - önden bakan bir kameranın ölçebildiği şey için böyle bir ölçüt yok. Çok sık ötüyorsa sınırı yükselt; onları ayarlamanın tek doğru yolu budur.',

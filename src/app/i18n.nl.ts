@@ -110,6 +110,8 @@ export const nl: Copy = {
     signalFromLeanHint: 'graden, schouderlijn tegen de horizontaal',
     signalFromHead: 'Signaal vanaf hoofd scheef',
     signalFromHeadHint: 'graden, hoofd tegen de schouderlijn',
+    resetLimits: 'Herstellen',
+    noDataYet: 'Nog geen gegevens. De grafiek vult zich zodra de meting loopt.',
     soundOnSignal: 'Geluid bij het signaal',
     alsoNotify: 'Ook een melding tonen',
     thresholdNote: 'De drie grenzen zijn gestelde toleranties, geen klinische normen - voor wat een camera van voren kan meten bestaan die niet. Piept het te vaak, zet de grens hoger; dat is de enige juiste manier om ze af te stellen.',

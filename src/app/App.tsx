@@ -1183,6 +1183,7 @@ function Recent({ readings, windowMin, change }: {
                         { key: 'kopf', label: t.statHeadTilt },
                     ]}
                     format={withUnit(formatNumber, '°')}
+                    empty={t.noDataYet}
                     zero
                     height={220}
                 />
@@ -1196,6 +1197,7 @@ function Recent({ readings, windowMin, change }: {
                     x="zeit"
                     series={[{ key: 'gerade', label: t.seriesStraight }]}
                     format={withUnit(formatNumber, '%')}
+                    empty={t.noDataYet}
                     zero
                     legend={false}
                     height={180}
@@ -1254,35 +1256,44 @@ function Trend() {
         return Math.round(mean(recent) - mean(earlier));
     }, [rows]);
 
-    if (!rows.length) {
-        return (
-            <Panel id="trendstats" title={t.trendTitle}>
-                <Text small muted>{t.trendSubtitleEmpty}</Text>
-                <Empty title={t.trendEmpty} hint={t.trendEmptyHint} />
-            </Panel>
-        );
-    }
+    const best = rows.length
+        ? rows.reduce((a, r) => (r.gerade > a.gerade ? r : a), rows[0])
+        : null;
 
-    const best = rows.reduce((a, r) => (r.gerade > a.gerade ? r : a), rows[0]);
-
+    /* The two charts are rendered whether or not there are days to draw
+       _(2026-09-15, his call: always show the chart, and say so when there is
+       nothing in it)_. A whole tile that appears on the fourth day is a page
+       that rearranges itself under him, and the empty grid plus its one line
+       of text answers "what will go here" better than the absence of a tile
+       does. Only the stats inside the first tile swap, because three numbers
+       computed from nothing are three dashes. */
     return (
         <>
             <Panel id="trendstats" title={t.trendTitle}>
-                <Text small muted>{t.trendDays(rows.length)}</Text>
-                <Grid min={140}>
-                    <Stat label={t.lastStraight}
-                        value={`${rows[rows.length - 1].gerade} %`}
-                        hint={rows[rows.length - 1].tag} />
-                    <Stat label={t.bestDay} value={`${best.gerade} %`} hint={best.tag} />
-                    <Stat
-                        label={t.lastSevenDays}
-                        value={change === null ? '-' : t.points(change)}
-                        hint={change === null
-                            ? t.needsTwoWeeks
-                            : change > 0 ? t.betterThanBefore
-                                : change < 0 ? t.worseThanBefore
-                                    : t.unchanged} />
-                </Grid>
+                {best === null ? (
+                    <>
+                        <Text small muted>{t.trendSubtitleEmpty}</Text>
+                        <Empty title={t.trendEmpty} hint={t.trendEmptyHint} />
+                    </>
+                ) : (
+                    <>
+                        <Text small muted>{t.trendDays(rows.length)}</Text>
+                        <Grid min={140}>
+                            <Stat label={t.lastStraight}
+                                value={`${rows[rows.length - 1].gerade} %`}
+                                hint={rows[rows.length - 1].tag} />
+                            <Stat label={t.bestDay} value={`${best.gerade} %`} hint={best.tag} />
+                            <Stat
+                                label={t.lastSevenDays}
+                                value={change === null ? '-' : t.points(change)}
+                                hint={change === null
+                                    ? t.needsTwoWeeks
+                                    : change > 0 ? t.betterThanBefore
+                                        : change < 0 ? t.worseThanBefore
+                                            : t.unchanged} />
+                        </Grid>
+                    </>
+                )}
             </Panel>
 
             <Panel id="daychart" title={`${t.trendTitle} · ${t.shareStraight}`}>
@@ -1291,6 +1302,7 @@ function Trend() {
                     x="tag"
                     series={[{ key: 'gerade', label: t.seriesStraight }]}
                     format={withUnit(formatNumber, '%')}
+                    empty={t.noDataYet}
                     zero
                     legend={false}
                     height={240}
@@ -1307,6 +1319,7 @@ function Trend() {
                         { key: 'kopf', label: t.statHeadTilt },
                     ]}
                     format={withUnit(formatNumber, '°')}
+                    empty={t.noDataYet}
                     zero
                     height={240}
                 />
@@ -1506,11 +1519,19 @@ function Sound(props: SoundProps) {
 function Setup(props: SetupProps) {
     const { settings: s, change } = props;
     const t = useCopy();
+    const atDefaults = s.maxForward === DEFAULTS.maxForward
+        && s.maxLean === DEFAULTS.maxLean
+        && s.maxHeadTilt === DEFAULTS.maxHeadTilt;
 
     return (
         <>
             <Panel id="thresholds" title={t.paceAndLimits}>
-                <Grid min={140}>
+                {/* One column, not two _(2026-09-15)_. Two fitted while a
+                    slider was a bare track, but the stepper takes 80px of the
+                    row and a 190px cell left about 100px of track: 40 degrees
+                    across 100px is not a dial you can feel your way along.
+                    Wide enough that the tile never splits these. */}
+                <Grid min={220}>
                     <Select
                         label={t.onePictureEvery}
                         value={String(s.intervalSec)}
@@ -1552,6 +1573,28 @@ function Setup(props: SetupProps) {
                         hint={t.signalFromHeadHint}
                     />
                 </Grid>
+                {/* One reset for the three of them _(2026-09-15, his call: not
+                    one per slider)_. It puts back the numbers in `DEFAULTS`,
+                    which is also what each track marks with its hairline, so
+                    the button and the marks cannot disagree. Disabled while all
+                    three are already there: a control that vanishes when it has
+                    nothing to do is a control nobody can find when it does. */}
+                <Row justify="end">
+                    <Button
+                        size="sm"
+                        variant="ghost"
+                        icon={<Icon name="refresh" />}
+                        disabled={atDefaults}
+                        title={`${t.resetLimits}: ${DEFAULTS.maxForward}° · ${DEFAULTS.maxLean}° · ${DEFAULTS.maxHeadTilt}°`}
+                        onClick={() => void change({
+                            maxForward: DEFAULTS.maxForward,
+                            maxLean: DEFAULTS.maxLean,
+                            maxHeadTilt: DEFAULTS.maxHeadTilt,
+                        })}
+                    >
+                        {t.resetLimits}
+                    </Button>
+                </Row>
                 <Text small muted>{t.thresholdNote}</Text>
             </Panel>
 

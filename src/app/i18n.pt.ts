@@ -110,6 +110,8 @@ export const pt: Copy = {
     signalFromLeanHint: 'graus, linha dos ombros contra a horizontal',
     signalFromHead: 'Sinal a partir de cabeça inclinada',
     signalFromHeadHint: 'graus, cabeça contra a linha dos ombros',
+    resetLimits: 'Repor',
+    noDataYet: 'Ainda sem dados. O gráfico enche-se assim que a medição estiver a correr.',
     soundOnSignal: 'Som no sinal',
     alsoNotify: 'Mostrar também uma notificação',
     thresholdNote: 'Os três limites são tolerâncias definidas, não normas clínicas - para aquilo que uma câmara frontal consegue medir não existem. Se apitar demasiado, sobe o limite; é a única maneira certa de os afinar.',

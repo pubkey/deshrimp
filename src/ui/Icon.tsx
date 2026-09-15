@@ -39,6 +39,10 @@
  *
  * ## Changelog
  * - 2026-09-15 Own file, and the end of emoji in the interface.
+ * - 2026-09-15 `minus` and `plus`, for the slider's stepper. Drawn rather than
+ *   the characters, for the reason at the top of this file: `+` and `-` out of
+ *   the text stream come at whatever weight the platform's font has, which next
+ *   to a 1.5 stroke is visibly wrong.
  */
 
 import type { CSSProperties } from 'react';
@@ -148,13 +152,16 @@ const PATHS = {
             <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
         </>
     ),
+    /* The tray with an arrow coming out of it, not the three-node graph
+       _(2026-09-15, his call: "the official share icon that other websites
+       use")_. Both are Lucide's, and the node graph is the one that reads as
+       "share" only once you already know the convention; this one is what iOS
+       put on every share sheet and what the web copied. */
     share: (
         <>
-            <circle cx="18" cy="5" r="3" />
-            <circle cx="6" cy="12" r="3" />
-            <circle cx="18" cy="19" r="3" />
-            <path d="m8.59 13.51 6.83 3.98" />
-            <path d="m15.41 6.51-6.82 3.98" />
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+            <path d="m8 6 4-4 4 4" />
+            <path d="M12 2v14" />
         </>
     ),
     pencil: (
@@ -164,6 +171,13 @@ const PATHS = {
         </>
     ),
     chevron: <path d="m9 18 6-6-6-6" />,
+    minus: <path d="M5 12h14" />,
+    plus: (
+        <>
+            <path d="M5 12h14" />
+            <path d="M12 5v14" />
+        </>
+    ),
     x: (
         <>
             <path d="M18 6 6 18" />

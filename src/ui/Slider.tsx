@@ -16,35 +16,40 @@
  *   value that is *over* its tolerance, not merely high; the accent is a
  *   budget (src/ui/DESIGN.md).
  * - `hint` - one line under the track, for what the number means in practice.
- * - `defaultValue` - turns on a **reset** at the right-hand end of the hint
- *   line, which puts the slider back to that number. A dial you feel your way
- *   to is a dial you can lose your place on, and the default is the one
- *   position worth naming. It shares the hint's line rather than the label's,
- *   because the label is the long string here: giving the top row a third item
- *   wrapped "Signal from head in front" onto a second line and took the tile
- *   16px with it. Under the track there is room going spare.
+ * - `defaultValue` - draws a **hairline across the track** where the default
+ *   sits _(2026-09-15, his call)_. Dragging tells you where you are and not
+ *   where you started, and the number you were given is the one reference
+ *   point a tolerance has. The thumb covers the mark exactly when the value is
+ *   the default, so "no mark visible" reads as "untouched".
+ * - `stepper` - a minus and a plus either side of the track _(2026-09-15, his
+ *   call)_, each one `step`, each disabled at its end of the range. Dragging
+ *   is for finding a value and the stepper is for landing on it; a range input
+ *   only takes arrow keys once it has focus.
  *
  * ## Why the look is in theme.css
  * A range input needs `::-webkit-slider-thumb` and `::-moz-range-thumb`, and a
  * pseudo-element cannot be set from a style attribute. The design system's own
  * version ships a `<style>` tag inside the component, which would put one copy
  * of those rules in the document per slider rendered. The rules live in the
- * sheet with everything else instead; only the fill, which is a percentage of
- * this slider's own value, stays inline.
+ * sheet with everything else instead; only the fill and the mark, which are
+ * percentages of this slider's own numbers, stay inline.
  *
  * ## Examples
  * ```tsx
  * <Slider label="Signal from side lean" value={8} min={3} max={45}
- *     unit="°" onChange={(v) => save({ maxLean: v })} />
+ *     unit="°" defaultValue={8} onChange={(v) => save({ maxLean: v })} />
  * ```
  *
  * ## Changelog
  * - 2026-09-15 Own file. The thresholds were number inputs before; his call.
- * - 2026-09-15 `defaultValue` and the reset beside the readout; his call.
+ * - 2026-09-15 A stepper, and the default marked on the track. A reset button
+ *   per slider was tried first and taken out again: he asked for one reset for
+ *   all of them instead, which is in the tile, not in here.
  */
 
 import { useId } from 'react';
 import { cx } from './cx';
+import { Icon } from './Icon';
 import { uiText } from './lang';
 import type { Base, ReactNode } from './_types';
 
@@ -57,10 +62,10 @@ export type SliderProps = Base & {
     /** Appended to the readout: `"°"`, `" s"`. Never part of the label. */
     unit?: string;
     hint?: ReactNode;
-    /** Puts a reset on the hint line that sets the slider back to this. */
+    /** Marks this number on the track with a hairline. */
     defaultValue?: number;
-    /** Overrides the built-in word, which is translated in `lang-text.ts`. */
-    resetLabel?: ReactNode;
+    /** A minus and a plus either side of the track. On unless turned off. */
+    stepper?: boolean;
     disabled?: boolean;
     /** Over tolerance, not merely high: it spends accent. */
     breached?: boolean;
@@ -69,13 +74,27 @@ export type SliderProps = Base & {
 
 export function Slider({
     label, value, min = 0, max = 100, step = 1, unit = '', hint,
-    defaultValue, resetLabel, disabled, breached, onChange, className, id, style,
+    defaultValue, stepper = true, disabled, breached, onChange,
+    className, id, style,
 }: SliderProps) {
     const uid = useId();
     const inputId = id || uid;
-    const pct = max === min ? 0 : ((value - min) / (max - min)) * 100;
-    const canReset = defaultValue != null && !!onChange;
-    const atDefault = value === defaultValue;
+    const span = max === min ? 0 : max - min;
+    const pct = span === 0 ? 0 : ((value - min) / span) * 100;
+    const t = uiText();
+    const steps = stepper && !!onChange;
+    /* The mark is placed against the thumb's travel, not against the track's
+       width: the thumb is 14px and its centre only ever reaches from 7px to
+       7px short of the end, so a plain percentage would drift by half a thumb
+       at each end and miss the value it is marking. */
+    const markAt = defaultValue == null || span === 0
+        ? null : (defaultValue - min) / span;
+
+    const nudge = (by: number) => {
+        if (!onChange) return;
+        const next = Math.min(max, Math.max(min, value + by));
+        if (next !== value) onChange(next);
+    };
 
     return (
         <div className={cx('ui-slider', breached && 'breach', className)} style={style}>
@@ -85,43 +104,56 @@ export function Slider({
                     <span className="ui-slider-value">{value}{unit}</span>
                 </div>
             ) : null}
-            <input
-                id={inputId}
-                className="ui-slider-range"
-                type="range"
-                min={min}
-                max={max}
-                step={step}
-                value={value}
-                disabled={disabled}
-                /* The only thing that cannot come from the sheet: where the
-                   fill stops is this slider's own value. */
-                style={{ '--pct': `${pct}%` } as React.CSSProperties}
-                onChange={(e) => onChange && onChange(Number(e.target.value))}
-            />
-            {hint || canReset ? (
-                <div className="ui-slider-foot">
-                    <span className="ui-slider-hint">{hint}</span>
-                    {canReset ? (
-                        <button
-                            type="button"
-                            className="ui-slider-reset"
-                            /* Disabled at the default rather than hidden. A
-                               control that appears only once you have moved
-                               something is a control you cannot find when you
-                               go looking for it, and hiding it would move the
-                               line it shares. Disabled is the system's .4
-                               opacity, which on the secondary slate is quiet
-                               enough to be furniture until it means something. */
-                            disabled={disabled || atDefault}
-                            title={`${resetLabel || uiText().reset}: ${defaultValue}${unit}`}
-                            onClick={() => onChange && onChange(defaultValue as number)}
-                        >
-                            {resetLabel || uiText().reset}
-                        </button>
-                    ) : null}
+            <div className="ui-slider-row">
+                {steps ? (
+                    <button
+                        type="button"
+                        className="ui-slider-step"
+                        title={t.decrease}
+                        aria-label={t.decrease}
+                        disabled={disabled || value <= min}
+                        onClick={() => nudge(-step)}
+                    >
+                        <Icon name="minus" />
+                    </button>
+                ) : null}
+                <div className="ui-slider-track">
+                    <input
+                        id={inputId}
+                        className="ui-slider-range"
+                        type="range"
+                        min={min}
+                        max={max}
+                        step={step}
+                        value={value}
+                        disabled={disabled}
+                        /* The only thing that cannot come from the sheet: where
+                           the fill stops is this slider's own value. */
+                        style={{ '--pct': `${pct}%` } as React.CSSProperties}
+                        onChange={(e) => onChange && onChange(Number(e.target.value))}
+                    />
+                    {markAt == null ? null : (
+                        <span
+                            className="ui-slider-default"
+                            title={`${t.defaultMark}: ${defaultValue}${unit}`}
+                            style={{ '--mark': markAt } as React.CSSProperties}
+                        />
+                    )}
                 </div>
-            ) : null}
+                {steps ? (
+                    <button
+                        type="button"
+                        className="ui-slider-step"
+                        title={t.increase}
+                        aria-label={t.increase}
+                        disabled={disabled || value >= max}
+                        onClick={() => nudge(step)}
+                    >
+                        <Icon name="plus" />
+                    </button>
+                ) : null}
+            </div>
+            {hint ? <div className="ui-slider-hint">{hint}</div> : null}
         </div>
     );
 }

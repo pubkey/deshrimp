@@ -110,6 +110,8 @@ export const pl: Copy = {
     signalFromLeanHint: 'stopnie, linia barków względem poziomu',
     signalFromHead: 'Sygnał od przechylenia głowy',
     signalFromHeadHint: 'stopnie, głowa względem linii barków',
+    resetLimits: 'Przywróć',
+    noDataYet: 'Jeszcze brak danych. Wykres zapełni się, gdy ruszy pomiar.',
     soundOnSignal: 'Dźwięk przy sygnale',
     alsoNotify: 'Dodatkowo pokaż powiadomienie',
     thresholdNote: 'Trzy granice to przyjęte tolerancje, a nie normy kliniczne - dla tego, co potrafi zmierzyć kamera z przodu, takich norm nie ma. Jeśli piszczy za często, podnieś granicę; to jedyny właściwy sposób ich ustawiania.',

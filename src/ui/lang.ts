@@ -78,8 +78,11 @@ export type UiText = {
     confirmYes: string;
     confirmNo: string;
     close: string;
-    /** The slider's own reset affordance. */
-    reset: string;
+    /** The slider's stepper and its default mark. An icon-only button and a
+        1px hairline both need words somewhere. */
+    decrease: string;
+    increase: string;
+    defaultMark: string;
     shareTitle: string;
     copyLink: string;
     linkCopied: string;

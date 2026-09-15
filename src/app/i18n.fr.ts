@@ -110,6 +110,8 @@ export const fr: Copy = {
     signalFromLeanHint: 'degrés, ligne des épaules contre l’horizontale',
     signalFromHead: 'Signal à partir de tête penchée',
     signalFromHeadHint: 'degrés, tête contre la ligne des épaules',
+    resetLimits: 'Réinitialiser',
+    noDataYet: 'Pas encore de données. Le graphique se remplit dès que la mesure tourne.',
     soundOnSignal: 'Son au signal',
     alsoNotify: 'Afficher aussi une notification',
     thresholdNote: 'Les trois limites sont des tolérances posées, pas des normes cliniques - pour ce qu’une caméra de face peut mesurer, il n’en existe pas. Si ça bipe trop souvent, monte la limite ; c’est la seule bonne façon de les régler.',
