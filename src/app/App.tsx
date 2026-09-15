@@ -33,7 +33,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import {
     Badge, Button, Callout, Checkbox, Col, ConfirmButton, Details, Empty,
-    type Gap, Grid, IconButton, Input, LoadingOverlay, Muted, Page, Panel,
+    type Gap, Grid, Icon, IconButton, Input, LoadingOverlay, Muted, Page, Panel,
     preferredUiLang, Progress, Row, Section, Select,
     type Source, Stat, StatusStrip, type StatusTone, Table, Text,
     pageData, toast,
@@ -198,6 +198,17 @@ function clockTime(t: number, lang: Lang): string {
 
 function deg(value: number): string {
     return `${Math.round(value)}°`;
+}
+
+/**
+ * The class that turns one readout coral, or nothing.
+ *
+ * Severity in this design system is carried by *whether* the accent appears,
+ * not by a range of colours — so there is no "nearly" tone to return here. A
+ * value is inside its tolerance or it is a breach.
+ */
+function breach(value: number, limit: number): string | undefined {
+    return value > limit ? 'breach' : undefined;
 }
 
 /**
@@ -897,12 +908,13 @@ function Live() {
                 thing on the page and need nobody to announce them; the cadence
                 is a setting, and it is stated where it is set. */}
             <Section>
-                <Callout icon="🦐" title={t.whatThisDoes}>{t.leaveOpen}</Callout>
+                <Callout icon={<Icon name="info" size={20} />} title={t.whatThisDoes}>{t.leaveOpen}</Callout>
                 <Col gap={4}>
                     {verdict ? (
                         <Callout
                             tone={verdict === 'good' ? undefined : verdict === 'bad' ? 'bad' : 'warn'}
-                            icon={verdict === 'good' ? '✅' : verdict === 'bad' ? '⚠️' : '👀'}
+                            icon={<Icon size={20} name={verdict === 'good' ? 'check-circle'
+                                : verdict === 'bad' ? 'alert' : 'eye'} />}
                             title={t.verdictTitle[verdict]}
                             className={flash ? 'haltung-alarm' : undefined}
                         >
@@ -919,10 +931,16 @@ function Live() {
 
                     <Row gap={3} wrap justify="between" align="bottom">
                         <Row gap={2} wrap>
+                            {/* The xl trigger: 64px, uppercase, tracked. The
+                                design system keeps this size for the one
+                                button a view leads with, and on this page that
+                                is the button that turns the camera on. */}
                             {running
-                                ? <Button variant="danger" icon="⏹" onClick={stop}>{t.stop}</Button>
-                                : <Button variant="primary" icon="▶" onClick={start}>{t.start}</Button>}
-                            <Button icon="⟳" onClick={() => void check()}
+                                ? <Button size="lg" variant="danger" icon={<Icon name="stop" size={20} />}
+                                    onClick={stop}>{t.stop}</Button>
+                                : <Button size="lg" variant="primary" icon={<Icon name="play" size={20} />}
+                                    onClick={start}>{t.start}</Button>}
+                            <Button icon={<Icon name="refresh" />} onClick={() => void check()}
                                 disabled={!camera.on || checking}>
                                 {t.checkNow}
                             </Button>
@@ -953,11 +971,20 @@ function Live() {
 
                     {last ? (
                         <Grid min={160}>
+                            {/* An axis over its tolerance is the one place the
+                                accent is allowed to appear on a readout: the
+                                number and its label go coral and pulse, and
+                                the two that are still inside stay white. That
+                                is the whole severity system — whether the
+                                accent is there, not which colour it is. */}
                             <Stat label={t.statForward} value={deg(last.forward)}
+                                className={breach(last.forward, settings.maxForward)}
                                 hint={t.limit(deg(settings.maxForward))} />
                             <Stat label={t.statLean} value={deg(last.lean)}
+                                className={breach(last.lean, settings.maxLean)}
                                 hint={`${t.sideLabel[last.leanSide]} · ${t.limit(deg(settings.maxLean))}`} />
                             <Stat label={t.statHeadTilt} value={deg(last.headTilt)}
+                                className={breach(last.headTilt, settings.maxHeadTilt)}
                                 hint={t.limit(deg(settings.maxHeadTilt))} />
                             <Stat label={t.statConfidence} value={`${Math.round(last.confidence * 100)} %`}
                                 hint={poseReady() ? t.computedLocally : t.modelLoading} />
@@ -1397,14 +1424,14 @@ function Setup(props: SetupProps) {
                                 <option key={key} value={key}>{t.soundName[key]}</option>
                             ))}
                         </Select>
-                        <Button icon="🔊" onClick={() => { props.prepareSound(); props.playSound(s.soundName); }}>
+                        <Button icon={<Icon name="volume" />} onClick={() => { props.prepareSound(); props.playSound(s.soundName); }}>
                             {t.listen}
                         </Button>
                     </Row>
                     <Text small muted>{t.soundNote}</Text>
                 </Panel>
 
-                <Callout icon="🔒" title={t.leavesTitle}>{t.leavesText}</Callout>
+                <Callout icon={<Icon name="lock" size={20} />} title={t.leavesTitle}>{t.leavesText}</Callout>
             </Col>
         </Section>
     );
@@ -1461,7 +1488,7 @@ function Content() {
                         <>
                             <DataSyncButton database={database} filename="sitzhaltung.json" />
                             <ConfirmButton
-                                icon="🗑"
+                                icon={<Icon name="trash" />}
                                 label={t.clearHistory}
                                 body={t.clearHistoryBody}
                                 onConfirm={async () => {

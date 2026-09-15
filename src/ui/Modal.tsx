@@ -29,6 +29,7 @@
  */
 
 import { useEffect, useRef } from 'react';
+import { Icon } from './Icon';
 import { cx } from './cx';
 import type { ReactNode } from './_types';
 import { uiText } from './lang';
@@ -73,7 +74,9 @@ export function Modal({ open, onClose, title, footer, className, children }: Mod
             <div className="ui-modal-card">
                 <div className="ui-modal-head">
                     <h2 className="ui-h3">{title}</h2>
-                    <button className="ui-iconbtn" onClick={onClose} aria-label={uiText().close}>✕</button>
+                    <button className="ui-iconbtn" onClick={onClose} aria-label={uiText().close}>
+                        <Icon name="x" size={20} />
+                    </button>
                 </div>
                 {open ? children : null}
                 {footer ? <div className="ui-modal-foot">{footer}</div> : null}

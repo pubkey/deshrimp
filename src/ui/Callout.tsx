@@ -18,7 +18,7 @@
  * ## Examples
  * ```tsx
  * <Callout title="Kurz gesagt">{intro}</Callout>
- * <Callout tone="warn" icon="✎" title="Beantworte das">…</Callout>
+ * <Callout tone="warn" icon={<Icon name="pencil" size={20} />} title="Beantworte das">…</Callout>
  * ```
  *
  * ## Changelog
@@ -32,7 +32,7 @@ import type { Base, ReactNode } from './_types';
 export type CalloutProps = Base & {
     tone?: 'warn' | 'bad';
     title?: ReactNode;
-    icon?: string;
+    icon?: ReactNode;
 };
 
 export function Callout({ tone, title, icon, className, children, style, id }: CalloutProps) {

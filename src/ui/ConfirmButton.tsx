@@ -33,7 +33,7 @@
  *
  * ## Examples
  * ```tsx
- * <ConfirmButton icon="🗑" label="Verlauf löschen"
+ * <ConfirmButton icon={<Icon name="trash" />} label="Verlauf löschen"
  *     body="Alle Messungen dieses Geräts werden gelöscht. Das lässt sich nicht rückgängig machen."
  *     onConfirm={() => readings.find().remove()} />
  *

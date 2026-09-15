@@ -1,0 +1,70 @@
+/* -------------------------------------------------------------------------
+   theme-light.css — the inversion.
+
+   Dark is the brief and the default. Light was added on request, and it is a
+   value ladder flipped in place: structure, spacing, radii and motion do not
+   move, so every component follows with no code change.
+
+   Two deliberate deviations from the locked palette, because the originals are
+   unreadable on white (both flagged in DESIGN.md):
+     · secondary ink is #475569, not #94A3B8 — the original measures 2.2:1 on
+       #F8FAFC, which is not text.
+     · coral deepens to #E14E1D for strokes, fills and accent buttons. The
+       original #ff8257 survives as --accent-bright for a large fill on a dark
+       chip, where it still holds.
+
+   Three selectors for two states: the media query is what a page shows before
+   anyone has pressed anything, and the attribute is an explicit choice that has
+   to win in *both* directions — a user on a light system who asks for dark must
+   get dark.
+   ------------------------------------------------------------------------- */
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    --slate-100: #F1F5F9;
+    --slate-300: #CBD5E1;
+    --slate-600: #475569;
+
+    --bg-app:           var(--slate-50);
+    --bg-inset:         var(--slate-100);
+    --surface-card:     #FFFFFF;
+    --surface-inset:    var(--slate-100);
+    --border-default:   var(--slate-300);
+    --border-alert:     var(--coral-700);
+    --track-default:    var(--slate-300);
+    --fill-default:     var(--slate-700);
+    --fill-alert:       var(--coral-700);
+    --text-primary:     var(--slate-800);
+    --text-secondary:   var(--slate-600);
+    --accent:           var(--coral-700);
+    --accent-bright:    var(--coral-500);
+    --accent-soft:      rgba(225, 78, 29, .10);
+    --control-inactive: var(--slate-300);
+    --scrim:            rgba(248, 250, 252, .82);
+    --shadow-card:      0 1px 2px rgba(15, 23, 42, .08);
+  }
+}
+
+:root[data-theme='light'] {
+  --slate-100: #F1F5F9;
+  --slate-300: #CBD5E1;
+  --slate-600: #475569;
+
+  --bg-app:           var(--slate-50);
+  --bg-inset:         var(--slate-100);
+  --surface-card:     #FFFFFF;
+  --surface-inset:    var(--slate-100);
+  --border-default:   var(--slate-300);
+  --border-alert:     var(--coral-700);
+  --track-default:    var(--slate-300);
+  --fill-default:     var(--slate-700);
+  --fill-alert:       var(--coral-700);
+  --text-primary:     var(--slate-800);
+  --text-secondary:   var(--slate-600);
+  --accent:           var(--coral-700);
+  --accent-bright:    var(--coral-500);
+  --accent-soft:      rgba(225, 78, 29, .10);
+  --control-inactive: var(--slate-300);
+  --scrim:            rgba(248, 250, 252, .82);
+  --shadow-card:      0 1px 2px rgba(15, 23, 42, .08);
+}

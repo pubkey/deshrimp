@@ -1,0 +1,31 @@
+/* -------------------------------------------------------------------------
+   effects.css — radii, hairlines, focus, motion.
+
+   The system separates with borders, not elevation. `--shadow-card` exists for
+   an overlay that genuinely leaves the page (a modal in the top layer) and is
+   unused everywhere else; there is no inner-shadow system and no glow except
+   `--glow-alert`.
+
+   Motion is functional: 120ms for a state snap, 180ms for a value moving. The
+   single looping animation in the product is the breach pulse.
+   ------------------------------------------------------------------------- */
+
+:root {
+  --radius-sm:   4px;   /* bars, small tiles */
+  --radius-md:   6px;   /* buttons, fields, stat tiles */
+  --radius-lg:   8px;   /* cards, camera well — nothing on a container is larger */
+  --radius-pill: 999px; /* switches, status pills, telemetry tracks */
+
+  --border-width:       1px;
+  --border-width-alert: 3px;
+
+  --shadow-none: none;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, .4);
+  --focus-ring:  0 0 0 2px var(--bg-app), 0 0 0 4px var(--accent);
+  --glow-alert:  0 0 0 1px rgba(255, 130, 87, .35);
+
+  --ease-standard: cubic-bezier(.4, 0, .2, 1);
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+  --transition-control: all var(--duration-base) var(--ease-standard);
+}

@@ -1,17 +1,19 @@
 <!doctype html>
-<!-- data-accent picks the palette out of src/ui/theme.css; the theme itself
-     (light/dark) is restored from localStorage before the first render. -->
-<html lang="en" data-accent="health">
+<!-- The palette is locked: one accent, six values, no per-page presets any
+     more (src/ui/DESIGN.md). Only the theme is still a choice, and it is
+     restored from localStorage before the first render so the page does not
+     flash the wrong one. Dark is the default the system was drawn for. -->
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="dark light" />
     <title>deshrimp — free webcam posture trainer for your desk</title>
     <meta name="description" content="A free page that watches your posture through your webcam and makes a noise when you fold up. Nothing leaves your device. No install, no account." />
     <link rel="icon" href="/icon.svg" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <meta name="theme-color" content="#f4f2ee" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#14130f" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F8FAFC" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0F172A" media="(prefers-color-scheme: dark)" />
   </head>
   <body>
     <div id="root"></div>

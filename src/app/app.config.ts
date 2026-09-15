@@ -21,8 +21,6 @@ export default defineApp({
     // wrote, typos and all.
     task: "Bau eine App wo es so die Webcam schaut ob ich zu schräg Sitz und dann gibt er mir ein Signal so alle 10 Sekunden ein frame und dann schickst du das so an die KI und frägst den sitzwinkel von der Haltung an",
 
-    accent: 'health',
-    icon: '🦐',
     source: 'app-haltung',
     sync: {
         googleClientId: '488620533030-296v9dsbgnlupbbut2gfineg1fc5l71s.apps.googleusercontent.com',

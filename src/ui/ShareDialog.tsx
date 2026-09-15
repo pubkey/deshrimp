@@ -35,6 +35,7 @@
 import { Button } from './Button';
 import { Callout } from './Callout';
 import { Col } from './Col';
+import { Icon } from './Icon';
 import { Modal } from './Modal';
 import { QRCode } from './QRCode';
 import { Row } from './Row';
@@ -77,7 +78,7 @@ export function ShareDialog({ open, onClose, url, title, text }: ShareDialogProp
         <Modal open={open} onClose={onClose} title={uiText().shareTitle}>
             <Col gap={4}>
                 {local ? (
-                    <Callout tone="warn" icon="⚠">
+                    <Callout tone="warn" icon={<Icon name="alert" size={20} />}>
                         {uiText().shareLocalFile}
                     </Callout>
                 ) : encodable ? (
@@ -86,7 +87,7 @@ export function ShareDialog({ open, onClose, url, title, text }: ShareDialogProp
                         <div className="ui-small ui-muted">{uiText().scanWithPhone}</div>
                     </div>
                 ) : (
-                    <Callout tone="warn" icon="⚠">
+                    <Callout tone="warn" icon={<Icon name="alert" size={20} />}>
                         {uiText().shareTooLongForQr}
                     </Callout>
                 )}
@@ -94,11 +95,11 @@ export function ShareDialog({ open, onClose, url, title, text }: ShareDialogProp
                 <div className="ui-urlbox" title={url}>{url}</div>
 
                 <Row wrap gap={2}>
-                    <Button variant="primary" icon="⧉" onClick={copy}>{uiText().copyLink}</Button>
+                    <Button variant="primary" icon={<Icon name="copy" />} onClick={copy}>{uiText().copyLink}</Button>
                     {/* `in`, not a truthiness test: the type says `share` is
                         always defined, but on a desktop browser it is not. */}
                     {typeof navigator !== 'undefined' && 'share' in navigator
-                        ? <Button icon="⤴" onClick={nativeShare}>{uiText().shareNative}</Button>
+                        ? <Button icon={<Icon name="share" />} onClick={nativeShare}>{uiText().shareNative}</Button>
                         : null}
                 </Row>
 

@@ -1,0 +1,126 @@
+/* -------------------------------------------------------------------------
+   bridge.css — the old token names, defined in terms of the new ones.
+
+   The component library was written against a different vocabulary (`--ink`,
+   `--card`, `--s4`, `--r-md`). Rather than touch forty-five components to
+   rename a variable, every legacy name is redefined here as an alias onto the
+   design system. One file changes, the whole library moves, and both themes
+   keep working because the right-hand sides are themselves themed.
+
+   This is a translation layer, not a second palette: nothing below invents a
+   value. Where the old vocabulary was finer than the new one, names collapse —
+   that is the point. The system has six colours; a component asking for a
+   seventh gets the nearest one it is allowed to have.
+
+   New work should reference the design-system names directly. This file exists
+   so the port could happen in one step, and it shrinks as components are
+   rewritten against the real tokens.
+   ------------------------------------------------------------------------- */
+
+:root {
+  /* --- surfaces ------------------------------------------------------- */
+  --bg:         var(--bg-app);
+  --bg-sunk:    var(--surface-inset);
+  --card:       var(--surface-card);
+  /* Hover is opacity .88 and nothing else, so a hovered surface is not a
+     different colour. The token stays so old rules still resolve. */
+  --card-hover: var(--surface-card);
+
+  /* --- ink ------------------------------------------------------------- */
+  /* Four steps become two. Text is never set at reduced opacity, so a caption
+     and a placeholder are the same measurable slate rather than two guesses at
+     "quieter". Disabled is opacity .4 on the control, not a paler ink. */
+  --ink:      var(--text-primary);
+  --ink-soft: var(--text-secondary);
+  --muted:    var(--text-secondary);
+  --faint:    var(--text-secondary);
+
+  /* --- structure -------------------------------------------------------- */
+  /* One hairline. The system separates with borders rather than elevation, and
+     a border that comes in two strengths is two systems. */
+  --line:        var(--border-default);
+  --line-strong: var(--border-default);
+
+  /* --- accent ----------------------------------------------------------- */
+  --accent-ink:  var(--accent);
+  --on-accent:   var(--text-on-accent);
+
+  /* --- severity --------------------------------------------------------- */
+  /* The palette has no green and no amber. Severity is carried by *whether*
+     the accent appears, which as a three-step ladder is: white ink (within
+     tolerance) → slate (worth noticing) → coral (breached). The information
+     survives; the hues do not.
+     `--rec` was an "our pick" gold — a highlight, not a state — so it becomes
+     the plain white ink rather than spending accent budget. */
+  --rec:         var(--text-primary);
+  --ok:          var(--text-primary);
+  --warn:        var(--text-secondary);
+  --bad:         var(--accent);
+  /* Dark ink on every one of those fills: white on coral measures 2.5:1. */
+  --on-semantic: var(--bg-app);
+
+  /* --- series ------------------------------------------------------------ */
+  /* No categorical palette exists in a six-value system, and inventing one
+     would be inventing a brand. Charts here plot at most three lines, so the
+     three legible values are spent in order: white, slate, coral. A third
+     simultaneous line does spend the accent budget — past three series the
+     answer is to split the chart, not to add a hue. Slots 4–6 are the darker
+     slates and read as "rest". */
+  --series-1: var(--fill-default);
+  --series-2: var(--text-secondary);
+  --series-3: var(--accent);
+  --series-4: var(--slate-650);
+  --series-5: var(--control-inactive);
+  --series-6: var(--border-default);
+
+  /* --- elevation --------------------------------------------------------- */
+  /* Borders, not shadows. The three page-level steps are flattened to nothing;
+     only the top step survives, for the two things that genuinely leave the
+     page (a modal and the toast), and it is the design system's one shadow. */
+  --sh-1: none;
+  --sh-2: none;
+  --sh-3: none;
+  --sh-4: var(--shadow-card);
+  --ring: var(--focus-ring);
+
+  /* --- radius ------------------------------------------------------------ */
+  /* Nothing above 8px on a container, so the old 14/20/28 ladder tops out. */
+  --r-xs:   var(--radius-sm);   /*  4px — bars, small tiles */
+  --r-sm:   var(--radius-md);   /*  6px — buttons, fields, stat tiles */
+  --r-md:   var(--radius-lg);   /*  8px — cards, wells */
+  --r-lg:   var(--radius-lg);   /*  8px */
+  --r-xl:   var(--radius-lg);   /*  8px — capped */
+  --r-pill: var(--radius-pill);
+
+  /* --- space -------------------------------------------------------------- */
+  /* 24px (--s5) is the structural constant: card padding and grid gap. */
+  --s1: var(--space-1);
+  --s2: var(--space-2);
+  --s3: var(--space-3);
+  --s4: var(--space-4);
+  --s5: var(--space-6);
+  --s6: var(--space-8);
+  --s7: var(--space-12);
+  --s8: var(--space-12);
+
+  /* --- type ---------------------------------------------------------------- */
+  --font:       var(--font-sans);
+  --mono:       var(--font-mono);
+  --t-xs:       var(--text-label);
+  --t-sm:       var(--text-sm);
+  --t-md:       var(--text-base);
+  --t-base:     var(--text-base);
+  --t-lg:       var(--text-lg);
+  --lh:         var(--leading-normal);
+  --track-caps: var(--tracking-label);
+
+  /* --- layout --------------------------------------------------------------- */
+  --maxw:        940px;
+  --maxw-narrow: 720px;
+  --maxw-wide:   var(--content-max);
+
+  /* --- motion --------------------------------------------------------------- */
+  --dur-1: var(--duration-fast);
+  --dur-2: var(--duration-base);
+  --ease:  var(--ease-standard);
+}

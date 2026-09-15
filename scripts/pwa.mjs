@@ -8,9 +8,11 @@
  *
  * What goes where:
  *
- * - **Precached** on install: the shell (HTML, JS, CSS), the icon, the manifest
- *   and all five sounds (216 KB together). A posture watcher whose alarm is
- *   silent offline is not one.
+ * - **Precached** on install: the shell (HTML, JS, CSS), the brand type, the
+ *   icon and mark, the manifest and all five sounds (216 KB together). A
+ *   posture watcher whose alarm is silent offline is not one, and an interface
+ *   that falls back to the system sans offline is one that looks broken on the
+ *   day the network is gone.
  * - **Cached on first use**: the pose model under `mp/`. It is ~17 MB, so
  *   forcing it through the install step would mean a page that appears to hang
  *   on first visit. It lands in the cache the first time the camera runs.
@@ -29,6 +31,8 @@ const here = dirname(fileURLToPath(import.meta.url));
 const STATIC = [
     'icon.svg',
     'manifest.webmanifest',
+    'brand/logo.svg',
+    'brand/mark.svg',
     'snd/furz.mp3',
     'snd/knacken.mp3',
     'snd/raeuspern.mp3',
@@ -103,7 +107,8 @@ export default function pwa() {
         generateBundle(_options, bundle) {
             const built = Object.values(bundle)
                 .map((chunk) => chunk.fileName)
-                .filter((name) => name.endsWith('.js') || name.endsWith('.css'));
+                .filter((name) => name.endsWith('.js') || name.endsWith('.css')
+                    || name.endsWith('.woff2'));
 
             // The bundle hashes change whenever anything does, so hashing the
             // list is enough to name a cache generation.

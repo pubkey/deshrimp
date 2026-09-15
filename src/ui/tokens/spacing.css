@@ -1,0 +1,32 @@
+/* -------------------------------------------------------------------------
+   spacing.css — 4px base step.
+
+   24px card padding and 24px grid gap are structural constants; deviating from
+   them is the fastest way to break the look.
+   ------------------------------------------------------------------------- */
+
+:root {
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  --card-padding: 24px;
+  --grid-gap:     24px;
+  --page-gutter:  24px;
+  --content-max:  1400px;
+
+  /* desktop split: 70 / 30, right rail sticky */
+  --layout-main: 70fr;
+  --layout-side: 30fr;
+  --breakpoint-desktop: 1024px;
+
+  --track-height:     4px;
+  --control-height:  40px;
+  --button-height-xl: 64px;
+}
