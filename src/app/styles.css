@@ -81,14 +81,39 @@
   /* `pathLength="100"` on the element renormalises the perimeter, so 100 is
      the whole way round whatever the box measures. */
   stroke-dasharray: 100;
-  transition: stroke-dashoffset var(--duration-base) var(--ease-standard);
+  /* One animation across the whole interval rather than a step a second
+     _(2026-09-15, his call)_. The browser draws every frame in between, so
+     nothing in React runs per frame. `linear` because it is a clock: an eased
+     countdown would race the middle of the wait and crawl at both ends. It
+     holds at full when it finishes, so a check that takes a moment shows a
+     complete ring rather than an empty one.
+
+     The duration arrives as a custom property rather than as
+     `animation-duration` directly, and that is not a style preference: the
+     blanket reduced-motion rule in theme.css collapses every animation to
+     .001ms with `!important`, which beats an inline declaration. A custom
+     property is not reachable from that rule, so the value survives and the
+     reduced-motion block below can hand it back. */
+  animation: haltung-tick-fill var(--tick-duration, 1s) linear 1 forwards;
 }
-/* A second is the default interval, and at that pace the ring is redrawn as
-   fast as it is filled. Animating each step would show a permanent backwards
-   sweep rather than a countdown, so the transition only applies when there is
-   enough time for it to read as one. */
+@keyframes haltung-tick-fill {
+  from { stroke-dashoffset: 100; }
+  to   { stroke-dashoffset: 0; }
+}
+/* Reduced motion keeps the countdown and drops the sweep.
+ *
+ * The blanket rule in theme.css would otherwise collapse this to .001ms and
+ * leave the ring permanently full, which is not a quieter countdown but no
+ * countdown at all. That rule is there to stop decorative motion; this ring is
+ * the only thing on the page saying when the next picture is due, so it keeps
+ * its duration and gives up the glide instead: ten discrete jumps rather than
+ * a slide. `!important` is needed to win against the blanket rule, which uses
+ * it too. */
 @media (prefers-reduced-motion: reduce) {
-  .haltung-tick rect { transition: none; }
+  .haltung-tick rect {
+    animation-duration: var(--tick-duration, 1s) !important;
+    animation-timing-function: steps(10, end);
+  }
 }
 
 /* The prose under the well: the verdict, a camera error, a note. Its height is

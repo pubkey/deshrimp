@@ -31,6 +31,7 @@
  */
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 import {
     Badge, Button, Callout, Checkbox, ConfirmButton, Empty,
     Grid, Icon, IconButton, LoadingOverlay, Muted, Page, Panel,
@@ -654,6 +655,14 @@ function Live() {
     const [running, setRunning] = useState(false);
     const [checking, setChecking] = useState(false);
     const [secondsLeft, setSecondsLeft] = useState(0);
+    /**
+     * Which countdown cycle we are in. It exists only to key the ring: giving
+     * the `<rect>` a `key` that changes remounts it, and remounting is what
+     * restarts its CSS animation from the top. Without that the animation and
+     * the loop would drift apart, and at a two-minute pace the ring would be
+     * visibly finishing at the wrong moment within the hour.
+     */
+    const [cycle, setCycle] = useState(0);
     /* Seconds until the next picture, and whether the loop was already running
        on the previous pass. Refs rather than state: the tick reads and writes
        them every second and must not re-render the page to do it. */
@@ -837,6 +846,7 @@ function Live() {
         left.current = wasRunning.current ? interval : 0;
         wasRunning.current = true;
         setSecondsLeft(left.current);
+        setCycle((n) => n + 1);
         const id = window.setInterval(() => {
             if (!runningRef.current || busy.current) return;
             if (left.current > 0) {
@@ -846,6 +856,7 @@ function Live() {
             }
             left.current = interval;
             setSecondsLeft(left.current);
+            setCycle((n) => n + 1);
             void check();
         }, 1000);
         return () => window.clearInterval(id);
@@ -900,11 +911,6 @@ function Live() {
     /* --------------------------------------------------------- rendering */
 
     const verdict: Verdict | null = last && running ? last.verdict : null;
-    /* How much of the well's border is drawn. While a check is running the
-       ring is full rather than part-way: the wait is over, the work is what is
-       left, and a ring sliding backwards to zero under it would read as a
-       reset rather than as a reading being taken. */
-    const ringPct = checking ? 100 : ((interval - secondsLeft) / interval) * 100;
     useVerdictFavicon(verdict);
 
     return (
@@ -933,16 +939,25 @@ function Live() {
                         own border filling up _(2026-09-15, his call, in place
                         of a labelled bar)_. `pathLength="100"` is what makes it
                         exact: it renormalises the perimeter to 100 units
-                        whatever the box measures, so the dash offset is the
-                        percentage directly and no JavaScript has to measure
-                        anything. The rect starts at its top left corner and
-                        runs clockwise. */}
+                        whatever the box measures, so the dash offset runs from
+                        100 to 0 and no JavaScript has to measure anything. The
+                        rect starts at its top left corner and runs clockwise.
+
+                        **The sweep is one CSS animation over the whole
+                        interval** _(2026-09-15, his call: steadily, not once a
+                        second)_. React sets its duration and nothing else; the
+                        browser draws every frame in between. The `key` is the
+                        sync: it changes when the loop reloads its counter, and
+                        remounting the rect restarts the animation exactly
+                        there, so the ring cannot drift away from the tick that
+                        it is counting down to. */}
                     {running ? (
                         <svg className="haltung-tick" aria-hidden="true">
                             <rect
+                                key={cycle}
                                 width="100%" height="100%"
                                 rx={RING_RADIUS} pathLength={100}
-                                style={{ strokeDashoffset: 100 - Math.round(ringPct) }}
+                                style={{ '--tick-duration': `${interval}s` } as CSSProperties}
                             />
                         </svg>
                     ) : null}
