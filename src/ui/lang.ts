@@ -4,8 +4,8 @@
  * ## What it does and how it looks
  * Nothing visible on its own. It holds one value — one of twelve language
  * codes — and the
- * frame components (`<PageMeta>`, `<DataGaps>`, `<SourceList>`, `<ShareButton>`,
- * `<ThemeToggle>`) read their fixed labels out of it instead of hard-coding
+ * frame components (`<ShareButton>`, `<ThemeToggle>`, `<Modal>`,
+ * `<ConfirmButton>`) read their fixed labels out of it instead of hard-coding
  * German.
  *
  * Every page in this repo is German, and that stays the default: a page that
@@ -13,7 +13,7 @@
  * existed. The one page that needs otherwise (`app-haltung`, which he asked to
  * be switchable to English on 2026-09-08) sets `<Page lang="en">` and the whole
  * frame follows — otherwise an English app would sit inside a German shell,
- * with „Zu dieser Seite" under an English answer.
+ * with „Teilen" and „Sicher?" around an English answer.
  *
  * ## Core parts
  * - `setUiLang(lang)` — `<Page>` calls this while rendering, before its subtree
@@ -35,6 +35,9 @@
  * ```
  *
  * ## Changelog
+ * - 2026-09-15 The labels of the „Zu dieser Seite" block left with it: the
+ *   meta, task, gaps, severity and sources words are gone from all twelve
+ *   tables. What remains is what the top bar and the dialogs still say.
  * - 2026-09-08 Ten more languages, and the tables moved to `lang-text.ts` —
  *   twelve of them inline made this file's own logic hard to find. No RTL
  *   language yet; that needs `dir` support the frame does not have.
@@ -65,22 +68,6 @@ export const UI_LANGS: UiLang[] =
 import { TEXT } from './lang-text';
 
 export type UiText = {
-    metaTitle: string;
-    metaSubtitle: string;
-    taskLabel: string;
-    gapsTitle: string;
-    gapsSubtitle: string;
-    gapsAskTitle: string;
-    gapsAskText: string;
-    gapsCopied: string;
-    gapsCopyFailed: string;
-    severityMissing: string;
-    severityAssumed: string;
-    severityStale: string;
-    severityMissingHint: string;
-    severityAssumedHint: string;
-    severityStaleHint: string;
-    sourcesTitle: string;
     share: string;
     themeLight: string;
     themeDark: string;
@@ -102,8 +89,6 @@ export type UiText = {
     checkedToday: (days: number) => string;
     checkedDaysAgo: (days: number) => string;
     /* Words the components put on a page themselves, rather than taking from it. */
-    assumedInstead: string;
-    wobbles: string;
     asOf: string;
     why: string;
     criterion: string;
@@ -132,7 +117,6 @@ export type UiText = {
     playerLoading: string;
     checkedAgainstOriginal: string;
     notChecked: string;
-    copyQuestions: string;
     /* The data-sync modal (`<DataSyncButton>` in the app-builder). */
     syncTitle: string;
     syncIntro: string;

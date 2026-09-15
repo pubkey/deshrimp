@@ -83,7 +83,7 @@ src/
   main.tsx          entry: pulls in the CSS, fills the page payload, mounts
   app/              this app — App.tsx, db.ts, pose.ts, twelve i18n tables,
                     styles.css, data.json (the written content), app.config.ts
-  ui/               the components this app uses — 43 of them — plus theme.css
+  ui/               the components this app uses — 38 of them — plus theme.css
                     and tokens/, the design system they are all built from,
                     fonts/ (IBM Plex, vendored), and DESIGN.md, the rules in
                     prose
