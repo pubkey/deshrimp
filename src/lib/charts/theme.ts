@@ -4,13 +4,13 @@
  *
  * The palette is six CSS variables, not six hex codes. Recharts hands `stroke`
  * and `fill` straight to SVG presentation attributes, and an SVG attribute
- * takes `var(--series-1)` — so the light/dark switch is the browser's job and
+ * takes `var(--series-1)` - so the light/dark switch is the browser's job and
  * costs no code at all. That is the whole reason this library is Recharts and
  * not a canvas engine.
  *
  * **What those six variables now resolve to has changed.** The design system
  * locks the product to six colours in total, and a categorical chart palette is
- * not one of the things they are spent on — so the slots are the three legible
+ * not one of the things they are spent on - so the slots are the three legible
  * values in order (white ink, slate, coral) with the darker slates behind them,
  * not six hues checked for protan/deutan separation. Three lines is what this
  * product plots and three lines is what this reads well at. The fourth is
@@ -18,7 +18,7 @@
  * chart, which is what `seriesColor` below enforces.
  */
 
-/** The categorical slots, in fixed order. Never cycled — see `seriesColor`. */
+/** The categorical slots, in fixed order. Never cycled - see `seriesColor`. */
 export const SERIES_SLOTS = 6;
 
 export const SERIES_COLORS: string[] = Array.from(
@@ -100,7 +100,7 @@ export function withUnit(fmt: Formatter, unit: string): Formatter {
  * Axis defaults. Recessive: the data is the ink, the axis is furniture.
  *
  * Ticks are set in the mono face with tabular figures, like every other number
- * in the product — an axis whose labels change width as the scale moves is an
+ * in the product - an axis whose labels change width as the scale moves is an
  * axis that appears to twitch.
  */
 export const AXIS = {
@@ -127,7 +127,7 @@ export const MARK = {
     strokeWidth: 2,
     dotRadius: 3,
     activeDotRadius: 4,
-    /* 4px — the small-tile radius. A bar is a tile lying down. */
+    /* 4px - the small-tile radius. A bar is a tile lying down. */
     barRadius: 4,
     /** Painted in the surface colour so touching segments read as separate. */
     separator: 'var(--card)',

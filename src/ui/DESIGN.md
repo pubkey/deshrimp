@@ -23,7 +23,7 @@ src/ui/tokens/
 src/ui/fonts/      the woff2 files
 src/ui/theme.css   the imports, then how components spend the tokens
 src/ui/Tiles.tsx   the page grid, and why its two bounds are held where they are
-src/app/styles.css the camera well, the breach state and the readings log —
+src/app/styles.css the camera well, the breach state and the readings log -
                    the only page CSS
 public/brand/      logo and mark, five variants
 ```
@@ -63,7 +63,7 @@ wrong.
 Severity is carried by **whether the accent appears**, not by a range of
 colours. As a three-step ladder that is: white ink (within tolerance) → slate
 (worth noticing) → coral (breached). The old `--ok` / `--warn` / `--bad`
-semantic names still resolve — to those three, via `bridge.css` — so the
+semantic names still resolve - to those three, via `bridge.css` - so the
 sixty-bar status strip and the tab icon keep their reading without a second hue.
 
 ### Light mode
@@ -82,9 +82,9 @@ no signal either way gets.
 
 ## Type
 
-IBM Plex Sans for interface text (400–700). IBM Plex Mono with
+IBM Plex Sans for interface text (400-700). IBM Plex Mono with
 `font-variant-numeric: tabular-nums` for **every** number in the product,
-including small captions — numbers must not reflow as they tick.
+including small captions - numbers must not reflow as they tick.
 
 | | size | use |
 | --- | --- | --- |
@@ -105,8 +105,8 @@ tracking for every label, card title, metric name and axis name. The wordmark
 The fonts are **vendored, not imported from Google**. The design system ships an
 `@import` from `fonts.googleapis.com`; this page installs and has to keep
 working with the network gone, and a render-blocking request to a third party is
-the one thing that cannot survive that. Sans is a variable font — one file per
-subset covers 400–700 — so its four weights are one `@font-face` with a weight
+the one thing that cannot survive that. Sans is a variable font - one file per
+subset covers 400-700 - so its four weights are one `@font-face` with a weight
 range. Chinese and Japanese fall through to the system stack; IBM Plex has no
 CJK in this family.
 
@@ -115,7 +115,7 @@ CJK in this family.
 ## Space and layout
 
 4px base step. **24px card padding and 24px grid gap are structural
-constants** — deviating from them is the fastest way to break the look.
+constants** - deviating from them is the fastest way to break the look.
 Generous negative space inside cards: a card with three rows of content and 24px
 padding is correct; a card with twelve is two cards.
 
@@ -125,13 +125,13 @@ padding is correct; a card with twelve is two cards.
 
 Not a stack of sections. Every readout is a **tile** in a single grid whose
 columns are **at least 330px and at most 660px**, as many as fit, sharing the
-row between them — one column on a phone, two on a tablet, three on a desk
+row between them - one column on a phone, two on a tablet, three on a desk
 monitor, with no breakpoint written anywhere. `Tiles.tsx` holds the mechanism
 and the reason the 660px cap sits on the tile rather than on the track.
 
 Tiles stretch to the height of their row, so a row reads as one band. That is
 also the constraint on what may go in one: anything that grows without a bound
-— a table of every reading — is capped and scrolls inside its own tile, because
+- a table of every reading - is capped and scrolls inside its own tile, because
 otherwise it sets the height of its whole row and leaves its neighbours as tall
 empty cards.
 
@@ -141,8 +141,8 @@ not. Nothing spans two columns: two columns plus the gap is 684px, past what a
 tile is allowed to be.
 
 Because there are no section headings any more, **a tile title carries its own
-scope**. Two charts both plot "share of time sitting straight" — one over the
-last half hour, one over whole days — so their titles are composed from the
+scope**. Two charts both plot "share of time sitting straight" - one over the
+last half hour, one over whole days - so their titles are composed from the
 words that used to be the section heading: `The last while · Share of time
 sitting straight` against `Trend across the days · Share of time sitting
 straight`.
@@ -161,15 +161,35 @@ straight`.
   card at the same surface value.
 - **Borders over shadows.** The system separates with hairlines, not elevation.
   Three of the four old elevation steps now resolve to `none`; `--shadow-card`
-  survives for the two things that genuinely leave the page — a dialog in the
+  survives for the two things that genuinely leave the page - a dialog in the
   top layer and the toast.
 - **Radii.** 4px (bars, small tiles), 6px (buttons, fields, stat tiles), 8px
   (cards, camera well), pill (switches, status pills, telemetry tracks). Nothing
   above 8px on a container.
 - **Transparency and blur.** Almost never. Two sanctioned uses: a status pill
   over live video (`--scrim` + `blur(6px)`), and `--accent-soft` for a breach row
-  wash. Text is never set at reduced opacity — secondary text uses the slate at
+  wash. Text is never set at reduced opacity - secondary text uses the slate at
   full opacity so contrast stays measurable.
+
+### Native widgets
+
+A `<select>`'s dropdown, a scrollbar and a focus ring are drawn by the platform
+and cannot be styled. The one lever is `color-scheme`, which must follow the
+theme: `dark` on bare `:root`, flipped to `light` in both light blocks. Left at
+`dark light` it says "either, prefer dark" and a light page gets a dark
+dropdown. An `<option>`'s own colours are honoured everywhere except macOS, so
+they are set too and `color-scheme` is the whole of the fix there.
+
+The chevron on a closed select is a data URI, so it cannot inherit a token: it
+is drawn twice, once in each theme's secondary slate.
+
+### Sliders, not number fields
+
+A bounded number is a slider. A tolerance is a dial you feel your way to, not a
+figure you know in advance and type, and the README says as much: treat the
+three numbers as dials. The track is the telemetry track (4px, pill, inactive
+slate behind, white fill in front) and the value sits above it, right aligned,
+in tabular mono because it changes while you drag.
 
 ---
 
@@ -178,7 +198,7 @@ straight`.
 Functional only. 120ms for state snaps (border width, colour), 180ms for value
 transitions (bar width, ring dash), `cubic-bezier(.4,0,.2,1)`.
 
-- **Hover:** opacity `.88`. Nothing else — no colour change, no lift, no border
+- **Hover:** opacity `.88`. Nothing else - no colour change, no lift, no border
   brightening.
 - **Press:** no transform. The state change is the feedback.
 - **Focus:** 2px background offset + 2px accent ring.
@@ -189,11 +209,11 @@ shimmer, no page transitions.
 
 Two looping animations exist. The first is the sanctioned one: a 900ms opacity
 pulse (1 → .45) on a breached readout. The second is the loading spinner, which
-is a **deliberate exception** — this page waits on a 17MB pose model, and a
+is a **deliberate exception** - this page waits on a 17MB pose model, and a
 loading indicator that does not move reads as a hang rather than as a wait.
 Both stop under `prefers-reduced-motion`.
 
-### Breach — the one dramatic moment
+### Breach - the one dramatic moment
 
 The camera well's 1px hairline snaps to a 3px coral stroke, and the offending
 readout's number and label go coral and pulse. Nothing moves, nothing shakes,
@@ -206,7 +226,7 @@ nothing enlarges.
 The dashboard is deliberately near-iconless: status is carried by 6px dots,
 uppercase labels, borders and numbers.
 
-Where a glyph is genuinely needed it comes from `Icon.tsx` — a closed set of
+Where a glyph is genuinely needed it comes from `Icon.tsx` - a closed set of
 24×24 stroked outlines at `stroke-width: 1.5` in `currentColor`. The geometry is
 **Lucide's**, which is a substitution rather than a brand decision: no icon set
 was supplied. The paths are inlined rather than loaded from the CDN the design
@@ -222,8 +242,8 @@ system suggests, for the same offline reason as the fonts.
 ## Charts
 
 The locked palette has no categorical set, and inventing one would be inventing
-a brand. The six series slots are the three legible values in order — white
-ink, slate, coral — with the darker slates behind them. This product plots three
+a brand. The six series slots are the three legible values in order - white
+ink, slate, coral - with the darker slates behind them. This product plots three
 lines, which is what that reads well at. A third simultaneous line does spend
 accent budget; past six series `seriesColor` stops handing out values, because
 the answer there is to split the chart.
@@ -241,14 +261,14 @@ implemented **as the design system specifies**; none is silently deviated from.
 ### 1. White on coral fails contrast in dark mode
 
 `--text-on-accent` is `#ffffff` and the dark-mode accent is `#ff8257`. White on
-that coral measures **2.47:1** — below the 4.5:1 AA needs for 14px text and
+that coral measures **2.47:1** - below the 4.5:1 AA needs for 14px text and
 below the 3:1 for a UI component. It is on the primary trigger, which is the
 most important control on the page.
 
 Light mode is fine: the accent deepens to `#E14E1D` there and white reaches
 4.4:1.
 
-The fix is one line in `tokens/colors.css` — `--text-on-accent: var(--slate-950)`,
+The fix is one line in `tokens/colors.css` - `--text-on-accent: var(--slate-950)`,
 which measures 6.99:1 and keeps the coral exactly as specified. It is not
 applied because `#ffffff` is a locked token and the palette is the brand's call,
 not the implementation's.
@@ -262,11 +282,11 @@ must hold contrast on white. `#ff8257` survives as `--accent-bright`.
 
 ### 3. Emoji in the title and the language picker
 
-The design system says emoji never — not in UI, not in copy. Two places still
+The design system says emoji never - not in UI, not in copy. Two places still
 have them, both deliberately:
 
 - **The page title.** `CHANGELOG.md` records „Titel exakt … mit Ausrufezeichen
-  und Emoji, in beiden Sprachen" — the owner asked for that wording, emoji
+  und Emoji, in beiden Sprachen" - the owner asked for that wording, emoji
   included, in every language. A design system handed over later does not get to
   overrule a recorded decision by the person whose product it is. Stripping it is
   a one-character edit across twelve locale files whenever he says so.
@@ -279,8 +299,8 @@ Everything else in the interface is drawn.
 
 ## What this system does not cover
 
-The design system's **content rules** — register, vocabulary (*breach* not "bad
-posture", *tolerance* not "goal"), person, number precision — are not
+The design system's **content rules** - register, vocabulary (*breach* not "bad
+posture", *tolerance* not "goal"), person, number precision - are not
 implemented. Applying them means rewriting the copy in twelve languages, which
 is a translation project and not a re-skin. They are worth doing; they are not
 done here.

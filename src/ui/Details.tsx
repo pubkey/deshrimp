@@ -1,5 +1,5 @@
 /**
- * # Details — the part that would bury the answer
+ * # Details - the part that would bury the answer
  *
  * ## What it does and how it looks
  * A bordered strip with a caret and a summary line; clicking it unfolds the
@@ -8,14 +8,14 @@
  *
  * A native `<details>`, which buys three things a scripted accordion does not:
  * it works before (and without) JavaScript, the browser's find-in-page can open
- * it, and **it prints open** — so a page that gets printed does not lose half
+ * it, and **it prints open** - so a page that gets printed does not lose half
  * its content.
  *
  * ## Core parts
- * - `summary` — the always-visible line. Default „Mehr", which is a bad
+ * - `summary` - the always-visible line. Default „Mehr", which is a bad
  *   default: say what is inside.
- * - `open` — start unfolded.
- * - `count` — the right-hand number.
+ * - `open` - start unfolded.
+ * - `count` - the right-hand number.
  *
  * ## Examples
  * ```tsx

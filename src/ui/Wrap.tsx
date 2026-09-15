@@ -1,5 +1,5 @@
 /**
- * # Wrap — the reading column
+ * # Wrap - the reading column
  *
  * ## What it does and how it looks
  * A centred column with a maximum width and the page's side padding. It is what
@@ -9,7 +9,7 @@
  * width than the rest.
  *
  * ## Core parts
- * - `width` — `"narrow"` (720 px, text-heavy) or `"wide"` (1180 px, tables,
+ * - `width` - `"narrow"` (720 px, text-heavy) or `"wide"` (1180 px, tables,
  *   maps, galleries). Unset is the default 940 px column.
  * - the widths themselves are `--maxw*` tokens in `theme.css`, never numbers
  *   here, so „the column" means one thing across every page.
@@ -21,7 +21,7 @@
  * ```
  *
  * ## Changelog
- * - 2026-09-08 `width="full"` — edge-to-edge, for dashboard pages whose
+ * - 2026-09-08 `width="full"` - edge-to-edge, for dashboard pages whose
  *   content is tiles rather than prose.
  * - 2026-08-31 Own file.
  */

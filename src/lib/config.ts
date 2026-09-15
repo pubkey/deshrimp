@@ -1,5 +1,5 @@
 /**
- * The page's identity, in one place: what it is called, what it was asked —
+ * The page's identity, in one place: what it is called, what it was asked -
  * and the id its local database is namespaced under. What colour it wears is no
  * longer a question a page gets to answer: the palette is locked.
  *
@@ -10,7 +10,7 @@
  *
  * It does keep one piece of state: `defineApp` remembers what it was handed, so
  * that shared components can read the config without every page threading it
- * down as a prop. Harmless in Node — it is a variable, not a global — and it is
+ * down as a prop. Harmless in Node - it is a variable, not a global - and it is
  * what lets `<DataSyncButton>` find its OAuth client ids on its own.
  */
 
@@ -22,7 +22,7 @@ export type AppConfig = {
      * localStorage namespace. Two pages called `app` would read each other's
      * documents.
      *
-     * It is **not** the published slug — that one is random, and being
+     * It is **not** the published slug - that one is random, and being
      * unguessable is what protects the page (CLAUDE.md §9).
      */
     appId: string;
@@ -34,7 +34,7 @@ export type AppConfig = {
      * scattering a new link each time.
      *
      * Shape: `<date>-<title>-<16 hex characters>`. Those 16 characters are 64
-     * bits of randomness and they are **the password** — whoever has the URL can
+     * bits of randomness and they are **the password** - whoever has the URL can
      * read the page, and nobody can guess it (CLAUDE.md §9). Never shorten it,
      * never make it descriptive, never reuse one across apps.
      *
@@ -47,12 +47,12 @@ export type AppConfig = {
     title: string;
     /** One line under it: count, budget, dates, distance. Separator ` · `. */
     subtitle?: string;
-    /** His request, **verbatim** — wording and typos intact (PAGE-SPEC.md §5). */
+    /** His request, **verbatim** - wording and typos intact (PAGE-SPEC.md §5). */
     task: string;
     /** Label above the task text, when „Aufgabe" is not the right word. */
     taskLabel?: string;
-    /* `accent` and `icon` are gone. The design system locks one accent — a
-       per-page hue was a second brand — and the favicon is the brand mark in
+    /* `accent` and `icon` are gone. The design system locks one accent - a
+       per-page hue was a second brand - and the favicon is the brand mark in
        public/icon.svg rather than an emoji the platform draws its own way. */
     /** The skill that produced the page. Shown in the footer. */
     source: string;
@@ -60,7 +60,7 @@ export type AppConfig = {
     /**
      * What the ⇅ button may sync to, beyond a file on his disk.
      *
-     * **Both client ids are public by design** — an OAuth client id identifies
+     * **Both client ids are public by design** - an OAuth client id identifies
      * the app, it does not authorise anything on its own, and the whole flow
      * happens in the reader's browser. They still have to be registered by hand
      * once per provider; a page built without them shows the option and says
@@ -73,7 +73,7 @@ export type SyncConfig = {
     /**
      * Google Cloud console → Credentials → OAuth client id, type "Web
      * application", with the published page's origin under "Authorised
-     * JavaScript origins". Scope used: `drive.appdata` — a hidden folder of
+     * JavaScript origins". Scope used: `drive.appdata` - a hidden folder of
      * this client's own, never the reader's other files.
      */
     googleClientId?: string;
@@ -93,7 +93,7 @@ export type SyncConfig = {
     microsoftClientId?: string;
     /**
      * Signalling server for the peer-to-peer option. Defaults to RxDB's public
-     * test server, which is free, unauthenticated and explicitly not reliable —
+     * test server, which is free, unauthenticated and explicitly not reliable -
      * fine for two of his own devices, not something to depend on.
      */
     signalingServer?: string;

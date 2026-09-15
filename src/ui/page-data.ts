@@ -1,5 +1,5 @@
 /**
- * The page's payload and the mount call — the two things that are about the
+ * The page's payload and the mount call - the two things that are about the
  * *page* rather than about any component in it.
  *
  * The payload used to arrive as a `PAGE_DATA` global that the page generator
@@ -42,7 +42,7 @@ export function setPageData(data: Record<string, any>): void {
 }
 
 /**
- * The answer the page shows, typed. It never changes at runtime — anything the
+ * The answer the page shows, typed. It never changes at runtime - anything the
  * reader produces by using the page goes into RxDB instead (`src/lib/db.ts`).
  *
  *     type Data = { intro: string };

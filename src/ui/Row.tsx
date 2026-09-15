@@ -1,5 +1,5 @@
 /**
- * # Row — things side by side
+ * # Row - things side by side
  *
  * ## What it does and how it looks
  * A horizontal flex line with a gap from the spacing scale. Used for a title
@@ -10,11 +10,11 @@
  * so **every image-beside-text block gets `stack`**.
  *
  * ## Core parts
- * - `gap` — `0`–`6` on the `--sN` scale. Nothing in between exists.
- * - `align` — `"top"` / `"bottom"`; the default is centred.
- * - `justify` — `"between"` / `"end"` / `"center"`.
- * - `wrap` — let items flow onto a second line instead of squeezing.
- * - `stack` — drop to a column below 640 px.
+ * - `gap` - `0`-`6` on the `--sN` scale. Nothing in between exists.
+ * - `align` - `"top"` / `"bottom"`; the default is centred.
+ * - `justify` - `"between"` / `"end"` / `"center"`.
+ * - `wrap` - let items flow onto a second line instead of squeezing.
+ * - `stack` - drop to a column below 640 px.
  *
  * ## Examples
  * ```tsx
@@ -37,7 +37,7 @@ export type RowProps = Base & {
     align?: 'top' | 'bottom';
     justify?: 'between' | 'end' | 'center';
     wrap?: boolean;
-    /** Drops to a column below 640 px — use it for every image-beside-text block. */
+    /** Drops to a column below 640 px - use it for every image-beside-text block. */
     stack?: boolean;
     gap?: GapStep;
 };

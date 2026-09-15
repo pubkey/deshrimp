@@ -1,5 +1,5 @@
 /*
- * Page-specific CSS. Tokens only — no hex codes, no gaps outside the scale
+ * Page-specific CSS. Tokens only - no hex codes, no gaps outside the scale
  * (src/ui/DESIGN.md).
  *
  * Two things live here because they exist nowhere else in the library: the
@@ -8,11 +8,11 @@
  */
 
 /* The camera well. A fixed box at 8px with a 1px hairline, sitting one step
- * DOWN the value ladder from the card around it — the same treatment as any
+ * DOWN the value ladder from the card around it - the same treatment as any
  * other inset in the system.
  *
  * Capped and centred: a 4:3 preview across the full column is 700 px of webcam,
- * which pushes the numbers below it off the screen — and the numbers are the
+ * which pushes the numbers below it off the screen - and the numbers are the
  * point. 560 px is big enough to see whether you are in frame. */
 .haltung-kamera {
   position: relative;
@@ -33,7 +33,7 @@
    does not reach the model.
 
    **The camera keeps its own shape, nothing is cropped** _(2026-09-08, his
-   call — this replaces the forced 16:9 from the same day)_. `aspect-ratio` is
+   call - this replaces the forced 16:9 from the same day)_. `aspect-ratio` is
    overwritten inline with the real stream ratio as soon as the metadata is
    there; the 16 / 9 here only holds the box before that, because a `<video>`
    with no stream reports 2:1 and the preview would visibly jump. `contain`
@@ -51,7 +51,7 @@
   background: var(--surface-inset);
 }
 
-/* Camera inactive. An 11px tracked label over the empty well — no illustration,
+/* Camera inactive. An 11px tracked label over the empty well - no illustration,
    no icon, no invitation. */
 .haltung-kamera-aus {
   position: absolute;
@@ -72,7 +72,7 @@
 /* The one dramatic moment in the system, and it is deliberately undramatic:
  * the well's 1px hairline snaps to a 3px coral stroke and the readout pulses
  * its opacity. Nothing moves, nothing shakes, nothing enlarges, nothing
- * bounces. The border-box sizing means the outer box does not shift — the
+ * bounces. The border-box sizing means the outer box does not shift - the
  * picture inside gives up the 4px.
  *
  * The same class lands on the verdict callout above the well, where the coral

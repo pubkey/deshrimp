@@ -3,7 +3,7 @@
  * tooltip.
  *
  * They are shared rather than per-chart so that a bar chart and a line chart on
- * the same page cannot drift apart — same tooltip, same legend, same empty
+ * the same page cannot drift apart - same tooltip, same legend, same empty
  * state, same paddings.
  */
 
@@ -74,7 +74,7 @@ export type TooltipProps = {
     format?: Formatter;
     /** Turns the category into the tooltip's heading. */
     formatLabel?: (label: any) => string;
-    /** Hides the heading — for a pie, where the row already names the slice. */
+    /** Hides the heading - for a pie, where the row already names the slice. */
     head?: boolean;
 };
 
@@ -103,6 +103,6 @@ export function ChartTooltip({
     );
 }
 
-/** The cursor behind the tooltip — a wash, never a second colour. */
+/** The cursor behind the tooltip - a wash, never a second colour. */
 export const CURSOR_FILL = { fill: 'var(--bg-sunk)' };
 export const CURSOR_LINE = { stroke: 'var(--line)', strokeDasharray: '3 3' };

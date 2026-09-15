@@ -1,5 +1,5 @@
 /**
- * # Field — label, control, and the line underneath
+ * # Field - label, control, and the line underneath
  *
  * ## What it does and how it looks
  * The wrapper around a form control: a label above it, and below it either a
@@ -8,7 +8,7 @@
  * so a page usually meets this only when wrapping something custom.
  *
  * ## Core parts
- * - `label` + `htmlFor` — pass the control's `id` so clicking the label focuses
+ * - `label` + `htmlFor` - pass the control's `id` so clicking the label focuses
  *   the control.
  * - `error` beats `hint`: when both are set only the error shows, because two
  *   lines under one field is one line too many and the error is the one that

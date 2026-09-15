@@ -1,5 +1,5 @@
 /**
- * # ShareButton — „Teilen", top right
+ * # ShareButton - „Teilen", top right
  *
  * ## What it does and how it looks
  * A small icon button with the word „Teilen" beside it, in the page's top bar.
@@ -12,10 +12,10 @@
  * `<Page>` places one; a page does not add its own.
  *
  * ## Core parts
- * - `url` — defaults to the current address, which is the right answer on a
+ * - `url` - defaults to the current address, which is the right answer on a
  *   published page.
- * - `title` / `text` — passed through to the native share sheet.
- * - `label` — default „Teilen".
+ * - `title` / `text` - passed through to the native share sheet.
+ * - `label` - default „Teilen".
  *
  * ## Examples
  * ```tsx

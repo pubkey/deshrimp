@@ -1,5 +1,5 @@
 /**
- * # AsOf — the date an angabe was true
+ * # AsOf - the date an angabe was true
  *
  * ## What it does and how it looks
  * A small muted chip: „STAND 30.08.2026". When the date is older than
@@ -10,10 +10,10 @@
  * claims to be current forever, which is the quiet way a page starts lying.
  *
  * ## Core parts
- * - `date` — ISO, `2026-08-30`. Rendered German, `30.08.2026`.
- * - `staleAfter` — days. Turns „old" into something the page says out loud.
- * - `stale` — force the flag on or off when the page knows better.
- * - `source` — shown in the tooltip, e.g. `"booking.com"`.
+ * - `date` - ISO, `2026-08-30`. Rendered German, `30.08.2026`.
+ * - `staleAfter` - days. Turns „old" into something the page says out loud.
+ * - `stale` - force the flag on or off when the page knows better.
+ * - `source` - shown in the tooltip, e.g. `"booking.com"`.
  *
  * ## Examples
  * ```tsx

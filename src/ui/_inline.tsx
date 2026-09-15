@@ -5,7 +5,7 @@
  * Deliberately tiny, and deliberately building **real React elements** rather
  * than setting `innerHTML`: researched copy arrives from shops, hotels and
  * strangers' pages, and a stray `<script>` in it has to end up as text. The
- * link rule is part of that — only `http(s)`, `mailto`, `#` and `/` survive, so
+ * link rule is part of that - only `http(s)`, `mailto`, `#` and `/` survive, so
  * a `javascript:` URL in a scraped description cannot become a link.
  *
  * Not a component: `<Markdown>` is the component, this is what it and the

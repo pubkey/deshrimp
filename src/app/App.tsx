@@ -1,5 +1,5 @@
 /**
- * Sitzhaltung — the page that watches him sit.
+ * Sitzhaltung - the page that watches him sit.
  *
  * Every second it takes one frame from the webcam, has a pose model in this
  * browser read the angles off it, and makes a noise when he is bent too far.
@@ -14,17 +14,17 @@
  *    changes, which resets the countdown mid-check. The ref is refreshed on
  *    every render, so a check always uses the current values without the effect
  *    ever restarting. A check that is still running when the next tick fires is
- *    skipped rather than queued — at one second apart that matters.
+ *    skipped rather than queued - at one second apart that matters.
  * 2. **The model measures, the page judges.** `pose.ts` returns degrees only;
  *    the verdict is computed here against his own thresholds. That way the
  *    settings decide something real, and readings stay comparable across a
  *    change.
  * 3. **The preview is mirrored, the frame is not.** `scaleX(-1)` is CSS on the
- *    video, so `drawImage` still gets the raw camera frame — which is what the
+ *    video, so `drawImage` still gets the raw camera frame - which is what the
  *    landmark sides in `pose.ts` are verified against.
  *
  * The code is English (`CLAUDE.md` §8). Every string a reader sees comes out of
- * `i18n.ts`, in German or English — he asked for the switch on 2026-09-08, and
+ * `i18n.ts`, in German or English - he asked for the switch on 2026-09-08, and
  * the rule that follows from it is that **no visible string is written in this
  * file**. A literal here is a string that cannot be translated, so it is a bug
  * even when it happens to be German.
@@ -33,8 +33,8 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import {
     Badge, Button, Callout, Checkbox, ConfirmButton, Empty,
-    Grid, Icon, IconButton, Input, LoadingOverlay, Muted, Page, Panel,
-    preferredUiLang, Progress, Row, Select,
+    Grid, Icon, IconButton, LoadingOverlay, Muted, Page, Panel,
+    preferredUiLang, Progress, Row, Select, Slider,
     Stat, StatusStrip, type StatusTone, Table, Text, Tiles,
     pageData, toast,
 } from '@ui';
@@ -58,7 +58,7 @@ type Written = {
     intro: string;
     steps: { title: string; text: string }[];
     /**
-     * Not rendered by the app any more — „Zu dieser Seite" is gone. They are
+     * Not rendered by the app any more - „Zu dieser Seite" is gone. They are
      * still typed, and still in `data.json`, because `scripts/seo.mjs` reads
      * them straight out of the file at build time and writes them into the
      * prerendered HTML a crawler sees. Dropping them there would quietly take
@@ -88,8 +88,8 @@ type Data = Record<Lang, Written>;
  * running page and a value that flickers between renders would restart the
  * check loop for nothing.
  *
- * It is only ever the *fallback*. The moment a settings document exists — which
- * is the moment he changes anything at all, not just the language — that
+ * It is only ever the *fallback*. The moment a settings document exists - which
+ * is the moment he changes anything at all, not just the language - that
  * document decides, and detection never speaks again. A page that will not stay
  * in the language you picked is worse than one that guessed wrong once.
  */
@@ -109,14 +109,14 @@ const useLang = () => useContext(LangContext);
 /**
  * There is **no pause between signals**.
  *
- * There used to be one — at most one sound a minute, on the theory that a
+ * There used to be one - at most one sound a minute, on the theory that a
  * signal firing constantly is one he switches off. He asked for it gone
  * _(2026-09-08: „do not limit how often it plays the sound. play it each time
  * the user sits wrong")_, so every crooked reading now makes a noise: at the
  * default cadence, once a second until he sits up.
  *
  * The first attempt at that still refused to restart a sound that had not
- * finished — reasoning that re-seeking a 3.3-second scream every second would
+ * finished - reasoning that re-seeking a 3.3-second scream every second would
  * only ever play its first second. He said it again anyway _(„each single time
  * the check runs and detects wrong posture, it should play the sound, not only
  * once every minute")_, so that guard is gone too, and the way to honour both
@@ -148,7 +148,7 @@ const SOUND_DIR = 'snd';
  * A gap longer than this breaks a run of good sitting.
  *
  * Frames with nobody in them are discarded rather than stored, which keeps the
- * statistics honest — but it also means standing up for an hour leaves a hole
+ * statistics honest - but it also means standing up for an hour leaves a hole
  * rather than a bad reading, and „längste gute Strecke" would happily count the
  * lunch break as excellent posture _(he caught this on 2026-09-08)_. So the run
  * ends wherever the readings stop, whatever the reason: nobody in frame, camera
@@ -168,7 +168,7 @@ const INTERVALS = [1, 2, 5, 10, 15, 30, 60, 120];
 
 /**
  * The order the sounds are offered in. The names themselves are in `i18n.ts`;
- * this list only fixes which one comes first — `furz` is the default and the
+ * this list only fixes which one comes first - `furz` is the default and the
  * one he asked for by name.
  */
 const SOUND_ORDER: SoundName[] = ['furz', 'raeuspern', 'schrei', 'knacken', 'rimshot'];
@@ -179,7 +179,7 @@ const VERDICT_TONE: Record<Verdict, StatusTone> = {
 
 /* ---------------------------------------------------------------- helpers */
 
-/** `YYYY-MM-DD` in local time — the day as he lived it, not as UTC saw it. */
+/** `YYYY-MM-DD` in local time - the day as he lived it, not as UTC saw it. */
 function dayKey(t: number): string {
     const d = new Date(t);
     const p = (n: number) => String(n).padStart(2, '0');
@@ -210,7 +210,7 @@ function deg(value: number): string {
  * The class that turns one readout coral, or nothing.
  *
  * Severity in this design system is carried by *whether* the accent appears,
- * not by a range of colours — so there is no "nearly" tone to return here. A
+ * not by a range of colours - so there is no "nearly" tone to return here. A
  * value is inside its tolerance or it is a breach.
  */
 function breach(value: number, limit: number): string | undefined {
@@ -222,7 +222,7 @@ function breach(value: number, limit: number): string | undefined {
  *
  * Readings hold an `AdviceKey`, so the wording follows the language even for a
  * reading recorded before he switched. Anything unrecognised is printed as it
- * stands — rows written before the keys existed hold a German sentence, and
+ * stands - rows written before the keys existed hold a German sentence, and
  * showing it beats showing a blank cell for the two days they survive.
  */
 function adviceText(advice: string | undefined, t: Copy): string {
@@ -251,7 +251,7 @@ function frameOf(video: HTMLVideoElement | null): string | null {
 }
 
 /**
- * The verdict, from the degrees and his thresholds — not from the model.
+ * The verdict, from the degrees and his thresholds - not from the model.
  * `borderline` starts at 70 % of a threshold, which is early enough to correct
  * before the signal goes off.
  */
@@ -283,9 +283,9 @@ function cameraErrorText(error: unknown, t: Copy): string {
  * `<video>` without a stream reports the 300×150 default and the box would
  * jump the moment the picture arrives.
  *
- * Called on the `loadedmetadata` and `resize` events — the first is where the
+ * Called on the `loadedmetadata` and `resize` events - the first is where the
  * numbers land, the second is a camera changing mode mid-stream (rotation, a
- * resolution downgrade under load) — and once directly on start, for a stream
+ * resolution downgrade under load) - and once directly on start, for a stream
  * that is already decoded and fires neither.
  */
 function fitToStream(video: HTMLVideoElement): void {
@@ -367,7 +367,7 @@ function useCamera(t: Copy) {
  * sawtooth with a wobbling filter; it is not a fart, and the whole point of the
  * sound is that it registers as a thing rather than as a device noise.
  *
- * So the four sounds are real recordings — the ones he sent — living in the
+ * So the four sounds are real recordings - the ones he sent - living in the
  * skill's `sounds/` folder and copied into `snd/` next to `index.html` by
  * `install_sounds.py`. Same-origin, no CDN at view time, cached by the service
  * worker.
@@ -378,7 +378,7 @@ function useCamera(t: Copy) {
  * reason he should ever have to care about.
  *
  * `prepare()` must run inside the click that starts the run: a browser only
- * lets an AudioContext out of `suspended` — and only lets an `<audio>` play —
+ * lets an AudioContext out of `suspended` - and only lets an `<audio>` play -
  * from a real gesture, and a signal that stays silent until the second time is
  * worse than no signal.
  */
@@ -414,7 +414,7 @@ const SOUND_GAIN: Record<SoundName, number> = {
  * rewarded rather than credited a few seconds later.
  *
  * Four readings, on his call _(2026-09-08: „mach nur 4 messungen bis voller
- * lautstärke")_ — at the default cadence that is full volume after four
+ * lautstärke")_ - at the default cadence that is full volume after four
  * seconds. Eight was too patient to be a nudge.
  */
 const QUIET_START = 0.25;
@@ -426,7 +426,7 @@ const LOUD_AFTER = 4;
  * He asked for it _(2026-09-08: „the favicon of the url should change on bad
  * posture to something red and go back to green on good posture")_, and it is
  * the one channel that still works when the page is behind whatever he is
- * actually doing — which, since the recommendation is to leave it open in its
+ * actually doing - which, since the recommendation is to leave it open in its
  * own tab, is most of the time.
  *
  * A plain disc rather than a tinted shrimp: at 16 px an emoji is mush and a
@@ -499,7 +499,7 @@ function useBeep() {
         });
     }, []);
 
-    /** A short burst of white noise — the raw material for anything breathy. */
+    /** A short burst of white noise - the raw material for anything breathy. */
     const noiseBuffer = useRef<AudioBuffer | null>(null);
     const noise = (ctx: AudioContext): AudioBufferSourceNode => {
         if (!noiseBuffer.current) {
@@ -519,7 +519,7 @@ function useBeep() {
      *
      * Four distinct shapes rather than one generic blip: if a file is ever
      * unavailable the page should still tell him *which* alarm went off. None
-     * of them impersonates the recording — the fallback's job is to be heard.
+     * of them impersonates the recording - the fallback's job is to be heard.
      */
     const synth = useCallback((name: SoundName, level = 1) => {
         const ctx = ctxRef.current;
@@ -588,7 +588,7 @@ function useBeep() {
         }
 
         if (name === 'knacken') {
-            // Two very short filtered noise bursts — a crack is an attack with
+            // Two very short filtered noise bursts - a crack is an attack with
             // almost no tail.
             [0, 0.09].forEach((offset, i) => {
                 const src = noise(ctx);
@@ -603,7 +603,7 @@ function useBeep() {
             return;
         }
 
-        // rimshot — two drum hits and a cymbal wash.
+        // rimshot - two drum hits and a cymbal wash.
         [0, 0.14].forEach((offset) => {
             const osc = ctx.createOscillator();
             osc.type = 'triangle';
@@ -627,7 +627,7 @@ function useBeep() {
 
         // A fresh node per play, so a second alarm layers over the first
         // instead of restarting it. The preloaded template is never played
-        // itself — it exists so the clone starts from cache rather than from
+        // itself - it exists so the clone starts from cache rather than from
         // the network.
         const node = template.cloneNode(true) as HTMLAudioElement;
         node.volume = Math.min(1, Math.max(0.01, SOUND_GAIN[name] * level));
@@ -651,7 +651,7 @@ function useWakeLock() {
                 wakeLock?: { request: (t: string) => Promise<{ release?: () => Promise<void> }> };
             }).wakeLock;
             if (api) lockRef.current = await api.request('screen');
-        } catch { /* denied or unsupported — the page works without it */ }
+        } catch { /* denied or unsupported - the page works without it */ }
     }, []);
 
     const release = useCallback(() => {
@@ -747,7 +747,7 @@ function Live() {
 
     const runningRef = useRef(false);
     const busy = useRef(false);
-    /** How many bad readings in a row — the signal grows along it. */
+    /** How many bad readings in a row - the signal grows along it. */
     const badRun = useRef(0);
 
     /* ---------------------------------------------------------- one check */
@@ -899,8 +899,8 @@ function Live() {
 
     return (
         <>
-            {/* The first load blocks everything below it — no measurement can
-                happen without the model — so it gets an overlay rather than an
+            {/* The first load blocks everything below it - no measurement can
+                happen without the model - so it gets an overlay rather than an
                 inline spinner tucked between the controls. */}
             <LoadingOverlay
                 open={loadingModel}
@@ -914,6 +914,19 @@ function Live() {
                 this tile and the control tile beside it are the two that carry
                 no eyebrow. */}
             <Panel id="video" className="haltung-videotile">
+                <div className={`haltung-kamera${flash ? ' haltung-alarm' : ''}`}>
+                    <video ref={camera.videoRef} muted playsInline autoPlay />
+                    {!camera.on ? (
+                        <div className="haltung-kamera-aus">{t.cameraOff}</div>
+                    ) : null}
+                </div>
+
+                {/* The verdict reads under the picture, not over it _(2026-09-15,
+                    his call)_. The camera well is what the tile is for and it
+                    should be the first thing in it; a line of prose above it
+                    pushed the picture down and moved it every time the wording
+                    changed length. Below, the well stays put and the sentence
+                    grows downwards. */}
                 {verdict ? (
                     <Callout
                         tone={verdict === 'good' ? undefined : verdict === 'bad' ? 'bad' : 'warn'}
@@ -925,13 +938,6 @@ function Live() {
                         {adviceText(last?.advice, t)}
                     </Callout>
                 ) : null}
-
-                <div className={`haltung-kamera${flash ? ' haltung-alarm' : ''}`}>
-                    <video ref={camera.videoRef} muted playsInline autoPlay />
-                    {!camera.on ? (
-                        <div className="haltung-kamera-aus">{t.cameraOff}</div>
-                    ) : null}
-                </div>
 
                 {camera.error ? <Callout tone="bad" title={t.cameraTitle}>{camera.error}</Callout> : null}
                 {apiError ? <Callout tone="bad" title={t.analysisFailed}>{apiError}</Callout> : null}
@@ -990,7 +996,7 @@ function Live() {
                             accent is allowed to appear on a readout: the number
                             and its label go coral and pulse, and the two that
                             are still inside stay white. That is the whole
-                            severity system — whether the accent is there, not
+                            severity system - whether the accent is there, not
                             which colour it is. */}
                         <Stat label={t.statForward} value={deg(last.forward)}
                             className={breach(last.forward, settings.maxForward)}
@@ -1030,7 +1036,7 @@ const WINDOWS = [5, 15, 30, 60, 120];
 const BUCKET_MS = 60_000;
 
 /**
- * „How is this afternoon going" — a moving average over the last N minutes.
+ * „How is this afternoon going" - a moving average over the last N minutes.
  *
  * He asked for it _(2026-09-08: „a chart should show a moving average over the
  * last x minutes (default 30 minutes)")_, and it answers a different question
@@ -1040,7 +1046,7 @@ const BUCKET_MS = 60_000;
  *
  * Readings are folded into one-minute buckets and then smoothed across three
  * of them. Raw per-second points would draw the camera's noise rather than his
- * posture — the depth axis wobbles by a degree or two between frames — and the
+ * posture - the depth axis wobbles by a degree or two between frames - and the
  * whole reason to average is that the single reading is the soft part.
  */
 function Recent({ readings, windowMin, change }: {
@@ -1151,7 +1157,7 @@ function Recent({ readings, windowMin, change }: {
 
 /* ---------------------------------------------------------------- history */
 
-/** A short day label — „Mo 8.9." — for the x axis. */
+/** A short day label - „Mo 8.9." - for the x axis. */
 function dayLabel(t: number, lang: Lang): string {
     return new Date(t).toLocaleDateString(localeFor(lang), {
         weekday: 'short', day: 'numeric', month: 'numeric',
@@ -1159,14 +1165,14 @@ function dayLabel(t: number, lang: Lang): string {
 }
 
 /**
- * „Werde ich besser?" — the one question a single day cannot answer.
+ * „Werde ich besser?" - the one question a single day cannot answer.
  *
  * Reads the daily roll-up, not the raw readings: those are pruned after two
  * weeks, and at ten seconds apart a month of them would be ~90 000 rows to
  * scan on every render.
  *
  * The headline is the share of readings judged upright, because that is the
- * number that survives a change of thresholds being *tightened* — the degrees
+ * number that survives a change of thresholds being *tightened* - the degrees
  * below it are the detail, and a rising line there is a warning rather than a
  * success. Days with almost nothing in them are dropped: three readings on a
  * day he opened the page and closed it again is noise drawn as a data point.
@@ -1220,7 +1226,7 @@ function Trend() {
                     <Stat label={t.bestDay} value={`${best.gerade} %`} hint={best.tag} />
                     <Stat
                         label={t.lastSevenDays}
-                        value={change === null ? '—' : t.points(change)}
+                        value={change === null ? '-' : t.points(change)}
                         hint={change === null
                             ? t.needsTwoWeeks
                             : change > 0 ? t.betterThanBefore
@@ -1271,7 +1277,7 @@ function History({ readings, intervalSec }: { readings: Reading[]; intervalSec: 
 
         // The longest unbroken run of good readings, in wall-clock time: from
         // the first good reading of a run to the last one before it breaks. A
-        // bad reading breaks it, and so does a hole in the recording — see
+        // bad reading breaks it, and so does a hole in the recording - see
         // runGapMs().
         let bestMs = 0;
         let runFrom: number | null = null;
@@ -1332,7 +1338,7 @@ function History({ readings, intervalSec }: { readings: Reading[]; intervalSec: 
                 <Panel id="daytable" title={`${t.todayTitle} · ${t.showAll}`}>
                     {/* A scrolling log rather than a disclosure. Sixty rows
                         unfolded inside a tile would set the height of its whole
-                        row and leave its two neighbours as tall empty cards —
+                        row and leave its two neighbours as tall empty cards -
                         tiles stretch to their row. Capped and scrolling, the
                         tile keeps its size whatever the day held, and the
                         sticky header means the columns stay named while you
@@ -1400,36 +1406,10 @@ function Sound(props: SoundProps) {
     const { settings: s, change } = props;
     const t = useCopy();
 
-    return (
-        <>
-            <Checkbox label={t.soundOnSignal} checked={s.sound}
-                onChange={(on) => void change({ sound: on })} />
-            <Row gap={2} align="bottom" stack>
-                <Select
-                    label={t.soundLabel}
-                    value={s.soundName}
-                    onChange={(e: { target: { value: string } }) =>
-                        void change({ soundName: e.target.value as SoundName })}
-                    hint={t.soundHint}
-                >
-                    {SOUND_ORDER.map((key) => (
-                        <option key={key} value={key}>{t.soundName[key]}</option>
-                    ))}
-                </Select>
-                <Button icon={<Icon name="volume" />}
-                    onClick={() => { props.prepareSound(); props.playSound(s.soundName); }}>
-                    {t.listen}
-                </Button>
-            </Row>
-            <Text small muted>{t.soundNote}</Text>
-        </>
-    );
-}
-
-function Setup(props: SetupProps) {
-    const { settings: s, change } = props;
-    const t = useCopy();
-
+    /* Asking for the permission is part of switching it on, not a separate
+       step: the browser only grants it inside a gesture, and a toggle that
+       flips to "on" while the permission was refused is a lie. So a refusal
+       leaves the switch where it was and says why. */
     const toggleNotify = async (on: boolean) => {
         if (on && 'Notification' in window && Notification.permission !== 'granted') {
             const answer = await Notification.requestPermission().catch(() => 'denied');
@@ -1440,6 +1420,42 @@ function Setup(props: SetupProps) {
         }
         await change({ notify: on });
     };
+
+    return (
+        <>
+            {/* The two ways of being told, side by side _(2026-09-15, his
+                call)_. They answer one question - how should this thing get my
+                attention - and splitting them across two tiles made you set
+                half the answer in each. */}
+            <Row gap={4} wrap>
+                <Checkbox label={t.soundOnSignal} checked={s.sound}
+                    onChange={(on) => void change({ sound: on })} />
+                <Checkbox label={t.alsoNotify} checked={s.notify}
+                    onChange={(on) => void toggleNotify(on)} />
+            </Row>
+            <Row gap={2} align="bottom" stack>
+                <Select
+                    label={t.soundLabel}
+                    value={s.soundName}
+                    onChange={(e: { target: { value: string } }) =>
+                        void change({ soundName: e.target.value as SoundName })}
+                >
+                    {SOUND_ORDER.map((key) => (
+                        <option key={key} value={key}>{t.soundName[key]}</option>
+                    ))}
+                </Select>
+                <Button icon={<Icon name="volume" />}
+                    onClick={() => { props.prepareSound(); props.playSound(s.soundName); }}>
+                    {t.listen}
+                </Button>
+            </Row>
+        </>
+    );
+}
+
+function Setup(props: SetupProps) {
+    const { settings: s, change } = props;
+    const t = useCopy();
 
     return (
         <>
@@ -1457,30 +1473,32 @@ function Setup(props: SetupProps) {
                             </option>
                         ))}
                     </Select>
-                    <Input
-                        label={t.signalFromForward} type="number" min={5} max={45} step={1}
+                    {/* Sliders, not number fields _(2026-09-15, his call, and
+                        the design system's control for a bounded number)_. A
+                        tolerance is a dial you feel your way to rather than a
+                        figure you know in advance and type, and the README
+                        already says as much: "treat the three numbers as dials
+                        - too much beeping means raise the limit." The bounds
+                        are the ones the fields already enforced. */}
+                    <Slider
+                        label={t.signalFromForward} min={5} max={45} step={1} unit="°"
                         value={s.maxForward}
-                        onChange={(e: { target: { value: string } }) =>
-                            change({ maxForward: Number(e.target.value) || DEFAULTS.maxForward })}
+                        onChange={(v) => void change({ maxForward: v })}
                         hint={t.signalFromForwardHint}
                     />
-                    <Input
-                        label={t.signalFromLean} type="number" min={3} max={45} step={1}
+                    <Slider
+                        label={t.signalFromLean} min={3} max={45} step={1} unit="°"
                         value={s.maxLean}
-                        onChange={(e: { target: { value: string } }) =>
-                            change({ maxLean: Number(e.target.value) || DEFAULTS.maxLean })}
+                        onChange={(v) => void change({ maxLean: v })}
                         hint={t.signalFromLeanHint}
                     />
-                    <Input
-                        label={t.signalFromHead} type="number" min={3} max={45} step={1}
+                    <Slider
+                        label={t.signalFromHead} min={3} max={45} step={1} unit="°"
                         value={s.maxHeadTilt}
-                        onChange={(e: { target: { value: string } }) =>
-                            change({ maxHeadTilt: Number(e.target.value) || DEFAULTS.maxHeadTilt })}
+                        onChange={(v) => void change({ maxHeadTilt: v })}
                         hint={t.signalFromHeadHint}
                     />
                 </Grid>
-                <Checkbox label={t.alsoNotify} checked={s.notify}
-                    onChange={(on) => void toggleNotify(on)} />
                 <Text small muted>{t.paceNote}</Text>
                 <Text small muted>{t.thresholdNote}</Text>
             </Panel>
@@ -1561,7 +1579,7 @@ function Content() {
                         because the number of columns is the window's business
                         rather than ours.
 
-                        The live state leads — this page is a tool, and what it
+                        The live state leads - this page is a tool, and what it
                         is for is what it currently says. The explanation is
                         last. Each tile carries a stable id so it can be linked
                         to and named; the ids are not translated, the titles
@@ -1591,7 +1609,7 @@ function Content() {
 }
 
 /**
- * The gate's own strings cannot come from the settings — the database it is
+ * The gate's own strings cannot come from the settings - the database it is
  * waiting for is where the settings live. So it uses the detected language,
  * which for one loading line is close enough and is right far more often than
  * a hard-coded German would be.

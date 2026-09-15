@@ -1,17 +1,17 @@
 /* -------------------------------------------------------------------------
-   colors.css — the locked palette.
+   colors.css - the locked palette.
 
    Six values and nothing else: deep slate ground, raised card, border slate,
    crisp white ink, slate-blue secondary ink, coral accent. No second hue, no
    success green, no warning amber. Severity is carried by *whether* the accent
-   appears, not by a range of colours — see DESIGN.md §"The 10% rule".
+   appears, not by a range of colours - see DESIGN.md §"The 10% rule".
 
    Dark is the default and the brief; light is a scoped inversion further down
    in theme-light.css.
    ------------------------------------------------------------------------- */
 
 :root {
-  /* base palette — locked, do not deviate */
+  /* base palette - locked, do not deviate */
   --slate-950: #0F172A;
   --slate-800: #1E293B;
   --slate-750: #273549;
@@ -22,7 +22,7 @@
   --coral-500: #ff8257;
   --coral-700: #E14E1D;
 
-  /* semantic aliases — components reference these, never the raw ramp */
+  /* semantic aliases - components reference these, never the raw ramp */
   --bg-app:           var(--slate-950);
   --bg-inset:         var(--slate-950);
   --surface-card:     var(--slate-750);

@@ -1,5 +1,5 @@
 /**
- * # Grid — as many columns as fit
+ * # Grid - as many columns as fit
  *
  * ## What it does and how it looks
  * A responsive grid with no breakpoints to pick: you give a minimum column
@@ -8,9 +8,9 @@
  * them. This is how every set of option cards on every page is laid out.
  *
  * ## Core parts
- * - `min` — minimum column width in pixels (or any CSS length). Below it, one
+ * - `min` - minimum column width in pixels (or any CSS length). Below it, one
  *   column. 280 is the usual choice for a card with an image.
- * - `gap` — `0`–`6` on the `--sN` scale.
+ * - `gap` - `0`-`6` on the `--sN` scale.
  *
  * ## Examples
  * ```tsx

@@ -1,5 +1,5 @@
 /**
- * # Callout — the one thing to read if you read nothing else
+ * # Callout - the one thing to read if you read nothing else
  *
  * ## What it does and how it looks
  * A tinted block with an optional icon on the left and a bold first line: the
@@ -8,10 +8,10 @@
  * hold one or two, not six.
  *
  * ## Core parts
- * - `tone` — unset is the accent tint; `"warn"` and `"bad"` are the semantic
+ * - `tone` - unset is the accent tint; `"warn"` and `"bad"` are the semantic
  *   colours, and they should mean it.
- * - `title` — the bold first line.
- * - `icon` — a single emoji, decorative and hidden from screen readers.
+ * - `title` - the bold first line.
+ * - `icon` - a single emoji, decorative and hidden from screen readers.
  * - a string child is run through `<Markdown>`, so bold and links work without
  *   the caller thinking about it; element children pass through untouched.
  *

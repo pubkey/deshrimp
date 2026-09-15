@@ -1,5 +1,5 @@
 /**
- * Light and dark, in three states — the same three the CSS knows:
+ * Light and dark, in three states - the same three the CSS knows:
  * no attribute at all means follow the system, `data-theme="light"` and
  * `data-theme="dark"` are an explicit choice, remembered per page.
  *

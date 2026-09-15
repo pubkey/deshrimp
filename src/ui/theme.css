@@ -1,5 +1,5 @@
 /* =========================================================================
-   theme.css — the design sheet, as code.
+   theme.css - the design sheet, as code.
 
    The palette, type, spacing, radii and motion are the deshrimp design system;
    they live in `tokens/` and are imported below, in load order. Everything
@@ -22,7 +22,13 @@
 /* Last: it redefines the semantic aliases the four files above set up. */
 @import './tokens/theme-light.css';
 
-:root { color-scheme: dark light; }
+/* Dark, and the light blocks in tokens/theme-light.css flip it. This is what
+   a <select>'s dropdown, a scrollbar and a native date picker read to decide
+   their own colours: they are drawn by the platform and cannot be styled, so
+   the only lever is telling the platform which way round the page is. Left at
+   `dark light` it said "either, prefer dark" and a light page got a dark
+   dropdown. */
+:root { color-scheme: dark; }
 
 /* ------------------------------------------------------------------ reset */
 *, *::before, *::after { box-sizing: border-box; }
@@ -34,7 +40,7 @@ body {
   font: var(--t-base)/var(--lh) var(--font);
   -webkit-font-smoothing: antialiased;
   overflow-wrap: break-word;
-  /* iOS safe areas — pages are installed as PWAs and run full-bleed */
+  /* iOS safe areas - pages are installed as PWAs and run full-bleed */
   padding: env(safe-area-inset-top) env(safe-area-inset-right)
            env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
@@ -53,7 +59,7 @@ a:hover { color: var(--ink); }
               padding: 0 var(--page-gutter); }
 .ui-wrap.narrow { max-width: var(--maxw-narrow); }
 .ui-wrap.wide   { max-width: var(--maxw-wide); }
-/* Edge to edge, for dashboards. Still keeps the side padding — content that
+/* Edge to edge, for dashboards. Still keeps the side padding - content that
    touches the window edge reads as broken, not as full-width. */
 .ui-wrap.full   { max-width: var(--content-max); padding: 0 var(--page-gutter); }
 @media (max-width: 640px) {
@@ -99,7 +105,7 @@ a:hover { color: var(--ink); }
 .ui-row.between{ justify-content: space-between; }
 .ui-row.end    { justify-content: flex-end; }
 .ui-row.center { justify-content: center; }
-/* Side-by-side above 640px, stacked below it — the phone layout for any
+/* Side-by-side above 640px, stacked below it - the phone layout for any
    "image left, text right" block. Overrides an inline flex basis on purpose. */
 .ui-row.stack { flex-wrap: wrap; }
 @media (max-width: 640px) {
@@ -107,24 +113,24 @@ a:hover { color: var(--ink); }
   .ui-row.stack > * { flex: 1 1 auto !important; width: 100%; max-width: 100%; }
 }
 .ui-col  { display: flex; flex-direction: column; gap: var(--s3); }
-/* 24px is the grid gap and it is structural — a page that picks its own is a
+/* 24px is the grid gap and it is structural - a page that picks its own is a
    page that no longer looks like the rest. */
 .ui-grid { display: grid; gap: var(--grid-gap);
            grid-template-columns: repeat(auto-fit, minmax(var(--min, 240px), 1fr)); }
 
 /* The page itself, as one grid of tiles: at least 330px and at most 660px
-   wide, as many as fit, sharing whatever is left over — no breakpoints.
+   wide, as many as fit, sharing whatever is left over - no breakpoints.
 
    The 660px cap is on the TILE, not on the track, and that is not a detail.
    `auto-fit` counts its tracks from the track's max sizing function whenever
    that is a definite length, so `minmax(330px, 660px)` asks for as many 660px
-   columns as fit and answers "two" on a 1352px page — the opposite of what is
+   columns as fit and answers "two" on a 1352px page - the opposite of what is
    wanted. `1fr` is indefinite, so the count comes from the 330px minimum and
    the tracks then share the row.
 
    `min(330px, 100%)` keeps a 320px phone from scrolling sideways: a bare 330px
    minimum is wider than the screen. Centring the tracks stops a lone tile from
-   sitting pinned to the left of a wide window. Nothing spans two columns — two
+   sitting pinned to the left of a wide window. Nothing spans two columns - two
    columns plus the gap is 684px, past what a tile may be. Prose version and
    the reasoning in src/ui/Tiles.tsx. */
 .ui-tiles {
@@ -168,11 +174,11 @@ a:hover { color: var(--ink); }
 .ui-r-md { border-radius: var(--r-md) } .ui-r-lg { border-radius: var(--r-lg) }
 .ui-r-xl { border-radius: var(--r-xl) } .ui-r-pill { border-radius: var(--r-pill) }
 /* Eine Fläche ist nie nur eine Farbe: Text, der am Rand klebt, sieht kaputt
-   aus. Beide Helfer bringen deshalb ihr eigenes Innenmaß mit — überschreibbar
+   aus. Beide Helfer bringen deshalb ihr eigenes Innenmaß mit - überschreibbar
    mit <Box pad="..."> oder einer eigenen padding-Regel. */
 .ui-surface { background: var(--card); border: 1px solid var(--line);
   border-radius: var(--r-md); padding: var(--s5); }
-/* An inset steps back DOWN the value ladder — it never nests at the same
+/* An inset steps back DOWN the value ladder - it never nests at the same
    surface value as the card around it. */
 .ui-sunk    { background: var(--bg-sunk); border: 1px solid var(--line);
   border-radius: var(--r-sm); padding: var(--s3) var(--s4); }
@@ -239,7 +245,7 @@ a:hover { color: var(--ink); }
 .ui-panel.pad-0 { padding: 0 } .ui-panel.pad-sm { padding: var(--s4) }
 .ui-panel.pad-lg { padding: var(--s6) }
 /* `flat` used to mean "same card, no shadow". There are no shadows now, so it
-   means the quieter surface — a block that is grouped but not raised. */
+   means the quieter surface - a block that is grouped but not raised. */
 .ui-panel.flat { background: transparent; border-color: var(--line); }
 .ui-panel.sunk { background: var(--bg-sunk); }
 .ui-panel.rec  { border-left: 3px solid var(--rec); }
@@ -257,7 +263,7 @@ a:hover { color: var(--ink); }
 .ui-callout { display: flex; gap: var(--s3); border-radius: var(--r-md); padding: var(--s3) var(--s4);
   background: var(--accent-soft); border: 1px solid var(--line); }
 /* The icon sits on the first line of the title, not floating above it, and
-   it is secondary ink — the words carry the message. A `bad` callout is the
+   it is secondary ink - the words carry the message. A `bad` callout is the
    exception: there the icon marks a breach and takes the accent with it. */
 .ui-callout .ui-callout-icon { flex: none; display: flex; padding-top: 2px;
   color: var(--muted); }
@@ -321,18 +327,18 @@ a:hover { color: var(--ink); }
 /* The only hover in the system. */
 .ui-btn:hover { opacity: .88; }
 .ui-btn[disabled], .ui-btn.disabled { opacity: .4; cursor: not-allowed; pointer-events: none; }
-/* One accent fill in view at a time — it is the primary trigger in its default
+/* One accent fill in view at a time - it is the primary trigger in its default
    state, and that is one of the six places the budget may be spent. */
 .ui-btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .ui-btn.ghost { background: transparent; border-color: transparent; color: var(--muted); }
 /* The inactive control slate: an action that is available but is not the one
-   being offered. Danger is not a colour here — a destructive action is stated
+   being offered. Danger is not a colour here - a destructive action is stated
    in words and confirmed (see ConfirmButton), not painted red. */
 .ui-btn.danger { background: var(--control-inactive); border-color: var(--control-inactive);
   color: var(--ink); }
 .ui-btn.sm { height: 32px; padding: 0 var(--s3); font-size: var(--t-sm); }
 /* The xl trigger: 64px, uppercase, tracked. The one button a dashboard leads
-   with — Start, Stop. */
+   with - Start, Stop. */
 .ui-btn.lg { height: var(--button-height-xl); padding: 0 var(--s6);
   font-size: var(--t-lg); text-transform: uppercase;
   letter-spacing: var(--track-caps); }
@@ -349,7 +355,7 @@ a:hover { color: var(--ink); }
 .ui-iconbtn:hover { opacity: .88; }
 /* The language control. Same round shape as the theme toggle, a flag instead
    of an icon. Sized like an emoji rather than like text, because that is what
-   it is — and where a platform cannot draw the flag it falls back to the two
+   it is - and where a platform cannot draw the flag it falls back to the two
    regional-indicator letters, which still fit. */
 .ui-langtag, .ui-langpick { display: inline-flex; align-items: center; justify-content: center;
   font-size: 17px; line-height: 1; }
@@ -394,10 +400,80 @@ a:hover { color: var(--ink); }
 .ui-input:hover, .ui-textarea:hover, .ui-select:hover { opacity: .88; }
 .ui-textarea { min-height: 96px; height: auto; resize: vertical; line-height: var(--lh);
   padding: var(--s3); }
+/* The closed control is ours: hairline, 6px, 40px, and the one glyph in the
+   system (a 2.5px round-capped chevron) as a data URI. */
 .ui-select { appearance: none; padding-right: var(--s8); cursor: pointer;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-position: right var(--s3) center; background-size: 12px 12px;
   background-repeat: no-repeat; }
+/* The slate-400 chevron above is drawn for the dark ground and measures 2.2:1
+   on white, the same reason the secondary ink deepens in light mode. Same
+   glyph, the light theme's secondary slate. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) .ui-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  }
+}
+:root[data-theme='light'] .ui-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+/* The open list is drawn by the platform and mostly cannot be reached from
+   here. What every engine except macOS does honour is the colour of an
+   <option>, so the popup at least lands on our surface rather than on the
+   system's white. On macOS the native popup wins and `color-scheme` above is
+   the whole of the fix. */
+.ui-select option, .ui-select optgroup {
+  background: var(--bg-sunk);
+  color: var(--ink);
+}
+/* --- Slider ------------------------------------------------------------- */
+/* A bounded number you drag. The track is the telemetry track: 4px, pill, the
+   inactive slate behind and the white fill in front. The thumb needs a
+   vendor pseudo-element, which is why this is here rather than inline on the
+   component: a style attribute cannot reach `::-webkit-slider-thumb`, and the
+   alternative is one <style> tag in the document per slider rendered. */
+.ui-slider { display: flex; flex-direction: column; gap: var(--s2); }
+.ui-slider-top { display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--s3); }
+.ui-slider-top > label { font-size: var(--t-xs); font-weight: 500; color: var(--muted);
+  letter-spacing: var(--track-caps); text-transform: uppercase; cursor: pointer; }
+/* Every number in the product is tabular mono, this one included: it changes
+   while you drag, and a value that reflows as it moves reads as a wobble. */
+.ui-slider-value { font-family: var(--mono); font-variant-numeric: tabular-nums;
+  font-size: var(--t-sm); color: var(--ink); }
+.ui-slider-hint { font-size: var(--t-sm); color: var(--muted); }
+
+.ui-slider-range {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: var(--track-height); margin: var(--s2) 0;
+  border-radius: var(--r-pill); outline: none; cursor: pointer;
+  background: linear-gradient(to right,
+    var(--fill-default) 0, var(--fill-default) var(--pct, 0%),
+    var(--track-default) var(--pct, 0%), var(--track-default) 100%);
+}
+/* Over tolerance, so it spends accent - the same rule the readouts follow. */
+.ui-slider.breach .ui-slider-value { color: var(--accent); }
+.ui-slider.breach .ui-slider-range {
+  background: linear-gradient(to right,
+    var(--fill-alert) 0, var(--fill-alert) var(--pct, 0%),
+    var(--track-default) var(--pct, 0%), var(--track-default) 100%);
+}
+.ui-slider-range:disabled { opacity: .4; cursor: not-allowed; }
+/* The two thumbs have to be separate rules: a browser drops the whole
+   selector list when it does not know one of them. */
+.ui-slider-range::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 14px; height: 14px; border: 0; border-radius: var(--r-pill);
+  background: var(--fill-default); cursor: pointer;
+}
+.ui-slider-range::-moz-range-thumb {
+  width: 14px; height: 14px; border: 0; border-radius: var(--r-pill);
+  background: var(--fill-default); cursor: pointer;
+}
+.ui-slider.breach .ui-slider-range::-webkit-slider-thumb { background: var(--fill-alert); }
+.ui-slider.breach .ui-slider-range::-moz-range-thumb { background: var(--fill-alert); }
+.ui-slider-range:focus-visible { box-shadow: var(--ring); }
+
 .ui-check { display: inline-flex; align-items: center; gap: var(--s2); cursor: pointer; }
 .ui-check input { width: 17px; height: 17px; accent-color: var(--accent); margin: 0; }
 
@@ -433,7 +509,7 @@ a:hover { color: var(--ink); }
 .ui-fact .v { font-weight: 500; font-family: var(--mono);
   font-variant-numeric: tabular-nums; line-height: var(--leading-tight); }
 /* The one number a dashboard leads with. Exactly one per view: a second hero
-   is two heroes, which is none. Same sans as everything else — a display face
+   is two heroes, which is none. Same sans as everything else - a display face
    here reads as decoration rather than as data. */
 .ui-stat.hero .v { font-size: var(--text-metric-xl); line-height: var(--leading-tight); }
 .ui-stat.hero .k { font-size: var(--t-xs); }
@@ -476,7 +552,7 @@ a:hover { color: var(--ink); }
 .ui-modal { border: 0; padding: 0; background: transparent; margin: auto;
   max-width: min(430px, 92vw); width: 100%; color: var(--ink); }
 .ui-modal::backdrop {
-  /* ::backdrop does not reliably inherit custom properties — literal scrim,
+  /* ::backdrop does not reliably inherit custom properties - literal scrim,
      and it is the design system's --scrim value written out. */
   background: rgba(15, 23, 42, .78);
 }
@@ -494,7 +570,7 @@ a:hover { color: var(--ink); }
 /* --------------------------------------------------------------------- QR */
 .ui-qr-wrap { display: flex; flex-direction: column; align-items: center; gap: var(--s2); }
 .ui-qr { display: block; border-radius: var(--r-sm);
-  /* The white quiet zone is part of the code — never let a theme tint it. */
+  /* The white quiet zone is part of the code - never let a theme tint it. */
   background: #fff; max-width: 100%; height: auto; }
 .ui-urlbox { font-family: var(--mono); font-size: var(--t-sm); line-height: 1.45;
   background: var(--bg-sunk); border: 1px solid var(--line); border-radius: var(--r-sm);
@@ -518,7 +594,7 @@ a:hover { color: var(--ink); }
 
 /* --- Evidence: Because, AsOf, Confidence --------------------------------- */
 /* Four markers that answer the same four questions on every page: why this,
-   as of when, how sure, from where. Small on purpose — they sit next to the
+   as of when, how sure, from where. Small on purpose - they sit next to the
    statement they qualify and must not outweigh it. */
 .ui-because {
   display: flex;
@@ -654,7 +730,7 @@ a:hover { color: var(--ink); }
    sixty bars it would mean a wall of white with the breach lost inside it. So
    here "within tolerance" is the quiet inactive slate, "worth noticing" is the
    lighter secondary slate, and coral is still the only thing that carries a
-   breach — which is what the 10% rule is actually for. */
+   breach - which is what the 10% rule is actually for. */
 .ui-strip-bar {
   flex: 1 1 0; min-width: 2px; border-radius: 1px;
   background: var(--track-default);
@@ -689,7 +765,7 @@ a:hover { color: var(--ink); }
 }
 .ui-voyage-arc.is-done {
   stroke: var(--accent); stroke-width: 3; stroke-linecap: round;
-  /* Beats the dashed base rule — a class here would otherwise lose to it, and
+  /* Beats the dashed base rule - a class here would otherwise lose to it, and
      the flown part has to be one solid line clipped by the dash offset. */
   stroke-dasharray: 1;
   transition: stroke-dashoffset 1s var(--ease);

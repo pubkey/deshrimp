@@ -1,5 +1,5 @@
 /**
- * # Table — rows, columns, and a sort you can click
+ * # Table - rows, columns, and a sort you can click
  *
  * ## What it does and how it looks
  * A bordered table inside a horizontally scrolling wrapper, with a sticky
@@ -11,11 +11,11 @@
  * `<Panel tone="rec">`.
  *
  * ## Core parts
- * - `columns` — `{ key, label, align, width, render, value, sort }`.
+ * - `columns` - `{ key, label, align, width, render, value, sort }`.
  *   `render(row, i)` puts a component in a cell; `value(row)` gives the sorter
  *   something comparable when the cell is not plain text.
- * - `rows` — the data. `row.id` is the React key when present.
- * - `align: 'num'` — right-aligned, tabular figures. Use it for every number.
+ * - `rows` - the data. `row.id` is the React key when present.
+ * - `align: 'num'` - right-aligned, tabular figures. Use it for every number.
  * - `sort={false}` on a column, or `sortable={false}` on the table, for data
  *   whose order carries meaning (a day plan, a route).
  * - sorting is `localeCompare` with `numeric: true` in German, so „Etappe 2"

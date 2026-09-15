@@ -1,5 +1,5 @@
 /**
- * # StatusStrip — a run of repeated measurements, as coloured bars
+ * # StatusStrip - a run of repeated measurements, as coloured bars
  *
  * ## What it does and how it looks
  * One thin bar per measurement, oldest on the left, newest on the right, each
@@ -8,18 +8,18 @@
  * the available width and shrink as the run grows, so a strip of forty readings
  * is as wide as a strip of four.
  *
- * It is for a value that is checked **again and again on a clock** — a posture
- * check every ten seconds, a nightly build, a daily habit — where the shape of
+ * It is for a value that is checked **again and again on a clock** - a posture
+ * check every ten seconds, a nightly build, a daily habit - where the shape of
  * the run says more than any single reading: three red bars in a row is a
  * problem, one red bar between greens is a moment. Not for a time series with
  * meaningful magnitudes; that is a chart, and this deliberately is not one.
  *
  * ## Core parts
- * - `items` — the run, oldest first. Each is a `tone` plus an optional `title`,
+ * - `items` - the run, oldest first. Each is a `tone` plus an optional `title`,
  *   which becomes that bar's tooltip.
- * - `label` / `hint` — the line above and the quiet line under the strip. Both
+ * - `label` / `hint` - the line above and the quiet line under the strip. Both
  *   optional; without either, the strip stands on its own.
- * - `max` — keep only the last N items. The default is 60, because past that a
+ * - `max` - keep only the last N items. The default is 60, because past that a
  *   bar is thinner than the gap beside it.
  * - an empty run renders the empty track rather than nothing, so a page does
  *   not jump when the first measurement lands.

@@ -3,7 +3,7 @@
  *
  * Why this is a script and not just an import
  * -------------------------------------------
- * The page measures posture with a pose model running in the browser — that is
+ * The page measures posture with a pose model running in the browser - that is
  * the only path there is. It needs four files, ~17 MB in total, and they reach
  * this project two different ways:
  *
@@ -89,14 +89,14 @@ async function main() {
     const want = await pinned();
 
     if (await alreadyThere(out, want)) {
-        console.log(`OK: pose model already in ${out} — nothing to fetch`);
+        console.log(`OK: pose model already in ${out} - nothing to fetch`);
         return;
     }
 
     if (!existsSync(PKG)) {
         throw new Error(
             `@mediapipe/tasks-vision is not installed (looked in ${PKG}).\n` +
-            '       Run npm install first — it is a normal dependency.',
+            '       Run npm install first - it is a normal dependency.',
         );
     }
 
@@ -125,7 +125,7 @@ async function main() {
     const missing = Object.keys(want).filter((n) => !(n in written));
     if (bad.length || missing.length) {
         throw new Error(
-            'checksum mismatch — refusing to ship this.\n' +
+            'checksum mismatch - refusing to ship this.\n' +
             bad.map(([n]) => `       changed: ${n}\n`).join('') +
             missing.map((n) => `       missing: ${n}\n`).join('') +
             '       If the upgrade is intended, update scripts/pose-model.sha256.',

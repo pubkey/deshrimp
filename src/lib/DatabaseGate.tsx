@@ -1,7 +1,7 @@
 /**
  * Opens the database once, then renders the app inside it.
  *
- * Creating an RxDB database is asynchronous, React rendering is not — every app
+ * Creating an RxDB database is asynchronous, React rendering is not - every app
  * would otherwise write the same "await it, hold it in state, guard the first
  * render" boilerplate. This is that boilerplate, written once.
  *
@@ -10,7 +10,7 @@
  *     </DatabaseGate>
  *
  * The promise is kept module-side, so a remount does not open a second
- * database — RxDB would refuse that with a duplicate-name error.
+ * database - RxDB would refuse that with a duplicate-name error.
  */
 
 import React, { useEffect, useState } from 'react';
@@ -22,11 +22,11 @@ export type DatabaseGateProps = {
     /** Opens the database. Called at most once, however often this remounts. */
     create: () => Promise<RxDatabase<any>>;
     children: React.ReactNode;
-    /** Shown while the database opens. Keep it quiet — this takes milliseconds. */
+    /** Shown while the database opens. Keep it quiet - this takes milliseconds. */
     fallback?: React.ReactNode;
     /**
      * Shown when the database cannot be opened. This is the one string in here
-     * a reader ever sees, and readers of these pages read German — so a page
+     * a reader ever sees, and readers of these pages read German - so a page
      * passes its own text (see README §5, "The pages are German"). The defaults
      * below are English because this folder is.
      */

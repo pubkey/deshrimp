@@ -11,7 +11,7 @@ export function deDate(value: string | null | undefined): string {
 }
 
 /**
- * Whole days between an ISO date and today. `null` when unparseable — so a
+ * Whole days between an ISO date and today. `null` when unparseable - so a
  * caller can tell „not a date" from „today", which a `0` would hide.
  */
 export function daysSince(value: string | null | undefined): number | null {

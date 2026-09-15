@@ -1,4 +1,4 @@
-# deshrimp — „Sitz aufrecht du Garnele!" 🦐
+# deshrimp - „Sitz aufrecht du Garnele!" 🦐
 
 A page that watches how you sit. Every second it takes one webcam frame, reads
 three angles out of it, and makes a noise when you have folded up again.
@@ -16,7 +16,7 @@ npm run build   # typecheck, then a static site in dist/
 npm run preview # serve dist/ as it will actually be served
 ```
 
-The page needs `https` or `localhost` — `getUserMedia` will not hand a camera
+The page needs `https` or `localhost` - `getUserMedia` will not hand a camera
 to a `file://` document.
 
 ## The three angles
@@ -35,7 +35,7 @@ geometry and needs a personal reference photo to mean anything.
 
 **It is not the craniovertebral angle.** The clinical value runs from *C7* to
 the tragus and needs a side profile; C7 is behind the shoulder line and no pose
-model reports it. Same idea, different origin, different scale — the 48–50°
+model reports it. Same idea, different origin, different scale - the 48-50°
 from the literature must never be compared against this number. It is good for
 comparing you against yourself, not for a diagnosis.
 
@@ -46,7 +46,7 @@ What *is* established is that sustained deviation carries the risk, not any
 single moment. So treat the three numbers as dials: too much beeping means
 raise the limit.
 
-**What it cannot see** is the whole upper body sinking down — that needs the
+**What it cannot see** is the whole upper body sinking down - that needs the
 hips, and in a desk-sized crop they come back with a visibility of 0.01 against
 1.00 for shoulders and ears.
 
@@ -61,17 +61,17 @@ hips, and in a desk-sized crop they come back with a visibility of 0.01 against
 - **The tab icon turns** green, yellow or red, so the page still says something
   while it sits behind your work.
 - **Raw readings expire after two days** (at 1 Hz that is tens of thousands of
-  rows a day), but one **row per day survives forever** — that is what the
+  rows a day), but one **row per day survives forever** - that is what the
   history over weeks is built from.
 - **Your data stays yours.** The ⇅ button exports and imports a JSON file, and
   can sync to another device peer-to-peer, to Google Drive or to OneDrive. All
   of it is off until you press something.
 - **It installs, and it works offline.** A service worker precaches the page,
   the icon and all five sounds, so the alarm still fires with the network gone.
-  The pose model is cached the first time the camera runs rather than up front —
+  The pose model is cached the first time the camera runs rather than up front -
   it is 17 MB, and paying that during install would look like a hang.
-- **It never asks for the camera on load.** The whole page — the angles, the
-  sounds, the history — is there to read first; `getUserMedia` runs on the
+- **It never asks for the camera on load.** The whole page - the angles, the
+  sounds, the history - is there to read first; `getUserMedia` runs on the
   ▶ button and nowhere else.
 
 ## Layout
@@ -81,9 +81,9 @@ index.html          the shell
 vite.config.ts      four path aliases, a build stamp, and two build-only plugins
 src/
   main.tsx          entry: pulls in the CSS, fills the page payload, mounts
-  app/              this app — App.tsx, db.ts, pose.ts, twelve i18n tables,
+  app/              this app - App.tsx, db.ts, pose.ts, twelve i18n tables,
                     styles.css, data.json (the written content), app.config.ts
-  ui/               the components this app uses — 38 of them — plus theme.css
+  ui/               the components this app uses - 38 of them - plus theme.css
                     and tokens/, the design system they are all built from,
                     fonts/ (IBM Plex, vendored), and DESIGN.md, the rules in
                     prose
@@ -96,7 +96,7 @@ public/             served as-is: the five alarm sounds, icon, manifest,
                     pose model in mp/
 ```
 
-Four aliases keep the app's own imports readable — `@ui` the components, `@db`
+Four aliases keep the app's own imports readable - `@ui` the components, `@db`
 the local database, `@app` the page config, `@charts` the diagrams. They are
 declared once in `vite.config.ts` and once in `tsconfig.json` and point at
 ordinary folders.
@@ -104,13 +104,13 @@ ordinary folders.
 ## How it looks
 
 **The page is one grid of tiles**, not a stack of sections. Columns are at least
-330px and at most 660px, as many as fit, sharing the row between them — one
+330px and at most 660px, as many as fit, sharing the row between them - one
 column on a phone, three on a desk monitor, and no breakpoint written anywhere.
 Every tile has a stable id (`video`, `controls`, `daychart`, `thresholds`), so
 one can be pointed at by name.
 
 The interface is the **deshrimp design system**: a clinical instrument rather
-than a wellness app. Six colours, locked — slate ground, slate card, hairline
+than a wellness app. Six colours, locked - slate ground, slate card, hairline
 border, white ink, slate-blue secondary ink, and a coral accent that is a budget
 rather than a palette entry. IBM Plex Sans for words, IBM Plex Mono with tabular
 figures for every number, so a value does not reflow while it ticks. Borders
@@ -119,7 +119,7 @@ where it carries information.
 
 Severity is carried by *whether* the coral appears, not by a range of colours:
 there is no success green and no warning amber anywhere in the product. The one
-dramatic moment is a breach — the camera well's hairline snaps to a 3px coral
+dramatic moment is a breach - the camera well's hairline snaps to a 3px coral
 stroke and the offending readout pulses. Nothing moves, nothing shakes.
 
 Dark is what it was drawn for; light is a scoped inversion and the toggle still
@@ -127,8 +127,8 @@ works in both directions. The rules, the tokens and the three things still
 waiting on a decision from him are in **`src/ui/DESIGN.md`**.
 
 `src/ui` holds **only what this app renders**. It came from a shared library
-built for several different pages, and the rest of it — shop listings, maps,
-recipe cards, chat bubbles — was cut rather than carried along, along with the
+built for several different pages, and the rest of it - shop listings, maps,
+recipe cards, chat bubbles - was cut rather than carried along, along with the
 CSS that styled it. Nothing here is a general-purpose component kit; it is this
 page's components, and they are free to change shape as this page needs.
 
@@ -137,27 +137,27 @@ page's components, and they are free to change shape as this page needs.
 `npm run dev` is the app and nothing else. `npm run build` runs two small
 plugins on top of it, both `apply: 'build'`:
 
-- **`scripts/seo.mjs`** writes the head — title, description, canonical,
-  Open Graph, Twitter, a `SoftwareApplication` JSON-LD block — and renders the
+- **`scripts/seo.mjs`** writes the head - title, description, canonical,
+  Open Graph, Twitter, a `SoftwareApplication` JSON-LD block - and renders the
   intro, the five steps and the sources into `#root` as plain HTML.
 
   This is prerendering, not server-side rendering, and the difference is the
   point: the page's claim is that no server exists, so rendering per request is
   not on the table. Rendering `<App/>` with `renderToString` would return an
-  empty shell anyway — it sits inside `<DatabaseGate>`, which shows its fallback
+  empty shell anyway - it sits inside `<DatabaseGate>`, which shows its fallback
   until RxDB opens, which never happens outside a browser. So the crawlable copy
   is built from `data.json`, the same source the app renders from, and a crawler
   reads the words a reader sees. React throws the block away on mount, so it
   doubles as the first paint.
 
   The three strings live in `src/app/seo.json` because the app needs them too:
-  `Page` sets `document.title`, so without that the tab — and any crawler that
-  runs the JS — would show the h1 instead. The h1 stays the joke; the tab and
+  `Page` sets `document.title`, so without that the tab - and any crawler that
+  runs the JS - would show the h1 instead. The h1 stays the joke; the tab and
   the search result say what this is.
 
 - **`scripts/pwa.mjs`** emits `sw.js` with a precache list taken from the real
   bundle, so the hashed filenames are right and a new build retires the old
-  cache by name. A manifest alone does not make a page installable — Chromium
+  cache by name. A manifest alone does not make a page installable - Chromium
   wants a service worker with a fetch handler first.
 
 `public/CNAME` carries the domain, and `.github/workflows/deploy.yml` builds
@@ -169,7 +169,7 @@ otherwise silent: the page loads and the camera loop simply never runs.
 
 `npm install` runs `scripts/fetch-pose-model.mjs`, which puts four files into
 `public/mp/`. Three are copied out of `@mediapipe/tasks-vision`, an ordinary
-dependency — copied rather than imported because the WASM loader fetches its
+dependency - copied rather than imported because the WASM loader fetches its
 `.wasm` sibling by URL at runtime, so the two have to sit together in a served
 folder. The fourth is the model weights, which are not on npm and are fetched
 from Google's model storage.
@@ -177,13 +177,13 @@ from Google's model storage.
 None of it is committed: ~17 MB in git history is paid by every clone forever,
 and no version of it could ever be removed. Every file is checked against a
 pinned SHA-256 in `scripts/pose-model.sha256`, and a mismatch fails the script
-— this code runs in a browser with camera access, where "probably the right
+- this code runs in a browser with camera access, where "probably the right
 binary" is not good enough. The script is idempotent, so a second
 `npm install` costs nothing.
 
 ## The sounds
 
-Fart, throat-clear, scream, knuckle-crack, rimshot — five real recordings in
+Fart, throat-clear, scream, knuckle-crack, rimshot - five real recordings in
 `public/snd/`. Oscillators remain as a fallback, one waveform per sound,
 because a posture watcher whose signal is silent is not one.
 
@@ -194,7 +194,7 @@ These ~200 KB exist nowhere else.
 ## Privacy
 
 The camera frame goes to a `<canvas>`, to the pose model, and nowhere else.
-What the page stores — readings, daily rows, settings — lives in IndexedDB on
+What the page stores - readings, daily rows, settings - lives in IndexedDB on
 the device that recorded it. There is no server, so there is nothing to opt out
 of; the sync options behind the ⇅ button are the only ways data moves, and each
 one waits for a button.

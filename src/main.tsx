@@ -35,7 +35,7 @@ setPageData({
 mount(App);
 
 /**
- * The service worker, which is what makes the page installable — a manifest on
+ * The service worker, which is what makes the page installable - a manifest on
  * its own is not enough for Chromium to offer the prompt. It also means a page
  * that claims to need no server keeps working when there is none.
  *

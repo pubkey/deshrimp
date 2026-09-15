@@ -1,10 +1,10 @@
 /**
- * # Tiles — the page as one grid, not a stack of sections
+ * # Tiles - the page as one grid, not a stack of sections
  *
  * ## What it does and how it looks
  * A single grid that every tile on the page drops into. Columns are **at least
  * 330px and at most 660px**, as many as fit, and they share whatever width is
- * left over — so the same markup is one column on a phone, two on a tablet and
+ * left over - so the same markup is one column on a phone, two on a tablet and
  * four on a desk monitor, with no breakpoints written anywhere.
  *
  * ## Why a grid rather than sections
@@ -22,7 +22,7 @@
  *   at the end.
  * - **The 660px cap is on the tile, not on the track**, and that is not a
  *   detail. `auto-fit` takes its track count from the track's *max* sizing
- *   function whenever that is a definite length — so `minmax(330px, 660px)`
+ *   function whenever that is a definite length - so `minmax(330px, 660px)`
  *   asks for as many 660px columns as fit and answers "two" on a 1352px page,
  *   the opposite of what is wanted. `1fr` is indefinite, so the count falls
  *   back to the 330px minimum, which is the number we actually meant.
@@ -36,7 +36,7 @@
  * than as a ragged edge; a tile's own content stays at its top.
  *
  * ## Core parts
- * - Children are the tiles — `<Panel>`, usually. Each one carries an `id`, so
+ * - Children are the tiles - `<Panel>`, usually. Each one carries an `id`, so
  *   a tile can be linked to and named in a conversation about the page.
  * - Nothing spans two columns: two columns plus the gap is 684px, which is
  *   past the 660px a tile is allowed to be.

@@ -4,7 +4,7 @@
  *
  * Why this exists rather than a server: the page's whole claim is that there is
  * no server, so rendering per request is off the table. And rendering `<App/>`
- * with `renderToString` would return nothing anyway — it sits inside
+ * with `renderToString` would return nothing anyway - it sits inside
  * `<DatabaseGate>`, which shows its fallback until RxDB has opened, which never
  * happens outside a browser.
  *
@@ -14,7 +14,7 @@
  * words, which is the only version of this that is honest.
  *
  * React replaces `#root` on mount, so the prerendered block is also the first
- * paint — real text instead of a blank page while the bundle parses.
+ * paint - real text instead of a blank page while the bundle parses.
  */
 
 import { readFileSync } from 'node:fs';
@@ -80,20 +80,20 @@ function body() {
         `<section><h2>${esc(s.title)}</h2><p>${inline(s.text)}</p></section>`
     )).join('');
     const sources = en.sources.map((s) => (
-        `<li><a href="${esc(s.url)}" rel="nofollow noopener">${esc(s.title)}</a> — ${inline(s.note)}</li>`
+        `<li><a href="${esc(s.url)}" rel="nofollow noopener">${esc(s.title)}</a> - ${inline(s.note)}</li>`
     )).join('');
 
     // `data-prerendered` is a marker for anyone wondering why #root is not
     // empty in the shipped HTML. React throws all of it away on mount.
     return `<div data-prerendered>`
-        + `<h1>${esc(TITLE.split(' — ')[0])} — ${esc('Sit straight shrimp')}</h1>`
+        + `<h1>${esc(TITLE.split(' - ')[0])} - ${esc('Sit straight shrimp')}</h1>`
         + `<p>${inline(en.intro)}</p>`
         + steps
         + `<h2>Sources</h2><ul>${sources}</ul>`
         + `</div>`;
 }
 
-/** Rewrites `index.html` at build time. Dev is untouched — it needs no SEO. */
+/** Rewrites `index.html` at build time. Dev is untouched - it needs no SEO. */
 export default function seo() {
     return {
         name: 'deshrimp-seo',

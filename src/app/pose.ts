@@ -1,7 +1,7 @@
 /**
  * How a frame is measured: a pose model running in this browser.
  *
- * Nothing leaves the device — no key, no quota, no picture. It used to be one
+ * Nothing leaves the device - no key, no quota, no picture. It used to be one
  * of two ways, the other being a call to Gemini; that one is gone
  * _(2026-09-08: „remove the gemini option. we always use the in-browser
  * thing")_. What it cost to keep was a second, differently-calibrated set of
@@ -20,20 +20,20 @@
  * ---------------------------------------------
  * A language model looks at a flat picture and estimates. This returns 33
  * landmarks with per-point visibility and a metric world position, so an angle
- * is *computed* from geometry rather than guessed — and it is free, private and
+ * is *computed* from geometry rather than guessed - and it is free, private and
  * about thirty times faster.
  *
  * What was measured, not assumed
  * ------------------------------
  * On a real front-facing photo at a webcam-like framing (2026-09-08): shoulders,
- * eyes and ears come back at visibility 1.00, and **the hips at 0.01** — they
+ * eyes and ears come back at visibility 1.00, and **the hips at 0.01** - they
  * are simply out of frame when you sit at a desk. So the textbook forward-lean
  * angle (hip→shoulder off vertical) is not available here, and pretending
  * otherwise would produce a confident number from a landmark the model was
  * guessing at.
  *
- * Forward head posture — the thing this page exists for _(2026-09-08: „i need
- * this because my neck posture is a bit too much to the front")_ — went through
+ * Forward head posture - the thing this page exists for _(2026-09-08: „i need
+ * this because my neck posture is a bit too much to the front")_ - went through
  * two wrong versions before this one.
  *
  * First it was measured off the **nose**, and reported only as a deviation from
@@ -46,7 +46,7 @@
  * The right landmark is the **ear**, which is what the clinical measure uses
  * too: forward head posture is the head translating forward over the shoulders,
  * and the craniovertebral angle is drawn from C7 to the tragus. On the same
- * test frame the ears sit 0.035 m ahead of the shoulder line — a small number,
+ * test frame the ears sit 0.035 m ahead of the shoulder line - a small number,
  * because that person is sitting reasonably, which is exactly what a useful
  * measure should look like.
  *
@@ -90,7 +90,7 @@ export type Analysis = {
     /**
      * How far the head sits in front of the shoulders, as an angle at the
      * shoulder: 0° is an ear straight above its shoulder, and it grows as the
-     * head comes forward. Not the craniovertebral angle — see `forwardDegrees`.
+     * head comes forward. Not the craniovertebral angle - see `forwardDegrees`.
      */
     forwardDeg: number;
     headTiltDeg: number;
@@ -150,7 +150,7 @@ let landmarkerPromise: Promise<any> | null = null;
  * Whether the model has actually finished loading.
  *
  * A separate flag rather than `landmarkerPromise !== null`, which is what
- * `poseReady()` used to test — that is true the instant loading *starts*, so
+ * `poseReady()` used to test - that is true the instant loading *starts*, so
  * the page cheerfully claimed „lokal gerechnet" during the seventeen megabytes
  * it was still waiting for. A promise that exists is not a model that works.
  */
@@ -160,7 +160,7 @@ let landmarkerLoaded = false;
  * Import the ES module at runtime instead of bundling it.
  *
  * `new Function` hides the specifier from esbuild, which would otherwise try to
- * resolve `./mp/vision_bundle.mjs` at build time — it does not exist then, and
+ * resolve `./mp/vision_bundle.mjs` at build time - it does not exist then, and
  * inlining 17 MB into the HTML is the thing we are avoiding.
  */
 const importModule: (url: string) => Promise<any> =
@@ -171,7 +171,7 @@ function assetUrl(file: string): string {
 }
 
 /**
- * Load the model once and keep it. A failed load is not cached — the next
+ * Load the model once and keep it. A failed load is not cached - the next
  * attempt may well succeed, e.g. after the network came back on a first visit.
  */
 export function loadPose(): Promise<any> {
@@ -202,7 +202,7 @@ export function loadPose(): Promise<any> {
     return landmarkerPromise;
 }
 
-/** True once the model is in memory — the UI uses it to say „bereit". */
+/** True once the model is in memory - the UI uses it to say „bereit". */
 /** The model is loaded and a check will return immediately. */
 export function poseReady(): boolean {
     return landmarkerLoaded;
@@ -215,13 +215,13 @@ export function poseLoading(): boolean {
 
 /**
  * Start fetching the model without measuring anything, and **say when it is
- * done** — settled either way, because the overlay has to come down on failure
+ * done** - settled either way, because the overlay has to come down on failure
  * too.
  *
  * Called from the Start button so the wait begins the moment he asks for it,
  * rather than a second later once the camera has finished negotiating: the
  * overlay should appear on the click, not after it. Deliberately **not** called
- * on page load — it is seventeen megabytes, and opening the page to glance at
+ * on page load - it is seventeen megabytes, and opening the page to glance at
  * yesterday's curve should not spend them.
  *
  * It returns a promise rather than leaving the caller to poll `poseLoading()`.
@@ -229,7 +229,7 @@ export function poseLoading(): boolean {
  * delegate is not available, say), which clears `landmarkerPromise` and makes
  * the poll read „finished" a few hundred milliseconds in, while a retry from
  * the check loop is still loading. Awaiting the actual attempt cannot drift
- * from it. The error is swallowed here on purpose — the next real check reports
+ * from it. The error is swallowed here on purpose - the next real check reports
  * it properly, with the sentence in the reader's language.
  */
 export function preloadPose(): Promise<void> {
@@ -243,7 +243,7 @@ function visible(p: Landmark | undefined): p is Landmark {
 }
 
 /**
- * Angle of a line off horizontal, in degrees, 0–90, from pixel coordinates.
+ * Angle of a line off horizontal, in degrees, 0-90, from pixel coordinates.
  *
  * Folded into the first quadrant on purpose. The landmarks arrive in body
  * order, not left-to-right, so on a frontal frame the shoulder line runs
@@ -266,11 +266,11 @@ function tiltDegrees(a: Landmark, b: Landmark, w: number, h: number): number {
  * world coordinates, and measured **from the vertical**: an ear straight above
  * its shoulder is 0°, and the angle grows as the head comes forward. Because
  * both legs of that triangle are lengths on the same body, the result does not
- * depend on how big the body is — a tall person craning and a short person
+ * depend on how big the body is - a tall person craning and a short person
  * craning read the same _(2026-09-08: „do not care about body size")_.
  *
  * **This is not the craniovertebral angle**, and its numbers must not be
- * compared to the 48–50° in the literature. The CVA runs from *C7* to the
+ * compared to the 48-50° in the literature. The CVA runs from *C7* to the
  * tragus; C7 sits behind the shoulder line, and a pose model does not give it.
  * Same idea, different origin, different scale.
  *
@@ -278,7 +278,7 @@ function tiltDegrees(a: Landmark, b: Landmark, w: number, h: number): number {
  * reading is soft. It is the *change* across a day that this page is actually
  * built on.
  *
- * Returns null when the ears are not visible — hair, a hood, a turned head.
+ * Returns null when the ears are not visible - hair, a hood, a turned head.
  */
 function forwardDegrees(world: Landmark[], view: Landmark[]): number | null {
     const el = view[EAR_L];
@@ -351,7 +351,7 @@ export function frameOf(video: HTMLVideoElement): HTMLCanvasElement | null {
  *
  * Two angles, both absolute: the shoulder line against the horizontal, and the
  * eye line against the shoulder line. Nothing here needs calibrating, which is
- * the point — the page measures from the first frame.
+ * the point - the page measures from the first frame.
  */
 export async function analysePose(
     frame: HTMLCanvasElement,
@@ -413,7 +413,7 @@ export async function analysePose(
 }
 
 /**
- * Which sentence fits this frame — the key, not the wording.
+ * Which sentence fits this frame - the key, not the wording.
  *
  * Decided here rather than asked of a model, because the numbers are already
  * known and a generated sentence would be a slower, less predictable way of

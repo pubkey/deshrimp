@@ -1,9 +1,9 @@
 /**
- * # IconButton — a square button with no words
+ * # IconButton - a square button with no words
  *
  * ## What it does and how it looks
  * A 40px square holding one drawn glyph: the share button, the theme toggle, a
- * delete icon on a row. Secondary ink, hairline border, 6px — the same shape
+ * delete icon on a row. Secondary ink, hairline border, 6px - the same shape
  * as every other control at that height.
  *
  * `label` is **required in practice**, because a button whose only content is
@@ -11,10 +11,10 @@
  * becomes both the `title` and the `aria-label`.
  *
  * ## Core parts
- * - `icon` — an `<Icon>`. Never emoji and never a unicode symbol: the design
+ * - `icon` - an `<Icon>`. Never emoji and never a unicode symbol: the design
  *   system bans both as affordances, because a glyph out of the text stream
  *   cannot be given a stroke weight and renders differently on every platform.
- * - `label` — what it does, in words. Not optional in spirit.
+ * - `label` - what it does, in words. Not optional in spirit.
  *
  * ## Examples
  * ```tsx

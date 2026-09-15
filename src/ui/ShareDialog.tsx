@@ -1,5 +1,5 @@
 /**
- * # ShareDialog — the sheet behind the share button
+ * # ShareDialog - the sheet behind the share button
  *
  * ## What it does and how it looks
  * A modal holding a QR code („Mit der Handykamera scannen"), the full URL in a
@@ -8,7 +8,7 @@
  * Schloss: wer ihn hat, kann die Seite lesen."**
  *
  * That line is the product. A published page's URL *is* its access control
- * (`CLAUDE.md` §9), so the moment of sharing is the moment to say so — once,
+ * (`CLAUDE.md` §9), so the moment of sharing is the moment to say so - once,
  * plainly, where he is about to press the button.
  *
  * Two cases it handles rather than ignores: a page opened from disk (`file:`),
@@ -16,8 +16,8 @@
  * a URL too long to encode, where the QR is dropped but the link still works.
  *
  * ## Core parts
- * - `url` — what gets copied, encoded and shared.
- * - `title` / `text` — passed to the native share sheet.
+ * - `url` - what gets copied, encoded and shared.
+ * - `title` / `text` - passed to the native share sheet.
  * - the copy path falls back to a toast when the clipboard API is missing,
  *   rather than failing silently.
  *

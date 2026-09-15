@@ -1,5 +1,5 @@
 /**
- * # LineChart — a value over time
+ * # LineChart - a value over time
  *
  * ## What it does and how it looks
  * One line per series over a shared category axis: weight per week, calories
@@ -8,11 +8,11 @@
  * point, and an HTML legend below as soon as there are two of them.
  *
  * ## Core parts
- * - `data` — the rows, one per point on the x axis.
- * - `x` — which property of a row is the category (default `'x'`).
- * - `series` — `['kcal']` or `[{ key: 'kcal', label: 'Kalorien' }]`.
- * - `format` / `formatAxis` — tooltip and tick formatting; `withUnit` adds one.
- * - `smooth` — monotone curve instead of straight segments. Off by default:
+ * - `data` - the rows, one per point on the x axis.
+ * - `x` - which property of a row is the category (default `'x'`).
+ * - `series` - `['kcal']` or `[{ key: 'kcal', label: 'Kalorien' }]`.
+ * - `format` / `formatAxis` - tooltip and tick formatting; `withUnit` adds one.
+ * - `smooth` - monotone curve instead of straight segments. Off by default:
  *   a curve invents values between two measured points.
  *
  * ## Examples

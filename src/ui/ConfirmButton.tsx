@@ -1,9 +1,9 @@
 /**
- * # ConfirmButton — a button that asks first
+ * # ConfirmButton - a button that asks first
  *
  * ## What it does and how it looks
- * Renders exactly the button you would have rendered — a `<Button>`, or an
- * `<IconButton>` with `icon`+`label` and no children — and puts a `<Modal>` in
+ * Renders exactly the button you would have rendered - a `<Button>`, or an
+ * `<IconButton>` with `icon`+`label` and no children - and puts a `<Modal>` in
  * front of the action. The modal states what is about to happen and offers two
  * buttons: the danger-coloured confirmation and a plain cancel. Nothing runs
  * until the confirmation is pressed.
@@ -18,15 +18,15 @@
  *
  * `window.confirm` would have been one line, and is the wrong line: it is
  * unstyled, it blocks the whole thread, it is suppressible, and on iOS it can
- * be refused outright — a destructive action guarded by a dialog that may not
+ * be refused outright - a destructive action guarded by a dialog that may not
  * appear is a destructive action with no guard.
  *
  * ## Core parts
- * - `onConfirm` — runs only after the confirmation. May be async; the modal
+ * - `onConfirm` - runs only after the confirmation. May be async; the modal
  *   closes first so the button never sits half-pressed.
- * - `body` — what will be lost, in the page's own words. Worth writing: „Alle
+ * - `body` - what will be lost, in the page's own words. Worth writing: „Alle
  *   Messungen von heute" tells him something, „Bist du sicher?" does not.
- * - `confirmLabel` / `cancelLabel` / `title` — default to the page's language
+ * - `confirmLabel` / `cancelLabel` / `title` - default to the page's language
  *   via `lang.ts`.
  * - `icon` + `label` with no children renders an `<IconButton>` (a top-bar
  *   action); children render a normal `<Button>`, danger-styled by default.

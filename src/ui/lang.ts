@@ -1,9 +1,9 @@
 /**
- * # lang — the language the page frame speaks
+ * # lang - the language the page frame speaks
  *
  * ## What it does and how it looks
- * Nothing visible on its own. It holds one value — one of twelve language
- * codes — and the
+ * Nothing visible on its own. It holds one value - one of twelve language
+ * codes - and the
  * frame components (`<ShareButton>`, `<ThemeToggle>`, `<Modal>`,
  * `<ConfirmButton>`) read their fixed labels out of it instead of hard-coding
  * German.
@@ -12,16 +12,16 @@
  * never mentions a language renders exactly what it rendered before this file
  * existed. The one page that needs otherwise (`app-haltung`, which he asked to
  * be switchable to English on 2026-09-08) sets `<Page lang="en">` and the whole
- * frame follows — otherwise an English app would sit inside a German shell,
+ * frame follows - otherwise an English app would sit inside a German shell,
  * with „Teilen" and „Sicher?" around an English answer.
  *
  * ## Core parts
- * - `setUiLang(lang)` — `<Page>` calls this while rendering, before its subtree
+ * - `setUiLang(lang)` - `<Page>` calls this while rendering, before its subtree
  *   renders. A module-level value rather than a context because half of these
  *   components are also used standalone, outside any `<Page>`.
- * - `uiLang()` — the current value, read at render time.
- * - `uiText()` — the label set for the current language.
- * - `preferredUiLang()` — what to start in when nothing is stored: the
+ * - `uiLang()` - the current value, read at render time.
+ * - `uiText()` - the label set for the current language.
+ * - `preferredUiLang()` - what to start in when nothing is stored: the
  *   browser's language if the page has it, English otherwise.
  *
  * This is deliberately **not** a general translation system. It covers the
@@ -38,7 +38,7 @@
  * - 2026-09-15 The labels of the „Zu dieser Seite" block left with it: the
  *   meta, task, gaps, severity and sources words are gone from all twelve
  *   tables. What remains is what the top bar and the dialogs still say.
- * - 2026-09-08 Ten more languages, and the tables moved to `lang-text.ts` —
+ * - 2026-09-08 Ten more languages, and the tables moved to `lang-text.ts` -
  *   twelve of them inline made this file's own logic hard to find. No RTL
  *   language yet; that needs `dir` support the frame does not have.
  * - 2026-09-08 `preferredUiLang()`, so a first visit lands in the browser's
@@ -48,7 +48,7 @@
 
 /**
  * The languages the frame speaks. **Twelve since 2026-09-08** („add 10 more
- * languages"): the two it started with plus the ten below, chosen for reach —
+ * languages"): the two it started with plus the ten below, chosen for reach -
  * the most widely read languages a page like this lands in front of.
  *
  * **No right-to-left language is in here yet**, and that is deliberate rather
@@ -159,7 +159,7 @@ export type UiText = {
  * language is a page that will not stay in the right one.
  *
  * **English is the last resort** _(2026-09-08, his call after weighing German)_.
- * That only applies to a browser whose languages this page does not offer — a
+ * That only applies to a browser whose languages this page does not offer - a
  * German browser still gets German, because that is a match, not a fallback.
  * What is left is someone whose browser says French, or says nothing at all,
  * and for them English is the better guess than German.
@@ -168,8 +168,8 @@ export type UiText = {
  * German, because every other page in this repo is German and does not ask.
  *
  * `navigator.languages` is read in order, so a browser set to
- * `['en-GB', 'de']` gets English. Tags are matched on their primary subtag —
- * `en-GB`, `en-US` and `en` are all English — because a page here is not
+ * `['en-GB', 'de']` gets English. Tags are matched on their primary subtag -
+ * `en-GB`, `en-US` and `en` are all English - because a page here is not
  * translated per region.
  */
 export function preferredUiLang(available?: UiLang[]): UiLang {
@@ -210,7 +210,7 @@ export function uiText(): UiText {
  * The locale the frame formats dates and numbers with.
  *
  * One region per language, picked as the most common reading rather than the
- * only one — `pt-PT` over `pt-BR`, `zh-CN` over `zh-TW`. It decides date order
+ * only one - `pt-PT` over `pt-BR`, `zh-CN` over `zh-TW`. It decides date order
  * and decimal separators, nothing that changes a word.
  */
 const LOCALE: Record<UiLang, string> = {

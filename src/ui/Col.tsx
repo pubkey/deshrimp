@@ -1,13 +1,13 @@
 /**
- * # Col — things stacked
+ * # Col - things stacked
  *
  * ## What it does and how it looks
  * A vertical flex stack with one consistent gap between its children. The
- * counterpart to `<Row>`, and the honest way to space a group of blocks —
+ * counterpart to `<Row>`, and the honest way to space a group of blocks -
  * margins on the children themselves collapse, double up and drift apart.
  *
  * ## Core parts
- * - `gap` — `0`–`6` on the `--sN` scale, the only spacing there is.
+ * - `gap` - `0`-`6` on the `--sN` scale, the only spacing there is.
  *
  * ## Examples
  * ```tsx

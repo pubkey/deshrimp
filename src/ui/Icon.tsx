@@ -1,5 +1,5 @@
 /**
- * # Icon — the only glyphs in the system
+ * # Icon - the only glyphs in the system
  *
  * ## What it does and how it looks
  * A 24×24 stroked outline at `stroke-width: 1.5`, painted in `currentColor`, so
@@ -7,8 +7,8 @@
  * sizes: 16px inside a line of text or a button, 20px standing alone.
  *
  * ## Why it exists
- * The design system is deliberately near-iconless — status is carried by 6px
- * dots, uppercase labels, borders and numbers — and it bans two things
+ * The design system is deliberately near-iconless - status is carried by 6px
+ * dots, uppercase labels, borders and numbers - and it bans two things
  * outright: emoji as an icon, and unicode symbols (✓ ✕ ▲) as UI affordances.
  * A glyph borrowed from the text stream is at the mercy of the platform's font,
  * renders in full colour on a phone and in outline on a desktop, and cannot be
@@ -22,12 +22,12 @@
  * The paths are inlined rather than pulled from the CDN the design system
  * suggests. This page installs and has to keep working with the network gone,
  * and an icon set that arrives over the wire is an icon set that is missing on
- * the offline load — the one where the user is looking at an alarm.
+ * the offline load - the one where the user is looking at an alarm.
  *
  * ## Core parts
- * - `name` — which glyph. The set is closed on purpose: adding one is a design
+ * - `name` - which glyph. The set is closed on purpose: adding one is a design
  *   decision, so it happens here rather than inline at a call site.
- * - `size` — 16 (default) or 20.
+ * - `size` - 16 (default) or 20.
  * - Always `aria-hidden`. An icon here never carries meaning on its own; the
  *   button it sits in has the words, or a `label`.
  *

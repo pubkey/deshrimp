@@ -1,13 +1,13 @@
 /**
- * # Badge — a small standing label
+ * # Badge - a small standing label
  *
  * ## What it does and how it looks
  * A pill of text at caption size: a status („gehört"), a count („3× fehlt"), a
- * price beside a title. Static — a badge says something, it does not do
+ * price beside a title. Static - a badge says something, it does not do
  * anything. The one you can press is `<Tag>`.
  *
  * ## Core parts
- * - `tone` — `"accent"` · `"ok"` · `"warn"` · `"bad"` · `"quiet"`. Unset is the neutral
+ * - `tone` - `"accent"` · `"ok"` · `"warn"` · `"bad"` · `"quiet"`. Unset is the neutral
  *   outline. The semantic tones are for state, not decoration.
  *
  * ## Examples

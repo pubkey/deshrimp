@@ -1,17 +1,17 @@
 /**
- * # Checkbox — a tick with its label
+ * # Checkbox - a tick with its label
  *
  * ## What it does and how it looks
  * A native checkbox and its label inside one `<label>`, so the whole line is
- * the hit area — which is what makes a shopping list usable with a thumb.
+ * the hit area - which is what makes a shopping list usable with a thumb.
  *
  * `onChange` is handed the **boolean**, not the event: every caller wanted
  * `e.target.checked` and nothing else.
  *
  * ## Core parts
- * - `checked` / `onChange(checked)` — controlled. The state lives in RxDB in
+ * - `checked` / `onChange(checked)` - controlled. The state lives in RxDB in
  *   these pages, never in the checkbox.
- * - `label` — text or elements. A link inside it would swallow its own click as
+ * - `label` - text or elements. A link inside it would swallow its own click as
  *   a toggle, so put links *next* to the checkbox, not inside its label.
  *
  * ## Examples
