@@ -20,6 +20,13 @@
 #    `*.github.io` one, so every visitor gets a certificate-name mismatch until
 #    the domain is re-added and a new certificate is issued - an outage that
 #    takes hours to undo. The check below refuses to publish such a build.
+# 4. **PR previews share the branch.** `pr-preview.yml` publishes every open
+#    pull request under `pr-preview/<pr>/commit-<sha>/` on the same branch, so
+#    the fresh orphan commit below must carry that directory over from the
+#    previous tip or every master push would take all previews down with it.
+#    And because previews are pushed concurrently, the force-push is a
+#    `--force-with-lease` on the tip we read the previews from, retried onto
+#    the new tip when it moves, so a preview that landed mid-run is not lost.
 
 name: Deploy to GitHub Pages
 
@@ -88,19 +95,61 @@ jobs:
 
       # A fresh single commit each time: this branch is build output, so there
       # is no history worth keeping and every old bundle would stay in the repo
-      # forever otherwise.
+      # forever otherwise. The one thing carried over from the previous tip is
+      # the `pr-preview/` directory, which belongs to pr-preview.yml (see the
+      # note at the top of this file).
       - name: Publish to the github-pages branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd dist
-          git init -q
-          git checkout -q -b github-pages
-          git add -A
-          git -c user.name='github-actions[bot]' \
-              -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
-              commit -q -m "Deploy ${GITHUB_SHA::7}"
-          git push -q --force \
-            "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
-            github-pages
+          set -euo pipefail
+          REMOTE="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          SITE="${RUNNER_TEMP}/site"
+          PREV="${RUNNER_TEMP}/previous"
+          rm -rf "$SITE" "$PREV"
+          mkdir -p "$SITE"
+          cp -R dist/. "$SITE/"
+
+          # Read the current tip of the branch (empty on a first deploy) and
+          # keep its pr-preview/ directory. The lease below pins this exact
+          # commit so a preview pushed after this point cannot be overwritten
+          # without us noticing.
+          fetch_previews() {
+            rm -rf "$PREV"
+            if git clone -q --depth 1 --branch github-pages "$REMOTE" "$PREV" 2>/dev/null; then
+              TIP="$(git -C "$PREV" rev-parse HEAD)"
+            else
+              TIP=""
+            fi
+            rm -rf "$SITE/pr-preview"
+            if [ -d "$PREV/pr-preview" ]; then
+              cp -R "$PREV/pr-preview" "$SITE/pr-preview"
+              echo "Carrying over $(ls "$PREV/pr-preview" | wc -l) PR preview(s) from ${TIP::7}"
+            fi
+          }
+
+          commit_site() {
+            rm -rf "$SITE/.git"
+            git -C "$SITE" init -q
+            git -C "$SITE" checkout -q -b github-pages
+            git -C "$SITE" add -A
+            git -C "$SITE" -c user.name='github-actions[bot]' \
+                -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+                commit -q -m "Deploy ${GITHUB_SHA::7}"
+          }
+
+          n=0
+          fetch_previews
+          commit_site
+          until git -C "$SITE" push -q --force-with-lease="github-pages:${TIP}" "$REMOTE" github-pages; do
+            n=$((n + 1))
+            if [ "$n" -ge 5 ]; then
+              echo "::error::push failed after retries"
+              exit 1
+            fi
+            echo "github-pages moved under us (a PR preview landed); re-reading it and retrying"
+            sleep $((2 ** n))
+            fetch_previews
+            commit_site
+          done
           echo "Published ${GITHUB_SHA::7} to github-pages"
