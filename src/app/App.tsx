@@ -1533,18 +1533,21 @@ function Setup(props: SetupProps) {
                     <Slider
                         label={t.signalFromForward} min={5} max={45} step={1} unit="°"
                         value={s.maxForward}
+                        defaultValue={DEFAULTS.maxForward}
                         onChange={(v) => void change({ maxForward: v })}
                         hint={t.signalFromForwardHint}
                     />
                     <Slider
                         label={t.signalFromLean} min={3} max={45} step={1} unit="°"
                         value={s.maxLean}
+                        defaultValue={DEFAULTS.maxLean}
                         onChange={(v) => void change({ maxLean: v })}
                         hint={t.signalFromLeanHint}
                     />
                     <Slider
                         label={t.signalFromHead} min={3} max={45} step={1} unit="°"
                         value={s.maxHeadTilt}
+                        defaultValue={DEFAULTS.maxHeadTilt}
                         onChange={(v) => void change({ maxHeadTilt: v })}
                         hint={t.signalFromHeadHint}
                     />

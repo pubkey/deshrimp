@@ -16,6 +16,13 @@
  *   value that is *over* its tolerance, not merely high; the accent is a
  *   budget (src/ui/DESIGN.md).
  * - `hint` - one line under the track, for what the number means in practice.
+ * - `defaultValue` - turns on a **reset** at the right-hand end of the hint
+ *   line, which puts the slider back to that number. A dial you feel your way
+ *   to is a dial you can lose your place on, and the default is the one
+ *   position worth naming. It shares the hint's line rather than the label's,
+ *   because the label is the long string here: giving the top row a third item
+ *   wrapped "Signal from head in front" onto a second line and took the tile
+ *   16px with it. Under the track there is room going spare.
  *
  * ## Why the look is in theme.css
  * A range input needs `::-webkit-slider-thumb` and `::-moz-range-thumb`, and a
@@ -33,10 +40,12 @@
  *
  * ## Changelog
  * - 2026-09-15 Own file. The thresholds were number inputs before; his call.
+ * - 2026-09-15 `defaultValue` and the reset beside the readout; his call.
  */
 
 import { useId } from 'react';
 import { cx } from './cx';
+import { uiText } from './lang';
 import type { Base, ReactNode } from './_types';
 
 export type SliderProps = Base & {
@@ -48,6 +57,10 @@ export type SliderProps = Base & {
     /** Appended to the readout: `"°"`, `" s"`. Never part of the label. */
     unit?: string;
     hint?: ReactNode;
+    /** Puts a reset on the hint line that sets the slider back to this. */
+    defaultValue?: number;
+    /** Overrides the built-in word, which is translated in `lang-text.ts`. */
+    resetLabel?: ReactNode;
     disabled?: boolean;
     /** Over tolerance, not merely high: it spends accent. */
     breached?: boolean;
@@ -56,11 +69,13 @@ export type SliderProps = Base & {
 
 export function Slider({
     label, value, min = 0, max = 100, step = 1, unit = '', hint,
-    disabled, breached, onChange, className, id, style,
+    defaultValue, resetLabel, disabled, breached, onChange, className, id, style,
 }: SliderProps) {
     const uid = useId();
     const inputId = id || uid;
     const pct = max === min ? 0 : ((value - min) / (max - min)) * 100;
+    const canReset = defaultValue != null && !!onChange;
+    const atDefault = value === defaultValue;
 
     return (
         <div className={cx('ui-slider', breached && 'breach', className)} style={style}>
@@ -84,7 +99,29 @@ export function Slider({
                 style={{ '--pct': `${pct}%` } as React.CSSProperties}
                 onChange={(e) => onChange && onChange(Number(e.target.value))}
             />
-            {hint ? <div className="ui-slider-hint">{hint}</div> : null}
+            {hint || canReset ? (
+                <div className="ui-slider-foot">
+                    <span className="ui-slider-hint">{hint}</span>
+                    {canReset ? (
+                        <button
+                            type="button"
+                            className="ui-slider-reset"
+                            /* Disabled at the default rather than hidden. A
+                               control that appears only once you have moved
+                               something is a control you cannot find when you
+                               go looking for it, and hiding it would move the
+                               line it shares. Disabled is the system's .4
+                               opacity, which on the secondary slate is quiet
+                               enough to be furniture until it means something. */
+                            disabled={disabled || atDefault}
+                            title={`${resetLabel || uiText().reset}: ${defaultValue}${unit}`}
+                            onClick={() => onChange && onChange(defaultValue as number)}
+                        >
+                            {resetLabel || uiText().reset}
+                        </button>
+                    ) : null}
+                </div>
+            ) : null}
         </div>
     );
 }

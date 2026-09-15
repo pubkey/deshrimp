@@ -191,6 +191,17 @@ three numbers as dials. The track is the telemetry track (4px, pill, inactive
 slate behind, white fill in front) and the value sits above it, right aligned,
 in tabular mono because it changes while you drag.
 
+A dial you feel your way to is also a dial you can lose your place on, so a
+slider with a default carries a **reset** at the right-hand end of its hint
+line. It is label type in secondary slate with no box: it has to be reachable
+without ever competing, and the accent is a budget nobody's undo gets to spend.
+It sits under the track rather than beside the readout because the label is the
+long string in this product and a third item in the top row wraps it. At the
+default it is disabled rather than hidden - a control that appears only once
+you have moved something is a control you cannot find when you go looking for
+it - and the disabled 0.4 opacity is quiet enough that three of them read as
+furniture until one of them means something.
+
 ---
 
 ## Motion and states

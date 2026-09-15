@@ -78,6 +78,8 @@ export type UiText = {
     confirmYes: string;
     confirmNo: string;
     close: string;
+    /** The slider's own reset affordance. */
+    reset: string;
     shareTitle: string;
     copyLink: string;
     linkCopied: string;
