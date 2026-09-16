@@ -3,7 +3,7 @@ import type { Copy } from './i18n';
 
 export const es: Copy = {
     title: '¡Siéntate derecho, gamba! 🦐',
-    subtitle: 'Mira por la webcam cómo estás sentado y hace un ruido cuando te encorvas. Nada sale de tu dispositivo.',
+    subtitle: 'Mira por la webcam cómo estás sentado y hace un ruido cuando te encorvas. Las imágenes y las mediciones se quedan en tu dispositivo.',
 
     whatThisDoes: 'Qué hace esto',
     leaveOpen: 'Esta página mira por la webcam cómo estás sentado y hace un ruido cuando la cabeza se te va demasiado hacia delante o te inclinas hacia un lado. Para eso tiene que quedarse abierta - lo mejor es en su propia pestaña, al lado de aquello en lo que estés trabajando. El icono de la pestaña se pone verde o rojo, así que lo ves sin cambiar de pestaña.',
