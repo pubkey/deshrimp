@@ -569,7 +569,7 @@ a:hover { color: var(--ink); }
 
 /* ----------------------------------------------------------------- tables */
 .ui-table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r-md);
-  background: var(--card); }
+  background: var(--card); container-type: inline-size; }
 .ui-table { width: 100%; border-collapse: collapse; font-size: var(--t-md); }
 .ui-table caption { caption-side: top; text-align: left; padding: var(--s3) var(--s4);
   color: var(--muted); font-size: var(--t-sm); }
@@ -584,8 +584,25 @@ a:hover { color: var(--ink); }
 .ui-table thead th.on .ui-sortmark { opacity: 1; color: var(--accent); }
 .ui-table tbody tr:last-child td { border-bottom: 0; }
 .ui-table tbody tr.rec { background: var(--accent-soft); }
-.ui-table.striped tbody tr:nth-child(even) { background: var(--bg-sunk); }
+/* `.alt` is set by the component, not `:nth-child(even)`: a row and its note
+   row are two `<tr>` that have to carry the same stripe. */
+.ui-table.striped tbody tr.alt { background: var(--surface-inset); }
 .ui-table.dense th, .ui-table.dense td { padding: var(--s2) var(--s3); }
+/* A note belongs to the row above it: that row drops its bottom rule so the
+   two read as one block, and the note itself is secondary text across the
+   full width rather than a column nobody can fit.
+   Full width means the width you can see, not the table's: the wrapper is an
+   inline-size container, so `100cqi` inside it is the visible width even when
+   the columns are wider than the tile and scroll sideways. The inner div is
+   sticky at the left edge so the sentence stays where it can be read while the
+   numbers scroll under it, and it carries the cell's padding - a padded cell
+   would push it that far past the right edge. */
+.ui-table tbody tr.has-note > td { border-bottom: 0; padding-bottom: var(--space-1); }
+.ui-table tbody tr.ui-table-note > td { padding: 0; color: var(--text-secondary);
+  font-size: var(--text-sm); line-height: var(--leading-normal); }
+.ui-table tbody tr.ui-table-note > td > div { position: sticky; left: 0;
+  box-sizing: border-box; width: 100cqi; padding: 0 var(--space-4) var(--space-3); }
+.ui-table.dense tbody tr.ui-table-note > td > div { padding: 0 var(--space-3) var(--space-2); }
 .ui-table .num { text-align: right; font-family: var(--mono);
   font-variant-numeric: tabular-nums; white-space: nowrap; }
 

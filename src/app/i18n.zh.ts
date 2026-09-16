@@ -77,7 +77,6 @@ export const zh: Copy = {
     colForward: '前倾',
     colLean: '侧倾',
     colHead: '头部',
-    colAdvice: '说明',
 
     trendTitle: '按天看的走势',
     trendSubtitleEmpty: '有没有变化，要几周才看得出来。',

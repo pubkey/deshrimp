@@ -77,7 +77,6 @@ export const nl: Copy = {
     colForward: 'Voor',
     colLean: 'Zij',
     colHead: 'Hoofd',
-    colAdvice: 'Opmerking',
 
     trendTitle: 'Verloop over de dagen',
     trendSubtitleEmpty: 'Of er iets verandert, zie je pas over weken.',

@@ -77,7 +77,6 @@ export const tr: Copy = {
     colForward: 'Ön',
     colLean: 'Yan',
     colHead: 'Baş',
-    colAdvice: 'Not',
 
     trendTitle: 'Günler içindeki seyir',
     trendSubtitleEmpty: 'Bir şeyin değişip değişmediği ancak haftalar içinde görünür.',

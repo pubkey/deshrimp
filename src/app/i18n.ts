@@ -135,7 +135,6 @@ const de = {
     colForward: 'Vorn',
     colLean: 'Seitlich',
     colHead: 'Kopf',
-    colAdvice: 'Hinweis',
 
     /* --- trend ---------------------------------------------------------- */
     trendTitle: 'Verlauf über die Tage',
@@ -289,7 +288,6 @@ const en: Copy = {
     colForward: 'Front',
     colLean: 'Side',
     colHead: 'Head',
-    colAdvice: 'Note',
 
     trendTitle: 'Trend across the days',
     trendSubtitleEmpty: 'Whether anything is changing only shows over weeks.',
