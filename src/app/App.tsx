@@ -1003,10 +1003,12 @@ function Live() {
                 </div>
             </Panel>
 
-            {/* Running the camera and choosing the noise it makes are one tile
-                _(2026-09-15, his call)_: both are „what this thing does while I
-                sit here", and the sound is the setting you reach for in the
-                same breath as the stop button. */}
+            {/* Running the camera, choosing the noise it makes and switching
+                between the two views are one tile _(2026-09-15 and 2026-09-16,
+                his calls)_: the first two are „what this thing does while I sit
+                here", and the sound is the setting you reach for in the same
+                breath as the stop button. The view switch joins them because in
+                zen this is the only tile with a control in it at all. */}
             <Panel id="controls">
                 <Row gap={3} wrap justify="between" align="bottom">
                     <Row gap={2} wrap>
@@ -1022,6 +1024,27 @@ function Live() {
                         <Button icon={<Icon name="refresh" />} onClick={() => void check()}
                             disabled={!camera.on || checking}>
                             {t.checkNow}
+                        </Button>
+                        {/* The way from zen to the dashboard and back, in this
+                            tile _(2026-09-16, his call; it stood centred under
+                            the grid for an afternoon)_. In zen this tile is the
+                            only one with a control in it, so a switch that
+                            changes what the page shows is where the hand
+                            already is.
+
+                            Third in the row and the quietest of the three: the
+                            fill turns the camera on, the outline takes one
+                            picture, the ghost is not a camera action at all.
+                            The word names the view it leads to, the `title`
+                            says what you get there, and the glyph is two
+                            shapes rather than one arrow turned around. */}
+                        <Button
+                            variant="ghost"
+                            icon={<Icon name={view === 'zen' ? 'grid' : 'minimize'} />}
+                            title={view === 'zen' ? t.toDashboard : t.toZen}
+                            onClick={() => change({ view: view === 'zen' ? 'dashboard' : 'zen' })}
+                        >
+                            {view === 'zen' ? t.dashboardLabel : t.zenLabel}
                         </Button>
                     </Row>
                     {/* Only „the picture is being read" is left here
@@ -1072,7 +1095,8 @@ function Live() {
                 button that starts it, and the three angles the picture just
                 produced. Those answer „sitze ich gerade"; the curves, the log,
                 the trend and the thresholds answer questions you ask on
-                purpose, and they are one button away at the foot of the page.
+                purpose, and they are one button away, in the control tile
+                above.
 
                 They are not rendered at all rather than hidden with CSS: the
                 trend tile runs its own query over every day ever recorded, and
@@ -1642,38 +1666,6 @@ function Setup(props: SetupProps) {
     );
 }
 
-/* ------------------------------------------------------------------ views */
-
-/**
- * The one line under the grid: the way from zen to the dashboard and back.
- *
- * **Under the tiles, not in the top bar** _(2026-09-16, his call)_. The top bar
- * is where the page's chrome lives - share, theme, language - and a control
- * that changes what the page *is* reads better at the end of what it changed:
- * in zen you have looked at the picture and the three angles and now want the
- * rest, and in the dashboard you have scrolled past all of it.
- *
- * A ghost button, because the accent is a budget and the camera well spends it
- * on a breach. The word says where the button leads, the `title` says what you
- * get there, and the glyph is two shapes rather than one arrow turned around.
- */
-function ViewSwitch({ view, change }: { view: View; change: (v: View) => void }) {
-    const t = useCopy();
-    const zen = view === 'zen';
-    return (
-        <Row justify="center" className="haltung-viewswitch">
-            <Button
-                variant="ghost"
-                icon={<Icon name={zen ? 'grid' : 'minimize'} />}
-                title={zen ? t.toDashboard : t.toZen}
-                onClick={() => change(zen ? 'dashboard' : 'zen')}
-            >
-                {zen ? t.dashboardLabel : t.zenLabel}
-            </Button>
-        </Row>
-    );
-}
-
 /* ------------------------------------------------------------------- page */
 
 /**
@@ -1687,7 +1679,8 @@ function ViewSwitch({ view, change }: { view: View; change: (v: View) => void })
  * The view is read here for the same reason - half of what zen hides sits in
  * `<Live>` and the other half (the intro and the five steps) sits below it -
  * and `<Live>` reads it out of the same document rather than being handed it,
- * so there is one answer to „which view" and not two that can disagree.
+ * so there is one answer to „which view" and not two that can disagree. The
+ * button that writes it sits in `<Live>`, in the control tile.
  */
 function Content() {
     const data = pageData<Data>();
@@ -1744,7 +1737,7 @@ function Content() {
                         because the number of columns is the window's business
                         rather than ours. In zen the grid is three tiles long
                         and the rest of this is not rendered at all; the switch
-                        under it brings them back.
+                        in the control tile brings them back.
 
                         The live state leads - this page is a tool, and what it
                         is for is what it currently says. The explanation is
@@ -1778,8 +1771,6 @@ function Content() {
                             </>
                         ) : null}
                     </Tiles>
-
-                    <ViewSwitch view={view} change={(next) => patch({ view: next })} />
                 </Page>
             </CopyContext.Provider>
         </LangContext.Provider>

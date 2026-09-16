@@ -142,10 +142,10 @@ tile is allowed to be.
 
 **The grid has two lengths.** Zen is the three tiles that answer the question
 the page is opened with; the dashboard is every tile it has. The switch between
-them is one ghost button centred under the grid, one grid gap below the last
-tile, and it names the view it leads to rather than the one you are in. Nothing
-else marks the mode: a page with three tiles on it is visibly a page with three
-tiles on it.
+them is a ghost button inside the tile that holds the controls, third in a row
+whose weight descends - accent fill, outline, ghost - and it names the view it
+leads to rather than the one you are in. Nothing else marks the mode: a page
+with three tiles on it is visibly a page with three tiles on it.
 
 Because there are no section headings any more, **a tile title carries its own
 scope**. Two charts both plot "share of time sitting straight" - one over the

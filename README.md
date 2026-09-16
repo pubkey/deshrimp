@@ -113,8 +113,8 @@ one can be pointed at by name.
 button that starts it, and the three angles off the last picture. That is the
 question you open the page with. The curves, the log, the trend across days,
 the thresholds and the written explanation are the dashboard, and a ghost
-button under the grid switches between the two. The choice is stored with the
-settings, so it survives a reload.
+button in the control tile, beside start and „check now", switches between the
+two. The choice is stored with the settings, so it survives a reload.
 
 The interface is the **deshrimp design system**: a clinical instrument rather
 than a wellness app. Six colours, locked - slate ground, slate card, hairline

@@ -18,12 +18,15 @@ build commands they mention belong to that older setup, not to this project.
   Kurven, das Protokoll, der Verlauf über die Tage und die Grenzen beantworten
   Fragen, die man absichtlich stellt, und stehen deshalb nicht mehr im Weg,
   wenn man sie nicht stellt. Aus achtzehn Kacheln werden drei.
-- **Ein Knopf unter dem Raster, „Dashboard" und zurück „Zen"** _(seine Wahl:
-  unter den Kacheln, nicht in der Kopfleiste)_. Die Kopfleiste ist der Rahmen
-  der Seite - Teilen, Thema, Sprache -, und ein Schalter, der ändert, *was die
-  Seite ist*, liest sich am Ende dessen besser, was er geändert hat. Ein
-  Ghost-Knopf, denn das Korallrot ist ein Budget und wird am Kamerafeld für den
-  Grenzfall gebraucht. Das Wort sagt, wohin es geht, der Titel sagt, was einen
+- **Ein Knopf in der Startkachel, „Dashboard" und zurück „Zen"** _(„mach den
+  zen-dashboard toggle da beim starttile rein")_. Er stand einen Nachmittag
+  lang mittig unter dem Raster; in der Kachel ist er besser aufgehoben, denn im
+  Zen-Modus ist das die einzige Kachel, in der überhaupt etwas zu drücken ist,
+  und damit die Stelle, an der die Hand ohnehin schon liegt. Dritter in der
+  Reihe und der leiseste der drei: die Füllung schaltet die Kamera an, der
+  Umriss macht ein Bild, der Ghost-Knopf ist gar keine Kamera-Aktion. Bei
+  schmaler Kachel rutscht er in eine zweite Zeile, wie es die Reihe seit jeher
+  tut. Das Wort nennt die Ansicht, zu der er führt, der Titel sagt, was einen
   dort erwartet.
 - **`view` in den Einstellungen**, Schema v10. Die Wahl liegt bei den
   Einstellungen und nicht im Komponentenzustand, weil sie ein Neuladen
