@@ -21,8 +21,6 @@ export const ru: Copy = {
     stop: 'Остановить',
     checkNow: 'Проверить сейчас',
     checking: 'Кадр обрабатывается …',
-    nextIn: (s: number) => `Следующая проверка через ${s} с`,
-    lastAt: (t: string) => `Последняя в ${t}`,
 
     cameraTitle: 'Камера',
     analysisFailed: 'Обработка не удалась',

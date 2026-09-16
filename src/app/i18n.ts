@@ -77,8 +77,6 @@ const de = {
     stop: 'Stoppen',
     checkNow: 'Jetzt prüfen',
     checking: 'Bild wird ausgewertet …',
-    nextIn: (s: number) => `Nächste Prüfung in ${s} s`,
-    lastAt: (t: string) => `Zuletzt ${t}`,
 
     cameraTitle: 'Kamera',
     analysisFailed: 'Die Auswertung hat nicht geklappt',
@@ -233,8 +231,6 @@ const en: Copy = {
     stop: 'Stop',
     checkNow: 'Check now',
     checking: 'Reading the picture …',
-    nextIn: (s: number) => `Next check in ${s} s`,
-    lastAt: (t: string) => `Last at ${t}`,
 
     cameraTitle: 'Camera',
     analysisFailed: 'The analysis did not work',

@@ -21,8 +21,6 @@ export const nl: Copy = {
     stop: 'Stoppen',
     checkNow: 'Nu controleren',
     checking: 'Beeld wordt bekeken …',
-    nextIn: (s: number) => `Volgende controle over ${s} s`,
-    lastAt: (t: string) => `Laatst om ${t}`,
 
     cameraTitle: 'Camera',
     analysisFailed: 'De analyse is niet gelukt',

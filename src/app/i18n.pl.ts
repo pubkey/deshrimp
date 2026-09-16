@@ -21,8 +21,6 @@ export const pl: Copy = {
     stop: 'Stop',
     checkNow: 'Sprawdź teraz',
     checking: 'Analizowanie klatki …',
-    nextIn: (s: number) => `Następne sprawdzenie za ${s} s`,
-    lastAt: (t: string) => `Ostatnio o ${t}`,
 
     cameraTitle: 'Kamera',
     analysisFailed: 'Analiza się nie udała',

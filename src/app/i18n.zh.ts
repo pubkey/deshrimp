@@ -21,8 +21,6 @@ export const zh: Copy = {
     stop: '停止',
     checkNow: '现在检查',
     checking: '正在分析画面 …',
-    nextIn: (s: number) => `${s} 秒后再次检查`,
-    lastAt: (t: string) => `上一次 ${t}`,
 
     cameraTitle: '摄像头',
     analysisFailed: '分析没有成功',

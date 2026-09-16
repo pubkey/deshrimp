@@ -21,8 +21,6 @@ export const tr: Copy = {
     stop: 'Durdur',
     checkNow: 'Şimdi kontrol et',
     checking: 'Kare inceleniyor …',
-    nextIn: (s: number) => `Sonraki kontrole ${s} sn`,
-    lastAt: (t: string) => `Son ${t}`,
 
     cameraTitle: 'Kamera',
     analysisFailed: 'İnceleme başarısız oldu',

@@ -6,6 +6,27 @@ bundler. They are copied here unchanged rather than rewritten, because a
 reconstructed history is worse than an awkward one - but note that paths and
 build commands they mention belong to that older setup, not to this project.
 
+## 2026-09-16 (Nachtrag) - zwei Zeilen weniger neben den Knöpfen
+
+### Entfernt
+- **„Nächste Prüfung in 12 s" und „Zuletzt 14:32" stehen nicht mehr neben
+  Start und Stopp** _(„remove „last check" and „nect check in" texts")_. Beide
+  sagten etwas, das anderswo schon steht: der Countdown ist seit gestern der
+  Ring um das Kamerafeld, gleichmäßig gezeichnet statt einmal pro Sekunde
+  hochgezählt, und die Uhrzeit der letzten Messung steht in der ersten Zeile
+  des Protokolls darunter. Was an der Stelle bleibt, ist „Bild wird
+  ausgewertet …", denn das ist der einzige Zustand, für den es sonst kein
+  Zeichen gibt.
+- `nextIn` und `lastAt` sind aus allen zwölf Tabellen raus.
+
+### Geändert
+- **Die Seite rendert nicht mehr jede Sekunde neu.** `secondsLeft` war ein
+  `useState`, das nur diese eine Zeile gefüttert hat, und der Takt schrieb es
+  im Sekundentakt. Der Kommentar daneben behauptete schon immer, der Zähler
+  liege in einem Ref, „weil der Takt ihn jede Sekunde liest und schreibt und
+  die Seite dafür nicht neu zeichnen darf" - das stimmte für `left.current` und
+  wurde von `setSecondsLeft` direkt daneben aufgehoben. Jetzt stimmt es.
+
 ## 2026-09-16 - der QR-Code im Teilen-Fenster
 
 ### Behoben

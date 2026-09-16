@@ -21,8 +21,6 @@ export const pt: Copy = {
     stop: 'Parar',
     checkNow: 'Verificar agora',
     checking: 'A analisar a imagem …',
-    nextIn: (s: number) => `Próxima verificação daqui a ${s} s`,
-    lastAt: (t: string) => `Última às ${t}`,
 
     cameraTitle: 'Câmara',
     analysisFailed: 'A análise não resultou',

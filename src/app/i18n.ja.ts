@@ -21,8 +21,6 @@ export const ja: Copy = {
     stop: '停止',
     checkNow: 'いますぐチェック',
     checking: '画像を解析中 …',
-    nextIn: (s: number) => `次のチェックまで ${s} 秒`,
-    lastAt: (t: string) => `最後は ${t}`,
 
     cameraTitle: 'カメラ',
     analysisFailed: '解析できませんでした',
