@@ -1,4 +1,4 @@
-# The twelve flags
+# The thirteen flags
 
 Downloaded rather than drawn _(2026-09-15, his call: "draw the language emojis,
 download one svg for each of them")_, and kept as files so that replacing one
@@ -7,7 +7,7 @@ is replacing a file.
 **Source:** [flag-icons](https://github.com/lipis/flag-icons) 7.2.3, the `4x3`
 set, MIT licensed. Unmodified, except where noted below. Each file is the
 country whose flag the language is conventionally shown with: `en` is `gb`,
-`zh` is `cn`, `ja` is `jp`.
+`zh` is `cn`, `ja` is `jp`, `ka` is `ge`.
 
 **`es.svg` is the one that is not theirs.** Their Spanish flag carries the full
 coat of arms and weighs **91 KB** - more than twice the page's own JavaScript,

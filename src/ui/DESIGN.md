@@ -357,9 +357,9 @@ have them, both deliberately:
   und Emoji, in beiden Sprachen" - the owner asked for that wording, emoji
   included, in every language. A design system handed over later does not get to
   overrule a recorded decision by the person whose product it is. Stripping it is
-  a one-character edit across twelve locale files whenever he says so.
+  a one-character edit across thirteen locale files whenever he says so.
 - **The language picker's flags.** Those are locale identity rather than
-  affordances, and replacing them means drawing twelve flags.
+  affordances, and replacing them means drawing thirteen flags.
 
 Everything else in the interface is drawn.
 
@@ -369,6 +369,6 @@ Everything else in the interface is drawn.
 
 The design system's **content rules** - register, vocabulary (*breach* not "bad
 posture", *tolerance* not "goal"), person, number precision - are not
-implemented. Applying them means rewriting the copy in twelve languages, which
-is a translation project and not a re-skin. They are worth doing; they are not
-done here.
+implemented. Applying them means rewriting the copy in thirteen languages,
+which is a translation project and not a re-skin. They are worth doing; they
+are not done here.

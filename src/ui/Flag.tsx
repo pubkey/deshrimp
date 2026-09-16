@@ -1,5 +1,5 @@
 /**
- * # Flag - twelve flags, drawn rather than typed
+ * # Flag - thirteen flags, drawn rather than typed
  *
  * ## Why this file exists
  * The language picker used the regional-indicator emoji (`🇩🇪`, `🇬🇧`), and on
@@ -23,11 +23,12 @@
  * else on the page may borrow these colours.
  *
  * ## Core parts
- * - `lang` - which one. The set is the twelve `UiLang` values, no more.
+ * - `lang` - which one. The set is the thirteen `UiLang` values, no more.
  * - Always `aria-hidden`: the control around it carries the language's name,
  *   and a flag is a poor name for a language in any case.
  *
  * ## Changelog
+ * - 2026-09-16 `ka.svg`, Georgia, with the thirteenth language.
  * - 2026-09-15 Own file, because the emoji do not render on Windows.
  */
 
@@ -40,6 +41,7 @@ import es from './flags/es.svg?raw';
 import fr from './flags/fr.svg?raw';
 import it from './flags/it.svg?raw';
 import ja from './flags/ja.svg?raw';
+import ka from './flags/ka.svg?raw';
 import nl from './flags/nl.svg?raw';
 import pl from './flags/pl.svg?raw';
 import pt from './flags/pt.svg?raw';
@@ -48,7 +50,7 @@ import tr from './flags/tr.svg?raw';
 import zh from './flags/zh.svg?raw';
 
 const FLAGS: Record<UiLang, string> = {
-    de, en, es, fr, it, ja, nl, pl, pt, ru, tr, zh,
+    de, en, es, fr, it, ja, ka, nl, pl, pt, ru, tr, zh,
 };
 
 export type FlagProps = {
@@ -59,8 +61,8 @@ export type FlagProps = {
 
 /**
  * The markup goes in with `dangerouslySetInnerHTML`, which is safe here and
- * only here: these are twelve files in this repository, read at build time and
- * checked in, not anything a page or a person supplies. The alternative is a
+ * only here: these are thirteen files in this repository, read at build time
+ * and checked in, not anything a page or a person supplies. The alternative is a
  * `<img src>`, and that is a request per flag on a page that has to work with
  * the network gone.
  */

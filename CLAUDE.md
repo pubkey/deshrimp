@@ -3,7 +3,7 @@
 ## Punctuation: no dashes beyond the hyphen
 
 **The em dash (U+2014) and the en dash (U+2013) are not allowed anywhere** - not in code,
-not in comments, not in UI copy, not in the twelve translation tables, not in
+not in comments, not in UI copy, not in the thirteen translation tables, not in
 Markdown, not in commit messages or pull request descriptions. Use a plain
 hyphen `-`, or recast the sentence with a comma, a colon or a full stop.
 
@@ -50,10 +50,10 @@ one step and is meant to shrink.
 
 ## Copy
 
-`src/app/i18n.ts` is the interface in twelve languages and `src/app/data.json`
+`src/app/i18n.ts` is the interface in thirteen languages and `src/app/data.json`
 is the written answer. `Copy` is derived from the German table, so a key added
 there and forgotten elsewhere is a type error rather than a German word on a
-Japanese page. Removing a key means removing it from all twelve.
+Japanese page. Removing a key means removing it from all thirteen.
 
 His requests are recorded verbatim, typos and all, and `CHANGELOG.md` records
 the decisions behind them. A recorded decision of his outranks a rule that

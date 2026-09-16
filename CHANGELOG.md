@@ -6,6 +6,44 @@ bundler. They are copied here unchanged rather than rewritten, because a
 reconstructed history is worse than an awkward one - but note that paths and
 build commands they mention belong to that older setup, not to this project.
 
+## 2026-09-16 (Nachtrag 4) - die Unterzeile nennt die Daten, und Georgisch kommt dazu
+
+### Geändert
+- **Die Unterzeile sagt jetzt, *was* auf dem Gerät bleibt** _(„"nothing leaves
+  your device" is confusing, make it sure we talk about the data")_. Sie lautete
+  „Nichts verlässt dein Gerät." Das „Nichts" war das Problem: wer sich bei
+  einer Webcam-Seite fragt, was mit seinem Gesicht passiert, bekam die Auskunft,
+  dass irgendein ungenanntes Nichts bleibt, wo es ist. Genannt werden jetzt die
+  beiden Dinge, nach denen tatsächlich gefragt wird: „Die Bilder und die
+  Messwerte bleiben auf deinem Gerät." Das Versprechen ist dasselbe, nur hat es
+  jetzt einen Gegenstand. In allen dreizehn Tabellen, und ebenso in `seo.json`,
+  in `index.html` und im Manifest, denn die Suchergebnis-Zeile ist für viele
+  der erste Satz, den sie von dieser Seite lesen.
+  `leavesTitle`/`leavesText` beantworten dieselbe Frage weiterhin ausführlich;
+  die Unterzeile ist die Fassung, die unter den Titel passt.
+
+### Neu
+- **Georgisch, die dreizehnte Sprache** _(„add georgian language also")_. Eine
+  neue Sprache ist hier kein neues Wörterbuch, sondern acht Stellen: `i18n.ka.ts`
+  (die Oberfläche), `data.json` (der geschriebene Inhalt), `lang-text.ts` (die
+  festen Wörter des Seitenrahmens), `UiLang`/`UI_LANGS`, `Lang`/`LANGUAGES`, die
+  beiden `LOCALE`-Tabellen mit `ka-GE`, das Etikett „ქართული" im Umschalter und
+  eine Flagge. `src/ui/flags/ka.svg` kommt wie die übrigen aus flag-icons.
+- **`settings` ist auf v11.** Das Enum für `lang` bekommt einen Wert mehr. Die
+  Migration selbst ändert nichts - sie muss nur existieren, weil RxDB ein
+  gespeichertes Dokument gegen das Schema prüft, unter dem es geschrieben wurde.
+  Wer nie Georgisch gewählt hat, bleibt bei seiner Sprache, wie schon bei v9.
+- **Georgisch ist die erste Schrift hier, die IBM Plex nicht abdeckt.** Mchedruli
+  fällt deshalb auf den System-Stack durch, genau wie Chinesisch und Japanisch
+  es seit jeher tun; nachgetragen im Kommentar von `tokens/fonts.css`. Eine
+  eigene Schriftdatei mitzuliefern wäre ein weiterer Download für eine Seite,
+  die offline funktionieren muss - und jedes System, das eine UI-Schrift
+  mitbringt, bringt eine mit, die Georgisch kann.
+- Mchedruli kennt keine Großbuchstaben. Die 11px-Zeilen über den Einstellungen
+  sind `text-transform: uppercase`, was auf Georgisch schlicht nichts tut - die
+  Wörter stehen da, wie sie geschrieben sind. Das ist kein Fehler, den man
+  beheben müsste, sondern die Schrift.
+
 ## 2026-09-16 (Nachtrag 3) - Zen ist der Normalzustand, das Dashboard ein Schalter
 
 ### Neu

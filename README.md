@@ -52,9 +52,9 @@ hips, and in a desk-sized crop they come back with a visibility of 0.01 against
 
 ## Other things it does
 
-- **Twelve languages**, switchable top right: de · en · es · fr · it · pt · nl ·
-  pl · tr · ru · zh · ja. First visit picks stored choice → browser language →
-  English.
+- **Thirteen languages**, switchable top right: de · en · es · fr · it · pt ·
+  nl · pl · tr · ru · zh · ja · ka. First visit picks stored choice → browser
+  language → English.
 - **The alarm ramps.** It sounds on *every* crooked reading, starting at a
   quarter volume and reaching full after four in a row; one good reading resets
   it. A signal always at full volume is a signal you switch off.
@@ -81,7 +81,7 @@ index.html          the shell
 vite.config.ts      four path aliases, a build stamp, and two build-only plugins
 src/
   main.tsx          entry: pulls in the CSS, fills the page payload, mounts
-  app/              this app - App.tsx, db.ts, pose.ts, twelve i18n tables,
+  app/              this app - App.tsx, db.ts, pose.ts, thirteen i18n tables,
                     styles.css, data.json (the written content), app.config.ts
   ui/               the components this app uses - 38 of them - plus theme.css
                     and tokens/, the design system they are all built from,

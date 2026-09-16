@@ -2,7 +2,7 @@
  * # lang - the language the page frame speaks
  *
  * ## What it does and how it looks
- * Nothing visible on its own. It holds one value - one of twelve language
+ * Nothing visible on its own. It holds one value - one of thirteen language
  * codes - and the
  * frame components (`<ShareButton>`, `<ThemeToggle>`, `<Modal>`,
  * `<ConfirmButton>`) read their fixed labels out of it instead of hard-coding
@@ -35,6 +35,8 @@
  * ```
  *
  * ## Changelog
+ * - 2026-09-16 Georgian, the thirteenth. Its script is not in the vendored
+ *   font, so it renders in the system stack like Chinese and Japanese.
  * - 2026-09-15 English is the default rather than German, and heads the
  *   picker. Browser detection is unchanged: a German browser still gets
  *   German, because that is a match rather than a fallback.
@@ -50,9 +52,13 @@
  */
 
 /**
- * The languages the frame speaks. **Twelve since 2026-09-08** („add 10 more
- * languages"): the two it started with plus the ten below, chosen for reach -
- * the most widely read languages a page like this lands in front of.
+ * The languages the frame speaks. **Thirteen**: twelve since 2026-09-08 („add
+ * 10 more languages"), the two it started with plus ten chosen for reach, and
+ * Georgian since 2026-09-16 („add georgian language also").
+ *
+ * Georgian is the first of them whose script IBM Plex does not carry, so it
+ * renders in the system stack - the same fall-through Chinese and Japanese
+ * have always used here. See `tokens/fonts.css`.
  *
  * **No right-to-left language is in here yet**, and that is deliberate rather
  * than an oversight. Arabic, Hebrew, Persian and Urdu need `dir="rtl"` on the
@@ -62,11 +68,11 @@
  */
 export type UiLang =
     | 'de' | 'en' | 'es' | 'fr' | 'it' | 'pt'
-    | 'nl' | 'pl' | 'tr' | 'ru' | 'zh' | 'ja';
+    | 'nl' | 'pl' | 'tr' | 'ru' | 'zh' | 'ja' | 'ka';
 
 /** Every language, in the order a picker should list them. */
 export const UI_LANGS: UiLang[] =
-    ['en', 'de', 'es', 'fr', 'it', 'pt', 'nl', 'pl', 'tr', 'ru', 'zh', 'ja'];
+    ['en', 'de', 'es', 'fr', 'it', 'pt', 'nl', 'pl', 'tr', 'ru', 'zh', 'ja', 'ka'];
 
 import { TEXT } from './lang-text';
 
@@ -225,6 +231,7 @@ export function uiText(): UiText {
 const LOCALE: Record<UiLang, string> = {
     de: 'de-DE', en: 'en-GB', es: 'es-ES', fr: 'fr-FR', it: 'it-IT', pt: 'pt-PT',
     nl: 'nl-NL', pl: 'pl-PL', tr: 'tr-TR', ru: 'ru-RU', zh: 'zh-CN', ja: 'ja-JP',
+    ka: 'ka-GE',
 };
 
 export function uiLocale(): string {
