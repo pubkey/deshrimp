@@ -6,6 +6,29 @@ bundler. They are copied here unchanged rather than rewritten, because a
 reconstructed history is worse than an awkward one - but note that paths and
 build commands they mention belong to that older setup, not to this project.
 
+## 2026-09-16 (Nachtrag 2) - die Unterzeile sagt, was die Seite tut
+
+### Geändert
+- **Die Unterzeile unter der Überschrift nennt weder Local-First noch RxDB**
+  _(„change the subtitle from „local-first app to train..." to sth non
+  technocal that does not describe rxdb or tech stuff and instead talks about
+  what the app does")_. Sie lautete „App fürs Haltungstraining. Erkennung durch
+  eine lokale KI, gespeichert wird mit RxDB." und war um zwei Links herum aus
+  drei Stücken zusammengesetzt. Das beschrieb den Bau, nicht die Sache: wer die
+  Wörter kennt, weiß es ohnehin, und wer sie nicht kennt, erfährt nichts.
+  Stattdessen steht dort jetzt ein Satz darüber, was die Seite tut, und einer
+  darüber, wo die Bilder bleiben: „Schaut über die Webcam zu, wie du sitzt, und
+  gibt einen Ton, wenn du zusammenklappst. Nichts verlässt dein Gerät." Das
+  Versprechen, das „Local-First" gemeint hat, steht damit immer noch da, nur in
+  Worten, die jeder liest.
+- **Aus `subtitleA` und `subtitleB` wird `subtitle`**, in allen zwölf Tabellen.
+  Die Dreiteilung gab es nur, damit die beiden Links dazwischen passen; ohne
+  sie ist es ein Satz, und `<Page subtitle>` bekommt eine Zeichenkette statt
+  eines Fragments. Die Ausnahme für das deutsche „Local-First-App" fällt
+  ebenfalls weg.
+- Die beiden Links auf rxdb.info sind damit von der Seite verschwunden. Das
+  ist die Folge der Bitte, nicht ein zusätzlicher Schritt.
+
 ## 2026-09-16 (Nachtrag) - zwei Zeilen weniger neben den Knöpfen
 
 ### Entfernt

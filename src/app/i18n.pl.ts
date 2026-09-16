@@ -3,8 +3,7 @@ import type { Copy } from './i18n';
 
 export const pl: Copy = {
     title: 'Siedź prosto, krewetko! 🦐',
-    subtitleA: ' do trenowania postawy. Rozpoznawanie robi lokalna SI, a zapis ',
-    subtitleB: '.',
+    subtitle: 'Patrzy przez kamerkę, jak siedzisz, i wydaje dźwięk, gdy się garbisz. Nic nie opuszcza twojego urządzenia.',
 
     whatThisDoes: 'Co to robi',
     leaveOpen: 'Ta strona patrzy przez kamerkę, jak siedzisz, i wydaje dźwięk, gdy głowa wysuwa ci się za bardzo do przodu albo przechylasz się na bok. Musi w tym celu zostać otwarta - najlepiej w osobnej karcie, obok tego, nad czym pracujesz. Ikona karty robi się zielona albo czerwona, więc widzisz to, nie przełączając się.',

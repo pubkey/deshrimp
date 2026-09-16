@@ -3,8 +3,7 @@ import type { Copy } from './i18n';
 
 export const pt: Copy = {
     title: 'Senta-te direito, camarão! 🦐',
-    subtitleA: ' para treinar a postura. A deteção é feita por uma IA local e os dados ficam guardados com ',
-    subtitleB: '.',
+    subtitle: 'Vê pela webcam como estás sentado e faz um barulho quando te curvas. Nada sai do teu dispositivo.',
 
     whatThisDoes: 'O que isto faz',
     leaveOpen: 'Esta página vê pela webcam como estás sentado e faz um barulho quando a cabeça vai demasiado à frente ou te inclinas para o lado. Para isso tem de ficar aberta - de preferência num separador só dela, ao lado daquilo em que estás a trabalhar. O ícone do separador fica verde ou vermelho, por isso vês como vai sem lá ir.',

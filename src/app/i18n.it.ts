@@ -3,8 +3,7 @@ import type { Copy } from './i18n';
 
 export const it: Copy = {
     title: 'Siediti dritto, gambero! 🦐',
-    subtitleA: ' per allenare la postura. Il riconoscimento lo fa un’IA locale, il salvataggio ',
-    subtitleB: '.',
+    subtitle: 'Guarda dalla webcam come sei seduto e fa un rumore quando ti accasci. Niente esce dal tuo dispositivo.',
 
     whatThisDoes: 'Cosa fa questa pagina',
     leaveOpen: 'Questa pagina guarda dalla webcam come sei seduto e fa un rumore quando la testa ti va troppo in avanti o ti pieghi di lato. Per farlo deve restare aperta - meglio in una scheda tutta sua, accanto a quello su cui stai lavorando. L’icona della scheda diventa verde o rossa, così lo vedi anche senza passarci sopra.',

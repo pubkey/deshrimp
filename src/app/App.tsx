@@ -1651,16 +1651,7 @@ function Content() {
                         id: SETTINGS_ID,
                     })}
                     title={t.title}
-                    subtitle={
-                        <>
-                            <a href="https://rxdb.info/articles/local-first-future.html"
-                                target="_blank" rel="noreferrer">Local-First</a>
-                            {lang === 'de' ? '-' : ''}
-                            {t.subtitleA}
-                            <a href="https://rxdb.info/" target="_blank" rel="noreferrer">RxDB</a>
-                            {t.subtitleB}
-                        </>
-                    }
+                    subtitle={t.subtitle}
                     actions={
                         <>
                             <DataSyncButton database={database} filename="sitzhaltung.json" />
