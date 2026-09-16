@@ -566,6 +566,55 @@ a:hover { color: var(--ink); }
 .ui-check { display: inline-flex; align-items: center; gap: var(--s2); cursor: pointer; }
 .ui-check input { width: 17px; height: 17px; accent-color: var(--accent); margin: 0; }
 
+/* ------------------------------------------------------ segmented control */
+/* One of two or three, with the current one raised out of the track. Written
+ * against the design-system token names rather than the bridge aliases, as new
+ * work in this file should be.
+ *
+ * The track is an inset inside the card, one step DOWN the value ladder, and
+ * the pressed segment steps back up to the inactive-control slate - so the
+ * state is carried by the ladder and by the ink going slate to white, with no
+ * accent anywhere. A view switch is not one of the six places the 10% budget
+ * may be spent, and `.ui-btn.on` (which is coral) is what this control exists
+ * to avoid.
+ *
+ * Equal columns, because the whole point of a segmented control is that „the
+ * left one" stays on the left whatever the two words measure. The 4px padding
+ * leaves 30px segments inside the system's 40px control height. */
+.ui-seg {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: var(--space-1);
+  width: 100%;
+  height: var(--control-height);
+  padding: var(--space-1);
+  background: var(--surface-inset);
+  border: var(--border-width) solid var(--border-default);
+  border-radius: var(--radius-md);
+}
+.ui-seg > button {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--space-2);
+  font: inherit; font-size: var(--text-sm); font-weight: var(--weight-semibold);
+  line-height: 1.1; letter-spacing: .02em;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  /* 120ms: the fill and the ink are a state, not a value moving. */
+  transition: background var(--duration-fast) var(--ease-standard),
+              color var(--duration-fast) var(--ease-standard);
+}
+.ui-seg > button:hover { opacity: .88; }
+.ui-seg > button[aria-pressed="true"] {
+  background: var(--control-inactive);
+  color: var(--text-primary);
+}
+/* The glyph is furniture here too: it never takes the accent and never grows
+   with the label. */
+.ui-seg > button svg { flex: none; }
 
 /* ----------------------------------------------------------------- tables */
 .ui-table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r-md);

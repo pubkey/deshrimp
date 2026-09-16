@@ -123,6 +123,7 @@ export const pl: Copy = {
     leavesTitle: 'Co opuszcza to urządzenie',
     leavesText: 'Nic. Model po pierwszym pobraniu leży tutaj, każda klatka jest analizowana tutaj i od razu odrzucana, a zapisywane są tylko liczby - w tej przeglądarce, nie na serwerze i nie w repozytorium. Żadnego obrazu, wideo, dźwięku, żadnego zapytania na zewnątrz i żadnego klucza, o który musisz dbać.',
 
+    viewLabel: 'Widok',
     dashboardLabel: 'Dashboard',
     zenLabel: 'Zen',
     toDashboard: 'Pokaż liczby, historię i ustawienia',

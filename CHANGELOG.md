@@ -6,7 +6,7 @@ bundler. They are copied here unchanged rather than rewritten, because a
 reconstructed history is worse than an awkward one - but note that paths and
 build commands they mention belong to that older setup, not to this project.
 
-## 2026-09-16 (Nachtrag 3) - Zen ist der Normalzustand, das Dashboard ist der Knopf
+## 2026-09-16 (Nachtrag 3) - Zen ist der Normalzustand, das Dashboard ein Schalter
 
 ### Neu
 - **Die Seite startet im Zen-Modus: Kamera, Startknopf, drei Winkel, sonst
@@ -18,16 +18,27 @@ build commands they mention belong to that older setup, not to this project.
   Kurven, das Protokoll, der Verlauf über die Tage und die Grenzen beantworten
   Fragen, die man absichtlich stellt, und stehen deshalb nicht mehr im Weg,
   wenn man sie nicht stellt. Aus achtzehn Kacheln werden drei.
-- **Ein Knopf in der Startkachel, „Dashboard" und zurück „Zen"** _(„mach den
-  zen-dashboard toggle da beim starttile rein")_. Er stand einen Nachmittag
-  lang mittig unter dem Raster; in der Kachel ist er besser aufgehoben, denn im
-  Zen-Modus ist das die einzige Kachel, in der überhaupt etwas zu drücken ist,
-  und damit die Stelle, an der die Hand ohnehin schon liegt. Dritter in der
-  Reihe und der leiseste der drei: die Füllung schaltet die Kamera an, der
-  Umriss macht ein Bild, der Ghost-Knopf ist gar keine Kamera-Aktion. Bei
-  schmaler Kachel rutscht er in eine zweite Zeile, wie es die Reihe seit jeher
-  tut. Das Wort nennt die Ansicht, zu der er führt, der Titel sagt, was einen
-  dort erwartet.
+- **Ein Umschalter am Fuß der Startkachel, links „Zen", rechts „Dashboard"**
+  _(„mach den zen-dashboard toggle da beim starttile rein", dann „neachst unter
+  dem soundselect. mach einen toggle daraus so links zenmode und rechts
+  dashboard mode")_. Er stand erst mittig unter dem Raster, dann als einzelner
+  Ghost-Knopf in der Knopfreihe; in der Kachel ist er richtig, denn im
+  Zen-Modus ist das die einzige Kachel, in der überhaupt etwas zu drücken ist.
+  Und ein Schalter ist er, weil ein Knopf nur sagen konnte, wohin er führt, nie
+  aber, wo man gerade steht - nebeneinander sagen die zwei Wörter beides auf
+  einmal. Unter der Tonauswahl, mit derselben 11px-Zeile darüber wie jede
+  andere Einstellung. Links Zen, rechts Dashboard: das ist zugleich die
+  Reihenfolge von wenig nach viel, der Schalter läuft also entlang derselben
+  Leiter, auf der sich die beiden Ansichten unterscheiden.
+- **`src/ui/Segmented.tsx`, der Schalter selbst.** Eine eingelassene Spur, das
+  gewählte Segment steigt daraus hervor. Der Zustand hängt an der Werteleiter
+  und an der Tinte - Spur auf Inset-Wert, gewähltes Segment zurück auf dem
+  Slate der inaktiven Bedienelemente, Beschriftung von Sekundär-Slate auf Weiß
+  - und **an keiner Stelle am Korallrot**: ein Ansichtswechsel ist keiner der
+  sechs Plätze, an denen das 10%-Budget ausgegeben werden darf. Genau dafür ist
+  es ein eigenes Bauteil und nicht zweimal `<Button active>`, denn das ist die
+  korallrote Fassung. Gleich breite Spalten, damit „der linke" links bleibt,
+  egal wie lang die Wörter sind.
 - **`view` in den Einstellungen**, Schema v10. Die Wahl liegt bei den
   Einstellungen und nicht im Komponentenzustand, weil sie ein Neuladen
   überleben soll: wer etwas nachschaut, schaut es morgen wieder nach.
@@ -35,11 +46,13 @@ build commands they mention belong to that older setup, not to this project.
   (derselbe Rahmen, nach innen gezogen). Zwei Formen statt eines Pfeils, der
   einmal so und einmal andersherum zeigt - ein Zeichen, das seine Bedeutung mit
   der Richtung wechselt, sagt auf einen Blick gar nichts.
-- **Vier Schlüssel in allen zwölf Tabellen**: `dashboardLabel`, `zenLabel`,
-  `toDashboard`, `toZen`. „Dashboard" und „Zen" sind seine eigenen zwei Wörter
-  und bleiben in jeder Sprache dieselben, nur die Schrift wechselt mit ihr:
-  „Дашборд"/„Дзен", „仪表盘"/„禅", „ダッシュボード"/„禅". Lateinisch gesetzt
-  mitten in einem japanischen Satz wäre es ein Fremdkörper und kein Etikett.
+- **Fünf Schlüssel in allen zwölf Tabellen**: `dashboardLabel`, `zenLabel`,
+  `toDashboard`, `toZen` und `viewLabel` für die Zeile über dem Schalter
+  („Ansicht", „View", „Weergave", „Görünüm", „Вид", „视图", „表示").
+  „Dashboard" und „Zen" sind seine eigenen zwei Wörter und bleiben in jeder
+  Sprache dieselben, nur die Schrift wechselt mit ihr: „Дашборд"/„Дзен",
+  „仪表盘"/„禅", „ダッシュボード"/„禅". Lateinisch gesetzt mitten in einem
+  japanischen Satz wäre es ein Fremdkörper und kein Etikett.
 
 ### Geändert
 - **Migration v10 setzt auch bestehende Geräte auf Zen**, und das ist die eine
@@ -48,7 +61,7 @@ build commands they mention belong to that older setup, not to this project.
   Füßen wegzieht; hier ist genau das die Bitte. Stünde „dashboard" in der
   Migration, bliebe sein eigener Browser auf der Ansicht, über die er sich
   beschwert hat, und der neue Normalzustand erreichte nur ein Gerät, das er nie
-  geöffnet hat. Das Dashboard ist einen Knopf weit weg.
+  geöffnet hat. Das Dashboard ist einen Klick weit weg.
 - **Im Zen-Modus werden die versteckten Kacheln gar nicht erst gerendert**,
   nicht per CSS ausgeblendet. Die Verlaufskachel fragt jeden je
   aufgezeichneten Tag ab, und eine ruhige Seite soll nicht für ein Diagramm

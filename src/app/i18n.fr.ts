@@ -123,6 +123,7 @@ export const fr: Copy = {
     leavesTitle: 'Ce qui quitte cet appareil',
     leavesText: 'Rien. Le modèle reste ici après le premier chargement, chaque image est analysée ici et jetée aussitôt, et seuls les chiffres sont enregistrés - dans ce navigateur, pas sur un serveur et pas dans le dépôt. Aucune image, aucune vidéo, aucun son, aucune requête vers l’extérieur, aucune clé à gérer.',
 
+    viewLabel: 'Affichage',
     dashboardLabel: 'Dashboard',
     zenLabel: 'Zen',
     toDashboard: 'Afficher les chiffres, l’historique et les réglages',

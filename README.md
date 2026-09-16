@@ -112,9 +112,10 @@ one can be pointed at by name.
 **It opens in zen: three of those tiles and nothing else** - the camera, the
 button that starts it, and the three angles off the last picture. That is the
 question you open the page with. The curves, the log, the trend across days,
-the thresholds and the written explanation are the dashboard, and a ghost
-button in the control tile, beside start and „check now", switches between the
-two. The choice is stored with the settings, so it survives a reload.
+the thresholds and the written explanation are the dashboard, and a two-segment
+switch at the foot of the control tile, under the sound select, moves between
+them: zen on the left, dashboard on the right. The choice is stored with the
+settings, so it survives a reload.
 
 The interface is the **deshrimp design system**: a clinical instrument rather
 than a wellness app. Six colours, locked - slate ground, slate card, hairline

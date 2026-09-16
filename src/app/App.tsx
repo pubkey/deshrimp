@@ -35,7 +35,7 @@ import type { CSSProperties } from 'react';
 import {
     Badge, Button, Callout, Checkbox, ConfirmButton, Empty,
     Grid, Icon, IconButton, LoadingOverlay, Muted, Page, Panel,
-    preferredUiLang, Progress, Row, Select, Slider,
+    preferredUiLang, Progress, Row, Segmented, Select, Slider,
     Stat, StatusStrip, type StatusTone, Table, Text, Tiles,
     pageData, toast,
 } from '@ui';
@@ -1007,8 +1007,9 @@ function Live() {
                 between the two views are one tile _(2026-09-15 and 2026-09-16,
                 his calls)_: the first two are „what this thing does while I sit
                 here", and the sound is the setting you reach for in the same
-                breath as the stop button. The view switch joins them because in
-                zen this is the only tile with a control in it at all. */}
+                breath as the stop button. The view switch joins them at the
+                foot of the tile because in zen this is the only tile with a
+                control in it at all. */}
             <Panel id="controls">
                 <Row gap={3} wrap justify="between" align="bottom">
                     <Row gap={2} wrap>
@@ -1025,27 +1026,6 @@ function Live() {
                             disabled={!camera.on || checking}>
                             {t.checkNow}
                         </Button>
-                        {/* The way from zen to the dashboard and back, in this
-                            tile _(2026-09-16, his call; it stood centred under
-                            the grid for an afternoon)_. In zen this tile is the
-                            only one with a control in it, so a switch that
-                            changes what the page shows is where the hand
-                            already is.
-
-                            Third in the row and the quietest of the three: the
-                            fill turns the camera on, the outline takes one
-                            picture, the ghost is not a camera action at all.
-                            The word names the view it leads to, the `title`
-                            says what you get there, and the glyph is two
-                            shapes rather than one arrow turned around. */}
-                        <Button
-                            variant="ghost"
-                            icon={<Icon name={view === 'zen' ? 'grid' : 'minimize'} />}
-                            title={view === 'zen' ? t.toDashboard : t.toZen}
-                            onClick={() => change({ view: view === 'zen' ? 'dashboard' : 'zen' })}
-                        >
-                            {view === 'zen' ? t.dashboardLabel : t.zenLabel}
-                        </Button>
                     </Row>
                     {/* Only „the picture is being read" is left here
                         _(2026-09-16, his call)_. „Next check in 12 s" was the
@@ -1060,6 +1040,37 @@ function Live() {
                     change={change}
                     prepareSound={beep.prepare}
                     playSound={beep.play}
+                />
+
+                {/* The two views, as a switch rather than a button
+                    _(2026-09-16, his call: „mach einen toggle daraus so links
+                    zenmode und rechts dashboard mode")_. It was one ghost
+                    button in the row above for an hour, which said where it
+                    would take you but never which of the two you were in; both
+                    words standing side by side say both at once.
+
+                    Last in the tile, under the sound select _(his call)_, and
+                    it takes a field label over it for the same reason that one
+                    does: it is a setting, and a setting in this system has an
+                    11px eyebrow above it.
+
+                    Left is zen and right is the dashboard, which is also least
+                    to most, so the control reads along the same ladder the two
+                    views differ on. */}
+                <Segmented
+                    label={t.viewLabel}
+                    value={view}
+                    onChange={(next) => void change({ view: next as View })}
+                    options={[
+                        {
+                            value: 'zen', label: t.zenLabel, title: t.toZen,
+                            icon: <Icon name="minimize" />,
+                        },
+                        {
+                            value: 'dashboard', label: t.dashboardLabel, title: t.toDashboard,
+                            icon: <Icon name="grid" />,
+                        },
+                    ]}
                 />
             </Panel>
 
@@ -1095,8 +1106,8 @@ function Live() {
                 button that starts it, and the three angles the picture just
                 produced. Those answer „sitze ich gerade"; the curves, the log,
                 the trend and the thresholds answer questions you ask on
-                purpose, and they are one button away, in the control tile
-                above.
+                purpose, and they are one switch away, at the foot of the
+                control tile above.
 
                 They are not rendered at all rather than hidden with CSS: the
                 trend tile runs its own query over every day ever recorded, and
@@ -1680,7 +1691,7 @@ function Setup(props: SetupProps) {
  * `<Live>` and the other half (the intro and the five steps) sits below it -
  * and `<Live>` reads it out of the same document rather than being handed it,
  * so there is one answer to „which view" and not two that can disagree. The
- * button that writes it sits in `<Live>`, in the control tile.
+ * switch that writes it sits in `<Live>`, at the foot of the control tile.
  */
 function Content() {
     const data = pageData<Data>();
@@ -1737,7 +1748,7 @@ function Content() {
                         because the number of columns is the window's business
                         rather than ours. In zen the grid is three tiles long
                         and the rest of this is not rendered at all; the switch
-                        in the control tile brings them back.
+                        at the foot of the control tile brings them back.
 
                         The live state leads - this page is a tool, and what it
                         is for is what it currently says. The explanation is

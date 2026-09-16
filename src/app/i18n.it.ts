@@ -123,6 +123,7 @@ export const it: Copy = {
     leavesTitle: 'Cosa esce da questo dispositivo',
     leavesText: 'Niente. Il modello resta qui dopo il primo caricamento, ogni immagine viene analizzata qui e scartata subito, e vengono salvati solo i numeri - in questo browser, non su un server e non nel repository. Nessuna immagine, nessun video, nessun audio, nessuna richiesta verso l’esterno, nessuna chiave di cui occuparsi.',
 
+    viewLabel: 'Vista',
     dashboardLabel: 'Dashboard',
     zenLabel: 'Zen',
     toDashboard: 'Mostrare i numeri, lo storico e le impostazioni',

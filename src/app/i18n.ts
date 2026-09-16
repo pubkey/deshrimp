@@ -189,6 +189,7 @@ const de = {
        set in Latin inside a Japanese sentence is a foreign body rather than a
        label. The long ones are what the button carries as its `title`: the
        short word says where you land, the sentence says what you get there. */
+    viewLabel: 'Ansicht',
     dashboardLabel: 'Dashboard',
     zenLabel: 'Zen',
     toDashboard: 'Zahlen, Verlauf und Einstellungen zeigen',
@@ -342,6 +343,7 @@ const en: Copy = {
     leavesTitle: 'What leaves this device',
     leavesText: 'Nothing. The model sits here after the first load, every picture is read here and discarded immediately, and only the numbers are stored - in this browser, not on a server and not in the repo. No picture, no video, no audio, no request going out, and no key for you to look after.',
 
+    viewLabel: 'View',
     dashboardLabel: 'Dashboard',
     zenLabel: 'Zen',
     toDashboard: 'Show the numbers, the history and the settings',
