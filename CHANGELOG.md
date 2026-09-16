@@ -6,6 +6,39 @@ bundler. They are copied here unchanged rather than rewritten, because a
 reconstructed history is worse than an awkward one - but note that paths and
 build commands they mention belong to that older setup, not to this project.
 
+## 2026-09-16 - der QR-Code im Teilen-Fenster
+
+### Behoben
+- **Der Teilen-Knopf behauptete immer, die Adresse sei zu lang für einen
+  QR-Code** _(„share button says this text is too long for qr code, fix
+  that")_. Sie war es nie: `https://deshrimp.com/` sind einundzwanzig Zeichen,
+  und selbst Version 1 nimmt siebzehn. Es gab schlicht keinen Encoder. Sowohl
+  `<ShareDialog>` als auch `<QRCode>` lasen ihn von `window.QR`, das in diesem
+  Repo nirgends gesetzt wird - der Rest des alten Generator-Setups, aus dem die
+  App im September herausgezogen wurde, wo die Bibliothek als Global in die
+  HTML-Datei eingesetzt wurde. Der Encoder war der eine Teil, der beim Umzug
+  auf Vite nicht mitkam. Das Ergebnis war kein Fehler, sondern genau der Satz,
+  den der Fallback für den echten Grenzfall bereithält, und deshalb sah er
+  plausibel aus.
+
+### Neu
+- **`src/ui/qr.ts`, der Encoder selbst.** Byte-Modus, Versionen 1 bis 40, alle
+  vier Fehlerkorrekturstufen, die acht Masken und die Bewertung, die zwischen
+  ihnen entscheidet. Eigener Code statt einer Abhängigkeit: es sind vierzig
+  Zeilen Tabelle und zweihundert Zeilen Arithmetik, die sich nicht mehr ändern,
+  sobald sie stimmen. Geprüft wurde gegen eine fremde Implementierung, Matrix
+  für Matrix, über 93 Fälle vom leeren Rand bis zur vollen Version 40, Maskenwahl
+  eingeschlossen; danach noch einmal andersherum, indem ein Scanner die
+  gerenderte Seite wieder gelesen hat.
+- **Die Stufe steigt, wenn Platz ist.** Zuerst die kleinste Version, die den
+  Link hält, dann innerhalb dieser Version die höchste Fehlerkorrektur, die
+  noch hineinpasst. Das Quadrat wird dadurch nicht größer, der Code verträgt
+  aber einen Daumen in der Ecke.
+- **Zu lang heißt jetzt wirklich zu lang.** Der Hinweis erscheint ab 2953
+  Bytes, der Kapazität einer Version 40 auf Stufe L. Darunter gibt es einen
+  Code, darüber gibt es keinen, und der Link darunter funktioniert in beiden
+  Fällen.
+
 ## 2026-09-09 - kein Lockfile
 
 ### Geändert
