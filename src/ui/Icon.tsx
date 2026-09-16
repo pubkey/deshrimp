@@ -38,6 +38,7 @@
  * ```
  *
  * ## Changelog
+ * - 2026-09-16 `share` is the three-node graph, not the tray and arrow.
  * - 2026-09-15 Own file, and the end of emoji in the interface.
  * - 2026-09-15 `minus` and `plus`, for the slider's stepper. Drawn rather than
  *   the characters, for the reason at the top of this file: `+` and `-` out of
@@ -152,16 +153,20 @@ const PATHS = {
             <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
         </>
     ),
-    /* The tray with an arrow coming out of it, not the three-node graph
-       _(2026-09-15, his call: "the official share icon that other websites
-       use")_. Both are Lucide's, and the node graph is the one that reads as
-       "share" only once you already know the convention; this one is what iOS
-       put on every share sheet and what the web copied. */
+    /* The three-node graph: one node on the left, two on the right, two lines
+       between them _(2026-09-16, "the share icon looks more like this
+       https://www.flaticon.com/free-icon/share_107784")_. It replaces the
+       tray with an arrow out of it that stood here for a day, which is what
+       he was shown when he asked for "the official share icon that other
+       websites use" on 2026-09-15 and is not the glyph he meant. Both are
+       Lucide's; this is `share-2`, at the same 1.5 stroke as the rest. */
     share: (
         <>
-            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-            <path d="m8 6 4-4 4 4" />
-            <path d="M12 2v14" />
+            <circle cx="18" cy="5" r="3" />
+            <circle cx="6" cy="12" r="3" />
+            <circle cx="18" cy="19" r="3" />
+            <path d="m8.59 13.51 6.83 3.98" />
+            <path d="m15.41 6.51-6.82 3.98" />
         </>
     ),
     pencil: (

@@ -269,10 +269,10 @@ system suggests, for the same offline reason as the fonts.
 
 Where an icon stands alone it takes the words as its `title` and `aria-label`,
 which is the whole of what makes an icon-only button acceptable. The share
-button is the one that earns it: the tray with an arrow out of it is the most
-conventional glyph on the web, so it carries no visible label. It is Lucide's
-`share` rather than the three-node graph, which reads as "share" only to
-someone who already knows the convention.
+button is the one that earns it, and the glyph is the three-node graph
+(Lucide's `share-2`), which is the one he picked. Neither share glyph is a
+picture of anything, so the `title` and `aria-label` are not a courtesy here,
+they are what says what the button does.
 
 Two `<Table>` sort arrows (`▲ ▼ ↕`) are still unicode. They predate this file
 and are the last of them.
