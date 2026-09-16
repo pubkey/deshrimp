@@ -123,6 +123,12 @@ export const tr: Copy = {
     leavesTitle: 'Bu cihazdan ne çıkıyor',
     leavesText: 'Hiçbir şey. Model ilk yüklemeden sonra burada durur, her kare burada incelenir ve hemen atılır, yalnızca sayılar saklanır - bu tarayıcıda, bir sunucuda değil, depoda da değil. Ne görüntü, ne video, ne ses, ne dışarı giden bir istek, ne de senin ilgilenmen gereken bir anahtar.',
 
+    viewLabel: 'Görünüm',
+    dashboardLabel: 'Dashboard',
+    zenLabel: 'Zen',
+    toDashboard: 'Sayıları, geçmişi ve ayarları göster',
+    toZen: 'Yalnızca kamerayı ve açıları göster',
+
     howItWorks: 'Nasıl çalışıyor',
     inShort: 'Kısaca',
     saveReadings: 'Ölçümleri dışa aktar',

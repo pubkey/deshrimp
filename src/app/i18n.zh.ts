@@ -123,6 +123,12 @@ export const zh: Copy = {
     leavesTitle: '什么会离开这台设备',
     leavesText: '什么都不会。模型第一次加载后就留在本地，每张画面都在本地分析并立刻丢弃，只有数字会被保存，保存在这个浏览器里，不在服务器上，也不在仓库里。没有图片，没有视频，没有声音，没有向外的请求，也没有需要你保管的密钥。',
 
+    viewLabel: '视图',
+    dashboardLabel: '仪表盘',
+    zenLabel: '禅',
+    toDashboard: '显示数字、历史和设置',
+    toZen: '只显示摄像头和角度',
+
     howItWorks: '这是怎么运作的',
     inShort: '一句话说',
     saveReadings: '导出测量数据',

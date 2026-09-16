@@ -140,6 +140,15 @@ Every tile carries a **stable, untranslated id** (`video`, `daychart`,
 not. Nothing spans two columns: two columns plus the gap is 684px, past what a
 tile is allowed to be.
 
+**The grid has two lengths.** Zen is the three tiles that answer the question
+the page is opened with; the dashboard is every tile it has. The switch between
+them is a segmented control at the foot of the tile that holds the controls,
+under its own 11px eyebrow like any other setting, with zen on the left and the
+dashboard on the right. Both words stand there at once: a control that named
+only the view it leads to never said which one you were in. Nothing else marks
+the mode - a page with three tiles on it is visibly a page with three tiles on
+it.
+
 Because there are no section headings any more, **a tile title carries its own
 scope**. Two charts both plot "share of time sitting straight" - one over the
 last half hour, one over whole days - so their titles are composed from the
@@ -170,6 +179,16 @@ straight`.
   over live video (`--scrim` + `blur(6px)`), and `--accent-soft` for a breach row
   wash. Text is never set at reduced opacity - secondary text uses the slate at
   full opacity so contrast stays measurable.
+
+### Segmented, not two buttons
+
+One of two or three, side by side, with the current one raised out of an inset
+track. The state is carried by the value ladder and the ink - track at the inset
+value, pressed segment back up at the inactive-control slate, its label going
+from secondary slate to white - and **never by the accent**: a view switch is
+not one of the six places the 10% budget may be spent. Equal columns, so "the
+left one" stays on the left whatever the two words measure. `Segmented.tsx`
+holds it; `<Button active>` is the coral version and is for something else.
 
 ### Native widgets
 

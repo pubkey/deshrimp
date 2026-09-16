@@ -100,6 +100,16 @@ const readingMigrations = {
 
 /* -------------------------------------------------------------- settings */
 
+/**
+ * Which of the two the page shows _(2026-09-16: „mach einen zen-mode als
+ * default")_.
+ *
+ * `zen` is the camera, the buttons and the three angles, and nothing else.
+ * `dashboard` is that plus the curves, the log, the trend, the thresholds and
+ * the written explanation - everything the page has.
+ */
+export type View = 'zen' | 'dashboard';
+
 /** One document, id `settings`. */
 export type Settings = {
     id: string;
@@ -182,6 +192,16 @@ export type Settings = {
     soundName: SoundName;
     /** Also raise a system notification. */
     notify: boolean;
+    /**
+     * Zen or the full dashboard _(2026-09-16: „im default ist die webseite zu
+     * techlastig mit den vielen daten. mach einen zen-mode als default")_.
+     *
+     * A setting rather than component state, so the choice survives a reload:
+     * whoever switches to the dashboard is looking something up and will be
+     * looking it up again tomorrow. `zen` is the default on a fresh device,
+     * and migration 10 below puts existing devices there too.
+     */
+    view: View;
 };
 
 /**
@@ -207,10 +227,11 @@ export const DEFAULTS: Settings = {
     sound: true,
     soundName: 'furz',
     notify: false,
+    view: 'zen',
 };
 
 const settingsSchema: RxJsonSchema<Settings> = {
-    version: 9,
+    version: 10,
     primaryKey: 'id',
     type: 'object',
     properties: {
@@ -231,9 +252,10 @@ const settingsSchema: RxJsonSchema<Settings> = {
             enum: ['de', 'en', 'es', 'fr', 'it', 'pt',
                 'nl', 'pl', 'tr', 'ru', 'zh', 'ja'],
         },
+        view: { type: 'string', enum: ['zen', 'dashboard'] },
     },
     required: ['id', 'intervalSec', 'maxLean', 'maxForward', 'maxHeadTilt',
-        'sound', 'soundName', 'notify', 'lang', 'windowMin'],
+        'sound', 'soundName', 'notify', 'lang', 'windowMin', 'view'],
 };
 
 /**
@@ -243,7 +265,8 @@ const settingsSchema: RxJsonSchema<Settings> = {
  * v5 narrows the sound set to the four recordings he sent; v6 brings
  * `maxForward` back for the ear-based forward-head measure; v7 adds the
  * averaging window for the live curve; v8 widens the sound enum; v9 widens the
- * language enum from two to twelve.
+ * language enum from two to twelve; v10 adds the view and starts everyone in
+ * zen.
  * Every step keeps the thresholds he set - a schema change must never be the
  * thing that resets his settings, and v3 in particular must not change the
  * language a device is already showing.
@@ -281,6 +304,13 @@ const settingsMigrations = {
     // moving someone to a language they never picked would be the one change a
     // migration must never make.
     9: (old: Record<string, unknown>) => old,
+    // v10 is the one migration that deliberately changes what an existing
+    // device shows, and it is allowed to because that is precisely the ask
+    // _(2026-09-16: „im default ist die webseite zu techlastig")_. A migration
+    // writing 'dashboard' here would keep his own browser on the view he
+    // complained about, and the new default would only ever reach a device he
+    // has never opened. The dashboard is one button away.
+    10: (old: Record<string, unknown>) => ({ ...old, view: 'zen' }),
 };
 
 /**
