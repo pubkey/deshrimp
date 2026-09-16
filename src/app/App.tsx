@@ -1393,10 +1393,10 @@ function History({ readings, intervalSec }: { readings: Reading[]; intervalSec: 
                 )}
             </Panel>
 
-            {/* The table is its own tile: six columns do not belong under the
-                three numbers that summarise them, and in a 330px column it
-                scrolls sideways inside its own card rather than widening the
-                grid. */}
+            {/* The table is its own tile: five columns and a note per row do
+                not belong under the three numbers that summarise them, and in a
+                330px column it scrolls sideways inside its own card rather than
+                widening the grid. */}
             {readings.length === 0 ? null : (
                 <Panel id="daytable" title={`${t.todayTitle} · ${t.showAll}`}>
                     {/* A scrolling log rather than a disclosure. Sixty rows
@@ -1431,9 +1431,17 @@ function History({ readings, intervalSec }: { readings: Reading[]; intervalSec: 
                                         : `${deg(r.lean)} ${r.leanSide === 'left' ? '←' : '→'}`),
                                 },
                                 { key: 'headTilt', label: t.colHead, align: 'num', render: (r: Reading) => deg(r.headTilt) },
-                                { key: 'advice', label: t.colAdvice, render: (r: Reading) => adviceText(r.advice, t) },
                             ]}
                             rows={rows}
+                            /* The advice was a sixth column _(2026-09-16, his
+                               call: „in the table remove the note column and
+                               instead show the note as fullwidth so that it
+                               fits")_. A whole sentence in the last column of a
+                               330px tile wrapped to four lines and pushed the
+                               five columns that carry numbers into sideways
+                               scrolling; under its row, across the full width,
+                               it reads in one or two. */
+                            note={(r: Reading) => adviceText(r.advice, t)}
                         />
                     </div>
                 </Panel>

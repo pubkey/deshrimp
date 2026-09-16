@@ -77,7 +77,6 @@ export const pt: Copy = {
     colForward: 'Frente',
     colLean: 'Lado',
     colHead: 'Cabeça',
-    colAdvice: 'Nota',
 
     trendTitle: 'Evolução ao longo dos dias',
     trendSubtitleEmpty: 'Se alguma coisa muda, só se vê ao longo de semanas.',

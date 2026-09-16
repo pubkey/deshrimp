@@ -77,7 +77,6 @@ export const pl: Copy = {
     colForward: 'Przód',
     colLean: 'Bok',
     colHead: 'Głowa',
-    colAdvice: 'Uwaga',
 
     trendTitle: 'Przebieg przez dni',
     trendSubtitleEmpty: 'Czy coś się zmienia, widać dopiero przez tygodnie.',

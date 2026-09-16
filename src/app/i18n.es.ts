@@ -77,7 +77,6 @@ export const es: Copy = {
     colForward: 'Delante',
     colLean: 'Lateral',
     colHead: 'Cabeza',
-    colAdvice: 'Nota',
 
     trendTitle: 'Evolución por días',
     trendSubtitleEmpty: 'Si algo cambia solo se ve a lo largo de semanas.',

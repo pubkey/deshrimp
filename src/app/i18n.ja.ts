@@ -77,7 +77,6 @@ export const ja: Copy = {
     colForward: '前',
     colLean: '横',
     colHead: '頭',
-    colAdvice: '内容',
 
     trendTitle: '日ごとの推移',
     trendSubtitleEmpty: '変わってきているかどうかは、数週間たたないと見えません。',

@@ -15,6 +15,13 @@
  *   `render(row, i)` puts a component in a cell; `value(row)` gives the sorter
  *   something comparable when the cell is not plain text.
  * - `rows` - the data. `row.id` is the React key when present.
+ * - `note(row, i)` - a sentence that gets **its own full-width row** under the
+ *   row it belongs to, spanning every column. A long sentence in a narrow
+ *   column of its own would wrap to four lines and push the table into
+ *   sideways scrolling; across the whole width it just fits. Full width is the
+ *   width you can see: the `<div>` in that cell is sized and pinned against the
+ *   wrapper, so the sentence stays readable even while the columns scroll
+ *   sideways under it (`theme.css`, `.ui-table-note`).
  * - `align: 'num'` - right-aligned, tabular figures. Use it for every number.
  * - `sort={false}` on a column, or `sortable={false}` on the table, for data
  *   whose order carries meaning (a day plan, a route).
@@ -35,12 +42,16 @@
  * ```
  *
  * ## Changelog
+ * - 2026-09-16 `note` - a full-width row under its row, for the one piece of
+ *   prose that does not belong in a column. Striping moved from
+ *   `:nth-child(even)` to a class the component sets, because a row and its
+ *   note have to share one stripe.
  * - 2026-09-08 Its fixed words come from `lang.ts`, so they follow the page's
  *   language. German is still the default.
  * - 2026-08-31 Own file.
  */
 
-import { useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { cx } from './cx';
 import { Empty } from './Empty';
 import type { Base, ReactNode } from './_types';
@@ -67,6 +78,8 @@ export type TableProps<R = any> = Base & {
     striped?: boolean;
     /** `false` when the row order itself is the information. */
     sortable?: boolean;
+    /** Prose for a full-width row under `row`. Nothing returned, no row. */
+    note?: (row: R, i: number) => ReactNode;
     sortKey?: string;
     sortDir?: 1 | -1;
     emptyText?: string;
@@ -131,15 +144,29 @@ export function Table<R extends Record<string, any>>(props: TableProps<R>) {
                     </tr>
                 </thead>
                 <tbody>
-                    {rows.map((r, i) => (
-                        <tr key={r.id != null ? r.id : i} className={r.recommended ? 'rec' : undefined}>
-                            {cols.map((c) => (
-                                <td key={c.key} className={c.align === 'num' ? 'num' : undefined}>
-                                    {c.render ? c.render(r, i) : r[c.key]}
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
+                    {rows.map((r, i) => {
+                        const note = props.note ? props.note(r, i) : null;
+                        /* The stripe is a class rather than `:nth-child(even)`,
+                           because a row and its note are two `<tr>` that have to
+                           come out one colour. */
+                        const alt = i % 2 === 1 ? 'alt' : undefined;
+                        return (
+                            <Fragment key={r.id != null ? r.id : i}>
+                                <tr className={cx(r.recommended && 'rec', alt, note && 'has-note')}>
+                                    {cols.map((c) => (
+                                        <td key={c.key} className={c.align === 'num' ? 'num' : undefined}>
+                                            {c.render ? c.render(r, i) : r[c.key]}
+                                        </td>
+                                    ))}
+                                </tr>
+                                {note ? (
+                                    <tr className={cx('ui-table-note', r.recommended && 'rec', alt)}>
+                                        <td colSpan={cols.length}><div>{note}</div></td>
+                                    </tr>
+                                ) : null}
+                            </Fragment>
+                        );
+                    })}
                 </tbody>
             </table>
             {!rows.length ? <Empty title={props.emptyText || uiText().noEntries} /> : null}

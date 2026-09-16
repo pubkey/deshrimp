@@ -77,7 +77,6 @@ export const ru: Copy = {
     colForward: 'Вперёд',
     colLean: 'Вбок',
     colHead: 'Голова',
-    colAdvice: 'Примечание',
 
     trendTitle: 'Динамика по дням',
     trendSubtitleEmpty: 'Меняется ли что-то, видно только за недели.',
