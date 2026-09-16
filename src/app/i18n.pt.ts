@@ -123,6 +123,11 @@ export const pt: Copy = {
     leavesTitle: 'O que sai deste aparelho',
     leavesText: 'Nada. O modelo fica aqui depois do primeiro carregamento, cada imagem é analisada aqui e descartada logo a seguir, e só os números são guardados - neste navegador, não num servidor nem no repositório. Nenhuma imagem, nenhum vídeo, nenhum som, nenhum pedido para fora, nenhuma chave de que tenhas de tratar.',
 
+    dashboardLabel: 'Dashboard',
+    zenLabel: 'Zen',
+    toDashboard: 'Mostrar os números, o histórico e as definições',
+    toZen: 'Mostrar só a câmara e os ângulos',
+
     howItWorks: 'Como isto funciona',
     inShort: 'Em resumo',
     saveReadings: 'Exportar medições',

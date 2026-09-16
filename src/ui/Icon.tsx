@@ -38,6 +38,10 @@
  * ```
  *
  * ## Changelog
+ * - 2026-09-16 `grid` and `minimize`, for the switch between the dashboard and
+ *   zen. Two shapes rather than one arrow both ways: the button says which of
+ *   the two it leads to, and a glyph that changes meaning with its direction
+ *   says nothing at a glance.
  * - 2026-09-16 `share` is the three-node graph, not the tray and arrow.
  * - 2026-09-15 Own file, and the end of emoji in the interface.
  * - 2026-09-15 `minus` and `plus`, for the slider's stepper. Drawn rather than
@@ -187,6 +191,25 @@ const PATHS = {
         <>
             <path d="M18 6 6 18" />
             <path d="m6 6 12 12" />
+        </>
+    ),
+    /* The two views, each drawn as its own shape rather than as an arrow: four
+       tiles for the dashboard, and the same frame pulled back in on itself for
+       zen. Lucide's `layout-grid` and `minimize-2`. */
+    grid: (
+        <>
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+        </>
+    ),
+    minimize: (
+        <>
+            <polyline points="4 14 10 14 10 20" />
+            <polyline points="20 10 14 10 14 4" />
+            <path d="M14 10 21 3" />
+            <path d="M3 21 10 14" />
         </>
     ),
 } as const;

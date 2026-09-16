@@ -140,6 +140,13 @@ Every tile carries a **stable, untranslated id** (`video`, `daychart`,
 not. Nothing spans two columns: two columns plus the gap is 684px, past what a
 tile is allowed to be.
 
+**The grid has two lengths.** Zen is the three tiles that answer the question
+the page is opened with; the dashboard is every tile it has. The switch between
+them is one ghost button centred under the grid, one grid gap below the last
+tile, and it names the view it leads to rather than the one you are in. Nothing
+else marks the mode: a page with three tiles on it is visibly a page with three
+tiles on it.
+
 Because there are no section headings any more, **a tile title carries its own
 scope**. Two charts both plot "share of time sitting straight" - one over the
 last half hour, one over whole days - so their titles are composed from the

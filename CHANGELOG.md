@@ -6,6 +6,58 @@ bundler. They are copied here unchanged rather than rewritten, because a
 reconstructed history is worse than an awkward one - but note that paths and
 build commands they mention belong to that older setup, not to this project.
 
+## 2026-09-16 (Nachtrag 3) - Zen ist der Normalzustand, das Dashboard ist der Knopf
+
+### Neu
+- **Die Seite startet im Zen-Modus: Kamera, Startknopf, drei Winkel, sonst
+  nichts** _(„im default ist die webseite zu techlastig mit den vielen daten.
+  mach einen zen-mode als default der nur video, start-tile und current
+  degree-conten anzeigt. zudem einen button um zum dashboardmode zu
+  wechseln")_. Die Frage, mit der man die Seite morgens aufmacht, ist „sitze
+  ich gerade", und die beantworten das Bild und die drei Zahlen darunter. Die
+  Kurven, das Protokoll, der Verlauf über die Tage und die Grenzen beantworten
+  Fragen, die man absichtlich stellt, und stehen deshalb nicht mehr im Weg,
+  wenn man sie nicht stellt. Aus achtzehn Kacheln werden drei.
+- **Ein Knopf unter dem Raster, „Dashboard" und zurück „Zen"** _(seine Wahl:
+  unter den Kacheln, nicht in der Kopfleiste)_. Die Kopfleiste ist der Rahmen
+  der Seite - Teilen, Thema, Sprache -, und ein Schalter, der ändert, *was die
+  Seite ist*, liest sich am Ende dessen besser, was er geändert hat. Ein
+  Ghost-Knopf, denn das Korallrot ist ein Budget und wird am Kamerafeld für den
+  Grenzfall gebraucht. Das Wort sagt, wohin es geht, der Titel sagt, was einen
+  dort erwartet.
+- **`view` in den Einstellungen**, Schema v10. Die Wahl liegt bei den
+  Einstellungen und nicht im Komponentenzustand, weil sie ein Neuladen
+  überleben soll: wer etwas nachschaut, schaut es morgen wieder nach.
+- **Zwei Zeichen mehr in `Icon.tsx`**: `grid` (vier Kacheln) und `minimize`
+  (derselbe Rahmen, nach innen gezogen). Zwei Formen statt eines Pfeils, der
+  einmal so und einmal andersherum zeigt - ein Zeichen, das seine Bedeutung mit
+  der Richtung wechselt, sagt auf einen Blick gar nichts.
+- **Vier Schlüssel in allen zwölf Tabellen**: `dashboardLabel`, `zenLabel`,
+  `toDashboard`, `toZen`. „Dashboard" und „Zen" sind seine eigenen zwei Wörter
+  und bleiben in jeder Sprache dieselben, nur die Schrift wechselt mit ihr:
+  „Дашборд"/„Дзен", „仪表盘"/„禅", „ダッシュボード"/„禅". Lateinisch gesetzt
+  mitten in einem japanischen Satz wäre es ein Fremdkörper und kein Etikett.
+
+### Geändert
+- **Migration v10 setzt auch bestehende Geräte auf Zen**, und das ist die eine
+  Migration hier, die absichtlich ändert, was ein Gerät zeigt. Die Regel der
+  anderen neun ist, dass ein Schemawechsel niemandem die Ansicht unter den
+  Füßen wegzieht; hier ist genau das die Bitte. Stünde „dashboard" in der
+  Migration, bliebe sein eigener Browser auf der Ansicht, über die er sich
+  beschwert hat, und der neue Normalzustand erreichte nur ein Gerät, das er nie
+  geöffnet hat. Das Dashboard ist einen Knopf weit weg.
+- **Im Zen-Modus werden die versteckten Kacheln gar nicht erst gerendert**,
+  nicht per CSS ausgeblendet. Die Verlaufskachel fragt jeden je
+  aufgezeichneten Tag ab, und eine ruhige Seite soll nicht für ein Diagramm
+  zahlen, das niemand ansieht.
+- **Der Erklärtext („Kurz gesagt" und die fünf Schritte) gehört zum
+  Dashboard.** Er ist einmal lesenswert und danach sechs Kacheln Prosa
+  zwischen ihm und der Kamera.
+- Was im Zen-Modus stehen bleibt: die Tonauswahl in der Startkachel, weil sie
+  zu „was das Ding tut, während ich hier sitze" gehört, und die beiden Knöpfe
+  oben rechts für Sichern und Löschen, weil sie zum Rahmen gehören und nicht zu
+  den Daten auf der Seite.
+
 ## 2026-09-16 (Nachtrag 2) - die Unterzeile sagt, was die Seite tut
 
 ### Geändert

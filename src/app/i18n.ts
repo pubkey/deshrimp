@@ -183,6 +183,17 @@ const de = {
     leavesText: 'Nichts. Das Modell liegt nach dem ersten Laden hier, jedes Bild wird hier ausgewertet und sofort verworfen, und gespeichert werden nur die Zahlen - in diesem Browser, nicht auf einem Server und nicht im Repo. Kein Bild, kein Video, kein Ton, keine Anfrage nach draußen, kein Schlüssel, um den du dich kümmern müsstest.',
 
     /* --- page furniture ------------------------------------------------- */
+    /* --- the two views ------------------------------------------------- */
+    /* His own two words for them _(2026-09-16)_, and the same two words in
+       every language - transliterated where the script is, because „Dashboard"
+       set in Latin inside a Japanese sentence is a foreign body rather than a
+       label. The long ones are what the button carries as its `title`: the
+       short word says where you land, the sentence says what you get there. */
+    dashboardLabel: 'Dashboard',
+    zenLabel: 'Zen',
+    toDashboard: 'Zahlen, Verlauf und Einstellungen zeigen',
+    toZen: 'Nur Kamera und Winkel zeigen',
+
     howItWorks: 'So funktioniert das',
     inShort: 'Kurz gesagt',
     saveReadings: 'Messungen sichern',
@@ -330,6 +341,11 @@ const en: Copy = {
 
     leavesTitle: 'What leaves this device',
     leavesText: 'Nothing. The model sits here after the first load, every picture is read here and discarded immediately, and only the numbers are stored - in this browser, not on a server and not in the repo. No picture, no video, no audio, no request going out, and no key for you to look after.',
+
+    dashboardLabel: 'Dashboard',
+    zenLabel: 'Zen',
+    toDashboard: 'Show the numbers, the history and the settings',
+    toZen: 'Show the camera and the angles only',
 
     howItWorks: 'How this works',
     inShort: 'In short',

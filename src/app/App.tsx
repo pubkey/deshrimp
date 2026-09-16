@@ -45,6 +45,7 @@ import {
 import {
     DEFAULTS, openDatabase, SETTINGS_ID,
     type Day, type Reading, type Settings, type SoundName, type Verdict,
+    type View,
 } from './db';
 import { LineChart, formatNumber, withUnit } from '@charts';
 import { copyFor, localeFor, LANGUAGES, type Copy, type Lang } from './i18n';
@@ -919,6 +920,8 @@ function Live() {
     const verdict: Verdict | null = last && running ? last.verdict : null;
     useVerdictFavicon(verdict);
 
+    const view: View = settings.view || 'zen';
+
     return (
         <>
             {/* The first load blocks everything below it - no measurement can
@@ -1063,14 +1066,30 @@ function Live() {
                 )}
             </Panel>
 
-            <Recent readings={today} windowMin={settings.windowMin}
-                change={change} />
+            {/* Everything below this line is the dashboard _(2026-09-16: „im
+                default ist die webseite zu techlastig mit den vielen daten")_.
+                The three tiles above it are what zen keeps: the picture, the
+                button that starts it, and the three angles the picture just
+                produced. Those answer „sitze ich gerade"; the curves, the log,
+                the trend and the thresholds answer questions you ask on
+                purpose, and they are one button away at the foot of the page.
 
-            <History readings={today} intervalSec={settings.intervalSec} />
+                They are not rendered at all rather than hidden with CSS: the
+                trend tile runs its own query over every day ever recorded, and
+                a zen page should not be paying for a chart nobody is looking
+                at. */}
+            {view === 'dashboard' ? (
+                <>
+                    <Recent readings={today} windowMin={settings.windowMin}
+                        change={change} />
 
-            <Trend />
+                    <History readings={today} intervalSec={settings.intervalSec} />
 
-            <Setup settings={settings} change={change} />
+                    <Trend />
+
+                    <Setup settings={settings} change={change} />
+                </>
+            ) : null}
         </>
     );
 }
@@ -1623,15 +1642,52 @@ function Setup(props: SetupProps) {
     );
 }
 
+/* ------------------------------------------------------------------ views */
+
+/**
+ * The one line under the grid: the way from zen to the dashboard and back.
+ *
+ * **Under the tiles, not in the top bar** _(2026-09-16, his call)_. The top bar
+ * is where the page's chrome lives - share, theme, language - and a control
+ * that changes what the page *is* reads better at the end of what it changed:
+ * in zen you have looked at the picture and the three angles and now want the
+ * rest, and in the dashboard you have scrolled past all of it.
+ *
+ * A ghost button, because the accent is a budget and the camera well spends it
+ * on a breach. The word says where the button leads, the `title` says what you
+ * get there, and the glyph is two shapes rather than one arrow turned around.
+ */
+function ViewSwitch({ view, change }: { view: View; change: (v: View) => void }) {
+    const t = useCopy();
+    const zen = view === 'zen';
+    return (
+        <Row justify="center" className="haltung-viewswitch">
+            <Button
+                variant="ghost"
+                icon={<Icon name={zen ? 'grid' : 'minimize'} />}
+                title={zen ? t.toDashboard : t.toZen}
+                onClick={() => change(zen ? 'dashboard' : 'zen')}
+            >
+                {zen ? t.dashboardLabel : t.zenLabel}
+            </Button>
+        </Row>
+    );
+}
+
 /* ------------------------------------------------------------------- page */
 
 /**
- * The page shell, and the one place the language is decided.
+ * The page shell, and the one place the language and the view are decided.
  *
  * It reads the settings document itself rather than taking the language from
  * `<Live>`: the title and the intro both sit outside `<Live>`, and they have to
  * switch with everything else. `<Page lang>` carries it into the frame so the
  * share button and the confirm dialog switch with them.
+ *
+ * The view is read here for the same reason - half of what zen hides sits in
+ * `<Live>` and the other half (the intro and the five steps) sits below it -
+ * and `<Live>` reads it out of the same document rather than being handed it,
+ * so there is one answer to „which view" and not two that can disagree.
  */
 function Content() {
     const data = pageData<Data>();
@@ -1645,6 +1701,14 @@ function Content() {
     const lang: Lang = storedSettings[0]?.lang || DETECTED;
     const t = copyFor(lang);
     const written = data[lang] || data.en;
+    /* Zen unless the stored settings say otherwise, which is also what a device
+       with no settings document yet gets. */
+    const view: View = storedSettings[0]?.view || 'zen';
+    const patch = (fields: Partial<Settings>) => void writeSettings({
+        ...(storedSettings[0] || INITIAL_SETTINGS),
+        ...fields,
+        id: SETTINGS_ID,
+    });
 
     return (
         <LangContext.Provider value={lang}>
@@ -1653,11 +1717,7 @@ function Content() {
                     width="full"
                     lang={lang}
                     languages={LANGUAGES.map((l) => l.value)}
-                    onLangChange={(next) => void writeSettings({
-                        ...(storedSettings[0] || INITIAL_SETTINGS),
-                        lang: next,
-                        id: SETTINGS_ID,
-                    })}
+                    onLangChange={(next) => patch({ lang: next })}
                     title={t.title}
                     subtitle={t.subtitle}
                     actions={
@@ -1682,7 +1742,9 @@ function Content() {
                         order here is the order they flow in, and reading order
                         is the only thing that still decides what comes first,
                         because the number of columns is the window's business
-                        rather than ours.
+                        rather than ours. In zen the grid is three tiles long
+                        and the rest of this is not rendered at all; the switch
+                        under it brings them back.
 
                         The live state leads - this page is a tool, and what it
                         is for is what it currently says. The explanation is
@@ -1692,21 +1754,32 @@ function Content() {
                     <Tiles>
                         <Live />
 
-                        <Panel id="inshort" title={t.inShort}>
-                            <Text small>{written.intro}</Text>
-                        </Panel>
+                        {/* The written explanation belongs to the dashboard
+                            _(2026-09-16, his call)_. It is worth reading once
+                            and is then six tiles of prose between him and the
+                            camera every morning. */}
+                        {view === 'dashboard' ? (
+                            <>
+                                <Panel id="inshort" title={t.inShort}>
+                                    <Text small>{written.intro}</Text>
+                                </Panel>
 
-                        {/* The five steps are five tiles rather than a grid
-                            inside one: each is two lines, and five small tiles
-                            are exactly what fills the ragged end of a wide
-                            row. The id is positional because the titles are
-                            translated and an id must not be. */}
-                        {written.steps.map((step, i) => (
-                            <Panel key={step.title} id={`step${i + 1}`} title={step.title}>
-                                <Text small>{step.text}</Text>
-                            </Panel>
-                        ))}
+                                {/* The five steps are five tiles rather than a
+                                    grid inside one: each is two lines, and five
+                                    small tiles are exactly what fills the ragged
+                                    end of a wide row. The id is positional
+                                    because the titles are translated and an id
+                                    must not be. */}
+                                {written.steps.map((step, i) => (
+                                    <Panel key={step.title} id={`step${i + 1}`} title={step.title}>
+                                        <Text small>{step.text}</Text>
+                                    </Panel>
+                                ))}
+                            </>
+                        ) : null}
                     </Tiles>
+
+                    <ViewSwitch view={view} change={(next) => patch({ view: next })} />
                 </Page>
             </CopyContext.Provider>
         </LangContext.Provider>

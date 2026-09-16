@@ -123,6 +123,11 @@ export const nl: Copy = {
     leavesTitle: 'Wat dit apparaat verlaat',
     leavesText: 'Niets. Het model staat na de eerste keer laden hier, elk beeld wordt hier bekeken en meteen weggegooid, en alleen de getallen worden bewaard - in deze browser, niet op een server en niet in de repo. Geen beeld, geen video, geen geluid, geen verzoek naar buiten, en geen sleutel waar jij op moet passen.',
 
+    dashboardLabel: 'Dashboard',
+    zenLabel: 'Zen',
+    toDashboard: 'De cijfers, het verloop en de instellingen tonen',
+    toZen: 'Alleen de camera en de hoeken tonen',
+
     howItWorks: 'Zo werkt het',
     inShort: 'Kort gezegd',
     saveReadings: 'Metingen exporteren',
