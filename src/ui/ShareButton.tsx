@@ -7,9 +7,9 @@
  * Pressing it opens `<ShareDialog>`.
  *
  * The word survives as the `title` and the `aria-label`, which is the whole
- * reason an icon-only button is allowed to be one: the tray-and-arrow is the
- * most conventional glyph on the web, and a button whose only content is a
- * glyph is still unusable without words underneath it.
+ * reason an icon-only button is allowed to be one: the three-node graph is a
+ * convention rather than a picture of anything, and a button whose only
+ * content is a glyph is unusable without words underneath it.
  *
  * It is a **deliberate act, never automatic**: the URL is the page's only
  * access control, so nothing here copies or transmits a link on its own. He
@@ -31,6 +31,7 @@
  * ```
  *
  * ## Changelog
+ * - 2026-09-16 The glyph is the three-node graph _(his call)_.
  * - 2026-09-15 The glyph alone, and it is a drawn `<Icon>`: this button had
  *   kept its `⤴` through the sweep that took unicode affordances out of the
  *   rest of the interface.
