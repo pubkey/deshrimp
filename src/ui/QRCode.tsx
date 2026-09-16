@@ -9,13 +9,13 @@
  *
  * ## Core parts
  * - `value` - the URL. Too long a URL yields no matrix; the component then
- *   renders `fallback`, or nothing when there is none.
+ *   renders `fallback`, or nothing when there is none. An empty value is the
+ *   same case: a code of nothing is worth less than the words in its place.
  * - `fallback` - what to show instead when the value does not fit into a code.
  *   Worth passing wherever the QR is the point of the block: a silent gap
  *   leaves the reader thinking the page is broken.
  * - `size` - pixel size of the square, default 208.
- * - the encoder is `qr.js`, ours, loaded on the same tier as the library and
- *   read off `window.QR`.
+ * - the encoder is `qr.ts`, ours, imported like anything else.
  *
  * ## Examples
  * ```tsx
@@ -24,6 +24,8 @@
  * ```
  *
  * ## Changelog
+ * - 2026-09-16 The encoder is imported rather than read off `window.QR`, which
+ *   nothing ever set: every code fell through to the fallback.
  * - 2026-09-08 Its fixed words come from `lang.ts`, so they follow the page's
  *   language. German is still the default.
  * - 2026-08-31 `fallback`, for a block whose whole point is the code.
@@ -34,11 +36,7 @@ import { useMemo } from 'react';
 import { cx } from './cx';
 import type { ReactNode } from './_types';
 import { uiText } from './lang';
-
-type QRLib = {
-    matrix: (value: string) => { size: number } | null;
-    svgPath: (code: any) => string;
-};
+import { qrMatrix, qrSvgPath } from './qr';
 
 export type QRCodeProps = {
     value?: string;
@@ -51,9 +49,8 @@ export type QRCodeProps = {
 
 export function QRCode({ value, size, label, className, fallback }: QRCodeProps) {
     const v = value || '';
-    const QR = (globalThis as any).QR as QRLib | undefined;
-    const code = useMemo(() => (QR ? QR.matrix(v) : null), [v]);
-    if (!code || !QR) return <>{fallback || null}</>;
+    const code = useMemo(() => (v ? qrMatrix(v) : null), [v]);
+    if (!code) return <>{fallback || null}</>;
 
     const quiet = 4;
     const total = code.size + quiet * 2;
@@ -69,7 +66,7 @@ export function QRCode({ value, size, label, className, fallback }: QRCodeProps)
         >
             <rect width={total} height={total} fill="#ffffff" />
             <g transform={`translate(${quiet},${quiet})`} fill="#111111">
-                <path d={QR.svgPath(code)} />
+                <path d={qrSvgPath(code)} />
             </g>
         </svg>
     );

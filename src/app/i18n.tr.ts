@@ -3,8 +3,7 @@ import type { Copy } from './i18n';
 
 export const tr: Copy = {
     title: 'Dik otur karides! 🦐',
-    subtitleA: ' duruş çalışman için. Algılamayı yerel bir yapay zekâ yapar, kayıt ise ',
-    subtitleB: ' ile tutulur.',
+    subtitle: 'Web kameran üzerinden nasıl oturduğuna bakar ve kamburunu çıkardığında ses çıkarır. Hiçbir şey cihazından çıkmaz.',
 
     whatThisDoes: 'Bu sayfa ne yapıyor',
     leaveOpen: 'Bu sayfa web kameran üzerinden nasıl oturduğuna bakar ve başın fazla öne geldiğinde ya da yana yattığında ses çıkarır. Bunun için açık kalması gerekir - en iyisi kendi sekmesinde, çalıştığın şeyin yanında. Sekmedeki simge yeşile ya da kırmızıya döner, yani sekmeye geçmeden de durumu görürsün.',
@@ -21,8 +20,6 @@ export const tr: Copy = {
     stop: 'Durdur',
     checkNow: 'Şimdi kontrol et',
     checking: 'Kare inceleniyor …',
-    nextIn: (s: number) => `Sonraki kontrole ${s} sn`,
-    lastAt: (t: string) => `Son ${t}`,
 
     cameraTitle: 'Kamera',
     analysisFailed: 'İnceleme başarısız oldu',

@@ -6,6 +6,83 @@ bundler. They are copied here unchanged rather than rewritten, because a
 reconstructed history is worse than an awkward one - but note that paths and
 build commands they mention belong to that older setup, not to this project.
 
+## 2026-09-16 (Nachtrag 2) - die Unterzeile sagt, was die Seite tut
+
+### Geändert
+- **Die Unterzeile unter der Überschrift nennt weder Local-First noch RxDB**
+  _(„change the subtitle from „local-first app to train..." to sth non
+  technocal that does not describe rxdb or tech stuff and instead talks about
+  what the app does")_. Sie lautete „App fürs Haltungstraining. Erkennung durch
+  eine lokale KI, gespeichert wird mit RxDB." und war um zwei Links herum aus
+  drei Stücken zusammengesetzt. Das beschrieb den Bau, nicht die Sache: wer die
+  Wörter kennt, weiß es ohnehin, und wer sie nicht kennt, erfährt nichts.
+  Stattdessen steht dort jetzt ein Satz darüber, was die Seite tut, und einer
+  darüber, wo die Bilder bleiben: „Schaut über die Webcam zu, wie du sitzt, und
+  gibt einen Ton, wenn du zusammenklappst. Nichts verlässt dein Gerät." Das
+  Versprechen, das „Local-First" gemeint hat, steht damit immer noch da, nur in
+  Worten, die jeder liest.
+- **Aus `subtitleA` und `subtitleB` wird `subtitle`**, in allen zwölf Tabellen.
+  Die Dreiteilung gab es nur, damit die beiden Links dazwischen passen; ohne
+  sie ist es ein Satz, und `<Page subtitle>` bekommt eine Zeichenkette statt
+  eines Fragments. Die Ausnahme für das deutsche „Local-First-App" fällt
+  ebenfalls weg.
+- Die beiden Links auf rxdb.info sind damit von der Seite verschwunden. Das
+  ist die Folge der Bitte, nicht ein zusätzlicher Schritt.
+
+## 2026-09-16 (Nachtrag) - zwei Zeilen weniger neben den Knöpfen
+
+### Entfernt
+- **„Nächste Prüfung in 12 s" und „Zuletzt 14:32" stehen nicht mehr neben
+  Start und Stopp** _(„remove „last check" and „nect check in" texts")_. Beide
+  sagten etwas, das anderswo schon steht: der Countdown ist seit gestern der
+  Ring um das Kamerafeld, gleichmäßig gezeichnet statt einmal pro Sekunde
+  hochgezählt, und die Uhrzeit der letzten Messung steht in der ersten Zeile
+  des Protokolls darunter. Was an der Stelle bleibt, ist „Bild wird
+  ausgewertet …", denn das ist der einzige Zustand, für den es sonst kein
+  Zeichen gibt.
+- `nextIn` und `lastAt` sind aus allen zwölf Tabellen raus.
+
+### Geändert
+- **Die Seite rendert nicht mehr jede Sekunde neu.** `secondsLeft` war ein
+  `useState`, das nur diese eine Zeile gefüttert hat, und der Takt schrieb es
+  im Sekundentakt. Der Kommentar daneben behauptete schon immer, der Zähler
+  liege in einem Ref, „weil der Takt ihn jede Sekunde liest und schreibt und
+  die Seite dafür nicht neu zeichnen darf" - das stimmte für `left.current` und
+  wurde von `setSecondsLeft` direkt daneben aufgehoben. Jetzt stimmt es.
+
+## 2026-09-16 - der QR-Code im Teilen-Fenster
+
+### Behoben
+- **Der Teilen-Knopf behauptete immer, die Adresse sei zu lang für einen
+  QR-Code** _(„share button says this text is too long for qr code, fix
+  that")_. Sie war es nie: `https://deshrimp.com/` sind einundzwanzig Zeichen,
+  und selbst Version 1 nimmt siebzehn. Es gab schlicht keinen Encoder. Sowohl
+  `<ShareDialog>` als auch `<QRCode>` lasen ihn von `window.QR`, das in diesem
+  Repo nirgends gesetzt wird - der Rest des alten Generator-Setups, aus dem die
+  App im September herausgezogen wurde, wo die Bibliothek als Global in die
+  HTML-Datei eingesetzt wurde. Der Encoder war der eine Teil, der beim Umzug
+  auf Vite nicht mitkam. Das Ergebnis war kein Fehler, sondern genau der Satz,
+  den der Fallback für den echten Grenzfall bereithält, und deshalb sah er
+  plausibel aus.
+
+### Neu
+- **`src/ui/qr.ts`, der Encoder selbst.** Byte-Modus, Versionen 1 bis 40, alle
+  vier Fehlerkorrekturstufen, die acht Masken und die Bewertung, die zwischen
+  ihnen entscheidet. Eigener Code statt einer Abhängigkeit: es sind vierzig
+  Zeilen Tabelle und zweihundert Zeilen Arithmetik, die sich nicht mehr ändern,
+  sobald sie stimmen. Geprüft wurde gegen eine fremde Implementierung, Matrix
+  für Matrix, über 93 Fälle vom leeren Rand bis zur vollen Version 40, Maskenwahl
+  eingeschlossen; danach noch einmal andersherum, indem ein Scanner die
+  gerenderte Seite wieder gelesen hat.
+- **Die Stufe steigt, wenn Platz ist.** Zuerst die kleinste Version, die den
+  Link hält, dann innerhalb dieser Version die höchste Fehlerkorrektur, die
+  noch hineinpasst. Das Quadrat wird dadurch nicht größer, der Code verträgt
+  aber einen Daumen in der Ecke.
+- **Zu lang heißt jetzt wirklich zu lang.** Der Hinweis erscheint ab 2953
+  Bytes, der Kapazität einer Version 40 auf Stufe L. Darunter gibt es einen
+  Code, darüber gibt es keinen, und der Link darunter funktioniert in beiden
+  Fällen.
+
 ## 2026-09-09 - kein Lockfile
 
 ### Geändert

@@ -17,6 +17,7 @@ export {deDate, daysSince} from './dates';
 export {mapsUrl, directionsUrl, prettyUrl} from './links';
 export {PAGE, mount} from './page-data';
 export {setUiLang, uiLang, uiText, uiLocale, preferredUiLang, type UiLang, type UiText} from './lang';
+export {qrMatrix, qrSvgPath, qrFits, QR_MAX_BYTES, type QRLevel, type QRMatrixCode} from './qr';
 
 export {AsOf} from './AsOf';
 export {Badge} from './Badge';

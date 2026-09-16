@@ -53,13 +53,12 @@ const de = {
     /* --- identity ------------------------------------------------------- */
     title: 'Sitz aufrecht du Garnele! 🦐',
     /**
-     * The subtitle is assembled in `index.tsx` around two links - „Local-First"
-     * and „RxDB" - so it arrives here in three pieces rather than as one
-     * string. The link words themselves are not translated: they are the names
-     * of the things they point at.
+     * One plain sentence about what the page does, and one about where the
+     * pictures stay _(2026-09-16, his call)_. It used to name Local-First and
+     * RxDB and link to both, which told a reader who already knew those words
+     * how the thing is built, and a reader who did not, nothing at all.
      */
-    subtitleA: 'App fürs Haltungstraining. Erkennung durch eine lokale KI, gespeichert wird mit ',
-    subtitleB: '.',
+    subtitle: 'Schaut über die Webcam zu, wie du sitzt, und gibt einen Ton, wenn du zusammenklappst. Nichts verlässt dein Gerät.',
 
     /* --- live ----------------------------------------------------------- */
     whatThisDoes: 'Was das hier macht',
@@ -77,8 +76,6 @@ const de = {
     stop: 'Stoppen',
     checkNow: 'Jetzt prüfen',
     checking: 'Bild wird ausgewertet …',
-    nextIn: (s: number) => `Nächste Prüfung in ${s} s`,
-    lastAt: (t: string) => `Zuletzt ${t}`,
 
     cameraTitle: 'Kamera',
     analysisFailed: 'Die Auswertung hat nicht geklappt',
@@ -214,8 +211,7 @@ export type Copy = typeof de;
 
 const en: Copy = {
     title: 'Sit straight shrimp! 🦐',
-    subtitleA: ' app to train your posture. Uses local AI for detection and ',
-    subtitleB: ' for storage.',
+    subtitle: 'Watches how you sit through your webcam and makes a noise when you fold up. Nothing leaves your device.',
 
     whatThisDoes: 'What this does',
     leaveOpen: 'This page watches how you sit through your webcam and makes a noise when your head is too far forward or you tip to one side. It has to stay open to do that - best in its own browser tab, next to whatever you are working on. The tab icon turns green or red, so you can see how it is going without switching to it.',
@@ -232,8 +228,6 @@ const en: Copy = {
     stop: 'Stop',
     checkNow: 'Check now',
     checking: 'Reading the picture …',
-    nextIn: (s: number) => `Next check in ${s} s`,
-    lastAt: (t: string) => `Last at ${t}`,
 
     cameraTitle: 'Camera',
     analysisFailed: 'The analysis did not work',

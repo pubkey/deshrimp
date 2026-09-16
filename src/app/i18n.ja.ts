@@ -3,8 +3,7 @@ import type { Copy } from './i18n';
 
 export const ja: Copy = {
     title: '背すじを伸ばせ、エビ！🦐',
-    subtitleA: '。姿勢を整えるためのアプリで、検出はローカルの AI、保存は ',
-    subtitleB: ' が担当します。',
+    subtitle: 'ウェブカメラであなたの座り方を見ていて、背中が丸まると音を鳴らします。何もこの端末から出ていきません。',
 
     whatThisDoes: 'このページがすること',
     leaveOpen: 'このページはウェブカメラであなたの座り方を見ていて、頭が前に出すぎたり、体が横に傾いたりすると音を鳴らします。そのためには開いたままにしておく必要があります - 作業しているものの隣に、専用のタブで置いておくのがいちばんです。タブのアイコンが緑や赤に変わるので、切り替えなくても様子がわかります。',
@@ -21,8 +20,6 @@ export const ja: Copy = {
     stop: '停止',
     checkNow: 'いますぐチェック',
     checking: '画像を解析中 …',
-    nextIn: (s: number) => `次のチェックまで ${s} 秒`,
-    lastAt: (t: string) => `最後は ${t}`,
 
     cameraTitle: 'カメラ',
     analysisFailed: '解析できませんでした',

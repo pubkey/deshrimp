@@ -654,7 +654,6 @@ function Live() {
 
     const [running, setRunning] = useState(false);
     const [checking, setChecking] = useState(false);
-    const [secondsLeft, setSecondsLeft] = useState(0);
     /**
      * Which countdown cycle we are in. It exists only to key the ring: giving
      * the `<rect>` a `key` that changes remounts it, and remounting is what
@@ -848,17 +847,14 @@ function Live() {
         }
         left.current = wasRunning.current ? interval : 0;
         wasRunning.current = true;
-        setSecondsLeft(left.current);
         setCycle((n) => n + 1);
         const id = window.setInterval(() => {
             if (!runningRef.current || busy.current) return;
             if (left.current > 0) {
                 left.current -= 1;
-                setSecondsLeft(left.current);
                 return;
             }
             left.current = interval;
-            setSecondsLeft(left.current);
             setCycle((n) => n + 1);
             void check();
         }, 1000);
@@ -913,7 +909,6 @@ function Live() {
         runningRef.current = false;
         camera.stop();
         wake.release();
-        setSecondsLeft(0);
     };
 
     const change = (patch: Partial<Settings>) =>
@@ -1026,11 +1021,12 @@ function Live() {
                             {t.checkNow}
                         </Button>
                     </Row>
-                    <Muted>
-                        {checking ? t.checking
-                            : running ? t.nextIn(secondsLeft)
-                                : last ? t.lastAt(clockTime(last.t, lang)) : ''}
-                    </Muted>
+                    {/* Only „the picture is being read" is left here
+                        _(2026-09-16, his call)_. „Next check in 12 s" was the
+                        countdown ring written out in words, and „Last at
+                        14:32" repeated the time that stands at the top of the
+                        log below. */}
+                    <Muted>{checking ? t.checking : ''}</Muted>
                 </Row>
 
                 <Sound
@@ -1663,16 +1659,7 @@ function Content() {
                         id: SETTINGS_ID,
                     })}
                     title={t.title}
-                    subtitle={
-                        <>
-                            <a href="https://rxdb.info/articles/local-first-future.html"
-                                target="_blank" rel="noreferrer">Local-First</a>
-                            {lang === 'de' ? '-' : ''}
-                            {t.subtitleA}
-                            <a href="https://rxdb.info/" target="_blank" rel="noreferrer">RxDB</a>
-                            {t.subtitleB}
-                        </>
-                    }
+                    subtitle={t.subtitle}
                     actions={
                         <>
                             <DataSyncButton database={database} filename="sitzhaltung.json" />

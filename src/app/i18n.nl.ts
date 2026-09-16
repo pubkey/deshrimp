@@ -3,8 +3,7 @@ import type { Copy } from './i18n';
 
 export const nl: Copy = {
     title: 'Zit rechtop, garnaal! 🦐',
-    subtitleA: ' om je houding te trainen. De herkenning doet een lokale AI, opslaan gaat met ',
-    subtitleB: '.',
+    subtitle: 'Kijkt via je webcam hoe je zit en maakt geluid zodra je onderuitzakt. Niets verlaat je apparaat.',
 
     whatThisDoes: 'Wat dit doet',
     leaveOpen: 'Deze pagina kijkt via je webcam hoe je zit en maakt geluid zodra je hoofd te ver naar voren staat of je opzij hangt. Daarvoor moet hij open blijven - het handigst in een eigen tabblad, naast waar je aan werkt. Het icoon in het tabblad wordt groen of rood, dus je ziet het ook zonder ernaartoe te gaan.',
@@ -21,8 +20,6 @@ export const nl: Copy = {
     stop: 'Stoppen',
     checkNow: 'Nu controleren',
     checking: 'Beeld wordt bekeken …',
-    nextIn: (s: number) => `Volgende controle over ${s} s`,
-    lastAt: (t: string) => `Laatst om ${t}`,
 
     cameraTitle: 'Camera',
     analysisFailed: 'De analyse is niet gelukt',

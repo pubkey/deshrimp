@@ -27,6 +27,10 @@
  * ```
  *
  * ## Changelog
+ * - 2026-09-16 The QR code actually appears. The check for „can this be
+ *   encoded?" asked `window.QR`, which nothing in this repo ever set, so the
+ *   answer was always no and every share sheet claimed the address was too
+ *   long for a code. It now asks `qr.ts`, which is the encoder.
  * - 2026-09-08 Fixed labels come from `lang.ts`, so an English page is
  *   English all the way into the frame. German is still the default.
  * - 2026-08-31 Own file.
@@ -41,6 +45,7 @@ import { QRCode } from './QRCode';
 import { Row } from './Row';
 import { toast } from './toast';
 import { uiText } from './lang';
+import { qrFits } from './qr';
 
 export type ShareDialogProps = {
     open?: boolean;
@@ -52,8 +57,7 @@ export type ShareDialogProps = {
 
 export function ShareDialog({ open, onClose, url, title, text }: ShareDialogProps) {
     const local = /^file:/i.test(url);
-    const QR = (globalThis as any).QR;
-    const encodable = !!(QR && QR.matrix(url));
+    const encodable = qrFits(url);
 
     const copy = () => {
         if (navigator.clipboard && navigator.clipboard.writeText) {

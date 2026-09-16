@@ -3,8 +3,7 @@ import type { Copy } from './i18n';
 
 export const fr: Copy = {
     title: 'Tiens-toi droit, crevette ! 🦐',
-    subtitleA: ' pour travailler ta posture. La détection se fait par une IA locale, l’enregistrement par ',
-    subtitleB: '.',
+    subtitle: 'Regarde par la webcam comment tu es assis et fait du bruit quand tu t’avachis. Rien ne quitte ton appareil.',
 
     whatThisDoes: 'Ce que fait cette page',
     leaveOpen: 'Cette page regarde par la webcam comment tu es assis et fait du bruit quand ta tête part trop en avant ou que tu penches d’un côté. Pour ça, elle doit rester ouverte - de préférence dans son propre onglet, à côté de ce sur quoi tu travailles. L’icône de l’onglet passe au vert ou au rouge, tu le vois donc sans y revenir.',
@@ -21,8 +20,6 @@ export const fr: Copy = {
     stop: 'Arrêter',
     checkNow: 'Vérifier maintenant',
     checking: 'Analyse de l’image …',
-    nextIn: (s: number) => `Prochaine vérification dans ${s} s`,
-    lastAt: (t: string) => `Dernière à ${t}`,
 
     cameraTitle: 'Caméra',
     analysisFailed: 'L’analyse n’a pas fonctionné',
