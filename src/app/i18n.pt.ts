@@ -117,7 +117,7 @@ export const pt: Copy = {
     listen: 'Ouvir',
     soundName: {
         furz: 'Peido', raeuspern: 'Pigarro', schrei: 'Grito',
-        knacken: 'Estalar de dedos', rimshot: 'Rimshot',
+        knacken: 'Estalar de dedos', peitsche: 'Estalo de chicote', rimshot: 'Rimshot',
     },
 
     leavesTitle: 'O que sai deste aparelho',

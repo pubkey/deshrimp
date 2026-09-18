@@ -117,7 +117,7 @@ export const it: Copy = {
     listen: 'Ascolta',
     soundName: {
         furz: 'Scoreggia', raeuspern: 'Colpo di tosse', schrei: 'Urlo',
-        knacken: 'Nocche scrocchiate', rimshot: 'Rimshot',
+        knacken: 'Nocche scrocchiate', peitsche: 'Colpo di frusta', rimshot: 'Rimshot',
     },
 
     leavesTitle: 'Cosa esce da questo dispositivo',

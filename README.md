@@ -67,7 +67,7 @@ hips, and in a desk-sized crop they come back with a visibility of 0.01 against
   can sync to another device peer-to-peer, to Google Drive or to OneDrive. All
   of it is off until you press something.
 - **It installs, and it works offline.** A service worker precaches the page,
-  the icon and all five sounds, so the alarm still fires with the network gone.
+  the icon and all six sounds, so the alarm still fires with the network gone.
   The pose model is cached the first time the camera runs rather than up front -
   it is 17 MB, and paying that during install would look like a hang.
 - **It never asks for the camera on load.** The whole page - the angles, the
@@ -91,7 +91,7 @@ src/
                     wrapper around Recharts, small hooks
 scripts/            fetch-pose-model.mjs and the digests it enforces;
                     seo.mjs and pwa.mjs, which only run on `npm run build`
-public/             served as-is: the five alarm sounds, icon, manifest,
+public/             served as-is: the six alarm sounds, icon, manifest,
                     brand/ (logo and mark), and (fetched, not committed) the
                     pose model in mp/
 ```
@@ -212,9 +212,9 @@ binary" is not good enough. The script is idempotent, so a second
 
 ## The sounds
 
-Fart, throat-clear, scream, knuckle-crack, rimshot - five real recordings in
-`public/snd/`. Oscillators remain as a fallback, one waveform per sound,
-because a posture watcher whose signal is silent is not one.
+Fart, throat-clear, scream, knuckle-crack, whip crack, rimshot - six bundled
+sound files in `public/snd/`. Oscillators remain as a fallback, one waveform
+per sound, because a posture watcher whose signal is silent is not one.
 
 These *are* committed, which is the opposite of the rule applied to the model:
 that one is a third-party binary, re-fetchable from a pinned URL at any time.

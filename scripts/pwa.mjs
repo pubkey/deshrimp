@@ -9,7 +9,7 @@
  * What goes where:
  *
  * - **Precached** on install: the shell (HTML, JS, CSS), the brand type, the
- *   icon and mark, the manifest and all five sounds (216 KB together). A
+ *   icon and mark, the manifest and all six sounds (about 211 KB together). A
  *   posture watcher whose alarm is silent offline is not one, and an interface
  *   that falls back to the system sans offline is one that looks broken on the
  *   day the network is gone.
@@ -36,6 +36,7 @@ const STATIC = [
     'brand/mark.svg',
     'snd/furz.mp3',
     'snd/knacken.mp3',
+    'snd/peitsche.wav',
     'snd/raeuspern.mp3',
     'snd/rimshot.mp3',
     'snd/schrei.mp3',

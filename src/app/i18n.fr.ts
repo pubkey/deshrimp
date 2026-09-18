@@ -117,7 +117,7 @@ export const fr: Copy = {
     listen: 'Écouter',
     soundName: {
         furz: 'Pet', raeuspern: 'Raclement de gorge', schrei: 'Cri',
-        knacken: 'Craquement de doigts', rimshot: 'Rimshot',
+        knacken: 'Craquement de doigts', peitsche: 'Coup de fouet', rimshot: 'Rimshot',
     },
 
     leavesTitle: 'Ce qui quitte cet appareil',

@@ -6,6 +6,23 @@ bundler. They are copied here unchanged rather than rewritten, because a
 reconstructed history is worse than an awkward one - but note that paths and
 build commands they mention belong to that older setup, not to this project.
 
+## 2026-09-18 - ein Peitschensound kommt dazu
+
+### Neu
+- **Ein sechster Signalton: Peitsche** _(„füge einen peitschensound hinzu")_.
+  Er steht in der Auswahl neben Furz, Räuspern, Schrei, Fingerknacken und
+  Bada-Bumm-Tss und läuft durch denselben Lautstärkeanstieg wie die übrigen.
+- **`public/snd/peitsche.wav` ist mitgebündelt und wird offline vorgecacht.**
+  Der neue Ton ist damit genauso ohne Nachladen da wie die bisherigen, und der
+  Synthesizer hat zusätzlich eine eigene Peitschen-Notlösung, falls der Browser
+  die Datei nicht abspielt.
+
+### Geändert
+- **`settings` ist auf v12.** Das Enum für `soundName` bekommt den Wert
+  `peitsche`. Die Migration selbst ändert nichts - sie muss nur existieren,
+  damit vorhandene Geräte ihr bisher gewähltes Geräusch behalten und das neue
+  zusätzlich angeboten bekommen.
+
 ## 2026-09-16 (Nachtrag 4) - die Unterzeile nennt die Daten, und Georgisch kommt dazu
 
 ### Geändert

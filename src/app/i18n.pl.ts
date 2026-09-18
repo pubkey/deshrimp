@@ -117,7 +117,7 @@ export const pl: Copy = {
     listen: 'Posłuchaj',
     soundName: {
         furz: 'Pierdnięcie', raeuspern: 'Chrząknięcie', schrei: 'Krzyk',
-        knacken: 'Strzelanie kostkami', rimshot: 'Rimshot',
+        knacken: 'Strzelanie kostkami', peitsche: 'Trzask bata', rimshot: 'Rimshot',
     },
 
     leavesTitle: 'Co opuszcza to urządzenie',

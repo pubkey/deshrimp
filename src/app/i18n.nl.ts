@@ -117,7 +117,7 @@ export const nl: Copy = {
     listen: 'Beluisteren',
     soundName: {
         furz: 'Scheet', raeuspern: 'Kuchje', schrei: 'Schreeuw',
-        knacken: 'Knakkende knokkels', rimshot: 'Rimshot',
+        knacken: 'Knakkende knokkels', peitsche: 'Zweepslag', rimshot: 'Rimshot',
     },
 
     leavesTitle: 'Wat dit apparaat verlaat',

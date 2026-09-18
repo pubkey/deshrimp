@@ -143,7 +143,7 @@ const KEEP_DAYS = 2;
 /** Width the frame is scaled to before it is read. */
 const FRAME_WIDTH = 512;
 
-/** Where `install_sounds.py` puts the recordings, next to `index.html`. */
+/** Where the bundled sound files live, next to `index.html`. */
 const SOUND_DIR = 'snd';
 
 /**
@@ -183,7 +183,7 @@ const INTERVALS = [1, 2, 5, 10, 15, 30, 60, 120];
  * this list only fixes which one comes first - `furz` is the default and the
  * one he asked for by name.
  */
-const SOUND_ORDER: SoundName[] = ['furz', 'raeuspern', 'schrei', 'knacken', 'rimshot'];
+const SOUND_ORDER: SoundName[] = ['furz', 'raeuspern', 'schrei', 'knacken', 'peitsche', 'rimshot'];
 
 const VERDICT_TONE: Record<Verdict, StatusTone> = {
     good: 'ok', borderline: 'warn', bad: 'bad',
@@ -347,10 +347,9 @@ function useCamera(t: Copy) {
  * sawtooth with a wobbling filter; it is not a fart, and the whole point of the
  * sound is that it registers as a thing rather than as a device noise.
  *
- * So the four sounds are real recordings - the ones he sent - living in the
- * skill's `sounds/` folder and copied into `snd/` next to `index.html` by
- * `install_sounds.py`. Same-origin, no CDN at view time, cached by the service
- * worker.
+ * So the original five sounds are real recordings - the ones he sent - and the
+ * whip crack sits next to them as a bundled file in `public/snd/`. Same-origin,
+ * no CDN at view time, cached by the service worker.
  *
  * **The oscillators stayed as the fallback.** If a file is missing or the
  * browser refuses to decode it, `play()` synthesises instead. A posture watcher
@@ -363,22 +362,23 @@ function useCamera(t: Copy) {
  * worse than no signal.
  */
 
-/** What `install_sounds.py` puts into `snd/`. */
+/** The bundled sound files under `snd/`. */
 const SOUND_FILE: Record<SoundName, string> = {
     furz: 'furz.mp3',
     raeuspern: 'raeuspern.mp3',
     schrei: 'schrei.mp3',
     knacken: 'knacken.mp3',
+    peitsche: 'peitsche.wav',
     rimshot: 'rimshot.mp3',
 };
 
 /**
  * How loud each file is played at full strength, evened out by ear against the
- * others. The scream is the loudest recording of the four and the one he is
+ * others. The scream is the loudest recording in the set and the one he is
  * least likely to want at full volume behind him in a coworking space.
  */
 const SOUND_GAIN: Record<SoundName, number> = {
-    furz: 1, raeuspern: 1, schrei: 0.6, knacken: 1, rimshot: 0.8,
+    furz: 1, raeuspern: 1, schrei: 0.6, knacken: 1, peitsche: 0.9, rimshot: 0.8,
 };
 
 /**
@@ -497,7 +497,7 @@ function useBeep() {
     /**
      * The stand-in, for when a recording will not play.
      *
-     * Four distinct shapes rather than one generic blip: if a file is ever
+     * Six distinct shapes rather than one generic blip: if a file is ever
      * unavailable the page should still tell him *which* alarm went off. None
      * of them impersonates the recording - the fallback's job is to be heard.
      */
@@ -580,6 +580,29 @@ function useBeep() {
                 src.connect(bp); bp.connect(g); g.connect(out);
                 src.start(t + offset); src.stop(t + offset + 0.05);
             });
+            return;
+        }
+
+        if (name === 'peitsche') {
+            const snap = noise(ctx);
+            const hp = ctx.createBiquadFilter();
+            hp.type = 'highpass';
+            hp.frequency.value = 1800;
+            const bp = ctx.createBiquadFilter();
+            bp.type = 'bandpass';
+            bp.frequency.value = 2400;
+            bp.Q.value = 1.3;
+            const crack = envelope(0.75, 0, 0.001, 0.045);
+            snap.connect(hp); hp.connect(bp); bp.connect(crack); crack.connect(out);
+            snap.start(t); snap.stop(t + 0.05);
+
+            const tail = noise(ctx);
+            const tailHp = ctx.createBiquadFilter();
+            tailHp.type = 'highpass';
+            tailHp.frequency.value = 900;
+            const tailGain = envelope(0.18, 0.015, 0.002, 0.16);
+            tail.connect(tailHp); tailHp.connect(tailGain); tailGain.connect(out);
+            tail.start(t + 0.015); tail.stop(t + 0.18);
             return;
         }
 
