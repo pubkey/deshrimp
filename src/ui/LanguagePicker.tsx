@@ -11,17 +11,17 @@
  * English is not British, and Spanish is spoken by far more people outside
  * Spain than in it. It is used here anyway because it is read in a glance at
  * 40 px, which two letters at that size are not. The cost grew when the list
- * went from two languages to twelve on 2026-09-08, so **the flag is only the
- * button**: the menu behind it names every language in its own words
- * („Português", „Русский", „日本語"), and that list is what anyone actually
- * picks from.
+ * went from two languages to twelve on 2026-09-08, and to thirteen with
+ * Georgian on 2026-09-16, so **the flag is only the button**: the menu behind it names every language in its own words
+ * („Português", „Русский", „日本語", „ქართული"), and that list is what anyone
+ * actually picks from.
  *
  * **The flags are drawn, not typed** _(2026-09-15)_. This file used the
  * regional-indicator emoji and said, in this very comment, that the platforms
  * which do not draw them fall back to the letters „so nobody ends up with a
  * blank button". That was the wrong thing to be relaxed about: the fallback is
  * not a graceful degradation, it is the control showing `DE` and `EN` to every
- * Windows user, which is what he reported. `Flag.tsx` holds twelve files
+ * Windows user, which is what he reported. `Flag.tsx` holds thirteen files
  * instead.
  *
  * **With one language it is a label, not a control** _(so specified 2026-09-08:
@@ -90,6 +90,7 @@ const LABEL: Record<UiLang, { full: string }> = {
     ru: { full: 'Русский' },
     zh: { full: '中文' },
     ja: { full: '日本語' },
+    ka: { full: 'ქართული' },
 };
 
 export function LanguagePicker({ value, languages, onChange, className }: LanguagePickerProps) {

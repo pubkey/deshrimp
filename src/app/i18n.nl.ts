@@ -3,7 +3,7 @@ import type { Copy } from './i18n';
 
 export const nl: Copy = {
     title: 'Zit rechtop, garnaal! 🦐',
-    subtitle: 'Kijkt via je webcam hoe je zit en maakt geluid zodra je onderuitzakt. Niets verlaat je apparaat.',
+    subtitle: 'Kijkt via je webcam hoe je zit en maakt geluid zodra je onderuitzakt. De beelden en de metingen blijven op je apparaat.',
 
     whatThisDoes: 'Wat dit doet',
     leaveOpen: 'Deze pagina kijkt via je webcam hoe je zit en maakt geluid zodra je hoofd te ver naar voren staat of je opzij hangt. Daarvoor moet hij open blijven - het handigst in een eigen tabblad, naast waar je aan werkt. Het icoon in het tabblad wordt groen of rood, dus je ziet het ook zonder ernaartoe te gaan.',

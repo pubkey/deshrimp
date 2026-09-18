@@ -11,9 +11,11 @@
    why its four faces are one declaration with a weight *range* rather than four
    copies of the same bytes. Mono is not, so its three weights are three files.
 
-   Subsets: Sans carries the interface in twelve languages and keeps Cyrillic
-   for Russian; Mono only ever sets digits, so latin is the whole job. Chinese
-   and Japanese fall through to the system stack - IBM Plex has no CJK here.
+   Subsets: Sans carries the interface in ten of the thirteen languages and
+   keeps Cyrillic for Russian; Mono only ever sets digits, so latin is the
+   whole job. Chinese, Japanese and Georgian fall through to the system stack -
+   IBM Plex has neither CJK nor Mkhedruli here, and every platform that ships a
+   UI font ships one that covers Georgian (Segoe UI, Noto Sans Georgian).
    Greek and Vietnamese are dropped: no locale needs them.
    ------------------------------------------------------------------------- */
 

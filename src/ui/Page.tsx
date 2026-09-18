@@ -66,7 +66,7 @@ export type PageProps = {
     /**
      * The language of the page frame - the labels this component and the ones
      * in the top bar own, not the page's own copy. Defaults to English
-     * (2026-09-15); pass one of the twelve to switch the frame with the
+     * (2026-09-15); pass one of the thirteen to switch the frame with the
      * content, because a label in one language over an answer in another
      * reads like a bug.
      */

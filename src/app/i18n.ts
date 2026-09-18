@@ -1,8 +1,9 @@
 /**
- * The page in twelve languages.
+ * The page in thirteen languages.
  *
  * He asked for English on 2026-09-08 („mach die app optional in english") and
- * for ten more the same day. The important word in the first ask was
+ * for ten more the same day; Georgian came on 2026-09-16 („add georgian
+ * language also"). The important word in the first ask was
  * *optional*: German stays the default, because that is the language he set the
  * app up in and the one his stored settings already say.
  * The switch is a setting like any other, so it survives a reload and rides
@@ -13,7 +14,7 @@
  * 1. **One flat object per language, same keys.** `Copy` is derived from the
  *    German one, so a key added there and forgotten in Japanese is a type error
  *    rather than a German word on a Japanese page. That guarantee is the whole
- *    reason twelve languages are maintainable at all.
+ *    reason thirteen languages are maintainable at all.
  * 2. **Anything with a number in it is a function.** German and English put
  *    the pieces in different orders, and „Alle 5 Sekunden ein Bild" is not
  *    „Every 5 seconds a picture" with the words swapped.
@@ -35,11 +36,18 @@ import { tr } from './i18n.tr';
 import { ru } from './i18n.ru';
 import { zh } from './i18n.zh';
 import { ja } from './i18n.ja';
+import { ka } from './i18n.ka';
 
 /**
- * **Twelve languages since 2026-09-08** („add 10 more languages"). German and
- * English are written out below; the other ten sit in one `i18n.<code>.ts`
- * each, because twelve tables in one file is a file nobody scrolls through.
+ * **Thirteen languages** - twelve since 2026-09-08 („add 10 more languages"),
+ * plus Georgian on 2026-09-16 („add georgian language also"). German and
+ * English are written out below; the other eleven sit in one `i18n.<code>.ts`
+ * each, because thirteen tables in one file is a file nobody scrolls through.
+ *
+ * Georgian is the first script here that IBM Plex does not cover, so it falls
+ * through to the system stack the way Chinese and Japanese already do - see
+ * `ui/tokens/fonts.css`. Mkhedruli has no capitals, so a label that is
+ * uppercased elsewhere simply stays as it is written.
  *
  * No right-to-left language is in the list. Arabic, Hebrew, Persian and Urdu
  * need `dir="rtl"` and a mirrored layout, which the page frame does not have -
@@ -47,7 +55,7 @@ import { ja } from './i18n.ja';
  */
 export type Lang =
     | 'de' | 'en' | 'es' | 'fr' | 'it' | 'pt'
-    | 'nl' | 'pl' | 'tr' | 'ru' | 'zh' | 'ja';
+    | 'nl' | 'pl' | 'tr' | 'ru' | 'zh' | 'ja' | 'ka';
 
 const de = {
     /* --- identity ------------------------------------------------------- */
@@ -57,8 +65,18 @@ const de = {
      * pictures stay _(2026-09-16, his call)_. It used to name Local-First and
      * RxDB and link to both, which told a reader who already knew those words
      * how the thing is built, and a reader who did not, nothing at all.
+     *
+     * The second sentence **names the data** _(2026-09-16: he wrote that
+     * „nothing leaves your device" is confusing and asked for a sentence that
+     * talks about the data)_. It read „Nichts verlässt dein Gerät", and the
+     * „nichts" was the problem: a reader who wonders what a webcam page does
+     * with their face was told that some unnamed nothing stays put. The two
+     * things they are actually asking about are the pictures and the numbers
+     * read off them, so those are the two things the sentence now names.
+     * `leavesTitle` below answers the same question at length; this is the
+     * version that fits under the title.
      */
-    subtitle: 'Schaut über die Webcam zu, wie du sitzt, und gibt einen Ton, wenn du zusammenklappst. Nichts verlässt dein Gerät.',
+    subtitle: 'Schaut über die Webcam zu, wie du sitzt, und gibt einen Ton, wenn du zusammenklappst. Die Bilder und die Messwerte bleiben auf deinem Gerät.',
 
     /* --- live ----------------------------------------------------------- */
     whatThisDoes: 'Was das hier macht',
@@ -223,7 +241,7 @@ export type Copy = typeof de;
 
 const en: Copy = {
     title: 'Sit straight shrimp! 🦐',
-    subtitle: 'Watches how you sit through your webcam and makes a noise when you fold up. Nothing leaves your device.',
+    subtitle: 'Watches how you sit through your webcam and makes a noise when you fold up. The pictures and the readings stay on your device.',
 
     whatThisDoes: 'What this does',
     leaveOpen: 'This page watches how you sit through your webcam and makes a noise when your head is too far forward or you tip to one side. It has to stay open to do that - best in its own browser tab, next to whatever you are working on. The tab icon turns green or red, so you can see how it is going without switching to it.',
@@ -371,7 +389,7 @@ const en: Copy = {
     hoursAndMinutes: (h: number, m: number) => `${h} h ${m} min`,
 };
 
-const COPY: Record<Lang, Copy> = { de, en, es, fr, it, pt, nl, pl, tr, ru, zh, ja };
+const COPY: Record<Lang, Copy> = { de, en, es, fr, it, pt, nl, pl, tr, ru, zh, ja, ka };
 
 export function copyFor(lang: Lang | undefined): Copy {
     return COPY[lang as Lang] || COPY.en;
@@ -394,12 +412,14 @@ export const LANGUAGES: { value: Lang; label: string }[] = [
     { value: 'ru', label: 'Русский' },
     { value: 'zh', label: '中文' },
     { value: 'ja', label: '日本語' },
+    { value: 'ka', label: 'ქართული' },
 ];
 
 /** Dates and clocks follow the page, not the browser. */
 const LOCALE: Record<Lang, string> = {
     de: 'de-DE', en: 'en-GB', es: 'es-ES', fr: 'fr-FR', it: 'it-IT', pt: 'pt-PT',
     nl: 'nl-NL', pl: 'pl-PL', tr: 'tr-TR', ru: 'ru-RU', zh: 'zh-CN', ja: 'ja-JP',
+    ka: 'ka-GE',
 };
 
 export function localeFor(lang: Lang | undefined): string {

@@ -231,7 +231,7 @@ export const DEFAULTS: Settings = {
 };
 
 const settingsSchema: RxJsonSchema<Settings> = {
-    version: 10,
+    version: 11,
     primaryKey: 'id',
     type: 'object',
     properties: {
@@ -250,7 +250,7 @@ const settingsSchema: RxJsonSchema<Settings> = {
         lang: {
             type: 'string',
             enum: ['de', 'en', 'es', 'fr', 'it', 'pt',
-                'nl', 'pl', 'tr', 'ru', 'zh', 'ja'],
+                'nl', 'pl', 'tr', 'ru', 'zh', 'ja', 'ka'],
         },
         view: { type: 'string', enum: ['zen', 'dashboard'] },
     },
@@ -266,7 +266,7 @@ const settingsSchema: RxJsonSchema<Settings> = {
  * `maxForward` back for the ear-based forward-head measure; v7 adds the
  * averaging window for the live curve; v8 widens the sound enum; v9 widens the
  * language enum from two to twelve; v10 adds the view and starts everyone in
- * zen.
+ * zen; v11 widens the language enum again, for Georgian.
  * Every step keeps the thresholds he set - a schema change must never be the
  * thing that resets his settings, and v3 in particular must not change the
  * language a device is already showing.
@@ -311,6 +311,12 @@ const settingsMigrations = {
     // complained about, and the new default would only ever reach a device he
     // has never opened. The dashboard is one button away.
     10: (old: Record<string, unknown>) => ({ ...old, view: 'zen' }),
+    // v11 widens the language enum by one, for Georgian _(2026-09-16: „add
+    // georgian language also")_. Nothing to rewrite - the version has to move
+    // only because RxDB validates a stored document against the schema it was
+    // written under, and a device that never picked Georgian keeps the
+    // language it has, same as v9.
+    11: (old: Record<string, unknown>) => old,
 };
 
 /**

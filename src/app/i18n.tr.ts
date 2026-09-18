@@ -3,7 +3,7 @@ import type { Copy } from './i18n';
 
 export const tr: Copy = {
     title: 'Dik otur karides! 🦐',
-    subtitle: 'Web kameran üzerinden nasıl oturduğuna bakar ve kamburunu çıkardığında ses çıkarır. Hiçbir şey cihazından çıkmaz.',
+    subtitle: 'Web kameran üzerinden nasıl oturduğuna bakar ve kamburunu çıkardığında ses çıkarır. Görüntüler ve ölçümler cihazında kalır.',
 
     whatThisDoes: 'Bu sayfa ne yapıyor',
     leaveOpen: 'Bu sayfa web kameran üzerinden nasıl oturduğuna bakar ve başın fazla öne geldiğinde ya da yana yattığında ses çıkarır. Bunun için açık kalması gerekir - en iyisi kendi sekmesinde, çalıştığın şeyin yanında. Sekmedeki simge yeşile ya da kırmızıya döner, yani sekmeye geçmeden de durumu görürsün.',

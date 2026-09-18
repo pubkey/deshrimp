@@ -270,7 +270,7 @@ a:hover { color: var(--ink); }
    its size)_. 8.2em is a title plus three wrapped lines, which is the longest
    any of them gets: the worst case in the product is the head-forward advice
    at the narrowest tile (282px of inner width), and English is the longest of
-   the twelve at 98 characters. Past that it still grows, because clipping a
+   the thirteen at 98 characters. Past that it still grows, because clipping a
    sentence that tells you what to do with your neck is worse than a tile that
    moves. */
 .ui-callout { display: flex; gap: var(--s3); border-radius: var(--r-md); padding: var(--s3) var(--s4);
