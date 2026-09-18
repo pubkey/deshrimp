@@ -194,7 +194,7 @@ const de = {
     listen: 'Anhören',
     soundName: {
         furz: 'Furz', raeuspern: 'Räuspern', schrei: 'Schrei',
-        knacken: 'Fingerknacken', rimshot: 'Bada-Bumm-Tss',
+        knacken: 'Fingerknacken', peitsche: 'Peitsche', rimshot: 'Bada-Bumm-Tss',
     } as Record<SoundName, string>,
 
     leavesTitle: 'Was das Gerät verlässt',
@@ -355,7 +355,7 @@ const en: Copy = {
     listen: 'Listen',
     soundName: {
         furz: 'Fart', raeuspern: 'Ahem', schrei: 'Scream',
-        knacken: 'Knuckle crack', rimshot: 'Rimshot',
+        knacken: 'Knuckle crack', peitsche: 'Whip crack', rimshot: 'Rimshot',
     },
 
     leavesTitle: 'What leaves this device',

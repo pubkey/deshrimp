@@ -209,10 +209,10 @@ export type Settings = {
  * by name, and a noise you find funny is a noise you leave switched on.
  */
 /**
- * The alarm sounds - the recordings he sent _(2026-09-08)_. Real ones beat a
- * longer list of synthesised ones, so this list grows only when he sends a file.
+ * The alarm sounds. Most are the recordings he sent _(2026-09-08)_, and the
+ * whip crack joins them as a bundled file.
  */
-export type SoundName = 'furz' | 'schrei' | 'knacken' | 'rimshot' | 'raeuspern';
+export type SoundName = 'furz' | 'schrei' | 'knacken' | 'rimshot' | 'raeuspern' | 'peitsche';
 
 export const SETTINGS_ID = 'settings';
 
@@ -231,7 +231,7 @@ export const DEFAULTS: Settings = {
 };
 
 const settingsSchema: RxJsonSchema<Settings> = {
-    version: 11,
+    version: 12,
     primaryKey: 'id',
     type: 'object',
     properties: {
@@ -244,7 +244,7 @@ const settingsSchema: RxJsonSchema<Settings> = {
         sound: { type: 'boolean' },
         soundName: {
             type: 'string',
-            enum: ['furz', 'schrei', 'knacken', 'rimshot', 'raeuspern'],
+            enum: ['furz', 'schrei', 'knacken', 'rimshot', 'raeuspern', 'peitsche'],
         },
         notify: { type: 'boolean' },
         lang: {
@@ -266,7 +266,8 @@ const settingsSchema: RxJsonSchema<Settings> = {
  * `maxForward` back for the ear-based forward-head measure; v7 adds the
  * averaging window for the live curve; v8 widens the sound enum; v9 widens the
  * language enum from two to twelve; v10 adds the view and starts everyone in
- * zen; v11 widens the language enum again, for Georgian.
+ * zen; v11 widens the language enum again, for Georgian; v12 widens the sound
+ * enum again, for the whip crack.
  * Every step keeps the thresholds he set - a schema change must never be the
  * thing that resets his settings, and v3 in particular must not change the
  * language a device is already showing.
@@ -317,6 +318,9 @@ const settingsMigrations = {
     // written under, and a device that never picked Georgian keeps the
     // language it has, same as v9.
     11: (old: Record<string, unknown>) => old,
+    // v12 widens the sound enum again, for the whip crack. Existing devices
+    // keep the sound they already picked.
+    12: (old: Record<string, unknown>) => old,
 };
 
 /**

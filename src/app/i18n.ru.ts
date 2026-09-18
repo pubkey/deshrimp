@@ -117,7 +117,7 @@ export const ru: Copy = {
     listen: 'Послушать',
     soundName: {
         furz: 'Пук', raeuspern: 'Покашливание', schrei: 'Крик',
-        knacken: 'Хруст пальцев', rimshot: 'Бадум-тсс',
+        knacken: 'Хруст пальцев', peitsche: 'Щелчок кнута', rimshot: 'Бадум-тсс',
     },
 
     leavesTitle: 'Что покидает это устройство',

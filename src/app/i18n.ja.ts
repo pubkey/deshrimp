@@ -117,7 +117,7 @@ export const ja: Copy = {
     listen: '試聴',
     soundName: {
         furz: 'おなら', raeuspern: 'せき払い', schrei: '悲鳴',
-        knacken: '指の関節', rimshot: 'ドンドンパフ',
+        knacken: '指の関節', peitsche: 'むちの音', rimshot: 'ドンドンパフ',
     },
 
     leavesTitle: 'この端末から出ていくもの',

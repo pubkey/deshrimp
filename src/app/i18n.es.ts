@@ -117,7 +117,7 @@ export const es: Copy = {
     listen: 'Escuchar',
     soundName: {
         furz: 'Pedo', raeuspern: 'Carraspeo', schrei: 'Grito',
-        knacken: 'Crujido de nudillos', rimshot: 'Redoble',
+        knacken: 'Crujido de nudillos', peitsche: 'Latigazo', rimshot: 'Redoble',
     },
 
     leavesTitle: 'Qué sale de este aparato',

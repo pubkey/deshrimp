@@ -117,7 +117,7 @@ export const tr: Copy = {
     listen: 'Dinle',
     soundName: {
         furz: 'Osuruk', raeuspern: 'Boğaz temizleme', schrei: 'Çığlık',
-        knacken: 'Parmak çıtlatma', rimshot: 'Rimshot',
+        knacken: 'Parmak çıtlatma', peitsche: 'Kırbaç şaklaması', rimshot: 'Rimshot',
     },
 
     leavesTitle: 'Bu cihazdan ne çıkıyor',
