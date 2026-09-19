@@ -1079,18 +1079,28 @@ function Live() {
 
                     Left is zen and right is the dashboard, which is also least
                     to most, so the control reads along the same ladder the two
-                    views differ on. */}
+                    views differ on.
+
+                    The sentence under each word is `description`, not `title`
+                    _(2026-09-18, his call: the short info belongs in the
+                    button)_. „Zen" and „Dashboard" are his own two words and
+                    they name the views without describing them, so the
+                    sentence that does describe them cannot live behind a
+                    hover: this page is meant to sit on a phone next to his
+                    desk, and a phone has no hover at all. It is the same
+                    sentence the title carried - one line each, which is why it
+                    fits on the face of a 130px segment. */}
                 <Segmented
                     label={t.viewLabel}
                     value={view}
                     onChange={(next) => void change({ view: next as View })}
                     options={[
                         {
-                            value: 'zen', label: t.zenLabel, title: t.toZen,
+                            value: 'zen', label: t.zenLabel, description: t.toZen,
                             icon: <Icon name="minimize" />,
                         },
                         {
-                            value: 'dashboard', label: t.dashboardLabel, title: t.toDashboard,
+                            value: 'dashboard', label: t.dashboardLabel, description: t.toDashboard,
                             icon: <Icon name="grid" />,
                         },
                     ]}

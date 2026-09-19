@@ -22,10 +22,17 @@
  * it coral, which is why this is its own control rather than two of those.
  *
  * ## Core parts
- * - `options` - `{ value, label, icon?, title? }`. `title` is the sentence
- *   about what picking it gets you, on hover. It is deliberately *not* the
- *   accessible name - that is the visible word, which is the opposite of the
- *   bargain `<IconButton>` makes, because a segment here is never wordless.
+ * - `options` - `{ value, label, icon?, description?, title? }`. `title` is the
+ *   sentence about what picking it gets you, on hover. It is deliberately *not*
+ *   the accessible name - that is the visible word, which is the opposite of
+ *   the bargain `<IconButton>` makes, because a segment here is never wordless.
+ * - `description` - the same sentence, but on the face of the segment instead
+ *   of behind a hover: a second line under the word, 11px and muted. A hover
+ *   title is invisible on a phone and invisible to anyone who does not know to
+ *   wait over a control, so when the choice needs explaining at all, it needs
+ *   explaining where it can be read. Give an option `description` or `title`,
+ *   not both - the sentence is the same sentence, and printing it twice makes
+ *   a tooltip that only repeats what is already on screen.
  * - `value` + `onChange` - controlled, always. There is no internal state: the
  *   chosen view is something the page already knows.
  * - `label` / `hint` - wraps itself in a `<Field>`, so its label is the same
@@ -34,17 +41,24 @@
  * ## Examples
  * ```tsx
  * <Segmented
- *     label="Ansicht"
+ *     label="View"
  *     value={view}
  *     onChange={(next) => save(next)}
  *     options={[
- *         { value: 'zen', label: 'Zen', icon: <Icon name="minimize" /> },
- *         { value: 'dashboard', label: 'Dashboard', icon: <Icon name="grid" /> },
+ *         {
+ *             value: 'zen', label: 'Zen', icon: <Icon name="minimize" />,
+ *             description: 'Show the camera and the angles only',
+ *         },
+ *         {
+ *             value: 'dashboard', label: 'Dashboard', icon: <Icon name="grid" />,
+ *             description: 'Show the numbers, the history and the settings',
+ *         },
  *     ]}
  * />
  * ```
  *
  * ## Changelog
+ * - 2026-09-18 `description`, a second line under the word.
  * - 2026-09-16 First version, for the switch between zen and the dashboard.
  */
 
@@ -57,7 +71,12 @@ export type SegmentedOption = {
     label: ReactNode;
     /** An `<Icon>`, left of the label. Never emoji - see `Icon.tsx`. */
     icon?: ReactNode;
-    /** What picking this one gets you, in words: the `title` and the aria-label. */
+    /**
+     * What picking this one gets you, in words, printed under the label. Use
+     * this or `title`, never both.
+     */
+    description?: ReactNode;
+    /** The same sentence as `description`, but only on hover. */
     title?: string;
 };
 
@@ -92,8 +111,18 @@ export function Segmented({
                     title={option.title}
                     onClick={() => onChange?.(option.value)}
                 >
-                    {option.icon ? <span aria-hidden="true">{option.icon}</span> : null}
-                    {option.label}
+                    {/* The word and its glyph are their own row, so a
+                        description lands under the word rather than beside it
+                        and the two stay centred as a block. With no
+                        description the column has one child and measures
+                        exactly what a plain segment always did. */}
+                    <span className="ui-seg-head">
+                        {option.icon ? <span aria-hidden="true">{option.icon}</span> : null}
+                        {option.label}
+                    </span>
+                    {option.description
+                        ? <span className="ui-seg-desc">{option.description}</span>
+                        : null}
                 </button>
             ))}
         </div>
