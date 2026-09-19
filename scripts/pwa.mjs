@@ -8,8 +8,10 @@
  *
  * What goes where:
  *
- * - **Precached** on install: the shell (HTML, JS, CSS), the brand type, the
- *   icon and mark, the manifest and all six sounds (about 211 KB together). A
+ * - **Precached** on install: the shell (the root HTML *and* the thirteen
+ *   per-language pages, which are the same page with another head and another
+ *   prerendered block, so they are a few KB each), the JS and CSS, the brand
+ *   type, the icon and mark, the manifest and all six sounds. A
  *   posture watcher whose alarm is silent offline is not one, and an interface
  *   that falls back to the system sans offline is one that looks broken on the
  *   day the network is gone.
@@ -24,8 +26,17 @@
 import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { LANGS } from './seo.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
+
+/**
+ * The per-language pages (`de.html`, `ja.html`, ...). `scripts/seo.mjs` writes
+ * them after the bundle, so they are not in it either - and a site that is one
+ * URL per language must be able to open the URL that was installed, not only
+ * the root one, when the network is gone.
+ */
+const PAGES = LANGS.map((l) => `./${l}.html`);
 
 /** Served as-is out of `public/`, so Vite's bundle does not list them. */
 const STATIC = [
@@ -70,14 +81,17 @@ self.addEventListener('fetch', (event) => {
     const url = new URL(request.url);
     if (url.origin !== self.location.origin) return;
 
-    // A navigation always gets the shell: this is one page, and offline it is
-    // still that page.
+    // A navigation gets its own page back when we have it - /de.html is a
+    // different page from / in one respect that matters offline, which is the
+    // language it opens in - and the root shell otherwise.
     if (request.mode === 'navigate') {
         event.respondWith((async () => {
             try {
                 return await fetch(request);
             } catch {
-                return (await caches.match('./index.html')) || Response.error();
+                return (await caches.match(request, { ignoreSearch: true }))
+                    || (await caches.match('./index.html'))
+                    || Response.error();
             }
         })());
         return;
@@ -115,11 +129,16 @@ export default function pwa() {
             // The bundle hashes change whenever anything does, so hashing the
             // list is enough to name a cache generation.
             const version = readFileSync(resolve(here, '..', 'package.json'), 'utf8')
-                && [...built, ...STATIC].join('|').split('').reduce(
+                && [...built, ...PAGES, ...STATIC].join('|').split('').reduce(
                     (h, c) => (Math.imul(31, h) + c.charCodeAt(0)) | 0, 7,
                 ).toString(36).replace('-', 'z');
 
-            const files = ['./index.html', ...built.map((f) => `./${f}`), ...STATIC.map((f) => `./${f}`)];
+            const files = [
+                './index.html',
+                ...PAGES,
+                ...built.map((f) => `./${f}`),
+                ...STATIC.map((f) => `./${f}`),
+            ];
             this.emitFile({ type: 'asset', fileName: 'sw.js', source: worker(version, files) });
         },
     };
