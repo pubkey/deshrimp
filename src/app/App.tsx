@@ -180,10 +180,10 @@ const INTERVALS = [1, 2, 5, 10, 15, 30, 60, 120];
 
 /**
  * The order the sounds are offered in. The names themselves are in `i18n.ts`;
- * this list only fixes which one comes first - `furz` is the default and the
+ * this list only fixes which one comes first - `fart` is the default and the
  * one he asked for by name.
  */
-const SOUND_ORDER: SoundName[] = ['furz', 'raeuspern', 'schrei', 'knacken', 'peitsche', 'rimshot'];
+const SOUND_ORDER: SoundName[] = ['fart', 'ahem', 'scream', 'knuckles', 'whip', 'rimshot'];
 
 const VERDICT_TONE: Record<Verdict, StatusTone> = {
     good: 'ok', borderline: 'warn', bad: 'bad',
@@ -364,11 +364,11 @@ function useCamera(t: Copy) {
 
 /** The bundled sound files under `snd/`. */
 const SOUND_FILE: Record<SoundName, string> = {
-    furz: 'furz.mp3',
-    raeuspern: 'raeuspern.mp3',
-    schrei: 'schrei.mp3',
-    knacken: 'knacken.mp3',
-    peitsche: 'peitsche.wav',
+    fart: 'fart.mp3',
+    ahem: 'ahem.mp3',
+    scream: 'scream.mp3',
+    knuckles: 'knuckles.mp3',
+    whip: 'whip.wav',
     rimshot: 'rimshot.mp3',
 };
 
@@ -378,7 +378,7 @@ const SOUND_FILE: Record<SoundName, string> = {
  * least likely to want at full volume behind him in a coworking space.
  */
 const SOUND_GAIN: Record<SoundName, number> = {
-    furz: 1, raeuspern: 1, schrei: 0.6, knacken: 1, peitsche: 0.9, rimshot: 0.8,
+    fart: 1, ahem: 1, scream: 0.6, knuckles: 1, whip: 0.9, rimshot: 0.8,
 };
 
 /**
@@ -519,7 +519,7 @@ function useBeep() {
             return g;
         };
 
-        if (name === 'furz') {
+        if (name === 'fart') {
             const osc = ctx.createOscillator();
             osc.type = 'sawtooth';
             osc.frequency.setValueAtTime(120, t);
@@ -539,7 +539,7 @@ function useBeep() {
             return;
         }
 
-        if (name === 'schrei') {
+        if (name === 'scream') {
             const osc = ctx.createOscillator();
             osc.type = 'sawtooth';
             osc.frequency.setValueAtTime(420, t);
@@ -553,7 +553,7 @@ function useBeep() {
             return;
         }
 
-        if (name === 'raeuspern') {
+        if (name === 'ahem') {
             [0, 0.2].forEach((offset, i) => {
                 const src = noise(ctx);
                 const bp = ctx.createBiquadFilter();
@@ -567,7 +567,7 @@ function useBeep() {
             return;
         }
 
-        if (name === 'knacken') {
+        if (name === 'knuckles') {
             // Two very short filtered noise bursts - a crack is an attack with
             // almost no tail.
             [0, 0.09].forEach((offset, i) => {
@@ -583,7 +583,7 @@ function useBeep() {
             return;
         }
 
-        if (name === 'peitsche') {
+        if (name === 'whip') {
             const snap = noise(ctx);
             const hp = ctx.createBiquadFilter();
             hp.type = 'highpass';

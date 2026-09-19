@@ -116,8 +116,8 @@ export const ja: Copy = {
     soundLabel: '通知音',
     listen: '試聴',
     soundName: {
-        furz: 'おなら', raeuspern: 'せき払い', schrei: '悲鳴',
-        knacken: '指の関節を鳴らす音', peitsche: 'むちの音', rimshot: 'ドンドンパフ',
+        fart: 'おなら', ahem: 'せき払い', scream: '悲鳴',
+        knuckles: '指の関節を鳴らす音', whip: 'むちの音', rimshot: 'ドンドンパフ',
     },
 
     leavesTitle: 'この端末から出ていくもの',

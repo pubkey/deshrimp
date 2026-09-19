@@ -116,8 +116,8 @@ export const es: Copy = {
     soundLabel: 'Sonido de aviso',
     listen: 'Escuchar',
     soundName: {
-        furz: 'Pedo', raeuspern: 'Carraspeo', schrei: 'Grito',
-        knacken: 'Crujido de nudillos', peitsche: 'Latigazo', rimshot: 'Redoble',
+        fart: 'Pedo', ahem: 'Carraspeo', scream: 'Grito',
+        knuckles: 'Crujido de nudillos', whip: 'Latigazo', rimshot: 'Redoble',
     },
 
     leavesTitle: 'Qué sale de este aparato',

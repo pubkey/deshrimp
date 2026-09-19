@@ -116,8 +116,8 @@ export const it: Copy = {
     soundLabel: 'Suono del segnale',
     listen: 'Ascolta',
     soundName: {
-        furz: 'Scoreggia', raeuspern: 'Colpo di tosse', schrei: 'Urlo',
-        knacken: 'Nocche scrocchiate', peitsche: 'Colpo di frusta', rimshot: 'Rimshot',
+        fart: 'Scoreggia', ahem: 'Colpo di tosse', scream: 'Urlo',
+        knuckles: 'Nocche scrocchiate', whip: 'Colpo di frusta', rimshot: 'Rimshot',
     },
 
     leavesTitle: 'Cosa esce da questo dispositivo',

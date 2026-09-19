@@ -205,14 +205,16 @@ export type Settings = {
 };
 
 /**
- * The signals he can pick from. The default is the rude one - he asked for it
- * by name, and a noise you find funny is a noise you leave switched on.
+ * The alarm sounds he can pick from. Most are the recordings he sent
+ * _(2026-09-08)_, and the whip crack joins them as a bundled file. The default
+ * is the rude one - he asked for it by name, and a noise you find funny is a
+ * noise you leave switched on.
+ *
+ * The values were German until v13 (`furz`, `raeuspern`, `schrei`, `knacken`,
+ * `peitsche`); they are what the file under `public/snd/` is called, and they
+ * are stored, so the rename is a migration rather than a find and replace.
  */
-/**
- * The alarm sounds. Most are the recordings he sent _(2026-09-08)_, and the
- * whip crack joins them as a bundled file.
- */
-export type SoundName = 'furz' | 'schrei' | 'knacken' | 'rimshot' | 'raeuspern' | 'peitsche';
+export type SoundName = 'fart' | 'scream' | 'knuckles' | 'rimshot' | 'ahem' | 'whip';
 
 export const SETTINGS_ID = 'settings';
 
@@ -225,13 +227,13 @@ export const DEFAULTS: Settings = {
     windowMin: 30,
     lang: 'en',
     sound: true,
-    soundName: 'furz',
+    soundName: 'fart',
     notify: false,
     view: 'zen',
 };
 
 const settingsSchema: RxJsonSchema<Settings> = {
-    version: 12,
+    version: 13,
     primaryKey: 'id',
     type: 'object',
     properties: {
@@ -244,7 +246,7 @@ const settingsSchema: RxJsonSchema<Settings> = {
         sound: { type: 'boolean' },
         soundName: {
             type: 'string',
-            enum: ['furz', 'schrei', 'knacken', 'rimshot', 'raeuspern', 'peitsche'],
+            enum: ['fart', 'scream', 'knuckles', 'rimshot', 'ahem', 'whip'],
         },
         notify: { type: 'boolean' },
         lang: {
@@ -267,7 +269,8 @@ const settingsSchema: RxJsonSchema<Settings> = {
  * averaging window for the live curve; v8 widens the sound enum; v9 widens the
  * language enum from two to twelve; v10 adds the view and starts everyone in
  * zen; v11 widens the language enum again, for Georgian; v12 widens the sound
- * enum again, for the whip crack.
+ * enum again, for the whip crack; v13 renames every sound from German to
+ * English.
  * Every step keeps the thresholds he set - a schema change must never be the
  * thing that resets his settings, and v3 in particular must not change the
  * language a device is already showing.
@@ -286,6 +289,11 @@ const settingsMigrations = {
     // v5: the sound set became the four files he sent. A device sitting on one
     // of the retired synthesised names would fail the enum, so it lands on the
     // default rather than on nothing.
+    //
+    // The German names here and in v2 are not an oversight: a migration writes
+    // the document as the *next* version expects it, and back then the names
+    // were German. v13 renames them at the end of the chain. Nothing in this
+    // list may be updated to match today's code.
     5: (old: Record<string, unknown>) => ({
         ...old,
         soundName: ['furz', 'schrei', 'knacken', 'rimshot'].indexOf(
@@ -321,6 +329,28 @@ const settingsMigrations = {
     // v12 widens the sound enum again, for the whip crack. Existing devices
     // keep the sound they already picked.
     12: (old: Record<string, unknown>) => old,
+    // v13 is the sound names going from German to English. This is the one
+    // migration in the list that exists purely because the code was renamed:
+    // `soundName` is stored, so `furz` sits in a real database on his machine
+    // and would fail the new enum on the next read. The map is one to one, so
+    // whatever he picked is the sound he keeps - the point of renaming is that
+    // the identifier reads in English, not that anybody's setting changes. A
+    // value that is on neither list (a hand-edited document, or one of the
+    // synthesised names v5 already retired) lands on the default.
+    13: (old: Record<string, unknown>) => ({
+        ...old,
+        soundName: RENAMED_SOUNDS[String(old.soundName)] || DEFAULTS.soundName,
+    }),
+};
+
+/** The v13 rename, old name to new. `rimshot` was already English. */
+const RENAMED_SOUNDS: Record<string, SoundName> = {
+    furz: 'fart',
+    raeuspern: 'ahem',
+    schrei: 'scream',
+    knacken: 'knuckles',
+    peitsche: 'whip',
+    rimshot: 'rimshot',
 };
 
 /**

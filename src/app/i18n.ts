@@ -193,8 +193,8 @@ const de = {
     soundLabel: 'Signalton',
     listen: 'Anhören',
     soundName: {
-        furz: 'Furz', raeuspern: 'Räuspern', schrei: 'Schrei',
-        knacken: 'Fingerknacken', peitsche: 'Peitsche', rimshot: 'Bada-Bumm-Tss',
+        fart: 'Furz', ahem: 'Räuspern', scream: 'Schrei',
+        knuckles: 'Fingerknacken', whip: 'Peitsche', rimshot: 'Bada-Bumm-Tss',
     } as Record<SoundName, string>,
 
     leavesTitle: 'Was das Gerät verlässt',
@@ -354,8 +354,8 @@ const en: Copy = {
     soundLabel: 'Signal sound',
     listen: 'Listen',
     soundName: {
-        furz: 'Fart', raeuspern: 'Ahem', schrei: 'Scream',
-        knacken: 'Knuckle crack', peitsche: 'Whip crack', rimshot: 'Rimshot',
+        fart: 'Fart', ahem: 'Ahem', scream: 'Scream',
+        knuckles: 'Knuckle crack', whip: 'Whip crack', rimshot: 'Rimshot',
     },
 
     leavesTitle: 'What leaves this device',
