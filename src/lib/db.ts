@@ -31,7 +31,7 @@
  * Every collection is registered as a set of MCP tools at the browser's model
  * context, so an agent sitting in the browser next to the open page can query
  * it, count it, follow its changes and write to it. That is what makes the
- * state more than a private scribble: „was ist auf der Packliste noch offen"
+ * state more than a private scribble: „what is still open on the packing list"
  * is answerable without him exporting anything. It is on by default and turns
  * itself off in a browser that has no registry - `webmcp: false` or
  * `{ readOnly: true }` in `createAppDatabase` narrows it.
@@ -62,11 +62,12 @@ addRxPlugin(RxDBMigrationSchemaPlugin);
 
 // WebMCP, in every page. A published page is a finished answer, but the state
 // on top of it -- what he ticked, chose, rated, noted -- is data he produced,
-// and until now the only way back out of it was the „Daten sichern" download.
+// and until now the only way back out of it was the „Save as a file" download.
 // This plugin publishes every collection of the page as a set of MCP tools at
 // `document.modelContext`, so a browser-side agent standing next to the open
-// page can read that state and write to it: „was habe ich auf der Packliste
-// noch offen", „hak die Ladekabel ab". The tools are per collection and carry
+// page can read that state and write to it: „what have I still got open on
+// the packing list", „tick off the charging cables". The tools are per
+// collection and carry
 // the collection's own JSON schema, so the agent gets validation for free.
 //
 // Registering is safe in a browser that knows nothing about WebMCP: the plugin
@@ -91,8 +92,8 @@ export type AppCollections = Record<string, RxCollectionCreator<any>>;
  * small set, a tick, sometimes a rating, sometimes a note. Before this existed
  * five skills had invented six names for it - `SlideVerdict`, `OptionVerdict`,
  * `ShoppingTick`, `TrackVerdict`, `StopState`, `ItemState` - each with its own
- * schema and its own hand-written upsert. Worse than the duplication: „Kaufe
- * ich" on a shopping page and „Behalte ich" on a listening page were stored
+ * schema and its own hand-written upsert. Worse than the duplication: „I'll
+ * buy it" on a shopping page and „I'll keep it" on a listening page were stored
  * under different schemas, so nothing could ever ask what he actually decided.
  *
  * So it is one collection, added to every app database. What a `choice` means

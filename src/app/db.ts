@@ -354,7 +354,7 @@ const RENAMED_SOUNDS: Record<string, SoundName> = {
 };
 
 /**
- * One document per calendar day, so „bin ich besser geworden" has something to
+ * One document per calendar day, so „have I got any better" has something to
  * read.
  *
  * Kept apart from `readings` and kept forever: a day is a few dozen bytes,

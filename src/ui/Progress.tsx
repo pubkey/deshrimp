@@ -24,9 +24,9 @@
  *
  * ## Examples
  * ```tsx
- * <Progress value={0.42} label="Zurückgelegt" valueLabel="2.640 km"
- *   hint="noch 3.659 km bis New York" />
- * <Progress value={1} tone="ok" label="Angekommen" />
+ * <Progress value={0.42} label="Covered" valueLabel="2,640 km"
+ *   hint="3,659 km still to New York" />
+ * <Progress value={1} tone="ok" label="Arrived" />
  * ```
  *
  * ## Changelog

@@ -10,7 +10,7 @@
  *
  * It exists because a destructive action on a page that stores things locally
  * is **not undoable**: there is no server copy, no trash and no history. One
- * mis-tap on „Verlauf löschen" and weeks of readings are gone. He asked for
+ * mis-tap on „Clear history" and weeks of readings are gone. He asked for
  * this on 2026-09-08 („der 'verlauf löschen' button sollte immer nochmal im
  * modal fragen ob das wirklich gewollt ist"), and the rule that follows is
  * general: **every irreversible action in an app-builder page goes through
@@ -24,8 +24,8 @@
  * ## Core parts
  * - `onConfirm` - runs only after the confirmation. May be async; the modal
  *   closes first so the button never sits half-pressed.
- * - `body` - what will be lost, in the page's own words. Worth writing: „Alle
- *   Messungen von heute" tells him something, „Bist du sicher?" does not.
+ * - `body` - what will be lost, in the page's own words. Worth writing: „Every
+ *   reading from today" tells him something, „Are you sure?" does not.
  * - `confirmLabel` / `cancelLabel` / `title` - default to the page's language
  *   via `lang.ts`.
  * - `icon` + `label` with no children renders an `<IconButton>` (a top-bar
@@ -33,11 +33,11 @@
  *
  * ## Examples
  * ```tsx
- * <ConfirmButton icon={<Icon name="trash" />} label="Verlauf löschen"
- *     body="Alle Messungen dieses Geräts werden gelöscht. Das lässt sich nicht rückgängig machen."
+ * <ConfirmButton icon={<Icon name="trash" />} label="Clear history"
+ *     body="Every reading on this device will be deleted. This cannot be undone."
  *     onConfirm={() => readings.find().remove()} />
  *
- * <ConfirmButton body="Die Packliste wird geleert." onConfirm={reset}>Zurücksetzen</ConfirmButton>
+ * <ConfirmButton body="The packing list will be emptied." onConfirm={reset}>Reset</ConfirmButton>
  * ```
  *
  * ## Changelog

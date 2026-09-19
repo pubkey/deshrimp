@@ -14,7 +14,7 @@
  *
  * ## Core parts
  * - `label` - what is being waited for, in the page's own words. Worth writing:
- *   „Modell wird geladen (17 MB, nur beim ersten Mal)" tells him whether to
+ *   „Loading the model (17 MB, only the first time)" tells him whether to
  *   wait; a bare ring does not.
  * - `size` - `"sm"` | `"md"` (default) | `"lg"`.
  * - It is `role="status"` with `aria-live="polite"`, so a screen reader
@@ -25,7 +25,7 @@
  *
  * ## Examples
  * ```tsx
- * <Spinner label="Modell wird geladen …" />
+ * <Spinner label="Loading the model …" />
  * <Spinner size="sm" />
  * ```
  *

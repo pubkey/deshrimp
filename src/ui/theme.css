@@ -173,9 +173,9 @@ a:hover { color: var(--ink); }
 .ui-r-xs { border-radius: var(--r-xs) } .ui-r-sm { border-radius: var(--r-sm) }
 .ui-r-md { border-radius: var(--r-md) } .ui-r-lg { border-radius: var(--r-lg) }
 .ui-r-xl { border-radius: var(--r-xl) } .ui-r-pill { border-radius: var(--r-pill) }
-/* Eine Fläche ist nie nur eine Farbe: Text, der am Rand klebt, sieht kaputt
-   aus. Beide Helfer bringen deshalb ihr eigenes Innenmaß mit - überschreibbar
-   mit <Box pad="..."> oder einer eigenen padding-Regel. */
+/* A surface is never only a colour: text stuck against the edge looks
+   broken. Both helpers therefore bring their own inner measure - overridable
+   with <Box pad="..."> or with a padding rule of your own. */
 .ui-surface { background: var(--card); border: 1px solid var(--line);
   border-radius: var(--r-md); padding: var(--s5); }
 /* An inset steps back DOWN the value ladder - it never nests at the same
@@ -578,7 +578,7 @@ a:hover { color: var(--ink); }
  * may be spent, and `.ui-btn.on` (which is coral) is what this control exists
  * to avoid.
  *
- * Equal columns, because the whole point of a segmented control is that "the
+ * Equal columns, because the whole point of a segmented control is that „the
  * left one" stays on the left whatever the two words measure. The 4px padding
  * leaves 30px segments inside the system's 40px control height - a minimum
  * rather than a fixed height, so a segment carrying a description can grow to
@@ -618,7 +618,7 @@ a:hover { color: var(--ink); }
 /* The second line is prose, so it is sentence case and it wraps: at 11px the
    sentence has to survive a segment about 130px wide. It stays on the
    secondary slate in both states - the ladder and the pressed word carry
-   which segment is current, and a muted line under a white word says "this
+   which segment is current, and a muted line under a white word says „this
    is the explanation" rather than competing with it. */
 .ui-seg-desc {
   font-size: var(--text-label);

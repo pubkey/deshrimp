@@ -3,7 +3,7 @@
  *
  * ## What it does and how it looks
  * A small label with a big value under it, and optionally a quieter line of
- * context below that: „2.480 kcal · Tagesziel", „€1.284 · Gesamt". For the one
+ * context below that: „2,480 kcal · daily target", „€1,284 · total". For the one
  * or two figures a page is actually about.
  *
  * ## Core parts
@@ -18,9 +18,9 @@
  *
  * ## Examples
  * ```tsx
- * <Stat label="Tagesziel" value="2.480 kcal" hint="Mifflin-St Jeor, PAL 1,55" />
- * <Stat size="hero" label="Kopf vor der Schulter" value="12°"
- *     delta="−3° gegen gestern" deltaTone="up" />
+ * <Stat label="Daily target" value="2,480 kcal" hint="Mifflin-St Jeor, PAL 1.55" />
+ * <Stat size="hero" label="Head in front" value="12°"
+ *     delta="−3° against yesterday" deltaTone="up" />
  * ```
  *
  * ## Changelog
@@ -36,7 +36,7 @@ export type StatProps = {
     label?: ReactNode;
     value?: ReactNode;
     hint?: ReactNode;
-    /** The change, already formatted: „+4 Pkt.", „−2°". Shown under the value. */
+    /** The change, already formatted: „+4 pts", „−2°". Shown under the value. */
     delta?: ReactNode;
     /**
      * Whether that change is good news. Set it explicitly - for half the

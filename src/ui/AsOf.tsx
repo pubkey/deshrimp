@@ -1,9 +1,9 @@
 /**
- * # AsOf - the date an angabe was true
+ * # AsOf - the date a figure was true
  *
  * ## What it does and how it looks
- * A small muted chip: „STAND 30.08.2026". When the date is older than
- * `staleAfter` days it turns amber and grows a „veraltet" box beside it. The
+ * A small muted chip: „AS OF 30.08.2026". When the date is older than
+ * `staleAfter` days it turns amber and grows an „out of date" box beside it. The
  * tooltip says where the figure came from and how many days ago it was checked.
  *
  * Prices, opening hours and availability rot. A figure without a date silently
@@ -18,8 +18,8 @@
  * ## Examples
  * ```tsx
  * <AsOf date="2026-08-30" source="booking.com" />
- * <AsOf date="2025-01-04" staleAfter={180} />       // → „veraltet"
- * <AsOf date={src.checked} label="geprüft" />
+ * <AsOf date="2025-01-04" staleAfter={180} />       // → „out of date"
+ * <AsOf date={src.checked} label="checked" />
  * ```
  *
  * ## Changelog
@@ -39,11 +39,11 @@ import { uiText } from './lang';
 export type AsOfProps = Base & {
     /** ISO date, `2026-08-30`. */
     date: string;
-    /** Default „Stand". */
+    /** Default „As of". */
     label?: string;
     /** Named in the tooltip. */
     source?: string;
-    /** Older than this many days renders a visible „veraltet". */
+    /** Older than this many days renders a visible „out of date". */
     staleAfter?: number;
     /** Force the flag instead of computing it. */
     stale?: boolean;
@@ -56,7 +56,7 @@ export function AsOf({ date, label, source, staleAfter, stale, className }: AsOf
         ? !!stale
         : !!(staleAfter && age != null && age > staleAfter);
     const title = [
-        source ? 'Quelle: ' + source : null,
+        source ? 'Source: ' + source : null,
         age != null ? (age === 0 ? uiText().checkedToday(0) : uiText().checkedDaysAgo(age)) : null,
     ].filter(Boolean).join(' · ') || undefined;
 
@@ -64,7 +64,7 @@ export function AsOf({ date, label, source, staleAfter, stale, className }: AsOf
         <span className={cx('ui-asof', isStale && 'is-stale', className)} title={title}>
             <span className="ui-asof-label">{label || uiText().asOf}</span>
             <time dateTime={date}>{deDate(date)}</time>
-            {isStale ? <span className="ui-asof-flag">veraltet</span> : null}
+            {isStale ? <span className="ui-asof-flag">out of date</span> : null}
         </span>
     );
 }

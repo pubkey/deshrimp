@@ -2,7 +2,7 @@
 
 /**
  * `"2026-08-30"` → `"30.08.2026"`. Anything that is not a plain ISO date comes
- * back untouched: a page may well have stored „Sommer 2027", and mangling that
+ * back untouched: a page may well have stored „Summer 2027", and mangling that
  * into a wrong date is worse than printing it as written.
  */
 export function deDate(value: string | null | undefined): string {

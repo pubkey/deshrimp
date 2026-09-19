@@ -20,7 +20,7 @@
  * ## Examples
  * ```tsx
  * <QRCode value={location.href} />
- * <QRCode value={link} fallback={<Muted>Zu lang für einen QR-Code.</Muted>} />
+ * <QRCode value={link} fallback={<Muted>Too long for a QR code.</Muted>} />
  * ```
  *
  * ## Changelog

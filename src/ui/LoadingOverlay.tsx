@@ -35,8 +35,8 @@
  * ## Examples
  * ```tsx
  * <LoadingOverlay open={loadingModel}
- *     title="Einen Moment"
- *     label="Das Erkennungsmodell wird geladen - 17 MB, nur beim ersten Mal." />
+ *     title="One moment"
+ *     label="Loading the detection model - 17 MB, only the first time." />
  * ```
  *
  * ## Changelog

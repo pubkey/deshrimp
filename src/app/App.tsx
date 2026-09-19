@@ -151,7 +151,7 @@ const SOUND_DIR = 'snd';
  *
  * Frames with nobody in them are discarded rather than stored, which keeps the
  * statistics honest - but it also means standing up for an hour leaves a hole
- * rather than a bad reading, and „längste gute Strecke" would happily count the
+ * rather than a bad reading, and „longest good run" would happily count the
  * lunch break as excellent posture _(he caught this on 2026-09-08)_. So the run
  * ends wherever the readings stop, whatever the reason: nobody in frame, camera
  * off, tab closed.
@@ -732,7 +732,7 @@ function Live() {
      * Fold one reading into its day.
      *
      * The raw rows are pruned after two days; these survive, which is the only
-     * reason „bin ich besser geworden" can be answered at all. Sums are kept
+     * reason „have I got any better" can be answered at all. Sums are kept
      * rather than averages so a reading is one read-modify-write, not a rescan
      * of thirty thousand rows.
      */
@@ -963,10 +963,10 @@ function Live() {
                 this tile and the control tile beside it are the two that carry
                 no eyebrow. */}
             <Panel id="video" className="haltung-videotile">
-                <div className={`haltung-kamera${flash ? ' haltung-alarm' : ''}`}>
+                <div className={`haltung-camera${flash ? ' haltung-alarm' : ''}`}>
                     <video ref={camera.videoRef} muted playsInline autoPlay />
                     {!camera.on ? (
-                        <div className="haltung-kamera-aus">{t.cameraOff}</div>
+                        <div className="haltung-camera-off">{t.cameraOff}</div>
                     ) : null}
                     {/* The countdown to the next picture, drawn as the well's
                         own border filling up _(2026-09-15, his call, in place
@@ -1137,7 +1137,7 @@ function Live() {
                 default ist die webseite zu techlastig mit den vielen daten")_.
                 The three tiles above it are what zen keeps: the picture, the
                 button that starts it, and the three angles the picture just
-                produced. Those answer „sitze ich gerade"; the curves, the log,
+                produced. Those answer „am I sitting straight"; the curves, the log,
                 the trend and the thresholds answer questions you ask on
                 purpose, and they are one switch away, at the foot of the
                 control tile above.
@@ -1300,7 +1300,7 @@ function dayLabel(t: number, lang: Lang): string {
 }
 
 /**
- * „Werde ich besser?" - the one question a single day cannot answer.
+ * „Am I getting better?" - the one question a single day cannot answer.
  *
  * Reads the daily roll-up, not the raw readings: those are pruned after two
  * weeks, and at ten seconds apart a month of them would be ~90 000 rows to
@@ -1541,7 +1541,7 @@ type SetupProps = {
 };
 
 type SoundProps = SetupProps & {
-    /** So „Anhören" can make the same noise the signal makes. */
+    /** So „Listen" can make the same noise the signal makes. */
     prepareSound: () => void;
     playSound: (name: SoundName) => void;
 };

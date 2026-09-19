@@ -30,14 +30,14 @@
  * ```tsx
  * <Page lang="en">{sections}</Page>
  * <Page width="wide" actions={<IconButton icon={<Icon name="download" size={20} />}
- *     label="Sichern" onClick={save} />}>…</Page>
+ *     label="Save" onClick={save} />}>…</Page>
  * ```
  *
  * ## Changelog
  * - 2026-09-15 The frame's default language is English, not German.
- * - 2026-09-15 „Zu dieser Seite" is gone - his call, „wir brauchen das nicht".
- *   With it went the task box, the „Datengrundlage" and „Quellen" tabs and the
- *   build stamp, and the `task` / `gaps` / `sources` / `footer` props that fed
+ * - 2026-09-15 The „About this page" block is gone - his call, „wir brauchen
+ *   das nicht". With it went the task box, the „Data basis" and „Sources" tabs
+ *   and the build stamp, and the `task` / `gaps` / `sources` / `footer` props that fed
  *   them. The sources outlived it in `scripts/seo.mjs`, where only a crawler
  *   could read them, and are gone from there too _(2026-09-15, his call)_.
  * - 2026-09-08 `<LanguagePicker>` in the top bar, right of the theme toggle.

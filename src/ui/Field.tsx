@@ -16,7 +16,7 @@
  *
  * ## Examples
  * ```tsx
- * <Field label="Notiz" hint="Bleibt auf diesem Gerät." htmlFor="note">
+ * <Field label="Note" hint="Stays on this device." htmlFor="note">
  *   <textarea id="note" className="ui-textarea" />
  * </Field>
  * ```

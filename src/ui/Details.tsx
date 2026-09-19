@@ -12,15 +12,15 @@
  * its content.
  *
  * ## Core parts
- * - `summary` - the always-visible line. Default „Mehr", which is a bad
+ * - `summary` - the always-visible line. Default „More", which is a bad
  *   default: say what is inside.
  * - `open` - start unfolded.
  * - `count` - the right-hand number.
  *
  * ## Examples
  * ```tsx
- * <Details summary="Wie die Fahrzeit gerechnet ist" count={3}>…</Details>
- * <Details summary="Alle 24 Zutaten" open>…</Details>
+ * <Details summary="How the travel time is worked out" count={3}>…</Details>
+ * <Details summary="All 24 ingredients" open>…</Details>
  * ```
  *
  * ## Changelog
