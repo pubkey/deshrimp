@@ -1577,12 +1577,22 @@ function Sound(props: SoundProps) {
                 <Checkbox label={t.alsoNotify} checked={s.notify}
                     onChange={(on) => void toggleNotify(on)} />
             </Row>
+            {/* Picking a sound switches the sound on _(2026-09-18, his
+                call)_. Reaching for this select while `soundOnSignal` is off
+                is not someone browsing a list of noises: it is someone saying
+                which noise they want, and the setting that decides whether any
+                noise happens at all sits one row above, already unticked. The
+                old behaviour stored a preference that did nothing and gave no
+                sign that it did nothing - you picked the whip, heard silence
+                for the rest of the afternoon, and had no reason to suspect the
+                checkbox. Turning the signal back off is one click on that same
+                checkbox, so the rule cannot trap anyone. */}
             <Row gap={2} align="bottom" stack>
                 <Select
                     label={t.soundLabel}
                     value={s.soundName}
                     onChange={(e: { target: { value: string } }) =>
-                        void change({ soundName: e.target.value as SoundName })}
+                        void change({ soundName: e.target.value as SoundName, sound: true })}
                 >
                     {SOUND_ORDER.map((key) => (
                         <option key={key} value={key}>{t.soundName[key]}</option>
