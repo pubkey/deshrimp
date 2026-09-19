@@ -6,732 +6,792 @@ bundler. They are copied here unchanged rather than rewritten, because a
 reconstructed history is worse than an awkward one - but note that paths and
 build commands they mention belong to that older setup, not to this project.
 
-## 2026-09-18 - ein Peitschensound kommt dazu
+They were also written in German, and were translated on 2026-09-19 when the
+rest of the repo was. Translating is not rewriting: every entry says what it
+said before, and his own requests inside them are still quoted in the German he
+wrote them in.
 
-### Neu
-- **Ein sechster Signalton: Peitsche** _(„füge einen peitschensound hinzu")_.
-  Er steht in der Auswahl neben Furz, Räuspern, Schrei, Fingerknacken und
-  Bada-Bumm-Tss und läuft durch denselben Lautstärkeanstieg wie die übrigen.
-- **`public/snd/peitsche.wav` ist mitgebündelt und wird offline vorgecacht.**
-  Der neue Ton ist damit genauso ohne Nachladen da wie die bisherigen, und der
-  Synthesizer hat zusätzlich eine eigene Peitschen-Notlösung, falls der Browser
-  die Datei nicht abspielt.
+## 2026-09-19 - the sound switches itself on, the views say what they are, and the code speaks English
 
-### Geändert
-- **`settings` ist auf v12.** Das Enum für `soundName` bekommt den Wert
-  `peitsche`. Die Migration selbst ändert nichts - sie muss nur existieren,
-  damit vorhandene Geräte ihr bisher gewähltes Geräusch behalten und das neue
-  zusätzlich angeboten bekommen.
+### Changed
+- **Picking a sound switches the sound on** _(his call)_. Reaching for the
+  sound select while `soundOnSignal` is off is not someone browsing a list of
+  noises, it is someone saying which noise they want, and the setting that
+  decides whether any noise happens at all sits one row above, already
+  unticked. The old behaviour stored a preference that did nothing and gave no
+  sign that it did nothing: you picked the whip, heard silence for the rest of
+  the afternoon, and had no reason to suspect the checkbox. Turning the signal
+  back off is one click on that same checkbox, so the rule cannot trap anyone.
+- **The zen/dashboard switch says what each view is, on its own face** _(his
+  call: put the short info into the button as subtext)_. „Zen" and „Dashboard"
+  are his own two words and they name the views without describing them. The
+  sentence that does describe them - „Show the camera and the angles only",
+  „Show the numbers, the history and the settings" - was a hover title, which
+  is nothing at all on a phone, and this page is meant to sit on a phone next
+  to his desk. It is the same sentence, moved from the hover to the control.
+  No new keys: `toZen` and `toDashboard` already existed in all thirteen
+  tables, which is also why they fit - each is one short line.
+- **`<Segmented>` options take a `description`**: a second line under the word,
+  11px and muted, sentence case and wrapping. The track's fixed 40px becomes a
+  minimum so a segment can grow to fit it; an option with no description
+  renders a column of one child and measures exactly what a plain segment
+  always did. Still no accent anywhere in the control - a view switch is not
+  one of the six places the 10% budget may be spent, and the muted second line
+  under a white word reads as the explanation rather than as competition for
+  it.
 
-## 2026-09-16 (Nachtrag 4) - die Unterzeile nennt die Daten, und Georgisch kommt dazu
+### Changed (German to English)
+- **The sounds are called what they are.** `furz`, `raeuspern`, `schrei`,
+  `knacken` and `peitsche` were German identifiers in the middle of an
+  otherwise English codebase: a type, a schema enum, six filenames under
+  `public/snd/`, a branch in the synthesiser and a key in all thirteen
+  translation tables. They are `fart`, `ahem`, `scream`, `knuckles` and `whip`
+  now; `rimshot` was already English. The audio files are renamed with their
+  bytes untouched, so every hash in `public/snd/sounds.sha256` is the one that
+  was there before.
+- **`settings` is on v13.** `soundName` is stored, so this is a migration
+  rather than a find and replace: `furz` sits in a real database on his machine
+  and would fail the new enum on the next read. The map is one to one, so
+  whatever he picked is the sound he keeps. The German names in the v2 and v5
+  migrations stay exactly as they are and now say why: a migration writes the
+  document as the *next* version expects it, and back then the names were
+  German.
+- **The comments speak English.** The prose here was already mostly English,
+  but German kept leaking into it: the worked examples in the design system's
+  doc comments were written in German, a handful of comments quoted a German
+  label to explain what a component is for, and `theme.css` had one paragraph
+  that was never translated at all. `<AsOf>` also stops rendering two
+  hard-coded German words.
+- **This file is in English too**, and so are the app's own CSS class names:
+  `haltung-kamera` is `haltung-camera`, `haltung-kamera-aus` is
+  `haltung-camera-off`.
 
-### Geändert
-- **Die Unterzeile sagt jetzt, *was* auf dem Gerät bleibt** _(„"nothing leaves
-  your device" is confusing, make it sure we talk about the data")_. Sie lautete
-  „Nichts verlässt dein Gerät." Das „Nichts" war das Problem: wer sich bei
-  einer Webcam-Seite fragt, was mit seinem Gesicht passiert, bekam die Auskunft,
-  dass irgendein ungenanntes Nichts bleibt, wo es ist. Genannt werden jetzt die
-  beiden Dinge, nach denen tatsächlich gefragt wird: „Die Bilder und die
-  Messwerte bleiben auf deinem Gerät." Das Versprechen ist dasselbe, nur hat es
-  jetzt einen Gegenstand. In allen dreizehn Tabellen, und ebenso in `seo.json`,
-  in `index.html` und im Manifest, denn die Suchergebnis-Zeile ist für viele
-  der erste Satz, den sie von dieser Seite lesen.
-  `leavesTitle`/`leavesText` beantworten dieselbe Frage weiterhin ausführlich;
-  die Unterzeile ist die Fassung, die unter den Titel passt.
+### Deliberately still German
+- **His requests, quoted verbatim, typos and all.** They are the record of what
+  was asked, not prose about it, and a translated request is no longer the
+  thing he said.
+- **The German translation tables** in `i18n.ts` and `lang-text.ts`, and the
+  German half of `data.json`. Those are the German page, not German code.
+- **The page title** and the subtitle beside it in `app.config.ts`. He asked
+  for that wording exactly.
+- **`haltung-`**, the prefix on those class names, because it is `appId` and so
+  the name the local database is stored under. Renaming it would orphan the
+  readings on every device that has the page open. The words after it are
+  English now.
 
-### Neu
-- **Georgisch, die dreizehnte Sprache** _(„add georgian language also")_. Eine
-  neue Sprache ist hier kein neues Wörterbuch, sondern acht Stellen: `i18n.ka.ts`
-  (die Oberfläche), `data.json` (der geschriebene Inhalt), `lang-text.ts` (die
-  festen Wörter des Seitenrahmens), `UiLang`/`UI_LANGS`, `Lang`/`LANGUAGES`, die
-  beiden `LOCALE`-Tabellen mit `ka-GE`, das Etikett „ქართული" im Umschalter und
-  eine Flagge. `src/ui/flags/ka.svg` kommt wie die übrigen aus flag-icons.
-- **`settings` ist auf v11.** Das Enum für `lang` bekommt einen Wert mehr. Die
-  Migration selbst ändert nichts - sie muss nur existieren, weil RxDB ein
-  gespeichertes Dokument gegen das Schema prüft, unter dem es geschrieben wurde.
-  Wer nie Georgisch gewählt hat, bleibt bei seiner Sprache, wie schon bei v9.
-- **Georgisch ist die erste Schrift hier, die IBM Plex nicht abdeckt.** Mchedruli
-  fällt deshalb auf den System-Stack durch, genau wie Chinesisch und Japanisch
-  es seit jeher tun; nachgetragen im Kommentar von `tokens/fonts.css`. Eine
-  eigene Schriftdatei mitzuliefern wäre ein weiterer Download für eine Seite,
-  die offline funktionieren muss - und jedes System, das eine UI-Schrift
-  mitbringt, bringt eine mit, die Georgisch kann.
-- Mchedruli kennt keine Großbuchstaben. Die 11px-Zeilen über den Einstellungen
-  sind `text-transform: uppercase`, was auf Georgisch schlicht nichts tut - die
-  Wörter stehen da, wie sie geschrieben sind. Das ist kein Fehler, den man
-  beheben müsste, sondern die Schrift.
+### Noticed, not acted on
+- `<AsOf>` and `<Details>` are in `src/ui` but nothing renders them, and the
+  house rule is that a component which stops being rendered gets deleted rather
+  than carried along. Deleting them touches `theme.css` and the `UiText` labels
+  that exist only for them, which is a different change from this one.
 
-## 2026-09-16 (Nachtrag 3) - Zen ist der Normalzustand, das Dashboard ein Schalter
+## 2026-09-18 - a whip crack joins the sounds
 
-### Neu
-- **Die Seite startet im Zen-Modus: Kamera, Startknopf, drei Winkel, sonst
-  nichts** _(„im default ist die webseite zu techlastig mit den vielen daten.
+### Added
+- **A sixth signal sound: the whip** _(„füge einen peitschensound hinzu")_. It
+  stands in the list beside the fart, the throat clear, the scream, the knuckle
+  crack and the rimshot, and runs through the same rise in volume as the rest.
+- **`public/snd/peitsche.wav` is bundled and precached for offline.** The new
+  sound is therefore there without a fetch, exactly like the others, and the
+  synthesiser has a whip fallback of its own in case the browser will not play
+  the file.
+
+### Changed
+- **`settings` is on v12.** The enum for `soundName` gains the value
+  `peitsche`. The migration itself changes nothing - it only has to exist, so
+  that devices keep the noise they already picked and are offered the new one
+  as well.
+
+## 2026-09-16 (addendum 4) - the subtitle names the data, and Georgian joins
+
+### Changed
+- **The subtitle now says *what* stays on the device** _(„"nothing leaves your
+  device" is confusing, make it sure we talk about the data")_. It read
+  „Nichts verlässt dein Gerät." The „Nichts" was the problem: someone who
+  wonders what a webcam page does with their face was told that some unnamed
+  nothing stays where it is. What it names now is the two things people
+  actually ask about: „Die Bilder und die Messwerte bleiben auf deinem Gerät."
+  The promise is the same, it just has an object now. In all thirteen tables,
+  and likewise in `seo.json`, in `index.html` and in the manifest, because the
+  search-result line is the first sentence many people read of this page.
+  `leavesTitle`/`leavesText` still answer the same question at length; the
+  subtitle is the version that fits under the title.
+
+### Added
+- **Georgian, the thirteenth language** _(„add georgian language also")_. A new
+  language here is not a new dictionary but eight places: `i18n.ka.ts` (the
+  interface), `data.json` (the written content), `lang-text.ts` (the page
+  frame's fixed words), `UiLang`/`UI_LANGS`, `Lang`/`LANGUAGES`, the two
+  `LOCALE` tables with `ka-GE`, the label „ქართული" in the picker, and a flag.
+  `src/ui/flags/ka.svg` comes from flag-icons like the rest.
+- **`settings` is on v11.** The enum for `lang` gains one more value. The
+  migration itself changes nothing - it only has to exist, because RxDB
+  validates a stored document against the schema it was written under. Whoever
+  never picked Georgian keeps their language, as with v9.
+- **Georgian is the first script here that IBM Plex does not cover.** Mkhedruli
+  therefore falls through to the system stack, exactly as Chinese and Japanese
+  always have; noted in the comment in `tokens/fonts.css`. Shipping a font file
+  of its own would be another download for a page that has to work offline, and
+  every system that ships a UI font ships one that can set Georgian.
+- Mkhedruli has no capitals. The 11px lines above the settings are
+  `text-transform: uppercase`, which in Georgian simply does nothing - the
+  words stand as they are written. That is not a bug to fix, it is the script.
+
+## 2026-09-16 (addendum 3) - zen is the normal state, the dashboard is a switch
+
+### Added
+- **The page starts in zen mode: camera, start button, three angles, nothing
+  else** _(„im default ist die webseite zu techlastig mit den vielen daten.
   mach einen zen-mode als default der nur video, start-tile und current
   degree-conten anzeigt. zudem einen button um zum dashboardmode zu
-  wechseln")_. Die Frage, mit der man die Seite morgens aufmacht, ist „sitze
-  ich gerade", und die beantworten das Bild und die drei Zahlen darunter. Die
-  Kurven, das Protokoll, der Verlauf über die Tage und die Grenzen beantworten
-  Fragen, die man absichtlich stellt, und stehen deshalb nicht mehr im Weg,
-  wenn man sie nicht stellt. Aus achtzehn Kacheln werden drei.
-- **Ein Umschalter am Fuß der Startkachel, links „Zen", rechts „Dashboard"**
-  _(„mach den zen-dashboard toggle da beim starttile rein", dann „neachst unter
+  wechseln")_. The question you open the page with in the morning is „sitze ich
+  gerade", and the picture and the three numbers under it answer that. The
+  curves, the log, the trend across the days and the limits answer questions
+  you ask on purpose, and so they are no longer in the way when you are not
+  asking them. Eighteen tiles become three.
+- **A switch at the foot of the start tile, „Zen" left, „Dashboard" right**
+  _(„mach den zen-dashboard toggle da beim starttile rein", then „neachst unter
   dem soundselect. mach einen toggle daraus so links zenmode und rechts
-  dashboard mode")_. Er stand erst mittig unter dem Raster, dann als einzelner
-  Ghost-Knopf in der Knopfreihe; in der Kachel ist er richtig, denn im
-  Zen-Modus ist das die einzige Kachel, in der überhaupt etwas zu drücken ist.
-  Und ein Schalter ist er, weil ein Knopf nur sagen konnte, wohin er führt, nie
-  aber, wo man gerade steht - nebeneinander sagen die zwei Wörter beides auf
-  einmal. Unter der Tonauswahl, mit derselben 11px-Zeile darüber wie jede
-  andere Einstellung. Links Zen, rechts Dashboard: das ist zugleich die
-  Reihenfolge von wenig nach viel, der Schalter läuft also entlang derselben
-  Leiter, auf der sich die beiden Ansichten unterscheiden.
-- **`src/ui/Segmented.tsx`, der Schalter selbst.** Eine eingelassene Spur, das
-  gewählte Segment steigt daraus hervor. Der Zustand hängt an der Werteleiter
-  und an der Tinte - Spur auf Inset-Wert, gewähltes Segment zurück auf dem
-  Slate der inaktiven Bedienelemente, Beschriftung von Sekundär-Slate auf Weiß
-  - und **an keiner Stelle am Korallrot**: ein Ansichtswechsel ist keiner der
-  sechs Plätze, an denen das 10%-Budget ausgegeben werden darf. Genau dafür ist
-  es ein eigenes Bauteil und nicht zweimal `<Button active>`, denn das ist die
-  korallrote Fassung. Gleich breite Spalten, damit „der linke" links bleibt,
-  egal wie lang die Wörter sind.
-- **`view` in den Einstellungen**, Schema v10. Die Wahl liegt bei den
-  Einstellungen und nicht im Komponentenzustand, weil sie ein Neuladen
-  überleben soll: wer etwas nachschaut, schaut es morgen wieder nach.
-- **Zwei Zeichen mehr in `Icon.tsx`**: `grid` (vier Kacheln) und `minimize`
-  (derselbe Rahmen, nach innen gezogen). Zwei Formen statt eines Pfeils, der
-  einmal so und einmal andersherum zeigt - ein Zeichen, das seine Bedeutung mit
-  der Richtung wechselt, sagt auf einen Blick gar nichts.
-- **Fünf Schlüssel in allen zwölf Tabellen**: `dashboardLabel`, `zenLabel`,
-  `toDashboard`, `toZen` und `viewLabel` für die Zeile über dem Schalter
+  dashboard mode")_. It stood centred under the grid first, then as a single
+  ghost button in the button row; in the tile is where it belongs, because in
+  zen mode that is the only tile with anything to press at all. And it is a
+  switch because a button could only say where it leads, never where you
+  currently are - side by side, the two words say both at once. Under the sound
+  select, with the same 11px line above it as every other setting. Zen left,
+  dashboard right: that is also the order from little to much, so the control
+  runs along the same ladder the two views differ on.
+- **`src/ui/Segmented.tsx`, the switch itself.** An inset track with the chosen
+  segment raised out of it. The state hangs on the value ladder and on the ink
+  - track at the inset value, chosen segment back up on the slate of the
+  inactive controls, label from secondary slate to white - and **nowhere on the
+  coral**: a change of view is not one of the six places the 10% budget may be
+  spent. That is exactly why it is a component of its own and not
+  `<Button active>` twice, which is the coral version. Equal columns, so that
+  „the left one" stays on the left however long the words are.
+- **`view` in the settings**, schema v10. The choice lives in the settings and
+  not in component state because it should survive a reload: whoever looks
+  something up will be looking it up again tomorrow.
+- **Two more glyphs in `Icon.tsx`**: `grid` (four tiles) and `minimize` (the
+  same frame, pulled inwards). Two shapes rather than one arrow pointing first
+  one way and then the other - a glyph that swaps its meaning with its
+  direction says nothing at a glance.
+- **Five keys in all twelve tables**: `dashboardLabel`, `zenLabel`,
+  `toDashboard`, `toZen` and `viewLabel` for the line above the switch
   („Ansicht", „View", „Weergave", „Görünüm", „Вид", „视图", „表示").
-  „Dashboard" und „Zen" sind seine eigenen zwei Wörter und bleiben in jeder
-  Sprache dieselben, nur die Schrift wechselt mit ihr: „Дашборд"/„Дзен",
-  „仪表盘"/„禅", „ダッシュボード"/„禅". Lateinisch gesetzt mitten in einem
-  japanischen Satz wäre es ein Fremdkörper und kein Etikett.
+  „Dashboard" and „Zen" are his own two words and stay the same in every
+  language, only the script changes with it: „Дашборд"/„Дзен", „仪表盘"/„禅",
+  „ダッシュボード"/„禅". Set in Latin in the middle of a Japanese sentence it
+  would be a foreign body rather than a label.
 
-### Geändert
-- **Migration v10 setzt auch bestehende Geräte auf Zen**, und das ist die eine
-  Migration hier, die absichtlich ändert, was ein Gerät zeigt. Die Regel der
-  anderen neun ist, dass ein Schemawechsel niemandem die Ansicht unter den
-  Füßen wegzieht; hier ist genau das die Bitte. Stünde „dashboard" in der
-  Migration, bliebe sein eigener Browser auf der Ansicht, über die er sich
-  beschwert hat, und der neue Normalzustand erreichte nur ein Gerät, das er nie
-  geöffnet hat. Das Dashboard ist einen Klick weit weg.
-- **Im Zen-Modus werden die versteckten Kacheln gar nicht erst gerendert**,
-  nicht per CSS ausgeblendet. Die Verlaufskachel fragt jeden je
-  aufgezeichneten Tag ab, und eine ruhige Seite soll nicht für ein Diagramm
-  zahlen, das niemand ansieht.
-- **Der Erklärtext („Kurz gesagt" und die fünf Schritte) gehört zum
-  Dashboard.** Er ist einmal lesenswert und danach sechs Kacheln Prosa
-  zwischen ihm und der Kamera.
-- Was im Zen-Modus stehen bleibt: die Tonauswahl in der Startkachel, weil sie
-  zu „was das Ding tut, während ich hier sitze" gehört, und die beiden Knöpfe
-  oben rechts für Sichern und Löschen, weil sie zum Rahmen gehören und nicht zu
-  den Daten auf der Seite.
+### Changed
+- **Migration v10 puts existing devices into zen too**, and that is the one
+  migration here that deliberately changes what a device shows. The rule for
+  the other nine is that a schema change never pulls the view out from under
+  anybody; here that is precisely the request. If the migration said
+  „dashboard", his own browser would stay on the view he complained about, and
+  the new normal state would only ever reach a device he has never opened. The
+  dashboard is one click away.
+- **In zen mode the hidden tiles are not rendered at all**, not hidden with
+  CSS. The trend tile queries every day ever recorded, and a quiet page should
+  not be paying for a chart nobody is looking at.
+- **The explanatory text („Kurz gesagt" and the five steps) belongs to the
+  dashboard.** It is worth reading once, and after that it is six tiles of
+  prose between him and the camera.
+- What stays in zen mode: the sound select in the start tile, because it
+  belongs to „what this thing does while I sit here", and the two buttons top
+  right for saving and clearing, because they belong to the frame rather than
+  to the data on the page.
 
-## 2026-09-16 (Nachtrag 2) - die Unterzeile sagt, was die Seite tut
+## 2026-09-16 (addendum 2) - the subtitle says what the page does
 
-### Geändert
-- **Die Unterzeile unter der Überschrift nennt weder Local-First noch RxDB**
+### Changed
+- **The subtitle under the heading names neither Local-First nor RxDB**
   _(„change the subtitle from „local-first app to train..." to sth non
   technocal that does not describe rxdb or tech stuff and instead talks about
-  what the app does")_. Sie lautete „App fürs Haltungstraining. Erkennung durch
-  eine lokale KI, gespeichert wird mit RxDB." und war um zwei Links herum aus
-  drei Stücken zusammengesetzt. Das beschrieb den Bau, nicht die Sache: wer die
-  Wörter kennt, weiß es ohnehin, und wer sie nicht kennt, erfährt nichts.
-  Stattdessen steht dort jetzt ein Satz darüber, was die Seite tut, und einer
-  darüber, wo die Bilder bleiben: „Schaut über die Webcam zu, wie du sitzt, und
-  gibt einen Ton, wenn du zusammenklappst. Nichts verlässt dein Gerät." Das
-  Versprechen, das „Local-First" gemeint hat, steht damit immer noch da, nur in
-  Worten, die jeder liest.
-- **Aus `subtitleA` und `subtitleB` wird `subtitle`**, in allen zwölf Tabellen.
-  Die Dreiteilung gab es nur, damit die beiden Links dazwischen passen; ohne
-  sie ist es ein Satz, und `<Page subtitle>` bekommt eine Zeichenkette statt
-  eines Fragments. Die Ausnahme für das deutsche „Local-First-App" fällt
-  ebenfalls weg.
-- Die beiden Links auf rxdb.info sind damit von der Seite verschwunden. Das
-  ist die Folge der Bitte, nicht ein zusätzlicher Schritt.
+  what the app does")_. It read „App fürs Haltungstraining. Erkennung durch
+  eine lokale KI, gespeichert wird mit RxDB." and was assembled from three
+  pieces around two links. That described the build, not the thing: whoever
+  knows the words knows it anyway, and whoever does not learns nothing.
+  Instead there is now one sentence about what the page does and one about
+  where the pictures stay: „Schaut über die Webcam zu, wie du sitzt, und gibt
+  einen Ton, wenn du zusammenklappst. Nichts verlässt dein Gerät." The promise
+  „Local-First" was meant to make is still there, only in words everybody
+  reads.
+- **`subtitleA` and `subtitleB` become `subtitle`**, in all twelve tables. The
+  three-way split existed only so the two links would fit between the pieces;
+  without them it is one sentence, and `<Page subtitle>` takes a string rather
+  than a fragment. The exception for the German „Local-First-App" goes too.
+- The two links to rxdb.info have therefore left the page. That is the
+  consequence of the request, not an extra step.
 
-## 2026-09-16 (Nachtrag) - zwei Zeilen weniger neben den Knöpfen
+## 2026-09-16 (addendum) - two lines fewer beside the buttons
 
-### Entfernt
-- **„Nächste Prüfung in 12 s" und „Zuletzt 14:32" stehen nicht mehr neben
-  Start und Stopp** _(„remove „last check" and „nect check in" texts")_. Beide
-  sagten etwas, das anderswo schon steht: der Countdown ist seit gestern der
-  Ring um das Kamerafeld, gleichmäßig gezeichnet statt einmal pro Sekunde
-  hochgezählt, und die Uhrzeit der letzten Messung steht in der ersten Zeile
-  des Protokolls darunter. Was an der Stelle bleibt, ist „Bild wird
-  ausgewertet …", denn das ist der einzige Zustand, für den es sonst kein
-  Zeichen gibt.
-- `nextIn` und `lastAt` sind aus allen zwölf Tabellen raus.
+### Removed
+- **„Nächste Prüfung in 12 s" and „Zuletzt 14:32" no longer stand beside start
+  and stop** _(„remove „last check" and „nect check in" texts")_. Both said
+  something that is already somewhere else: since yesterday the countdown is
+  the ring around the camera well, drawn evenly rather than counted up once a
+  second, and the time of the last reading stands in the first line of the log
+  below. What stays in that spot is „Bild wird ausgewertet …", because that is
+  the only state with no other sign for it.
+- `nextIn` and `lastAt` are out of all twelve tables.
 
-### Geändert
-- **Die Seite rendert nicht mehr jede Sekunde neu.** `secondsLeft` war ein
-  `useState`, das nur diese eine Zeile gefüttert hat, und der Takt schrieb es
-  im Sekundentakt. Der Kommentar daneben behauptete schon immer, der Zähler
-  liege in einem Ref, „weil der Takt ihn jede Sekunde liest und schreibt und
-  die Seite dafür nicht neu zeichnen darf" - das stimmte für `left.current` und
-  wurde von `setSecondsLeft` direkt daneben aufgehoben. Jetzt stimmt es.
+### Changed
+- **The page no longer re-renders every second.** `secondsLeft` was a
+  `useState` feeding that one line and nothing else, and the loop wrote it once
+  a second. The comment beside it had always claimed the counter lives in a ref
+  „because the loop reads and writes it every second and the page must not
+  repaint for that" - which was true of `left.current` and was undone by the
+  `setSecondsLeft` directly next to it. Now it is true.
 
-## 2026-09-16 - der QR-Code im Teilen-Fenster
+## 2026-09-16 - the QR code in the share dialog
 
-### Behoben
-- **Der Teilen-Knopf behauptete immer, die Adresse sei zu lang für einen
-  QR-Code** _(„share button says this text is too long for qr code, fix
-  that")_. Sie war es nie: `https://deshrimp.com/` sind einundzwanzig Zeichen,
-  und selbst Version 1 nimmt siebzehn. Es gab schlicht keinen Encoder. Sowohl
-  `<ShareDialog>` als auch `<QRCode>` lasen ihn von `window.QR`, das in diesem
-  Repo nirgends gesetzt wird - der Rest des alten Generator-Setups, aus dem die
-  App im September herausgezogen wurde, wo die Bibliothek als Global in die
-  HTML-Datei eingesetzt wurde. Der Encoder war der eine Teil, der beim Umzug
-  auf Vite nicht mitkam. Das Ergebnis war kein Fehler, sondern genau der Satz,
-  den der Fallback für den echten Grenzfall bereithält, und deshalb sah er
-  plausibel aus.
+### Fixed
+- **The share button always claimed the address was too long for a QR code**
+  _(„share button says this text is too long for qr code, fix that")_. It never
+  was: `https://deshrimp.com/` is twenty-one characters, and even version 1
+  takes seventeen. There simply was no encoder. Both `<ShareDialog>` and
+  `<QRCode>` read it off `window.QR`, which nothing in this repo ever sets -
+  the remains of the old generator setup the app was pulled out of in
+  September, where the library was pasted into the HTML file as a global. The
+  encoder was the one part that did not come along in the move to Vite. The
+  result was not an error but exactly the sentence the fallback keeps for the
+  real edge case, which is why it looked plausible.
 
-### Neu
-- **`src/ui/qr.ts`, der Encoder selbst.** Byte-Modus, Versionen 1 bis 40, alle
-  vier Fehlerkorrekturstufen, die acht Masken und die Bewertung, die zwischen
-  ihnen entscheidet. Eigener Code statt einer Abhängigkeit: es sind vierzig
-  Zeilen Tabelle und zweihundert Zeilen Arithmetik, die sich nicht mehr ändern,
-  sobald sie stimmen. Geprüft wurde gegen eine fremde Implementierung, Matrix
-  für Matrix, über 93 Fälle vom leeren Rand bis zur vollen Version 40, Maskenwahl
-  eingeschlossen; danach noch einmal andersherum, indem ein Scanner die
-  gerenderte Seite wieder gelesen hat.
-- **Die Stufe steigt, wenn Platz ist.** Zuerst die kleinste Version, die den
-  Link hält, dann innerhalb dieser Version die höchste Fehlerkorrektur, die
-  noch hineinpasst. Das Quadrat wird dadurch nicht größer, der Code verträgt
-  aber einen Daumen in der Ecke.
-- **Zu lang heißt jetzt wirklich zu lang.** Der Hinweis erscheint ab 2953
-  Bytes, der Kapazität einer Version 40 auf Stufe L. Darunter gibt es einen
-  Code, darüber gibt es keinen, und der Link darunter funktioniert in beiden
-  Fällen.
+### Added
+- **`src/ui/qr.ts`, the encoder itself.** Byte mode, versions 1 to 40, all four
+  error-correction levels, the eight masks and the scoring that decides between
+  them. Our own code rather than a dependency: it is forty lines of table and
+  two hundred lines of arithmetic that stop changing once they are right.
+  Checked against a foreign implementation, matrix by matrix, across 93 cases
+  from the empty edge to a full version 40, mask choice included; then once
+  more the other way round, by having a scanner read the rendered page back.
+- **The level rises when there is room.** First the smallest version that holds
+  the link, then within that version the highest error correction that still
+  fits. The square does not get bigger for it, but the code survives a thumb in
+  the corner.
+- **Too long now really means too long.** The notice appears from 2953 bytes,
+  the capacity of a version 40 at level L. Below that there is a code, above it
+  there is none, and the link underneath works either way.
 
-## 2026-09-09 - kein Lockfile
+## 2026-09-09 - no lockfile
 
-### Geändert
-- **`package-lock.json` ist weg und wird nicht neu geschrieben**
-  _(„disable the package-lock, we do not need that")_. `.npmrc` setzt
-  `package-lock=false`, die Datei steht im `.gitignore`. Ein Install löst die
-  Ranges aus `package.json` jedes Mal neu auf - ein neuer Patch-Stand einer
-  transitiven Abhängigkeit kommt also ungefragt mit, was ohne Lockfile der
-  Handel ist.
+### Changed
+- **`package-lock.json` is gone and is not written again**
+  _(„disable the package-lock, we do not need that")_. `.npmrc` sets
+  `package-lock=false`, and the file is in `.gitignore`. An install resolves
+  the ranges from `package.json` afresh every time - a new patch release of a
+  transitive dependency therefore comes along unasked, which is the bargain
+  without a lockfile.
 
 ## 2026-09-09 - an ordinary Vite project
 
-### Geändert
-- **Nur noch die Komponenten, die diese App benutzt.** Aus der geteilten
-  Bibliothek kamen 100 Dateien mit; 48 davon hat keine Seite hier je gerendert
-  (Shop-Listings, Karten, Rezeptkarten, Chat-Blasen, Zeitleisten …). Sie sind
-  raus, dazu drei Datenbank-Komponenten (`Checklist`, `Decision`, `Steps`) und
-  vier ungenutzte Diagrammtypen. **Am Bundle ändert das nichts** - Vite hatte sie
-  ohnehin herausgeworfen; es ändert, was jemand liest, der das Repo aufmacht.
-- **`theme.css` von 1.499 auf 924 Zeilen.** 16 Abschnitte gehörten ausschließlich
-  zu gelöschten Komponenten. Das *ist* eine echte Ersparnis, anders als beim JS:
-  CSS wird nicht baumgeschüttelt, die Regeln wurden bis eben mitgeliefert -
-  gebaut 55,4 → 34,4 KB. Abschnitte mit gemischtem Inhalt blieben unangetastet:
-  einige Klassen dort werden zur Laufzeit zusammengesetzt (`ui-gap-${n}`), und
-  eine statische Suche hielte sie fälschlich für tot.
-- **Die App ist jetzt ein normales JavaScript-Projekt** - `package.json`,
-  `vite.config.ts`, `tsconfig.json`, `src/`, `npm run dev`. Vorher wurde die
-  Seite von einem Generator gebaut, der React und die Komponenten als Globals in
-  eine einzelne HTML-Datei einsetzte; die App importierte sie über einen
-  Typ-Schatten auf `window.UI`. Jetzt sind es gewöhnliche ES-Module, und der
-  Bundler sieht echte Importe: ungenutzte Komponenten fallen raus, und RxDBs
-  WebRTC-Teil landet in einem eigenen Chunk, der erst beim Sync geladen wird.
-- **Das Pose-Modell kommt über npm.** Drei der vier Dateien liegen in
-  `@mediapipe/tasks-vision`, also einer normalen Abhängigkeit - npm lädt und
-  prüft sie. Nur die Gewichte werden noch geholt. Die gepinnten SHA-256 bleiben.
-- **Kein Python mehr** im Projekt.
+### Changed
+- **Only the components this app uses.** 100 files came across from the shared
+  library; 48 of them were never rendered by any page here (shop listings,
+  maps, recipe cards, chat bubbles, timelines …). They are out, along with
+  three database components (`Checklist`, `Decision`, `Steps`) and four unused
+  chart types. **It changes nothing about the bundle** - Vite was dropping them
+  anyway; it changes what somebody reads who opens the repo.
+- **`theme.css` from 1,499 lines to 924.** 16 sections belonged exclusively to
+  deleted components. That *is* a real saving, unlike the JS: CSS is not
+  tree-shaken, the rules were shipped until just now - built, 55.4 → 34.4 KB.
+  Sections with mixed content were left alone: some classes in them are
+  assembled at runtime (`ui-gap-${n}`), and a static search would wrongly take
+  them for dead.
+- **The app is now an ordinary JavaScript project** - `package.json`,
+  `vite.config.ts`, `tsconfig.json`, `src/`, `npm run dev`. Before, the page
+  was built by a generator that pasted React and the components into a single
+  HTML file as globals; the app imported them through a type shadow on
+  `window.UI`. Now they are ordinary ES modules and the bundler sees real
+  imports: unused components drop out, and RxDB's WebRTC part lands in a chunk
+  of its own that is only loaded when syncing.
+- **The pose model comes over npm.** Three of the four files live in
+  `@mediapipe/tasks-vision`, an ordinary dependency, so npm fetches and checks
+  them. Only the weights are still fetched separately. The pinned SHA-256 sums
+  stay.
+- **No more Python** in the project.
 
 
-## 2026-09-09 (Nachtrag 12)
+## 2026-09-09 (addendum 12)
 
-### Geändert
-- Der eigene P2P-Code der Seite bleibt jetzt derselbe, und ein eingefügter
-  fremder Code steht nach dem Neuladen noch im Feld. Beides steckt im geteilten
-  Bauteil: `.claude/app-builder/CHANGELOG.md`.
-
-
-## 2026-09-09 (Nachtrag 11)
-
-### Geändert
-- **Die Überschrift „Jetzt / Jede Sekunde ein Bild" ist weg** _(„remove these
-  texts we do not need them")_. Kamera, Urteil und die drei Zahlen stehen ganz
-  oben auf der Seite und brauchen niemanden, der sie ankündigt; der Takt ist eine
-  Einstellung und steht dort, wo man ihn einstellt. Die vier Wörter
-  (`nowTitle`, `nowIdle`, `nowEverySecond`, `nowEvery`) sind aus allen zwölf
-  Sprachtabellen entfernt - ein Schlüssel, den keine Seite mehr rendert, ist beim
-  nächsten Lesen nur eine Frage.
-- Die P2P-Sync der Seite überlebt jetzt das Schließen des Modals und wird nach
-  einem Reload von selbst wieder aufgenommen. Das steckt im geteilten Bauteil:
+### Changed
+- The page's own P2P code now stays the same, and a pasted foreign code is
+  still in the field after a reload. Both sit in the shared component:
   `.claude/app-builder/CHANGELOG.md`.
 
-## 2026-09-09 (Nachtrag 10)
 
-### Geändert
-- Das ⇅-Modal fragt jetzt nach der Client-ID, statt den Cloud-Knopf
-  abzuschalten, und P2P hat ein eigenes Feld für den Code der Gegenseite. Beides
-  steckt im geteilten Bauteil - hier ändert sich nur, was er auf der Seite
-  sieht. Einzelheiten: `.claude/app-builder/CHANGELOG.md`.
+## 2026-09-09 (addendum 11)
 
-## 2026-09-09 (Nachtrag 9)
+### Changed
+- **The heading „Jetzt / Jede Sekunde ein Bild" is gone** _(„remove these texts
+  we do not need them")_. The camera, the verdict and the three numbers stand
+  at the very top of the page and need nobody to announce them; the pace is a
+  setting and stands where you set it. The four words (`nowTitle`, `nowIdle`,
+  `nowEverySecond`, `nowEvery`) are removed from all twelve language tables - a
+  key no page renders any more is only a question the next time somebody reads
+  it.
+- The page's P2P sync now survives closing the modal and resumes by itself
+  after a reload. That sits in the shared component:
+  `.claude/app-builder/CHANGELOG.md`.
 
-### Geändert
-- **Aus „Messungen sichern" ist das ⇅-Modal geworden** - die Seite ruft jetzt
-  `<DataSyncButton>` aus dem app-builder auf, statt direkt herunterzuladen. Damit
-  kann sie zum ersten Mal auch **lesen**, was sie geschrieben hat: eine
-  exportierte Datei lässt sich zurückladen, ein zweites Gerät per WebRTC auf
-  denselben Stand bringen, und in eine Cloud sichern, sobald eine Client-ID
-  eingetragen ist. Für eine Seite, deren Tageszeilen *für immer* bleiben sollen,
-  war der reine Download die eigentliche Lücke: die Daten überlebten den
-  Browser nicht.
-- `t.saveReadings` und `t.saved` sind nicht mehr in Gebrauch - die Wörter des
-  Modals stehen im Seitenrahmen, weil sie auf jeder Seite dieselben sind.
+## 2026-09-09 (addendum 10)
 
-## 2026-09-08 (Nachtrag 8)
+### Changed
+- The ⇅ modal now asks for the client id instead of disabling the cloud button,
+  and P2P has a field of its own for the other side's code. Both sit in the
+  shared component - what changes here is only what he sees on the page.
+  Details: `.claude/app-builder/CHANGELOG.md`.
 
-### Neu
-- **Zehn weitere Sprachen** _(„add 10 more languages")_: Spanisch,
-  Französisch, Italienisch, Portugiesisch, Niederländisch, Polnisch, Türkisch,
-  Russisch, Chinesisch, Japanisch - zusammen mit Deutsch und Englisch zwölf.
-  Übersetzt ist **alles, was auf der Seite steht**: die App-Texte
-  (`i18n.<code>.ts`), der Seitenrahmen (`.claude/ui`) und der geschriebene
-  Inhalt in `data.json` - Intro, die fünf Schritte, die sieben Quellennotizen
-  und die vier Datenlücken. Auch der Titel: „¡Siéntate derecho, gamba!",
+## 2026-09-09 (addendum 9)
+
+### Changed
+- **„Messungen sichern" has become the ⇅ modal** - the page now calls
+  `<DataSyncButton>` from the app-builder instead of downloading directly. With
+  that it can, for the first time, also **read** what it wrote: an exported
+  file can be loaded back, a second device brought to the same state over
+  WebRTC, and a backup written to a cloud as soon as a client id is entered.
+  For a page whose daily rows are meant to stay *forever*, the plain download
+  was the real gap: the data did not survive the browser.
+- `t.saveReadings` and `t.saved` are no longer in use - the modal's words live
+  in the page frame, because they are the same on every page.
+
+## 2026-09-08 (addendum 8)
+
+### Added
+- **Ten more languages** _(„add 10 more languages")_: Spanish, French, Italian,
+  Portuguese, Dutch, Polish, Turkish, Russian, Chinese, Japanese - twelve
+  together with German and English. Translated is **everything on the page**:
+  the app text (`i18n.<code>.ts`), the page frame (`.claude/ui`) and the
+  written content in `data.json` - the intro, the five steps, the seven source
+  notes and the four data gaps. The title too: „¡Siéntate derecho, gamba!",
   „Siedź prosto, krewetko!", „坐直了，虾米！".
 
-### Geändert
-- **Die Sprachliste steht an einer Stelle.** `LANGUAGES` aus `i18n.ts` speist
-  sowohl den Picker als auch `preferredUiLang()`. Vorher stand `['de','en']`
-  zweimal wörtlich im `index.tsx` - bei zwei Sprachen harmlos, bei zwölf eine
-  Liste, die auseinanderläuft.
-- **`settings` ist auf v9.** Das Enum für `lang` ist von zwei auf zwölf Werte
-  geweitet; das ist eine Schemaänderung, also muss die Version hoch, sonst weist
-  RxDB das gespeicherte Dokument ab. Die Migration ändert **nichts**: die zehn
-  neuen Sprachen sind ein Angebot, und jemanden still in eine Sprache zu
-  schieben, die er nie gewählt hat, ist genau das, was eine Migration nicht tun
-  darf.
+### Changed
+- **The language list lives in one place.** `LANGUAGES` from `i18n.ts` feeds
+  both the picker and `preferredUiLang()`. Before, `['de','en']` stood written
+  out twice in `index.tsx` - harmless with two languages, a list that drifts
+  apart with twelve.
+- **`settings` is on v9.** The enum for `lang` is widened from two values to
+  twelve; that is a schema change, so the version has to move or RxDB rejects
+  the stored document. The migration changes **nothing**: the ten new languages
+  are an offer, and quietly pushing somebody into a language they never chose
+  is precisely what a migration must not do.
 
-### Nicht übersetzt, mit Absicht
-- **Quellentitel.** Ein Dokument heißt, wie es heißt; übersetzt wird nur die
-  Notiz darunter. Ebenso `id` und `severity` einer Datenlücke - das sind
-  Schlüssel, kein Fließtext.
-- **Kein Rechts-nach-links.** Arabisch, Hebräisch, Persisch, Urdu fehlen, weil
-  der Seitenrahmen `dir="rtl"` nicht kann. Steht als Lücke in `.claude/ui`.
+### Deliberately not translated
+- **Source titles.** A document is called what it is called; only the note
+  under it is translated. Likewise the `id` and `severity` of a data gap -
+  those are keys, not prose.
+- **No right-to-left.** Arabic, Hebrew, Persian and Urdu are missing because
+  the page frame cannot do `dir="rtl"`. Recorded as a gap in `.claude/ui`.
 
-### Geprüft
-- `tsc --noEmit` sauber - das ist bei zwölf Wörterlisten der eigentliche Test:
-  ein vergessener Schlüssel ist ein Typfehler, kein deutsches Wort auf einer
-  japanischen Seite.
-- Im Browser durch alle zwölf geschaltet: Titel, Überschriften und der
-  Abschlussblock wechseln mit, kein deutscher Rest, kein Querlauf, Konsole
-  sauber.
-- Erkennung: `ja` → Japanisch, `zh` → Chinesisch, `pl` → Polnisch, `ru` →
-  Russisch, `tr` → Türkisch, **`pt-BR` → Portugiesisch** (Abgleich am
-  Primär-Subtag), `sv` → Englisch (nicht im Angebot, also letzte Instanz),
-  `['de-AT','en-US']` → Deutsch. Eine getroffene Wahl („Polski" in einem
-  japanischen Browser) überlebt den Reload.
+### Checked
+- `tsc --noEmit` clean - with twelve word lists that is the real test: a
+  forgotten key is a type error rather than a German word on a Japanese page.
+- Stepped through all twelve in the browser: title, headings and the closing
+  block change along, no German left over, no overflow, console clean.
+- Detection: `ja` → Japanese, `zh` → Chinese, `pl` → Polish, `ru` → Russian,
+  `tr` → Turkish, **`pt-BR` → Portuguese** (matched on the primary subtag),
+  `sv` → English (not on offer, so the last resort), `['de-AT','en-US']` →
+  German. A choice once made („Polski" in a Japanese browser) survives the
+  reload.
 
-## 2026-09-08 (Nachtrag 7)
+## 2026-09-08 (addendum 7)
 
-### Geändert
-- **Die Kamera wird im Eingangsformat gezeigt, nichts wird abgeschnitten**
-  _(„zeig die kamera immer im input format, schneide nichts ab")_ - das ersetzt
-  das feste 16:9 von heute früh. Drei Stellen mussten zusammen umgestellt
-  werden, jede einzeln hätte weiter beschnitten:
-  1. **`getUserMedia` fragt nur noch eine Breite an.** Das `height: {ideal:
-     720}` daneben legt eine Form fest; eine von Haus aus 4:3 arbeitende Kamera
-     liefert dann einen 16:9-Ausschnitt ihres eigenen Sensors statt ihres
-     Bildes.
-  2. **`fitToStream()` schreibt das echte Verhältnis auf das Element** - bei
-     `loadedmetadata` und bei `resize` (eine Kamera, die mitten im Strom die
-     Betriebsart wechselt). **Einmal** in einem Effekt registriert, nicht in
-     `start()`: `start` läuft bei jedem Klick auf Starten erneut, und ein dort
-     angehängter Listener sammelt sich mit jedem Mal.
-  3. **Das 16:9 im CSS ist nur noch der Platzhalter**, bis der Strom da ist.
-     Irgendein Wert muss dort stehen, weil ein `<video>` ohne Quelle 300×150
-     meldet und die Box sonst sichtbar springt. `object-fit: contain` statt
-     `cover` ist die Rückfalllinie: sollten Element und Strom je auseinander
-     gehen, entstehen Balken statt eines fehlenden Randes.
+### Changed
+- **The camera is shown in its input format, nothing is cropped**
+  _(„zeig die kamera immer im input format, schneide nichts ab")_ - this
+  replaces this morning's fixed 16:9. Three places had to be changed together;
+  each on its own would have gone on cropping:
+  1. **`getUserMedia` asks for a width only.** The `height: {ideal: 720}`
+     beside it fixes a shape; a camera that natively works in 4:3 then delivers
+     a 16:9 crop of its own sensor rather than its picture.
+  2. **`fitToStream()` writes the real ratio onto the element** - on
+     `loadedmetadata` and on `resize` (a camera that changes mode mid-stream).
+     Registered **once** in an effect, not in `start()`: `start` runs again on
+     every click of the start button, and a listener attached there piles up
+     with each one.
+  3. **The 16:9 in the CSS is only the placeholder** until the stream arrives.
+     Some value has to be there, because a `<video>` with no source reports
+     300×150 and the box would visibly jump. `object-fit: contain` rather than
+     `cover` is the fallback line: should element and stream ever disagree, you
+     get bars instead of a missing edge.
 
-  **Die Messung hing nie daran** - `frameOf()` hat die Leinwand immer aus
-  `videoHeight / videoWidth` bemessen. Falsch war die Vorschau: sie zeigte
-  etwas anderes, als das Modell zu sehen bekam.
+  **The measurement never depended on it** - `frameOf()` has always sized the
+  canvas from `videoHeight / videoWidth`. What was wrong was the preview: it
+  showed something other than what the model was given.
 
-## 2026-09-08 (Nachtrag 6)
+## 2026-09-08 (addendum 6)
 
-### Geändert
-- **Aus dem Spinner ist ein Overlay geworden** _(„loading spinner sieht nicht
-  gut aus, der text dreht aich mit. mach ein overlay modal loading lieber")_.
-  Das Drehen des Textes war ein Fehler in `.claude/ui` und ist dort behoben; der
-  zweite Teil der Bitte ist die Bauart: `<LoadingOverlay>` legt sich über die
-  ganze Seite, statt sich einen Platz darin suchen zu müssen. Auf einer Seite,
-  die beim Laden noch keine Messung hat und danach schon, gibt es diesen Platz
-  nämlich nicht - er verdeckt oder er verschiebt.
-- **Der Zustand hängt jetzt am Promise, nicht am Umfragen.** `preloadPose()`
-  gibt ein Promise zurück; `setLoadingModel(true)` davor, `false` im `.then()`.
-  Vorher wurde `poseLoading()` im Takt abgefragt - das verpasst einen Ladelauf,
-  der schnell scheitert und neu startet, und macht jeden Test von der Uhr
-  abhängig.
+### Changed
+- **The spinner has become an overlay** _(„loading spinner sieht nicht gut aus,
+  der text dreht aich mit. mach ein overlay modal loading lieber")_. The text
+  turning with it was a bug in `.claude/ui` and is fixed there; the second half
+  of the request is the construction: `<LoadingOverlay>` lies across the whole
+  page instead of having to find a place inside it. On a page that has no
+  reading while it loads and does have one afterwards, that place does not
+  exist - it either covers something or it shifts something.
+- **The state hangs on the promise now, not on polling.** `preloadPose()`
+  returns a promise; `setLoadingModel(true)` before it, `false` in the
+  `.then()`. Before, `poseLoading()` was polled on the loop - which misses a
+  load that fails fast and restarts, and makes every test depend on the clock.
 
-## 2026-09-08 (Nachtrag 5)
+## 2026-09-08 (addendum 5)
 
-### Neu
-- **Ein Spinner, solange das Modell lädt.** 17 MB dauern beim ersten Mal
-  spürbar, und bis eben passierte nach dem Klick auf „Starten" sichtbar gar
-  nichts. `preloadPose()` wird jetzt **vor** der Kamera angestoßen, damit die
-  Anzeige auf den Klick erscheint und nicht erst, wenn der Browser den
-  Video-Stream ausgehandelt hat. Die Beschriftung nennt die Größe und dass es
-  einmalig ist - das ist die Information, mit der man entscheidet, ob man
-  wartet.
+### Added
+- **A spinner while the model loads.** 17 MB take a noticeable while the first
+  time, and until just now nothing visibly happened after the click on
+  „Starten". `preloadPose()` is now kicked off **before** the camera, so the
+  indicator appears on the click rather than only once the browser has
+  negotiated the video stream. The label names the size and says it is a
+  one-off - that is the information you decide on whether to wait.
 
-### Behoben
-- **`poseReady()` hat gelogen.** Es prüfte `landmarkerPromise !== null`, also
-  war es in dem Moment wahr, in dem das Laden *beginnt* - die Seite behauptete
-  „lokal gerechnet", während sie noch siebzehn Megabyte herunterlud. Jetzt gibt
-  es ein echtes `landmarkerLoaded` und daneben `poseLoading()` für den Spinner.
-- **Die Fehlermeldung des Modells war fest deutsch.** Ein `PoseError` trägt
-  jetzt nur noch die Worte des Browsers als Detail; den Satz liefert `i18n.ts`,
-  also steht auf einer englischen Seite auch Englisches.
+### Fixed
+- **`poseReady()` was lying.** It tested `landmarkerPromise !== null`, so it
+  was true the moment loading *starts* - the page claimed „lokal gerechnet"
+  while it was still downloading seventeen megabytes. There is a real
+  `landmarkerLoaded` now, and `poseLoading()` beside it for the spinner.
+- **The model's error message was hard-coded German.** A `PoseError` now
+  carries only the browser's own words as the detail; the sentence comes from
+  `i18n.ts`, so an English page says something English.
 
 
-## 2026-09-08 (Nachtrag 4)
+## 2026-09-08 (addendum 4)
 
-### Geändert
-- **Das Kamerabild ist immer 16:9** (vorher 4:3) - auf seine Ansage. Das ist
-  auch die Form, in der die Kamera angefragt wird (`1280×720`), im Normalfall
-  wird also gar nichts beschnitten; `object-fit: cover` fängt die Kameras ab,
-  die nur 4:3 können, und schneidet oben und unten ab, wo nichts liegt, was
-  diese Seite misst.
+### Changed
+- **The camera picture is always 16:9** (4:3 before) - on his instruction. That
+  is also the shape the camera is asked for (`1280×720`), so normally nothing
+  is cropped at all; `object-fit: cover` catches the cameras that can only do
+  4:3 and crops top and bottom, where nothing this page measures lies.
 
-### Behoben
-- **Das Dashboard-Layout ist wieder raus** („ok thats confusing, go back to the
-  previous page layout not the dashboard"). Zurück auf die Lesespalte mit
-  zentriertem Kopf, Kamera in der Mitte, Diagramme untereinander. Behalten
-  wurden die zwei Dinge, die er einzeln verlangt hat: 16:9 und **offene
-  Einstellungen** („settings must not be toggled, directly show them") - die
-  waren im Dashboard hinter einem `<Details>` verschwunden.
-  Die generischen Bausteine bleiben in `.claude/ui` liegen und sind dokumentiert;
-  diese Seite benutzt sie nicht mehr.
-
-
-## 2026-09-08 (Nachtrag 3)
-
-### Geändert
-- **Die Seite ist jetzt ein Dashboard, kein Dokument** („make the app look more
-  like a fullscreen dashboard like it was built for the CEO of a company"):
-  `<Page width="full">`, linksbündiger Kopf, und oben ein **Live-Band** mit der
-  Kamera links und den Zahlen rechts statt einer Kamera mitten in einer
-  Lesespalte.
-- **Genau eine Hero-Zahl**, und es ist die, für die es die Seite gibt: der Kopf
-  vor der Schulter. Seitneigung und Kopfneigung sind daneben normale Kacheln.
-  Zwei Hero-Zahlen wären keine.
-- **Die Diagramme stehen nebeneinander** statt untereinander - auf voller Breite
-  ist das der ganze Gewinn, und der Zeitfenster-Filter darüber ist eine schmale
-  Leiste statt eines formularbreiten Feldes.
-- **Einstellungen und Erklärung sind eingeklappt.** Ein Dashboard, das mit
-  seinem eigenen Einstellungsformular aufmacht, ist ein Einstellungsformular.
-- **Die Kamerahöhe ist gedeckelt.** Bei 640 px Spaltenbreite ist 4:3 gleich
-  480 px hoch - höher als die Zahlen daneben, also stand die halbe rechte Hälfte
-  leer. Der Ausschnitt kostet nichts: das Bild zeigt, ob man im Bild ist, es ist
-  kein Foto.
-- Das Urteil steht als eigene Zeile unter den Zahlen, nicht mehr in einem
-  Callout über der Kamera - auf einem Dashboard muss der Zustand aus zwei Metern
-  lesbar sein.
+### Fixed
+- **The dashboard layout is out again** („ok thats confusing, go back to the
+  previous page layout not the dashboard"). Back to the reading column with a
+  centred head, camera in the middle, charts one under the other. What was kept
+  is the two things he asked for individually: 16:9 and **settings shown
+  openly** („settings must not be toggled, directly show them") - in the
+  dashboard those had disappeared behind a `<Details>`.
+  The generic building blocks stay in `.claude/ui` and are documented; this
+  page no longer uses them.
 
 
-## 2026-09-08 (Nachtrag 2)
+## 2026-09-08 (addendum 3)
 
-### Geändert
-- **Volle Lautstärke nach vier Messungen statt acht** - auf seine Ansage („mach
-  nur 4 messungen bis voller lautstärke"). Im Sekundentakt also nach vier
-  Sekunden. Acht war zu geduldig für einen Anstupser.
-- **Die Startsprache wird erkannt: gespeicherte Wahl → Browsersprache →
-  Englisch.** Vorher war jeder erste Aufruf Deutsch, auch auf einem englischen
-  System - was zu „soll für alle funktionieren" nicht passte.
-  Erkannt wird nur, **solange nichts gespeichert ist**; sobald ein
-  Einstellungs-Dokument existiert, entscheidet das und die Erkennung schweigt.
-  Eine Seite, die nicht in der gewählten Sprache bleibt, ist schlimmer als eine,
-  die einmal falsch geraten hat.
-  Die Falle dabei war nicht die Erkennung, sondern das Speichern: der erste
-  Schreibvorgang ging von `DEFAULTS` aus und hätte ein frisches Gerät auf
-  Deutsch festgenagelt, sobald er irgendeine andere Einstellung ändert. Deshalb
-  `INITIAL_SETTINGS` mit der erkannten Sprache. Migration v3 schreibt weiterhin
-  `'de'` für Geräte, die es vorher schon gab - die waren deutsch und sollen es
-  bleiben.
+### Changed
+- **The page is a dashboard now, not a document** („make the app look more like
+  a fullscreen dashboard like it was built for the CEO of a company"):
+  `<Page width="full">`, a left-aligned head, and at the top a **live band**
+  with the camera on the left and the numbers on the right, rather than a
+  camera in the middle of a reading column.
+- **Exactly one hero number**, and it is the one the page exists for: the head
+  in front of the shoulders. Side lean and head tilt are ordinary tiles beside
+  it. Two hero numbers would be none.
+- **The charts stand side by side** rather than one above the other - at full
+  width that is the whole gain, and the time-window filter above them is a
+  narrow bar rather than a form-width field.
+- **Settings and explanation are folded away.** A dashboard that opens with its
+  own settings form is a settings form.
+- **The camera height is capped.** At a 640 px column, 4:3 is 480 px tall -
+  taller than the numbers beside it, so half the right-hand side stood empty.
+  The crop costs nothing: the picture shows whether you are in frame, it is not
+  a photograph.
+- The verdict stands as a line of its own under the numbers, no longer in a
+  callout above the camera - on a dashboard the state has to be readable from
+  two metres.
 
 
-## 2026-09-08 (Nachtrag)
+## 2026-09-08 (addendum 2)
 
-### Neu
-- **Das Tab-Symbol färbt sich nach Haltung** - grün, gelb, rot („the favicon of
-  the url should change on bad posture to something red and go back to green on
-  good posture"). Eine schlichte Scheibe als Inline-SVG statt einer eingefärbten
-  Garnele: bei 16 px ist ein Emoji Matsch und eine Farbe nicht. Das ist der
-  einzige Kanal, der noch funktioniert, während die Seite hinter der Arbeit
-  liegt - also fast immer, wenn man der Empfehlung folgt, sie in einem eigenen
-  Tab offen zu lassen.
-- **Ein gleitender Durchschnitt über die letzten Minuten** (Vorgabe 30, wählbar
-  5-120). Beantwortet eine andere Frage als das Tages-Diagramm darunter: das
-  geht über Wochen und lässt sich nur im Nachhinein lesen, dieses über die
-  Stunde, in der er gerade sitzt - die, in der er noch etwas ändern kann.
-  Minutenweise gebündelt und über je drei Minuten geglättet, weil ein einzelnes
-  Bild um ein, zwei Grad wackelt.
-- **Fünfter Ton: Räuspern**, von ihm geschickt.
+### Changed
+- **Full volume after four readings rather than eight** - on his instruction
+  („mach nur 4 messungen bis voller lautstärke"). At one picture a second, that
+  is after four seconds. Eight was too patient for a nudge.
+- **The starting language is detected: stored choice → browser language →
+  English.** Before, every first visit was German, even on an English system -
+  which did not fit „should work for everybody".
+  Detection happens only **while nothing is stored**; as soon as a settings
+  document exists, that decides and detection keeps quiet. A page that does not
+  stay in the chosen language is worse than one that guessed wrong once.
+  The trap here was not the detection but the storing: the first write started
+  from `DEFAULTS` and would have pinned a fresh device to German as soon as he
+  changed any other setting. Hence `INITIAL_SETTINGS` with the detected
+  language. Migration v3 still writes `'de'` for devices that already existed -
+  those were German and are to stay that way.
 
-### Geändert
-- **Der Ton fängt leise an und wird lauter**, solange es schief bleibt („the
+
+## 2026-09-08 (addendum)
+
+### Added
+- **The tab icon takes the colour of your posture** - green, amber, red („the
+  favicon of the url should change on bad posture to something red and go back
+  to green on good posture"). A plain disc as an inline SVG rather than a
+  tinted shrimp: at 16 px an emoji is mush and a colour is not. It is the only
+  channel that still works while the page sits behind the work - so almost
+  always, if you follow the recommendation to leave it open in a tab of its
+  own.
+- **A moving average over the last few minutes** (30 by default, 5 to 120
+  selectable). It answers a different question from the daily chart below it:
+  that one runs over weeks and can only be read in hindsight, this one over the
+  hour he is sitting in right now - the one he can still change something
+  about. Bundled by the minute and smoothed over three minutes at a time,
+  because a single frame wobbles by a degree or two.
+- **A fifth sound: the throat clear**, sent by him.
+
+### Changed
+- **The sound starts quiet and grows louder** while the posture stays bad („the
   sound should start quiet and get louder if the posture is bad for times in a
-  row"): von einem Viertel auf volle Lautstärke über acht Messungen in Folge.
-  Eine einzige gute Messung setzt ihn zurück, Aufrichten wird also sofort
-  belohnt. Das ist die richtige Antwort auf das, was die abgeschaffte
-  Minutenpause lösen sollte.
-- **Titel exakt** „Sitz aufrecht du Garnele! 🦐" / „Sit straight shrimp! 🦐",
-  mit Ausrufezeichen und Emoji, in beiden Sprachen.
-- **Neue Adresse:** `/p/sit-straight-shrimp/`. Die alte `/p/haltung/` ist offline
-  genommen - eine eingefrorene Zweitfassung derselben Seite wäre schlechter als
-  ein toter Link, weil sie nie wieder aktualisiert würde.
-- **Der erste Abschnitt sagt jetzt, was die Seite tut** und empfiehlt, sie in
-  einem eigenen Browser-Tab offen zu lassen, statt eine Zeile Fülltext zu
-  zeigen.
+  row"): from a quarter to full volume over eight readings in a row. A single
+  good reading resets it, so sitting up is rewarded immediately. That is the
+  right answer to what the abolished one-minute pause was trying to solve.
+- **The title exactly** „Sitz aufrecht du Garnele! 🦐" / „Sit straight shrimp!
+  🦐", with the exclamation mark and the emoji, in both languages.
+- **New address:** `/p/sit-straight-shrimp/`. The old `/p/haltung/` has been
+  taken offline - a frozen second copy of the same page would be worse than a
+  dead link, because it would never be updated again.
+- **The first section now says what the page does** and recommends leaving it
+  open in a browser tab of its own, rather than showing a line of filler.
 
 
-## 2026-09-08 (später Abend)
+## 2026-09-08 (late evening)
 
-### Neu
-- **Der Kopf-vor-Schulter-Winkel ist zurück - und ist jetzt der Hauptwert.**
-  Grund dafür ist er selbst: *„i need this because my neck posture is a bit too
-  much to the front."* Genau das hat die App bis eben nicht gemessen.
-  Zwei Fassungen davor waren falsch, und woran, ist die eigentliche Erkenntnis:
-  gemessen wurde an der **Nase**, die bei jedem weit vor den Schultern sitzt
-  (0,161 m im Testbild), kerzengerade oder nicht - deshalb war die Zahl vor
-  allem Gesichtsgeometrie und brauchte ein Referenzbild, um überhaupt etwas zu
-  bedeuten. Richtig ist das **Ohr**, das auch der klinische Wert benutzt: 0,035 m
-  vor der Schulterlinie im selben Bild. Gemessen wird die Linie Schultermitte →
-  Ohrmitte gegen die Senkrechte.
-  **Damit fällt das Referenzbild weg, ohne dass die Messung mitfällt** - der Ohr-
-  Wert braucht keine persönliche Eichung.
+### Added
+- **The head-in-front-of-the-shoulders angle is back - and is now the main
+  value.** The reason is him: *„i need this because my neck posture is a bit
+  too much to the front."* That is exactly what the app did not measure until
+  just now.
+  Two versions before this were wrong, and what they were wrong about is the
+  real finding: the measurement was taken at the **nose**, which on everybody
+  sits far in front of the shoulders (0.161 m in the test picture), bolt
+  upright or not - so the number was mostly face geometry and needed a
+  reference picture to mean anything at all. The right point is the **ear**,
+  which is what the clinical value uses too: 0.035 m in front of the shoulder
+  line in the same picture. What is measured is the line shoulder midpoint →
+  ear midpoint against the vertical.
+  **That drops the reference picture without the measurement falling with it**
+  - the ear value needs no personal calibration.
 
-### Geändert
-- **Körpergröße spielt keine Rolle mehr** („do not care about body size"): der
-  Winkel ist ein Verhältnis zweier Längen am selben Körper, groß und klein lesen
-  identisch. Das ist zugleich, was die Seite **für alle** benutzbar macht („it
+### Changed
+- **Body size no longer matters** („do not care about body size"): the angle is
+  a ratio between two lengths on the same body, so tall and short read
+  identically. That is also what makes the page usable **by everybody** („it
   should work in general for all people, not only for me at my coworking
   space").
-- **Die Datengrundlage ist entpersonalisiert.** Die alten Lücken über den
-  STEYG-Coworking-Space, den Gaming-Stuhl im Wohnzimmer und die 194 cm sind weg.
-  An ihre Stelle treten die Einschränkungen, die für jeden gelten: dass der
-  Winkel nicht der kraniovertebrale ist, dass die Tiefe die schwächste Achse
-  einer einzelnen Kamera ist, dass es keinen belegten Grenzwert gibt und dass
-  die Kamera ungefähr auf Augenhöhe stehen muss.
-- **Der Ton spielt jetzt wirklich bei jeder Prüfung** („each single time the
-  check runs and detects wrong posture, it should play the sound"). Die letzte
-  Bremse - einen noch laufenden Ton nicht neu zu starten - ist auch weg; jede
-  Wiedergabe bekommt einen eigenen Audio-Knoten, die Töne überlagern sich also,
-  statt sich abzuschneiden.
-- Voreingestellte Grenze 18°: im einzigen verfügbaren Kalibrierbild las eine
-  klar akzeptable Haltung 12°, und eine Vorgabe, die das am ersten Nachmittag
-  als „grenzwertig" zählt, ist eine Vorgabe, nach der man die Seite zumacht.
-  Nachziehen, sobald ein Tag echter Messungen zeigt, wo sein Normal liegt.
-- Schema-Migrationen: `readings` v2, `days` v2 und `settings` v6 holen die
-  Vorlage-Felder zurück. Alte Werte werden **nicht** übernommen - sie stammen
-  vom Nasen-Maß und wären gegen das neue bedeutungslos.
+- **The data basis is depersonalised.** The old gaps about the STEYG coworking
+  space, the gaming chair in the living room and the 194 cm are gone. In their
+  place stand the limits that hold for everybody: that the angle is not the
+  craniovertebral one, that depth is the weakest axis of a single camera, that
+  there is no evidenced threshold, and that the camera has to stand roughly at
+  eye level.
+- **The sound really does play on every check now** („each single time the
+  check runs and detects wrong posture, it should play the sound"). The last
+  brake - not restarting a sound that is still running - is gone too; every
+  play gets an audio node of its own, so the sounds overlap rather than cutting
+  each other off.
+- A default limit of 18°: in the only calibration picture available, a clearly
+  acceptable posture read 12°, and a default that counts that as „grenzwertig"
+  on the first afternoon is a default you close the page over. To be tightened
+  as soon as a day of real readings shows where his normal lies.
+- Schema migrations: `readings` v2, `days` v2 and `settings` v6 bring the
+  forward-lean fields back. Old values are **not** carried over - they come
+  from the nose measure and would be meaningless against the new one.
 
 
-## 2026-09-08 (nachts)
+## 2026-09-08 (at night)
 
-### Geändert
-- **Der Ton kommt jetzt bei jeder schiefen Messung** („do not limit how often it
-  plays the sound. play it each time the user sits wrong"). Die Pause von einer
-  Minute ist weg; im Sekundentakt heißt das jede Sekunde, bis er sich
-  aufrichtet. Einziges, was `play()` weiter verweigert: einen noch laufenden Ton
-  neu zu starten - das ist keine Bremse, sondern das Gegenteil. Der Schrei läuft
-  3,3 Sekunden; ihn jede Sekunde zurückzuspulen hieße, nie mehr als seine erste
-  Sekunde zu hören.
-- **Die Sprache wird oben rechts umgeschaltet**, nicht mehr in den
-  Einstellungen - über die neue, für alle Seiten gedachte Komponente
-  `<LanguagePicker>` neben dem Hell/Dunkel-Schalter. Das Panel „Sprache" in den
-  Einstellungen entfällt.
-- **„Local-First" im Untertitel verlinkt** auf rxdb.info/articles/local-first-future.html,
-  „RxDB" weiterhin auf rxdb.info.
-
-
-## 2026-09-08 (spät)
-
-### Geändert
-- **Vier echte Signaltöne statt sechs synthetisierter** - er hat sie selbst
-  geschickt („use these sounds"): Furz, Schrei, Fingerknacken, Bada-Bumm-Tss.
-  Sie liegen **committet** in `sounds/` und werden von `install_sounds.py` in
-  den Seitenordner kopiert; `fetch_sounds.py` ist damit weg.
-  Der Versuch davor, sie von Wikimedia Commons zu holen, ist an einem banalen
-  Grund gescheitert und das ist notiert, damit es niemand nochmal probiert:
-  **von einer geteilten Cloud-IP antwortet Wikimedia praktisch durchgehend mit
-  429** - in einer Stunde kam eine von sechs Dateien durch. Vier Dateien von ihm
-  schlagen das in jeder Hinsicht: kein Rate-Limit, kein Link-Rot, keine Lizenz
-  zu verfolgen, und es sind die Töne, die er will.
-  Das ist eine bewusste Ausnahme von der Regel, die beim Pose-Modell gilt: die
-  betrifft 17 MB WASM, die sich jederzeit von einer gepinnten URL nachladen
-  lassen. Diese 181 KB kamen von ihm und existieren sonst nirgends.
-- `settings` v5 verengt das Enum und schiebt ein Gerät, das noch auf einem der
-  abgeschafften Namen sitzt (`schaf`, `raeuspern`, `laser`, `piep`), auf die
-  Vorgabe, statt an der Validierung zu scheitern.
-- Die Oszillatoren bleiben als Notfallfassung, eine Form je Ton.
+### Changed
+- **The sound now comes on every crooked reading** („do not limit how often it
+  plays the sound. play it each time the user sits wrong"). The one-minute
+  pause is gone; at one picture a second that means every second until he sits
+  up. The only thing `play()` still refuses is restarting a sound that is still
+  running - which is not a brake but the opposite. The scream runs 3.3 seconds;
+  rewinding it every second would mean never hearing more than its first
+  second.
+- **The language is switched top right**, no longer in the settings - through
+  the new `<LanguagePicker>` component, meant for every page, next to the
+  light/dark switch. The „Sprache" panel in the settings goes.
+- **„Local-First" in the subtitle links** to
+  rxdb.info/articles/local-first-future.html, „RxDB" still to rxdb.info.
 
 
-## 2026-09-08 (abends)
+## 2026-09-08 (late)
 
-### Neu
-- **Die Seite spricht Deutsch oder Englisch** („mach die app optional in
-  english"). Umschaltbar in den Einstellungen, gespeichert wie jede andere
-  Einstellung. Neu: `i18n.ts` mit beiden Fassungen aller sichtbaren Strings -
-  `Copy` wird aus der deutschen abgeleitet, ein vergessener englischer Schlüssel
-  ist also ein Typfehler und kein deutsches Wort auf einer englischen Seite.
-  `data.json` liegt jetzt einmal pro Sprache vor, und `pose.ts` gibt einen
-  `AdviceKey` statt eines Satzes zurück - dadurch liest sich eine auf Deutsch
-  aufgezeichnete Messung auch nach dem Umschalten richtig.
-- **Neuer Name und neues Icon**: „Sitz aufrecht du Garnele!" / „Sit straight
-  shrimp", 🦐, auf seinen Wortlaut.
-- **Neue Beschreibung** mit Link auf rxdb.info, ebenfalls auf seinen Wortlaut:
-  Local-First-App fürs Haltungstraining, lokale Erkennung, RxDB als Speicher.
-- **Echte Signaltöne statt Oszillatoren** („the sound files are bad. can you
-  download real sounds from somewhere"). `fetch_sounds.py` holt beim Bauen sechs
-  Aufnahmen von Wikimedia Commons unter freien Lizenzen nach `snd/` - gleiche
-  Bauart wie beim Pose-Modell, also gleiche Herkunft, kein CDN, vom Service
-  Worker gecacht, nicht im Repo. Die Seite nennt jede Aufnahme mit Urheber und
-  Lizenz in den Quellen; bei CC BY und CC BY-SA ist das Pflicht, nicht Kür.
+### Changed
+- **Four real signal sounds instead of six synthesised ones** - he sent them
+  himself („use these sounds"): fart, scream, knuckle crack, rimshot. They are
+  **committed** under `sounds/` and copied into the page folder by
+  `install_sounds.py`; `fetch_sounds.py` is gone with that.
+  The attempt before that, to fetch them from Wikimedia Commons, failed for a
+  banal reason, and it is noted so that nobody tries it again: **from a shared
+  cloud IP, Wikimedia answers with 429 practically throughout** - in an hour,
+  one of six files came through. Four files from him beat that in every
+  respect: no rate limit, no link rot, no licence to track, and they are the
+  sounds he wants.
+  This is a deliberate exception to the rule that holds for the pose model:
+  that one is about 17 MB of WASM that can be refetched from a pinned URL at
+  any time. These 181 KB came from him and exist nowhere else.
+- `settings` v5 narrows the enum and pushes a device still sitting on one of
+  the abolished names (`schaf`, `raeuspern`, `laser`, `piep`) onto the default
+  rather than failing validation.
+- The oscillators stay as the emergency version, one shape per sound.
 
-### Geändert
-- **Die Referenz ist raus** („remove the Referenz stuff its confusing") - und
-  mit ihr die **Vorlage-Messung**, weil beides dasselbe war: Vorlage war nur als
-  Abweichung von einem gespeicherten Referenzbild rechenbar, ohne Referenz stand
-  dort fest verdrahtet 0°. Eine Zahl, die immer 0 ist, sieht aus wie eine
-  Messung und ist keine. Geblieben sind zwei Winkel, die ohne Kalibrierung
-  stimmen - Schulterlinie gegen die Waagerechte, Augenlinie gegen die
-  Schulterlinie -, und die Seite misst ab dem ersten Bild. Der Preis steht als
-  erste Datenlücke auf der Seite: ein Zusammensacken nach vorn erkennt sie
-  nicht mehr, dafür bräuchte es die Hüften, und die sind am Schreibtisch bei
-  Sichtbarkeit 0,01.
-- Drei Migrationen dazu, alle datenerhaltend: `readings` v1 ohne `forward`,
-  `days` v1 ohne `forwardSum` (das sind die Zeilen, die für immer bleiben - jede
-  Zählung und jede andere Summe überlebt), `settings` v4 ohne `maxForward`.
-  `settings` v3 hatte davor die Sprache ergänzt, bewusst mit `de`, damit ein
-  laufendes Gerät nicht unter ihm die Sprache wechselt.
-- **„Verlauf löschen" fragt jetzt nach** - über die neue Komponente
-  `<ConfirmButton>` in `.claude/ui`, nicht über einen Sonderfall hier.
 
-### Behoben
-- **Eine Pause verlängert die „längste gute Strecke" nicht mehr** („when there
-  is no human in the picture, do not add that to the ‚längste gute Strecke'").
-  Bilder ohne Person wurden schon vorher verworfen statt gespeichert - aber die
-  Strecke wurde als Wanduhrzeit von der ersten bis zur letzten guten Messung
-  gerechnet, also zählte die Mittagspause zwischen zwei aufrechten Messungen als
-  eine Stunde vorbildliche Haltung. Jetzt bricht auch **eine Lücke in der
-  Aufzeichnung** die Strecke, egal woher sie kommt.
-- Die Lückengrenze skaliert mit dem Takt (drei verpasste Bilder, mindestens
-  30 s). Fest auf 30 s sah bei einem Bild pro Sekunde richtig aus und hätte die
-  Statistik bei jeder Einstellung darüber still kaputtgemacht: bei zwei Minuten
-  pro Bild wäre *jede* normale Messung eine Lücke gewesen und keine Strecke
-  jemals länger als 0.
+## 2026-09-08 (evening)
+
+### Added
+- **The page speaks German or English** („mach die app optional in english").
+  Switchable in the settings, stored like any other setting. New: `i18n.ts`
+  with both versions of every visible string - `Copy` is derived from the
+  German one, so a forgotten English key is a type error rather than a German
+  word on an English page. `data.json` now exists once per language, and
+  `pose.ts` returns an `AdviceKey` rather than a sentence - which is how a
+  reading recorded in German still reads correctly after switching.
+- **A new name and a new icon**: „Sitz aufrecht du Garnele!" / „Sit straight
+  shrimp", 🦐, in his wording.
+- **A new description** with a link to rxdb.info, also in his wording: a
+  local-first app for posture training, local detection, RxDB as the store.
+- **Real signal sounds instead of oscillators** („the sound files are bad. can
+  you download real sounds from somewhere"). `fetch_sounds.py` fetches six
+  recordings from Wikimedia Commons under free licences into `snd/` at build
+  time - the same construction as the pose model, so the same provenance, no
+  CDN, cached by the service worker, not in the repo. The page names every
+  recording with its author and licence in the sources; with CC BY and CC BY-SA
+  that is an obligation, not a courtesy.
+
+### Changed
+- **The reference is out** („remove the Referenz stuff its confusing") - and
+  with it the **forward-lean reading**, because the two were the same thing:
+  forward lean was only computable as a deviation from a stored reference
+  picture, and without a reference it was hard-wired to 0°. A number that is
+  always 0 looks like a reading and is not one. What remains is two angles that
+  hold without calibration - shoulder line against the horizontal, eye line
+  against the shoulder line - and the page measures from the first picture on.
+  The price stands as the first data gap on the page: it no longer recognises a
+  collapse forwards, which would need the hips, and at a desk those sit at
+  visibility 0.01.
+- Three migrations for it, all data-preserving: `readings` v1 without
+  `forward`, `days` v1 without `forwardSum` (those are the rows that stay
+  forever - every count and every other sum survives), `settings` v4 without
+  `maxForward`. `settings` v3 had added the language before that, deliberately
+  with `de`, so that a running device does not change language under him.
+- **„Verlauf löschen" now asks first** - through the new `<ConfirmButton>`
+  component in `.claude/ui`, not through a special case here.
+
+### Fixed
+- **A break no longer lengthens the „längste gute Strecke"** („when there is no
+  human in the picture, do not add that to the ‚längste gute Strecke'").
+  Pictures with nobody in them were already discarded rather than stored - but
+  the run was computed as wall-clock time from the first to the last good
+  reading, so the lunch break between two upright readings counted as an hour
+  of exemplary posture. Now **a gap in the recording** breaks the run too,
+  wherever it comes from.
+- The gap threshold scales with the pace (three missed pictures, at least
+  30 s). Fixed at 30 s it looked right at one picture a second and would have
+  quietly broken the statistics at every setting above that: at two minutes per
+  picture, *every* ordinary reading would have been a gap and no run ever
+  longer than 0.
 
 
 ## 2026-09-08
 
-### Neu
-- **Ein lokales Pose-Modell, und es ist die Voreinstellung.** Auf seine Frage
-  („können wir ein locales model dafür nehmen das im browser läuft? lasst den
-  user entscheiden ob local oder via api key"): MediaPipe Pose Landmarker läuft
-  im Browser, liest 33 Körperpunkte und die Seite rechnet die Winkel selbst
-  daraus. Kein Schlüssel, kein Kontingent, kein Bild, das das Gerät verlässt -
-  und genauer als ein Sprachmodell, das ein flaches Bild schätzt.
-- **Umschalter „Wo gerechnet wird"** in den Einstellungen. Das Schlüsselfeld
-  erscheint nur noch auf dem Gemini-Weg, und der Datenschutz-Hinweis sagt je
-  nach Weg die Wahrheit statt pauschal „geht an Google".
-- **Verlauf über die Tage** - auf seine Bitte, sehen zu können, ob er besser
-  wird. Jede Messung wird zusätzlich in eine Tageszeile gefaltet (Zähler je
-  Urteil, Gradsummen, Signale); die bleibt erhalten, während die Einzelmessungen
-  nach zwei Wochen aufgeräumt werden. Zwei Kurven aus `@charts` plus der
-  Vergleich „letzte 7 Tage gegen die 7 davor".
-- `fetch_pose_model.py` + `pose-model.sha256`: holt Modell und WASM beim Bauen
-  in den Seitenordner, mit gepinnter Version und Prüfsummen. **Nicht ins Repo
-  vendort** - seine Entscheidung: 17 MB blieben sonst dauerhaft in der Historie.
+### Added
+- **A local pose model, and it is the default.** On his question („können wir
+  ein locales model dafür nehmen das im browser läuft? lasst den user
+  entscheiden ob local oder via api key"): the MediaPipe Pose Landmarker runs
+  in the browser, reads 33 body points, and the page computes the angles from
+  them itself. No key, no quota, no picture leaving the device - and more
+  accurate than a language model guessing at a flat image.
+- **A „Wo gerechnet wird" switch** in the settings. The key field only appears
+  on the Gemini path now, and the privacy note tells the truth per path instead
+  of saying „geht an Google" across the board.
+- **A trend across the days** - on his request to be able to see whether he is
+  getting better. Every reading is additionally folded into a daily row (counts
+  per verdict, degree sums, signals); that row is kept while the individual
+  readings are cleared after two weeks. Two curves from `@charts` plus the
+  comparison „letzte 7 Tage gegen die 7 davor".
+- `fetch_pose_model.py` + `pose-model.sha256`: fetches the model and the WASM
+  into the page folder at build time, with a pinned version and checksums.
+  **Not vendored into the repo** - his decision: 17 MB would otherwise stay in
+  the history for good.
 
-### Geändert
-- Kopf der Seite, Schritte und `<DataGaps>` neu geschrieben: es gibt jetzt zwei
-  Messwege, und die Seite behauptete überall noch, sie schicke Bilder an Google.
-- Schema-Migrationen statt Neuanlage: `settings` v0→v1 (`source`), `reference`
-  v0→v1 (`baseline`), neue Collection `days`. Seine bestehenden Einstellungen,
-  Messungen und sein Referenzbild überleben das Update.
+### Changed
+- The head of the page, the steps and `<DataGaps>` rewritten: there are two
+  measurement paths now, and the page still claimed everywhere that it sends
+  pictures to Google.
+- Schema migrations rather than starting over: `settings` v0→v1 (`source`),
+  `reference` v0→v1 (`baseline`), a new `days` collection. His existing
+  settings, readings and reference picture survive the update.
 
-### Geändert (nach dem Merge von master)
-- `new_app.py` vergibt seit #146 eine dauerhafte Zufalls-URL pro App. Diese
-  Seite gehört zu den zwei mit festem Slug, also pinnt der Rebuild ihn jetzt
-  ausdrücklich in `app.config.ts`, bevor gebaut wird - sonst trüge die Seite
-  intern eine Adresse, unter der sie gar nicht liegt.
+### Changed (after merging master)
+- Since #146, `new_app.py` mints a permanent random URL per app. This page is
+  one of the two with a fixed slug, so the rebuild now pins it explicitly in
+  `app.config.ts` before building - otherwise the page would carry an address
+  internally that it does not live at.
 
-### Behoben
-- **Der lokale Weg ließ sich gar nicht starten**: `start()` verlangte weiterhin
-  einen API-Schlüssel. Im Browsertest aufgefallen, nicht beim Lesen.
-- **Alle Winkel kamen als ~178° zurück.** Die Landmarks kommen in Körper-, nicht
-  in Bildreihenfolge, also läuft die Schulterlinie rechts-nach-links und `atan2`
-  liest für eine waagerechte Linie ±180°. Jetzt in den ersten Quadranten
-  gefaltet.
-- **Urteil und Ratschlag widersprachen sich** („Du sitzt gerade" über „richt dich
-  auf"), weil der Satz eigene Schwellen hatte. Er bekommt jetzt seine.
-- **Das Auswahlfeld war leer**: `<Select>` nimmt `<option>`-Kinder, keinen
-  `options`-Prop - und `SelectProps` ist `Record<string, any>`, also hat der
-  Typecheck es durchgelassen. Auch das kam aus dem Browsertest.
+### Fixed
+- **The local path could not be started at all**: `start()` still demanded an
+  API key. Caught in the browser test, not by reading.
+- **Every angle came back as ~178°.** The landmarks arrive in body order, not
+  in picture order, so the shoulder line runs right to left and `atan2` reads
+  ±180° for a horizontal line. Folded into the first quadrant now.
+- **Verdict and advice contradicted each other** („Du sitzt gerade" above
+  „richt dich auf"), because the sentence had thresholds of its own. It gets
+  his now.
+- **The select was empty**: `<Select>` takes `<option>` children, not an
+  `options` prop - and `SelectProps` is `Record<string, any>`, so the typecheck
+  let it through. That came out of the browser test too.
 
 ## 2026-09-08
 
-### Neu
-- **Der Schlüssel darf im Fragment stehen: `…/haltung/#k=AIza…`.** Auf seine
-  Frage hin, warum die Seite ihn nicht schon hat: hier in der Session liegt er,
-  aber die Seite ist weltlesbar - im Bundle wäre er veröffentlicht, und einen
-  Server, der ihn hält, gibt es bei GitHub Pages nicht. Das Fragment ist der
-  einzige Teil einer URL, den ein Browser nirgendwohin schickt: so bekommt die
-  Seite den Schlüssel, ohne dass GitHub, das CDN oder irgendein Zugriffslog ihn
-  je sieht, und ohne dass er in einer committeten Datei landet.
-- **Einmal übernommen, dann aus der Adresszeile geputzt** (`replaceState`) -
-  ein offener Tab soll ihn nicht anzeigen. Das Lesezeichen behält ihn, und
-  damit ist ein neues Gerät ein Klick statt einer Tipperei.
+### Added
+- **The key may live in the fragment: `…/haltung/#k=AIza…`.** On his question
+  why the page does not already have it: here in the session it does, but the
+  page is world-readable - in the bundle it would be published, and there is no
+  server to hold it on GitHub Pages. The fragment is the one part of a URL a
+  browser sends nowhere: that is how the page gets the key without GitHub, the
+  CDN or any access log ever seeing it, and without it landing in a committed
+  file.
+- **Taken once, then cleaned out of the address bar** (`replaceState`) - an
+  open tab should not display it. The bookmark keeps it, which makes a new
+  device one click rather than a piece of typing.
 
 ## 2026-09-03
 
-### Neu
-- Erste Version. Auf seine Anfrage vom 2026-09-03: alle zehn Sekunden ein
-  Webcam-Bild an Gemini, drei Winkel zurück, Ton wenn er zu schief sitzt.
-  Veröffentlicht unter <https://pubkey.github.io/me/p/sit-straight-shrimp/>.
-- **Fester Slug `haltung`** - die zweite Seite im Repo nach `app-brieftaube`,
-  bei der das richtig ist. Sie ist ein Werkzeug, das er täglich öffnet, aufs
-  Handy legt und bookmarkt; ein neuer Slug beim nächsten Build hinge das Icon
-  ins Leere. Der übliche Grund für Zufall entfällt, weil die Seite selbst nichts
-  enthält: kein Messwert, kein Schlüssel, kein Foto - alles davon schreibt erst
-  sein Browser.
-- **Referenzbild statt absoluter Winkel.** Er nimmt einmal auf, wie er sitzen
-  will; danach misst jede Prüfung die Abweichung von genau dieser Haltung. Ohne
-  das schätzt das Modell gegen seine eigene Vorstellung von „gerade", und das
-  ist die schwächere Frage.
-- **Das Modell misst, die Seite urteilt.** Zurück kommen nur Gradzahlen plus ein
-  deutscher Satz; ob das „schief" ist, rechnet `index.tsx` gegen seine
-  Schwellen. So bedeuten die Einstellungen etwas, und zwei Messungen bleiben
-  vergleichbar, nachdem er eine Schwelle verschoben hat.
-- **Das Signal ist rationiert**: höchstens ein Ton pro Minute, nie unter 0,4
-  Konfidenz, und Bilder ohne erkannten Oberkörper werden verworfen statt
-  gespeichert. Ein Signal alle zehn Sekunden ist ein Signal, das er abschaltet.
-- **Der API-Schlüssel liegt in `localStorage`, nicht in RxDB.** Jede Collection
-  wird als WebMCP-Werkzeug samt Schema veröffentlicht - die Messungen soll ein
-  Agent im Browser lesen können, einen Google-Schlüssel nicht.
+### Added
+- First version. On his request of 2026-09-03: one webcam picture to Gemini
+  every ten seconds, three angles back, a sound when he sits too crooked.
+  Published at <https://pubkey.github.io/me/p/sit-straight-shrimp/>.
+- **A fixed slug `haltung`** - the second page in the repo after
+  `app-brieftaube` for which that is right. It is a tool he opens daily, puts
+  on his phone and bookmarks; a new slug on the next build would leave the icon
+  pointing at nothing. The usual reason for randomness does not apply, because
+  the page itself contains nothing: no reading, no key, no photograph - all of
+  that is written by his browser and only there.
+- **A reference picture rather than absolute angles.** He records once how he
+  wants to sit; after that every check measures the deviation from exactly that
+  posture. Without it the model is guessing against its own idea of „straight",
+  and that is the weaker question.
+- **The model measures, the page judges.** What comes back is only degree
+  figures plus one German sentence; whether that is „crooked" is computed by
+  `index.tsx` against his thresholds. That is what makes the settings mean
+  something, and it keeps two readings comparable after he has moved a
+  threshold.
+- **The signal is rationed**: at most one sound a minute, never below 0.4
+  confidence, and pictures with no upper body recognised are discarded rather
+  than stored. A signal every ten seconds is a signal he switches off.
+- **The API key lives in `localStorage`, not in RxDB.** Every collection is
+  published as a WebMCP tool complete with its schema - an agent in the browser
+  should be able to read the readings, and a Google key not.
 
-### Geändert
-- `.claude/ui`: neues Accent-Preset **`health`** (Teal, hell und dunkel), weil
-  es für Körper-Themen bisher keines gab und ein Hex-Wert auf der
-  Kommandozeile keine Option ist (`DESIGN.md`).
-- `.claude/ui`: neue Komponente **`<StatusStrip>`** - ein Balken je Messung,
-  eingefärbt nach Ergebnis. Bei einer Messung alle zehn Sekunden sagt die Form
-  des Verlaufs mehr als jede einzelne Zahl, und das ist nicht seitenspezifisch.
+### Changed
+- `.claude/ui`: a new accent preset **`health`** (teal, light and dark),
+  because there was none for body topics so far and a hex value on the command
+  line is not an option (`DESIGN.md`).
+- `.claude/ui`: a new component **`<StatusStrip>`** - one bar per reading,
+  coloured by result. At one reading every ten seconds the shape of the run
+  says more than any single number, and that is not specific to this page.
 
-### Behoben
-- `.claude/ui`: `<Input>`, `<Select>` und `<TextArea>` mit `label` bekommen
-  jetzt eine `id`, sodass das `<label for>` tatsächlich auf das Feld zeigt.
-  Vorher zeigte jedes Label auf jeder Seite ins Leere: Klick fokussierte nicht,
-  und ein Screenreader las das Feld ohne Namen vor.
+### Fixed
+- `.claude/ui`: `<Input>`, `<Select>` and `<TextArea>` with a `label` now get
+  an `id`, so that the `<label for>` actually points at the field. Before,
+  every label on every page pointed at nothing: a click did not focus, and a
+  screen reader read the field out without a name.
