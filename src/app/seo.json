@@ -1,5 +1,57 @@
 {
   "site": "https://deshrimp.com",
-  "title": "deshrimp - free webcam posture trainer for your desk",
-  "description": "A free page that watches your posture through your webcam and makes a noise when you fold up. The pictures and the readings stay on your device. No install, no account."
+  "langs": {
+    "en": {
+      "title": "deshrimp - free webcam posture trainer for your desk",
+      "description": "A free page that watches your posture through your webcam and makes a noise when you fold up. The pictures and the readings stay on your device. No install, no account."
+    },
+    "de": {
+      "title": "deshrimp - kostenloser Webcam-Haltungstrainer für den Schreibtisch",
+      "description": "Eine kostenlose Seite: schaut über die Webcam zu, wie du sitzt, und gibt einen Ton, wenn du zusammenklappst. Die Bilder und die Messwerte bleiben auf deinem Gerät. Keine Installation, kein Konto."
+    },
+    "es": {
+      "title": "deshrimp - entrenador de postura gratis con la webcam",
+      "description": "Una página gratis: mira por la webcam cómo estás sentado y hace un ruido cuando te encorvas. Las imágenes y las mediciones se quedan en tu dispositivo. Sin instalación, sin cuenta."
+    },
+    "fr": {
+      "title": "deshrimp - coach de posture gratuit par webcam",
+      "description": "Une page gratuite : regarde par la webcam comment tu es assis et fait du bruit quand tu t’avachis. Les images et les mesures restent sur ton appareil. Sans installation, sans compte."
+    },
+    "it": {
+      "title": "deshrimp - allenatore di postura gratuito con la webcam",
+      "description": "Una pagina gratuita: guarda dalla webcam come sei seduto e fa un rumore quando ti accasci. Le immagini e le misurazioni restano sul tuo dispositivo. Nessuna installazione, nessun account."
+    },
+    "pt": {
+      "title": "deshrimp - treinador de postura gratuito com a webcam",
+      "description": "Uma página gratuita: vê pela webcam como estás sentado e faz um barulho quando te curvas. As imagens e as medições ficam no teu dispositivo. Sem instalação, sem conta."
+    },
+    "nl": {
+      "title": "deshrimp - gratis houdingstrainer via je webcam",
+      "description": "Een gratis pagina: kijkt via je webcam hoe je zit en maakt geluid zodra je onderuitzakt. De beelden en de metingen blijven op je apparaat. Geen installatie, geen account."
+    },
+    "pl": {
+      "title": "deshrimp - darmowy trener postawy przez kamerkę",
+      "description": "Darmowa strona: patrzy przez kamerkę, jak siedzisz, i wydaje dźwięk, gdy się garbisz. Zdjęcia i pomiary zostają na twoim urządzeniu. Bez instalacji, bez konta."
+    },
+    "tr": {
+      "title": "deshrimp - web kamerasıyla ücretsiz duruş antrenörü",
+      "description": "Ücretsiz bir sayfa: web kameran üzerinden nasıl oturduğuna bakar ve kamburunu çıkardığında ses çıkarır. Görüntüler ve ölçümler cihazında kalır. Kurulum yok, hesap yok."
+    },
+    "ru": {
+      "title": "deshrimp - бесплатный тренажёр осанки через веб-камеру",
+      "description": "Бесплатная страница: смотрит через веб-камеру, как ты сидишь, и подаёт звук, когда ты сутулишься. Кадры и показания остаются на твоём устройстве. Без установки, без аккаунта."
+    },
+    "zh": {
+      "title": "deshrimp - 免费的摄像头坐姿训练页面",
+      "description": "一个免费的网页：通过摄像头看你怎么坐着，弯腰驼背的时候会发出声音。画面和测量数据都留在你的设备上。无需安装，无需账号。"
+    },
+    "ja": {
+      "title": "deshrimp - ウェブカメラで使える無料の姿勢トレーナー",
+      "description": "無料のページです。ウェブカメラであなたの座り方を見ていて、背中が丸まると音を鳴らします。画像も測定結果も、この端末の中に残ります。インストールもアカウントも不要です。"
+    },
+    "ka": {
+      "title": "deshrimp - უფასო ვებკამერის ტრენერი სწორად ჯდომისთვის",
+      "description": "უფასო გვერდი: ვებკამერით უყურებს, როგორ ზიხარ, და ხმას გამოსცემს, როცა მოიხრები. სურათები და გაზომვები შენს მოწყობილობაზე რჩება. ინსტალაციის გარეშე, ანგარიშის გარეშე."
+    }
+  }
 }

@@ -14,7 +14,7 @@ import './app/styles.css';
 import { mount, setPageData } from './ui';
 import config from './app/app.config';
 import written from './app/data.json';
-import seo from './app/seo.json';
+import { pageLang, seoTitle } from './app/lang-url';
 import App from './app/App';
 
 setPageData({
@@ -23,7 +23,13 @@ setPageData({
         title: config.title,
         // The h1 stays the joke; the tab and the search result get the sentence
         // that says what this is. See `scripts/seo.mjs`.
-        documentTitle: seo.title,
+        //
+        // In the language of the URL: `/ja.html` was served with a Japanese
+        // `<title>` already, so a fallback in English here would swap it for an
+        // English one the moment the bundle runs. `<Page documentTitle>` takes
+        // over from the stored language once the database is open; this is what
+        // the tab says until then.
+        documentTitle: seoTitle(pageLang() || 'en'),
         subtitle: config.subtitle,
         task: config.task,
         source: config.source,

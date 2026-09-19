@@ -146,8 +146,10 @@ page's components, and they are free to change shape as this page needs.
 plugins on top of it, both `apply: 'build'`:
 
 - **`scripts/seo.mjs`** writes the head - title, description, canonical,
-  Open Graph, Twitter, a `SoftwareApplication` JSON-LD block - and renders the
-  intro, the five steps and the sources into `#root` as plain HTML.
+  hreflang, Open Graph, Twitter, a `SoftwareApplication` JSON-LD block - and
+  renders the intro and the five steps into `#root` as plain HTML. Then it
+  writes the thirteen per-language pages, `sitemap.xml` and `robots.txt` (see
+  [One URL per language](#one-url-per-language)).
 
   This is prerendering, not server-side rendering, and the difference is the
   point: the page's claim is that no server exists, so rendering per request is
@@ -158,10 +160,10 @@ plugins on top of it, both `apply: 'build'`:
   reads the words a reader sees. React throws the block away on mount, so it
   doubles as the first paint.
 
-  The three strings live in `src/app/seo.json` because the app needs them too:
-  `Page` sets `document.title`, so without that the tab - and any crawler that
-  runs the JS - would show the h1 instead. The h1 stays the joke; the tab and
-  the search result say what this is.
+  The title and the description live in `src/app/seo.json`, once per language,
+  because the app needs them too: `Page` sets `document.title`, so without that
+  the tab - and any crawler that runs the JS - would show the h1 instead. The
+  h1 in the app stays the joke; the tab and the search result say what this is.
 
 - **`scripts/pwa.mjs`** emits `sw.js` with a precache list taken from the real
   bundle, so the hashed filenames are right and a new build retires the old
@@ -172,6 +174,37 @@ plugins on top of it, both `apply: 'build'`:
 every push to `master` and force-pushes `dist/` to the `github-pages` branch. It
 refuses to publish a build whose `dist/mp/` is empty, because that failure is
 otherwise silent: the page loads and the camera loop simply never runs.
+
+### One URL per language
+
+The site is thirteen pages, not one page with a language setting:
+
+    https://deshrimp.com/            the browser's language, and the x-default
+    https://deshrimp.com/de.html     German
+    https://deshrimp.com/ja.html     Japanese, and eleven more like it
+
+They are one build, not thirteen. `scripts/seo.mjs` renders the shipped shell
+once per language after the bundle is written, so every page carries the same
+hashed assets and differs in four things: the `<html lang>`, the head, the
+prerendered copy taken from that language's `data.json` entry, and one line of
+script setting `window.__APP_LANG__` before the bundle runs.
+
+That global is the whole app-side mechanism (`src/app/lang-url.ts`). It
+outranks both the browser detection and the stored setting, because a URL that
+says `de.html` and renders English is a URL that lies - and it turns the
+language picker in the top bar into a link: picking Japanese on `/de.html`
+stores the choice and goes to `/ja.html`. At the root, and in `npm run dev`
+where the files do not exist, the global is absent, detection decides and the
+picker switches in place as it always did.
+
+The reason for any of it is that thirteen translations behind one URL are
+invisible: a crawler fetches a page once, in one language, and indexes what it
+got. Every page lists every other as an `hreflang` alternate and `sitemap.xml`
+repeats the set, so a search engine reads the thirteen as one page in thirteen
+languages rather than as thirteen pages competing for the same words.
+
+The service worker precaches all thirteen, so an installed `/de.html` still
+opens in German with the network gone.
 
 ### Pull request previews
 

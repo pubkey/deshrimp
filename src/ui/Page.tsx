@@ -59,6 +59,12 @@ export type PageProps = {
     title?: ReactNode;
     subtitle?: ReactNode;
     eyebrow?: ReactNode;
+    /**
+     * What the browser tab says, when that is not the h1. Overrides
+     * `PAGE_DATA.meta.documentTitle`, which is fixed at load: a page whose
+     * language can change while it is open needs to say so in the tab too.
+     */
+    documentTitle?: string;
     /** Extra buttons in the top bar, left of share and theme. */
     actions?: ReactNode;
     share?: boolean;
@@ -93,8 +99,10 @@ export function Page(props: PageProps) {
     const subtitle = props.subtitle != null ? props.subtitle : meta.subtitle;
     // The tab title is allowed to differ from the h1: a page can be branded in
     // the heading and still say what it is in the tab and in a search result.
-    // `meta.documentTitle` wins when it is set, the h1 is the fallback.
-    const docTitle = meta.documentTitle || (typeof title === 'string' ? title : '');
+    // The `documentTitle` prop wins, then `meta.documentTitle`, then the h1.
+    const docTitle = props.documentTitle
+        || meta.documentTitle
+        || (typeof title === 'string' ? title : '');
     useEffect(() => { if (docTitle) document.title = docTitle; }, [docTitle]);
 
     return (
