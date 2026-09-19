@@ -353,9 +353,9 @@ must hold contrast on white. `#ff8257` survives as `--accent-bright`.
 The design system says emoji never - not in UI, not in copy. Two places still
 have them, both deliberately:
 
-- **The page title.** `CHANGELOG.md` records „Titel exakt … mit Ausrufezeichen
-  und Emoji, in beiden Sprachen" - the owner asked for that wording, emoji
-  included, in every language. A design system handed over later does not get to
+- **The page title.** `CHANGELOG.md` records „The title exactly … with the
+  exclamation mark and the emoji, in both languages" - the owner asked for that
+  wording, emoji included, in every language. A design system handed over later does not get to
   overrule a recorded decision by the person whose product it is. Stripping it is
   a one-character edit across thirteen locale files whenever he says so.
 - **The language picker's flags.** Those are locale identity rather than

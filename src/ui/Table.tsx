@@ -25,8 +25,8 @@
  * - `align: 'num'` - right-aligned, tabular figures. Use it for every number.
  * - `sort={false}` on a column, or `sortable={false}` on the table, for data
  *   whose order carries meaning (a day plan, a route).
- * - sorting is `localeCompare` with `numeric: true` in German, so „Etappe 2"
- *   sorts before „Etappe 10" and umlauts land where a reader expects them.
+ * - sorting is `localeCompare` with `numeric: true` in German, so „Leg 2"
+ *   sorts before „Leg 10" and umlauts land where a reader expects them.
  * - empty rows render `<Empty>` instead of a headed table with nothing in it.
  *
  * ## Examples

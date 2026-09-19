@@ -21,13 +21,13 @@
  * - `url` - defaults to the current address, which is the right answer on a
  *   published page.
  * - `title` / `text` - passed through to the native share sheet.
- * - `label` - the words the glyph stands for. Default „Teilen", and it is the
+ * - `label` - the words the glyph stands for. Default „Share", and it is the
  *   title and the accessible name rather than visible text.
  *
  * ## Examples
  * ```tsx
  * <ShareButton />
- * <ShareButton title="Route Portugal" text="Die geplante Strecke" />
+ * <ShareButton title="Portugal route" text="The planned route" />
  * ```
  *
  * ## Changelog

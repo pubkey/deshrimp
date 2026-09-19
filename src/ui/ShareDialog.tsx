@@ -2,10 +2,10 @@
  * # ShareDialog - the sheet behind the share button
  *
  * ## What it does and how it looks
- * A modal holding a QR code („Mit der Handykamera scannen"), the full URL in a
- * selectable monospace box, a „Link kopieren" button, the system share sheet
- * where the browser offers one, and one line underneath: **„Der Link ist das
- * Schloss: wer ihn hat, kann die Seite lesen."**
+ * A modal holding a QR code („Scan with your phone camera"), the full URL in a
+ * selectable monospace box, a „Copy link" button, the system share sheet where
+ * the browser offers one, and one line underneath: **„The link is the lock:
+ * whoever has it can read the page."**
  *
  * That line is the product. A published page's URL *is* its access control
  * (`CLAUDE.md` §9), so the moment of sharing is the moment to say so - once,

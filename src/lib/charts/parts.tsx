@@ -25,7 +25,7 @@ export type FrameProps = {
 /**
  * **A chart with nothing in it is still drawn** _(2026-09-15, his call: always
  * show the chart, even when it has too little data)_. There used to be an
- * empty branch here that replaced it with a box reading „Keine Daten", which
+ * empty branch here that replaced it with a box reading „No data", which
  * was wrong twice over: an axis with no line on it still says what is being
  * measured and on what scale, and swapping the two made the tile change height
  * the moment a second reading landed.

@@ -12,7 +12,7 @@
  * ## Examples
  * ```tsx
  * <span>{name} <Muted>· {qty}</Muted></span>
- * <Muted>{done} von {total} erledigt</Muted>
+ * <Muted>{done} of {total} done</Muted>
  * ```
  *
  * ## Changelog

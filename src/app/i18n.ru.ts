@@ -116,8 +116,8 @@ export const ru: Copy = {
     soundLabel: 'Звук сигнала',
     listen: 'Послушать',
     soundName: {
-        furz: 'Пук', raeuspern: 'Покашливание', schrei: 'Крик',
-        knacken: 'Хруст пальцев', peitsche: 'Щелчок кнута', rimshot: 'Бадум-тсс',
+        fart: 'Пук', ahem: 'Покашливание', scream: 'Крик',
+        knuckles: 'Хруст пальцев', whip: 'Щелчок кнута', rimshot: 'Бадум-тсс',
     },
 
     leavesTitle: 'Что покидает это устройство',

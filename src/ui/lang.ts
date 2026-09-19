@@ -40,7 +40,7 @@
  * - 2026-09-15 English is the default rather than German, and heads the
  *   picker. Browser detection is unchanged: a German browser still gets
  *   German, because that is a match rather than a fallback.
- * - 2026-09-15 The labels of the „Zu dieser Seite" block left with it: the
+ * - 2026-09-15 The labels of the „About this page" block left with it: the
  *   meta, task, gaps, severity and sources words are gone from all twelve
  *   tables. What remains is what the top bar and the dialogs still say.
  * - 2026-09-08 Ten more languages, and the tables moved to `lang-text.ts` -

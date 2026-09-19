@@ -17,8 +17,8 @@
  *
  * ## Examples
  * ```tsx
- * <Callout title="Kurz gesagt">{intro}</Callout>
- * <Callout tone="warn" icon={<Icon name="pencil" size={20} />} title="Beantworte das">…</Callout>
+ * <Callout title="In short">{intro}</Callout>
+ * <Callout tone="warn" icon={<Icon name="pencil" size={20} />} title="Answer this">…</Callout>
  * ```
  *
  * ## Changelog

@@ -8,13 +8,13 @@
  * whether there is nothing, or whether the page is broken.
  *
  * ## Core parts
- * - `title` - default „Nichts gefunden". Say what is missing when you can.
+ * - `title` - default „Nothing found". Say what is missing when you can.
  * - `hint` - the line underneath: the reason, or the next step.
  * - `children` - room for a button, when there is something to press.
  *
  * ## Examples
  * ```tsx
- * <Empty title="Noch keine Notizen" hint="Bleibt auf diesem Gerät." />
+ * <Empty title="No notes yet" hint="They stay on this device." />
  * ```
  *
  * ## Changelog

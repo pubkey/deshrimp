@@ -116,8 +116,8 @@ export const ka: Copy = {
     soundLabel: 'სასიგნალო ხმა',
     listen: 'მოსმენა',
     soundName: {
-        furz: 'გაზის გაშვება', raeuspern: 'ყელის მოწმენდა', schrei: 'ყვირილი',
-        knacken: 'თითების ატკაცუნება', peitsche: 'მათრახის ტყლაშუნი', rimshot: 'ბადა-ბუმ-ცი',
+        fart: 'გაზის გაშვება', ahem: 'ყელის მოწმენდა', scream: 'ყვირილი',
+        knuckles: 'თითების ატკაცუნება', whip: 'მათრახის ტყლაშუნი', rimshot: 'ბადა-ბუმ-ცი',
     },
 
     leavesTitle: 'რა ტოვებს ამ მოწყობილობას',

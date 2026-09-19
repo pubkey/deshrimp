@@ -2,7 +2,7 @@
  * # Badge - a small standing label
  *
  * ## What it does and how it looks
- * A pill of text at caption size: a status („gehört"), a count („3× fehlt"), a
+ * A pill of text at caption size: a status („own it"), a count („3× missing"), a
  * price beside a title. Static - a badge says something, it does not do
  * anything. The one you can press is `<Tag>`.
  *

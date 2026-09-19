@@ -116,8 +116,8 @@ export const zh: Copy = {
     soundLabel: '提示音',
     listen: '试听',
     soundName: {
-        furz: '放屁', raeuspern: '清嗓子', schrei: '尖叫',
-        knacken: '掰手指', peitsche: '鞭子声', rimshot: '咚咚锵',
+        fart: '放屁', ahem: '清嗓子', scream: '尖叫',
+        knuckles: '掰手指', whip: '鞭子声', rimshot: '咚咚锵',
     },
 
     leavesTitle: '什么会离开这台设备',

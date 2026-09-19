@@ -116,8 +116,8 @@ export const tr: Copy = {
     soundLabel: 'Sinyal sesi',
     listen: 'Dinle',
     soundName: {
-        furz: 'Osuruk', raeuspern: 'Boğaz temizleme', schrei: 'Çığlık',
-        knacken: 'Parmak çıtlatma', peitsche: 'Kırbaç şaklaması', rimshot: 'Rimshot',
+        fart: 'Osuruk', ahem: 'Boğaz temizleme', scream: 'Çığlık',
+        knuckles: 'Parmak çıtlatma', whip: 'Kırbaç şaklaması', rimshot: 'Rimshot',
     },
 
     leavesTitle: 'Bu cihazdan ne çıkıyor',

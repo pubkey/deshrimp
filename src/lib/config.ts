@@ -49,7 +49,7 @@ export type AppConfig = {
     subtitle?: string;
     /** His request, **verbatim** - wording and typos intact (PAGE-SPEC.md §5). */
     task: string;
-    /** Label above the task text, when „Aufgabe" is not the right word. */
+    /** Label above the task text, when „Task" is not the right word. */
     taskLabel?: string;
     /* `accent` and `icon` are gone. The design system locks one accent - a
        per-page hue was a second brand - and the favicon is the brand mark in

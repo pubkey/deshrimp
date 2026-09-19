@@ -11,7 +11,7 @@ export type Place = {
 };
 
 /**
- * „Auf der Karte ansehen" for a place. Coordinates win over a name, because a
+ * „Open in Maps" for a place. Coordinates win over a name, because a
  * name is ambiguous and a coordinate is not; a stored `url` wins over both,
  * since that one was actually checked.
  */

@@ -116,8 +116,8 @@ export const pt: Copy = {
     soundLabel: 'Som do sinal',
     listen: 'Ouvir',
     soundName: {
-        furz: 'Peido', raeuspern: 'Pigarro', schrei: 'Grito',
-        knacken: 'Estalar de dedos', peitsche: 'Estalo de chicote', rimshot: 'Rimshot',
+        fart: 'Peido', ahem: 'Pigarro', scream: 'Grito',
+        knuckles: 'Estalar de dedos', whip: 'Estalo de chicote', rimshot: 'Rimshot',
     },
 
     leavesTitle: 'O que sai deste aparelho',

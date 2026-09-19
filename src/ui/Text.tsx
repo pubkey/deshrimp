@@ -13,7 +13,7 @@
  *
  * ## Examples
  * ```tsx
- * <Text>Zwei Sätze zur Sache.</Text>
+ * <Text>Two sentences on the matter.</Text>
  * <Text small muted>210 km · 2:20 h</Text>
  * ```
  *

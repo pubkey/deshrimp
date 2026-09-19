@@ -24,9 +24,9 @@
  *
  * ## Examples
  * ```tsx
- * <Button variant="primary" onClick={add}>Hinzufügen</Button>
- * <Button size="sm" variant="ghost" onClick={reset}>Zurücksetzen</Button>
- * <Button href={item.url}>Ansehen ↗</Button>
+ * <Button variant="primary" onClick={add}>Add</Button>
+ * <Button size="sm" variant="ghost" onClick={reset}>Reset</Button>
+ * <Button href={item.url}>View ↗</Button>
  * ```
  *
  * ## Changelog

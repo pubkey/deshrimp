@@ -2,7 +2,7 @@
  * One line, bottom centre, gone after 2.2 s.
  *
  * Imperative on purpose: a toast is feedback for something that just happened
- * („Link kopiert"), not state a component should own. One element is reused for
+ * („Link copied"), not state a component should own. One element is reused for
  * every message, so calling it twice never stacks two boxes.
  */
 export function toast(message: string, ms?: number): void {

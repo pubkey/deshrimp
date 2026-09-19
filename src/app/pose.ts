@@ -162,7 +162,7 @@ type Detection = {
  *
  * `index.tsx` decides `good`/`borderline`/`bad` from these; without them the
  * advice here would be judging by a second, invisible standard and the page
- * would cheerfully print „sitzt gerade" above „richt dich auf".
+ * would cheerfully print „sitting straight" above „straighten up".
  */
 export type Thresholds = { maxLean: number; maxForward: number; maxHeadTilt: number };
 
@@ -177,7 +177,7 @@ let landmarkerPromise: Promise<any> | null = null;
  *
  * A separate flag rather than `landmarkerPromise !== null`, which is what
  * `poseReady()` used to test - that is true the instant loading *starts*, so
- * the page cheerfully claimed „lokal gerechnet" during the seventeen megabytes
+ * the page cheerfully claimed „computed locally" during the seventeen megabytes
  * it was still waiting for. A promise that exists is not a model that works.
  */
 let landmarkerLoaded = false;
@@ -364,8 +364,10 @@ export function loadPose(): Promise<any> {
     return landmarkerPromise;
 }
 
-/** True once the model is in memory - the UI uses it to say „bereit". */
-/** The model is loaded and a check will return immediately. */
+/**
+ * True once the model is in memory: the check will return immediately, and the
+ * readout may say the number was computed locally rather than still loading.
+ */
 export function poseReady(): boolean {
     return landmarkerLoaded;
 }
@@ -579,8 +581,8 @@ export async function analysePose(
  *
  * Decided here rather than asked of a model, because the numbers are already
  * known and a generated sentence would be a slower, less predictable way of
- * saying the same thing. It uses the same ratio `judge()` uses, so „gerade"
- * never ends up printed above „richt dich auf".
+ * saying the same thing. It uses the same ratio `judge()` uses, so „straight"
+ * never ends up printed above „straighten up".
  */
 function adviceFor(
     lean: number,

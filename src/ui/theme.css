@@ -173,9 +173,9 @@ a:hover { color: var(--ink); }
 .ui-r-xs { border-radius: var(--r-xs) } .ui-r-sm { border-radius: var(--r-sm) }
 .ui-r-md { border-radius: var(--r-md) } .ui-r-lg { border-radius: var(--r-lg) }
 .ui-r-xl { border-radius: var(--r-xl) } .ui-r-pill { border-radius: var(--r-pill) }
-/* Eine Fläche ist nie nur eine Farbe: Text, der am Rand klebt, sieht kaputt
-   aus. Beide Helfer bringen deshalb ihr eigenes Innenmaß mit - überschreibbar
-   mit <Box pad="..."> oder einer eigenen padding-Regel. */
+/* A surface is never only a colour: text stuck against the edge looks
+   broken. Both helpers therefore bring their own inner measure - overridable
+   with <Box pad="..."> or with a padding rule of your own. */
 .ui-surface { background: var(--card); border: 1px solid var(--line);
   border-radius: var(--r-md); padding: var(--s5); }
 /* An inset steps back DOWN the value ladder - it never nests at the same
@@ -580,22 +580,26 @@ a:hover { color: var(--ink); }
  *
  * Equal columns, because the whole point of a segmented control is that „the
  * left one" stays on the left whatever the two words measure. The 4px padding
- * leaves 30px segments inside the system's 40px control height. */
+ * leaves 30px segments inside the system's 40px control height - a minimum
+ * rather than a fixed height, so a segment carrying a description can grow to
+ * fit its second line instead of clipping it. */
 .ui-seg {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
   gap: var(--space-1);
   width: 100%;
-  height: var(--control-height);
+  min-height: var(--control-height);
   padding: var(--space-1);
   background: var(--surface-inset);
   border: var(--border-width) solid var(--border-default);
   border-radius: var(--radius-md);
 }
 .ui-seg > button {
-  display: inline-flex; align-items: center; justify-content: center;
-  gap: var(--space-2);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 3px;
+  padding: var(--space-1) var(--space-2);
   font: inherit; font-size: var(--text-sm); font-weight: var(--weight-semibold);
   line-height: 1.1; letter-spacing: .02em;
   color: var(--text-secondary);
@@ -606,6 +610,23 @@ a:hover { color: var(--ink); }
   /* 120ms: the fill and the ink are a state, not a value moving. */
   transition: background var(--duration-fast) var(--ease-standard),
               color var(--duration-fast) var(--ease-standard);
+}
+.ui-seg-head {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--space-2);
+}
+/* The second line is prose, so it is sentence case and it wraps: at 11px the
+   sentence has to survive a segment about 130px wide. It stays on the
+   secondary slate in both states - the ladder and the pressed word carry
+   which segment is current, and a muted line under a white word says „this
+   is the explanation" rather than competing with it. */
+.ui-seg-desc {
+  font-size: var(--text-label);
+  font-weight: var(--weight-regular);
+  letter-spacing: 0;
+  line-height: 1.25;
+  color: var(--text-secondary);
+  text-wrap: balance;
 }
 .ui-seg > button:hover { opacity: .88; }
 .ui-seg > button[aria-pressed="true"] {

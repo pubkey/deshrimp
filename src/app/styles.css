@@ -5,6 +5,11 @@
  * Two things live here because they exist nowhere else in the library: the
  * camera well (a `<video>` is not a component and never will be) and the breach
  * state that goes with it.
+ *
+ * The `haltung-` prefix is the one German word left in the class names, and it
+ * stays: it is `appId` from `app.config.ts`, which is the name the local
+ * database is stored under. Renaming it would orphan the readings on every
+ * device that has the page open. The words after it are English.
  */
 
 /* The camera well. A fixed box at 8px with a 1px hairline, sitting one step
@@ -23,7 +28,7 @@
  * box is the same either way, and the picture inside gives up the 4px. His
  * older call still holds, because it was about cropping and `object-fit:
  * contain` below never crops: a camera that is not 16:9 letterboxes. */
-.haltung-kamera {
+.haltung-camera {
   position: relative;
   width: 100%;
   max-width: 560px;
@@ -49,7 +54,7 @@
 
    The feed is never filtered, tinted, warmed or scrimmed. It is cool by virtue
    of the slate around it, and that is the only image in the product. */
-.haltung-kamera video {
+.haltung-camera video {
   display: block;
   width: 100%;
   height: 100%;
@@ -129,7 +134,7 @@
 
 /* Camera inactive. An 11px tracked label over the empty well - no illustration,
    no icon, no invitation. */
-.haltung-kamera-aus {
+.haltung-camera-off {
   position: absolute;
   inset: 0;
   display: grid;

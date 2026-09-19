@@ -151,7 +151,7 @@ const SOUND_DIR = 'snd';
  *
  * Frames with nobody in them are discarded rather than stored, which keeps the
  * statistics honest - but it also means standing up for an hour leaves a hole
- * rather than a bad reading, and „längste gute Strecke" would happily count the
+ * rather than a bad reading, and „longest good run" would happily count the
  * lunch break as excellent posture _(he caught this on 2026-09-08)_. So the run
  * ends wherever the readings stop, whatever the reason: nobody in frame, camera
  * off, tab closed.
@@ -180,10 +180,10 @@ const INTERVALS = [1, 2, 5, 10, 15, 30, 60, 120];
 
 /**
  * The order the sounds are offered in. The names themselves are in `i18n.ts`;
- * this list only fixes which one comes first - `furz` is the default and the
+ * this list only fixes which one comes first - `fart` is the default and the
  * one he asked for by name.
  */
-const SOUND_ORDER: SoundName[] = ['furz', 'raeuspern', 'schrei', 'knacken', 'peitsche', 'rimshot'];
+const SOUND_ORDER: SoundName[] = ['fart', 'ahem', 'scream', 'knuckles', 'whip', 'rimshot'];
 
 const VERDICT_TONE: Record<Verdict, StatusTone> = {
     good: 'ok', borderline: 'warn', bad: 'bad',
@@ -364,11 +364,11 @@ function useCamera(t: Copy) {
 
 /** The bundled sound files under `snd/`. */
 const SOUND_FILE: Record<SoundName, string> = {
-    furz: 'furz.mp3',
-    raeuspern: 'raeuspern.mp3',
-    schrei: 'schrei.mp3',
-    knacken: 'knacken.mp3',
-    peitsche: 'peitsche.wav',
+    fart: 'fart.mp3',
+    ahem: 'ahem.mp3',
+    scream: 'scream.mp3',
+    knuckles: 'knuckles.mp3',
+    whip: 'whip.wav',
     rimshot: 'rimshot.mp3',
 };
 
@@ -378,7 +378,7 @@ const SOUND_FILE: Record<SoundName, string> = {
  * least likely to want at full volume behind him in a coworking space.
  */
 const SOUND_GAIN: Record<SoundName, number> = {
-    furz: 1, raeuspern: 1, schrei: 0.6, knacken: 1, peitsche: 0.9, rimshot: 0.8,
+    fart: 1, ahem: 1, scream: 0.6, knuckles: 1, whip: 0.9, rimshot: 0.8,
 };
 
 /**
@@ -519,7 +519,7 @@ function useBeep() {
             return g;
         };
 
-        if (name === 'furz') {
+        if (name === 'fart') {
             const osc = ctx.createOscillator();
             osc.type = 'sawtooth';
             osc.frequency.setValueAtTime(120, t);
@@ -539,7 +539,7 @@ function useBeep() {
             return;
         }
 
-        if (name === 'schrei') {
+        if (name === 'scream') {
             const osc = ctx.createOscillator();
             osc.type = 'sawtooth';
             osc.frequency.setValueAtTime(420, t);
@@ -553,7 +553,7 @@ function useBeep() {
             return;
         }
 
-        if (name === 'raeuspern') {
+        if (name === 'ahem') {
             [0, 0.2].forEach((offset, i) => {
                 const src = noise(ctx);
                 const bp = ctx.createBiquadFilter();
@@ -567,7 +567,7 @@ function useBeep() {
             return;
         }
 
-        if (name === 'knacken') {
+        if (name === 'knuckles') {
             // Two very short filtered noise bursts - a crack is an attack with
             // almost no tail.
             [0, 0.09].forEach((offset, i) => {
@@ -583,7 +583,7 @@ function useBeep() {
             return;
         }
 
-        if (name === 'peitsche') {
+        if (name === 'whip') {
             const snap = noise(ctx);
             const hp = ctx.createBiquadFilter();
             hp.type = 'highpass';
@@ -732,7 +732,7 @@ function Live() {
      * Fold one reading into its day.
      *
      * The raw rows are pruned after two days; these survive, which is the only
-     * reason „bin ich besser geworden" can be answered at all. Sums are kept
+     * reason „have I got any better" can be answered at all. Sums are kept
      * rather than averages so a reading is one read-modify-write, not a rescan
      * of thirty thousand rows.
      */
@@ -963,10 +963,10 @@ function Live() {
                 this tile and the control tile beside it are the two that carry
                 no eyebrow. */}
             <Panel id="video" className="haltung-videotile">
-                <div className={`haltung-kamera${flash ? ' haltung-alarm' : ''}`}>
+                <div className={`haltung-camera${flash ? ' haltung-alarm' : ''}`}>
                     <video ref={camera.videoRef} muted playsInline autoPlay />
                     {!camera.on ? (
-                        <div className="haltung-kamera-aus">{t.cameraOff}</div>
+                        <div className="haltung-camera-off">{t.cameraOff}</div>
                     ) : null}
                     {/* The countdown to the next picture, drawn as the well's
                         own border filling up _(2026-09-15, his call, in place
@@ -1079,18 +1079,28 @@ function Live() {
 
                     Left is zen and right is the dashboard, which is also least
                     to most, so the control reads along the same ladder the two
-                    views differ on. */}
+                    views differ on.
+
+                    The sentence under each word is `description`, not `title`
+                    _(2026-09-18, his call: the short info belongs in the
+                    button)_. „Zen" and „Dashboard" are his own two words and
+                    they name the views without describing them, so the
+                    sentence that does describe them cannot live behind a
+                    hover: this page is meant to sit on a phone next to his
+                    desk, and a phone has no hover at all. It is the same
+                    sentence the title carried - one line each, which is why it
+                    fits on the face of a 130px segment. */}
                 <Segmented
                     label={t.viewLabel}
                     value={view}
                     onChange={(next) => void change({ view: next as View })}
                     options={[
                         {
-                            value: 'zen', label: t.zenLabel, title: t.toZen,
+                            value: 'zen', label: t.zenLabel, description: t.toZen,
                             icon: <Icon name="minimize" />,
                         },
                         {
-                            value: 'dashboard', label: t.dashboardLabel, title: t.toDashboard,
+                            value: 'dashboard', label: t.dashboardLabel, description: t.toDashboard,
                             icon: <Icon name="grid" />,
                         },
                     ]}
@@ -1127,7 +1137,7 @@ function Live() {
                 default ist die webseite zu techlastig mit den vielen daten")_.
                 The three tiles above it are what zen keeps: the picture, the
                 button that starts it, and the three angles the picture just
-                produced. Those answer „sitze ich gerade"; the curves, the log,
+                produced. Those answer „am I sitting straight"; the curves, the log,
                 the trend and the thresholds answer questions you ask on
                 purpose, and they are one switch away, at the foot of the
                 control tile above.
@@ -1290,7 +1300,7 @@ function dayLabel(t: number, lang: Lang): string {
 }
 
 /**
- * „Werde ich besser?" - the one question a single day cannot answer.
+ * „Am I getting better?" - the one question a single day cannot answer.
  *
  * Reads the daily roll-up, not the raw readings: those are pruned after two
  * weeks, and at ten seconds apart a month of them would be ~90 000 rows to
@@ -1531,7 +1541,7 @@ type SetupProps = {
 };
 
 type SoundProps = SetupProps & {
-    /** So „Anhören" can make the same noise the signal makes. */
+    /** So „Listen" can make the same noise the signal makes. */
     prepareSound: () => void;
     playSound: (name: SoundName) => void;
 };
@@ -1577,12 +1587,22 @@ function Sound(props: SoundProps) {
                 <Checkbox label={t.alsoNotify} checked={s.notify}
                     onChange={(on) => void toggleNotify(on)} />
             </Row>
+            {/* Picking a sound switches the sound on _(2026-09-18, his
+                call)_. Reaching for this select while `soundOnSignal` is off
+                is not someone browsing a list of noises: it is someone saying
+                which noise they want, and the setting that decides whether any
+                noise happens at all sits one row above, already unticked. The
+                old behaviour stored a preference that did nothing and gave no
+                sign that it did nothing - you picked the whip, heard silence
+                for the rest of the afternoon, and had no reason to suspect the
+                checkbox. Turning the signal back off is one click on that same
+                checkbox, so the rule cannot trap anyone. */}
             <Row gap={2} align="bottom" stack>
                 <Select
                     label={t.soundLabel}
                     value={s.soundName}
                     onChange={(e: { target: { value: string } }) =>
-                        void change({ soundName: e.target.value as SoundName })}
+                        void change({ soundName: e.target.value as SoundName, sound: true })}
                 >
                     {SOUND_ORDER.map((key) => (
                         <option key={key} value={key}>{t.soundName[key]}</option>
