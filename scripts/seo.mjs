@@ -238,8 +238,20 @@ function sitemap() {
     ].join('\n');
 }
 
+/**
+ * `robots.txt`, which the site did not have before there was a sitemap to
+ * point at.
+ *
+ * The one thing it keeps out is `pr-preview/`. Every open pull request
+ * publishes a full copy of the site there, on this same domain and now
+ * fourteen pages deep (`.github/workflows/pr-preview.yml`), and a domain this
+ * new has no crawl budget to spend on a branch that will be deleted. Their
+ * canonicals already point at the live pages, so this is belt and braces
+ * rather than the only thing standing between us and a duplicate index.
+ */
 const robots = () => [
     'User-agent: *',
+    'Disallow: /pr-preview/',
     'Allow: /',
     '',
     `Sitemap: ${SITE}/sitemap.xml`,

@@ -204,7 +204,9 @@ repeats the set, so a search engine reads the thirteen as one page in thirteen
 languages rather than as thirteen pages competing for the same words.
 
 The service worker precaches all thirteen, so an installed `/de.html` still
-opens in German with the network gone.
+opens in German with the network gone. `robots.txt` keeps crawlers out of
+`pr-preview/`, where every open pull request publishes a full fourteen-page
+copy of the site on this same domain.
 
 ### Pull request previews
 
