@@ -20,7 +20,13 @@
 #    `*.github.io` one, so every visitor gets a certificate-name mismatch until
 #    the domain is re-added and a new certificate is issued - an outage that
 #    takes hours to undo. The check below refuses to publish such a build.
-# 4. **PR previews share the branch.** `pr-preview.yml` publishes every open
+# 4. **The site is one page per language.** `scripts/seo.mjs` writes `de.html`,
+#    `ja.html` and eleven more beside `index.html`, plus `sitemap.xml` and
+#    `robots.txt`. Every one of those URLs is advertised by the others'
+#    `hreflang` links, so a build that drops them publishes a sitemap full of
+#    404s. The check below reads the language list out of `src/app/data.json`
+#    rather than repeating it.
+# 5. **PR previews share the branch.** `pr-preview.yml` publishes every open
 #    pull request under `pr-preview/<pr>/commit-<sha>/` on the same branch, so
 #    the fresh orphan commit below must carry that directory over from the
 #    previous tip or every master push would take all previews down with it.
@@ -77,6 +83,19 @@ jobs:
             echo "::error::index.html still says noindex"
             exit 1
           fi
+          # One page per language, and the sitemap that ties them together.
+          # The list is read from the copy itself rather than written out here,
+          # so a fourteenth language cannot be added and silently left
+          # unpublished. A missing file is a 404 on a URL the sitemap and every
+          # other page's hreflang already advertise.
+          langs="$(node -e "console.log(Object.keys(require('./src/app/data.json')).join(' '))")"
+          for lang in $langs; do
+            test -f "dist/$lang.html" || { echo "::error::no dist/$lang.html - a language URL would 404"; exit 1; }
+            grep -q "window.__APP_LANG__=\"$lang\"" "dist/$lang.html" \
+              || { echo "::error::dist/$lang.html does not force $lang"; exit 1; }
+          done
+          test -f dist/sitemap.xml || { echo "::error::no dist/sitemap.xml"; exit 1; }
+          test -f dist/robots.txt  || { echo "::error::no dist/robots.txt"; exit 1; }
           # The custom domain lives in this file and nowhere else. Publishing a
           # tree without it hands the site back to pubkey.github.io and takes
           # the certificate with it - see the note at the top of this file.
@@ -86,7 +105,7 @@ jobs:
             echo "::error::dist/CNAME says '$domain', expected '$EXPECTED_DOMAIN'"
             exit 1
           fi
-          echo "index.html $(wc -c < dist/index.html) bytes, $(ls dist/mp | wc -l) model files, domain $domain"
+          echo "index.html $(wc -c < dist/index.html) bytes, $(ls dist/mp | wc -l) model files, domain $domain, languages: $langs"
 
       # Jekyll is on by default for a branch-served site and would drop paths
       # beginning with an underscore.

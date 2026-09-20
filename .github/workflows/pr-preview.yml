@@ -98,7 +98,15 @@ jobs:
             echo "::error::dist/mp is empty - the pose model did not make it into the build, so the camera loop would not run"
             exit 1
           fi
-          echo "index.html $(wc -c < dist/index.html) bytes, $(ls dist/mp | wc -l) model files"
+          # The per-language pages, read out of the copy so the list cannot
+          # drift. In a preview they sit next to index.html in the commit
+          # subdirectory, so /pr-preview/<pr>/commit-<sha>/de.html is the way
+          # to review a language before it is live.
+          langs="$(node -e "console.log(Object.keys(require('./src/app/data.json')).join(' '))")"
+          for lang in $langs; do
+            test -f "dist/$lang.html" || { echo "::error::no dist/$lang.html - a language URL would 404"; exit 1; }
+          done
+          echo "index.html $(wc -c < dist/index.html) bytes, $(ls dist/mp | wc -l) model files, languages: $langs"
 
       - name: Configure git user
         run: |

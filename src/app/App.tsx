@@ -49,6 +49,7 @@ import {
 } from './db';
 import { LineChart, formatNumber, withUnit } from '@charts';
 import { copyFor, localeFor, LANGUAGES, type Copy, type Lang } from './i18n';
+import { langHref, pageLang, seoTitle } from './lang-url';
 import {
     analysePose, frameOf as canvasFrame, loadPose, onPoseProgress, poseProgress,
     poseReady, PoseError, preloadPose, type Analysis,
@@ -83,6 +84,23 @@ type Data = Record<Lang, Written>;
  * say the same thing.
  */
 /**
+ * The language this URL stands for, if it stands for one.
+ *
+ * The site is one page per language _(2026-09-19, his call, verbatim: „on the
+ * root we serve the detected language but also we have apecific language pages
+ * like en.html or de.html")_: `/de.html` is German the way a German page on any
+ * other site is German, so it outranks both the detection below and the stored
+ * settings. Without that, a reader who once picked English would open a link to
+ * `/de.html` in English, and the URL would be a lie. The picker stays a picker:
+ * on such a page it stores the choice and goes to that language's page, so the
+ * setting and the URL cannot disagree afterwards.
+ *
+ * `undefined` at the root `/` and in dev, where the two below decide as they
+ * always have. See `lang-url.ts`.
+ */
+const FORCED: Lang | undefined = pageLang();
+
+/**
  * What to show before anything is stored: **gespeicherte Wahl → Browsersprache
  * → Englisch** _(2026-09-08)_.
  *
@@ -93,9 +111,12 @@ type Data = Record<Lang, Written>;
  * It is only ever the *fallback*. The moment a settings document exists - which
  * is the moment he changes anything at all, not just the language - that
  * document decides, and detection never speaks again. A page that will not stay
- * in the language you picked is worse than one that guessed wrong once.
+ * in the language you picked is worse than one that guessed wrong once. A URL
+ * that names a language skips the question entirely, which is what `FORCED`
+ * above is.
  */
-const DETECTED: Lang = preferredUiLang(LANGUAGES.map((l) => l.value)) as Lang;
+const DETECTED: Lang = FORCED
+    || (preferredUiLang(LANGUAGES.map((l) => l.value)) as Lang);
 
 /** The settings a device starts from, in the language its browser suggests. */
 const INITIAL_SETTINGS: Settings = { ...DEFAULTS, lang: DETECTED };
@@ -1745,17 +1766,36 @@ function Content() {
         selector: { id: SETTINGS_ID },
     });
     const { upsert: writeSettings } = useCollection<Settings>('settings');
-    const lang: Lang = storedSettings[0]?.lang || DETECTED;
+    /* The URL first, then the stored choice, then the browser. On a page
+       that names its language there is nothing to decide. */
+    const lang: Lang = FORCED || storedSettings[0]?.lang || DETECTED;
     const t = copyFor(lang);
     const written = data[lang] || data.en;
     /* Zen unless the stored settings say otherwise, which is also what a device
        with no settings document yet gets. */
     const view: View = storedSettings[0]?.view || 'zen';
-    const patch = (fields: Partial<Settings>) => void writeSettings({
+    const patch = (fields: Partial<Settings>) => writeSettings({
         ...(storedSettings[0] || INITIAL_SETTINGS),
         ...fields,
         id: SETTINGS_ID,
     });
+
+    /**
+     * Picking a language on a page that forces one is a navigation, not a
+     * re-render: `FORCED` outranks the setting, so staying here would write
+     * the choice and go on showing the old language. The write happens first
+     * and is waited for, so the root page and the next visit agree with what
+     * was just picked; it is the same setting either way, only the way it
+     * takes effect differs.
+     */
+    const chooseLang = (next: Lang) => {
+        const stored = patch({ lang: next });
+        if (!FORCED) return;
+        // Also when the write fails: the picked language is the point, and a
+        // page stuck in the old one because a database call did not come back
+        // is a worse answer than a page in the right one with nothing stored.
+        void stored.finally(() => window.location.assign(langHref(next)));
+    };
 
     return (
         <LangContext.Provider value={lang}>
@@ -1764,9 +1804,10 @@ function Content() {
                     width="full"
                     lang={lang}
                     languages={LANGUAGES.map((l) => l.value)}
-                    onLangChange={(next) => patch({ lang: next })}
+                    onLangChange={(next) => chooseLang(next as Lang)}
                     title={t.title}
                     subtitle={t.subtitle}
+                    documentTitle={seoTitle(lang)}
                     actions={
                         <>
                             <DataSyncButton database={database} filename="sitzhaltung.json" />

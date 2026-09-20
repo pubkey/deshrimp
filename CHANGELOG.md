@@ -11,6 +11,66 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-09-19 (addendum) - one URL per language
+
+### New
+- **The page exists thirteen times now, once per language** _(his call,
+  verbatim: „deshrimp needs a similar one page per language url structure. so
+  on the root we serve the detected language but also we have apecific language
+  pages like en.html or de.html")_. `de.html`, `en.html`, `ja.html` and ten more
+  sit beside `index.html`:
+
+      /            the detected language, and the sitemap's x-default
+      /de.html     German, whatever the browser says
+      /ja.html     Japanese, and ten more of the same kind
+
+  The reason is not tidiness, it is visibility: thirteen translations behind a
+  single URL are as good as none. A crawler fetches a page once, in one
+  language, and indexes what it got. And a shared link now opens in the
+  language it was shared in, which no amount of detection can do.
+- **It stays one build, not thirteen.** `scripts/seo.mjs` renders the finished
+  shell once per language after the bundle. All fourteen pages therefore carry
+  the same hashed filenames and differ in four things: the `<html lang>`, the
+  head (title, description, canonical, hreflang, Open Graph, JSON-LD), the
+  prerendered copy from the matching `data.json` entry, and one line of script
+  setting `window.__APP_LANG__` before the bundle runs.
+- **`sitemap.xml` and `robots.txt`** come out of the same step. Every page
+  names every other as an `hreflang` alternate and the sitemap says it a second
+  time, so a search engine reads thirteen pages as one page in thirteen
+  languages rather than as thirteen competitors for the same words.
+  `robots.txt` keeps crawlers out of `pr-preview/`, where every open pull
+  request publishes a full copy of the site, now fourteen pages deep, on this
+  same domain. A domain this new has no crawl budget to spend on a branch that
+  will not exist next week.
+- **`src/app/lang-url.ts`** is the whole app side of it: which language the URL
+  forces, where the picker goes, and which title sentence belongs to a
+  language.
+
+### Changed
+- **The URL beats the stored setting.** On `/de.html` the page is German even
+  if English was once picked here. A URL that says `de.html` and renders
+  English is a URL that lies. Nothing changes at the root `/`: there the stored
+  choice still decides, and the browser language before it.
+- **The picker in the top bar is a link on those pages.** Picking Japanese on
+  `/de.html` stores the choice and lands on `/ja.html` - otherwise the setting
+  would be written and the page would stay German anyway. In `npm run dev`
+  those files do not exist, `window.__APP_LANG__` is absent, and the picker
+  switches in place as before.
+- **The tab title follows the language.** `<Page documentTitle>` is new and
+  overrides the fixed value from `PAGE_DATA.meta`, which was decided at load.
+  Before this, every tab said the English sentence, even above a Japanese page.
+- **`src/app/seo.json` carries the title and the description per language**
+  instead of once in English. The build stops when a language is in
+  `data.json` and missing from `seo.json` or the other way round: half a
+  translation would be an indexable URL promising a translation that does not
+  exist.
+- **The service worker precaches all thirteen pages** and answers an offline
+  navigation with the page that was asked for before falling back to the root.
+  An installed `/de.html` opens in German with the network gone.
+- **Both workflows check the language pages**, against the list in `data.json`
+  rather than a second list in the workflow. A missing file would be a 404 on a
+  URL the sitemap and every other page already advertise.
+
 ## 2026-09-19 - the sound switches itself on, the views say what they are, and the code speaks English
 
 ### Changed
