@@ -69,7 +69,9 @@ hips, and in a desk-sized crop they come back with a visibility of 0.01 against
 - **It installs, and it works offline.** A service worker precaches the page,
   the icon and all six sounds, so the alarm still fires with the network gone.
   The pose model is cached the first time the camera runs rather than up front -
-  it is 17 MB, and paying that during install would look like a hang.
+  it is 17 MB, and paying that during install would look like a hang. It is
+  kept in a cache of its own, named after the pinned digests, so a new version
+  of the app does not cost you those megabytes a second time.
 - **It never asks for the camera on load.** The whole page - the angles, the
   sounds, the history - is there to read first; `getUserMedia` runs on the
   ▶ button and nowhere else.
@@ -169,6 +171,13 @@ plugins on top of it, both `apply: 'build'`:
   bundle, so the hashed filenames are right and a new build retires the old
   cache by name. A manifest alone does not make a page installable - Chromium
   wants a service worker with a fetch handler first.
+
+  It writes **two** cache names, because the shell and the model go stale for
+  different reasons. `deshrimp-shell-<bundle>` is named after the build and is
+  retired by the next one; `deshrimp-model-<pin>` is named after the digests in
+  `scripts/pose-model.sha256` and survives every deploy that does not move the
+  pin. The model is 17 MB and is the same file across builds, so putting it in
+  the versioned cache meant re-downloading it for every typo fix.
 
 `public/CNAME` carries the domain, and `.github/workflows/deploy.yml` builds
 every push to `master` and force-pushes `dist/` to the `github-pages` branch. It

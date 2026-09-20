@@ -11,6 +11,48 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-09-20 - the model is cached by its hash, not by the build
+
+### Fixed
+- **A deploy no longer costs every visitor the seventeen megabytes again**
+  _(his call, verbatim: „on redeploys when reloading the app, it has to
+  download the model again each time. ismt it be cache by hash? fix that")_.
+  It was one cache, `deshrimp-<bundle>`, and the service worker's `activate`
+  deletes every cache but the current one by design - that is how a new build
+  retires the old shell. The pose model was sitting in there with it, so a
+  changed German string, a moved button, any build at all, threw away 17 MB
+  that had not changed and made the next camera start download it a second
+  time over a phone connection.
+
+  There are two caches now, because the two halves go stale for different
+  reasons:
+
+      deshrimp-shell-<bundle>   the page, the JS, the fonts, the six sounds
+      deshrimp-model-<pin>      everything under mp/
+
+  The shell name is the bundle hashes, as before. The model name is a digest
+  of `scripts/pose-model.sha256`, which is the file `fetch-pose-model.mjs`
+  already refuses to ship anything else against. So the answer to his question
+  is yes, and by the hash that was already there: a deploy that leaves the pin
+  alone leaves the bytes alone, and a model that really did change cannot keep
+  the old cache, because it cannot keep the old name.
+
+  Checked in a real browser rather than reasoned about, since a service worker
+  is exactly the place where reasoning is cheap and wrong: first use fetches
+  the model once, a rebuilt shell retires the old cache and fetches it zero
+  more times, and a moved pin retires the model cache and fetches it again.
+
+  One thing this cannot fix: an install that exists today has its copy in the
+  shell cache that this very deploy retires. Those pay it once more, and that
+  is the last time.
+- **A miss now revalidates instead of trusting the browser cache.** The files
+  under `mp/` carry no hash in their names, so the HTTP cache can hold bytes
+  from before the pin moved, and storing those under a name that promises the
+  new pin would be a lie that outlives the deploy. The fetch asks with
+  `cache: 'no-cache'`, which is a conditional request, not a re-download: an
+  unchanged file comes back as a 304 and the body still arrives from the
+  browser's own cache.
+
 ## 2026-09-19 (addendum) - one URL per language
 
 ### New
