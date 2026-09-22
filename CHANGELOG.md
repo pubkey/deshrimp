@@ -11,6 +11,53 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-09-22 (addendum) - the shrimp at the desk
+
+### New
+- **A sixth card, `garnele`** _(his call, verbatim: „mach eine mit ner
+  garnele vorm schreibtisch. links in shrimphaltung (vorher) rechts gerade
+  (nachher)")_. Two scenes side by side: on the left the shrimp folded over
+  its desk with the head at the screen, on the right the same shrimp upright,
+  and under each the angle the page would read off it.
+
+### Decided
+- **An illustration, against the design system's rule.** DESIGN.md says no
+  illustration anywhere. His request outranks a rule that arrived later, so
+  the card exists; what the rule still decides is *how*. The drawing uses
+  nothing the system does not already have: the mark's own 14 × 4 bars laid
+  along a spine, the coral dot as the head, hairlines for the chair, the
+  desk and the monitor. No new shape, no new colour, no fill that is not
+  ink.
+- **The number is measured off the drawing**, shoulder to ear against the
+  vertical, exactly as the page measures it, rather than typed in. The
+  picture and its caption cannot disagree, and only the folded shrimp is in
+  breach, so only its number and its ear line take the accent.
+
+## 2026-09-22 - business cards for the desk across
+
+### New
+- **`print/visitenkarten/`: five business cards** _(his call, verbatim:
+  „Design Visitenkarten die ich im Büro den Leuten die schräg da sitzen geben
+  kann, damit die deshrimp benutzen. mehrere ideen")_. A breached readout, his
+  sentence, the sixty-bar strip, the settings tile with the fart selected, and
+  a light note with room for a pen. One shared back: mark, wordmark, the
+  description from `seo.json`, and a QR code to `/de.html`, since the office
+  is German and the URL beats the phone's language.
+- **Drawn with the design system and nothing else.** Six colours, Plex Sans
+  and Mono, hairlines, the mark. The QR code comes from `src/ui/qr.ts`, the
+  same encoder the share sheet uses, so the card and the page cannot encode
+  the address differently. The fonts are the vendored files.
+- **`render.mjs` writes `out/` with Chromium**: a two-page PDF per card at
+  91 × 61 mm (85 × 55 trim plus 3 mm bleed), PNG previews, and one
+  self-contained HTML. `out/` is committed so a PDF is a download, not a
+  build.
+
+### Decided
+- **No emoji on the cards.** The page title keeps its shrimp because he asked
+  for that wording; a card has the mark, and a colour emoji is a font a print
+  shop does not have. The wording „Sitz aufrecht du Garnele!" itself is on
+  the second card, unchanged.
+
 ## 2026-09-19 (addendum) - one URL per language
 
 ### New
