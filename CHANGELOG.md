@@ -11,6 +11,28 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-09-22 (addendum) - the shrimp at the desk
+
+### New
+- **A sixth card, `garnele`** _(his call, verbatim: „mach eine mit ner
+  garnele vorm schreibtisch. links in shrimphaltung (vorher) rechts gerade
+  (nachher)")_. Two scenes side by side: on the left the shrimp folded over
+  its desk with the head at the screen, on the right the same shrimp upright,
+  and under each the angle the page would read off it.
+
+### Decided
+- **An illustration, against the design system's rule.** DESIGN.md says no
+  illustration anywhere. His request outranks a rule that arrived later, so
+  the card exists; what the rule still decides is *how*. The drawing uses
+  nothing the system does not already have: the mark's own 14 × 4 bars laid
+  along a spine, the coral dot as the head, hairlines for the chair, the
+  desk and the monitor. No new shape, no new colour, no fill that is not
+  ink.
+- **The number is measured off the drawing**, shoulder to ear against the
+  vertical, exactly as the page measures it, rather than typed in. The
+  picture and its caption cannot disagree, and only the folded shrimp is in
+  breach, so only its number and its ear line take the accent.
+
 ## 2026-09-22 - business cards for the desk across
 
 ### New

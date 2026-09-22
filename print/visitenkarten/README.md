@@ -1,14 +1,14 @@
 # Visitenkarten
 
 Business cards to hand across the desk to whoever sits crooked, so they open
-deshrimp. Five ideas, each with a front and a shared back, drawn with nothing
+deshrimp. Six ideas, each with a front and a shared back, drawn with nothing
 the design system does not already have: the six colours, IBM Plex Sans and
 Mono, hairlines instead of shadows, the mark from `public/brand/mark.svg`.
 
 His request, verbatim: „Design Visitenkarten die ich im Büro den Leuten die
 schräg da sitzen geben kann, damit die deshrimp benutzen. mehrere ideen".
 
-## The five
+## The six
 
 | id | front | why |
 | --- | --- | --- |
@@ -17,8 +17,18 @@ schräg da sitzen geben kann, damit die deshrimp benutzen. mehrere ideen".
 | `streifen` | The sixty-bar status strip for the hour just gone, two runs of coral, „Du hast es nicht gemerkt." | The product's signature visual, read as an accusation. |
 | `furz` | The settings tile: `Ton bei Signal` with `Furz` selected, `Takt 1 s` | Dead serious about the default. The loud one; hand it to whoever can take it. |
 | `zettel` | The light inversion, with rules for a pen: `Für`, `Von`, `Schräg seit __:__ Uhr`, „Nichts Persönliches. Nur ein Winkel." | A note passed across the desk rather than a card handed over. |
+| `garnele` | A shrimp at a desk, twice: folded up with its head at the screen on the left (`Vorher`), upright on the right (`Nachher`), the measured angle under each | His call, verbatim: „mach eine mit ner garnele vorm schreibtisch. links in shrimphaltung (vorher) rechts gerade (nachher)". |
 
-The back is the same on all five: mark and wordmark, the one-line description
+The `garnele` card is the one illustration, and the design system says no
+illustration. His request outranks that, so the drawing is made of nothing
+the system does not already have: the mark's own 14 × 4 bars laid along a
+spine, the coral dot as the head, two feelers, the chair and desk as
+hairlines. The angle under each scene is measured off the drawing the way the
+page measures it, shoulder to ear against the vertical, so the picture and
+its number cannot disagree. Only the folded one is in breach, so only its
+number and its ear line take the accent.
+
+The back is the same on all six: mark and wordmark, the one-line description
 from `seo.json`, the address in mono, and a QR code to `deshrimp.com/de.html`.
 The QR points at the German page rather than the root because the card is
 handed over in a German office: a URL that says `de.html` opens German
@@ -36,7 +46,7 @@ visitenkarten.html   the source: open it in a browser to see every idea
 render.mjs           writes out/ with Chromium
 out/<id>.pdf         two pages, front then back, ready for a print shop
 out/<id>.png         the pair side by side, for looking at
-out/alle.pdf         all ten pages in one file
+out/alle.pdf         all twelve pages in one file
 out/alle.png         the overview
 out/visitenkarten.html  the source with the fonts and the QR codes inlined,
                         one file that opens anywhere

@@ -143,6 +143,26 @@
                         font-variant-numeric: tabular-nums; }
   .zettel .lead { margin-top: auto; font-size: 10pt; }
 
+  /* ---- 6 · Die Garnele ---- */
+  .garnele .safe { display: flex; flex-direction: column; }
+  .garnele .scenes { margin-top: 2mm; flex: 1 1 auto; display: grid; grid-template-columns: 1fr 1fr;
+                     column-gap: 4mm; min-height: 0; }
+  .garnele .scene { display: flex; flex-direction: column; min-height: 0; }
+  .garnele .scene + .scene { border-left: 0.2mm solid var(--line); padding-left: 4mm; }
+  .garnele .scene svg { display: block; width: 100%; flex: 1 1 auto; min-height: 0; }
+  .garnele .scene .caption { margin-top: 1mm; display: flex; justify-content: space-between; align-items: baseline; }
+  .garnele .scene .caption .mono { font-size: 9pt; font-weight: 500; color: var(--ink); }
+  .garnele .scene.breached .caption .mono { color: var(--accent); }
+  .garnele .foot { margin-top: 2mm; display: flex; justify-content: space-between; align-items: baseline; }
+  /* the drawing: the mark's own bars along a spine, furniture as hairlines */
+  .shrimp .bar { fill: var(--ink); }
+  .shrimp .head { fill: var(--coral-500); }
+  .shrimp .feeler { stroke: var(--ink-2); stroke-width: 1.5; fill: none; stroke-linecap: round; }
+  .shrimp .furniture { stroke: var(--ink-2); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .shrimp .plumb { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 2 2; }
+  .shrimp .ear { stroke: var(--ink); stroke-width: 1.2; }
+  .breached .shrimp .ear { stroke: var(--accent); }
+
   /* ---- screen chrome, hidden in print and in shot mode ---- */
   .ui { max-width: 1120px; margin: 0 auto; padding: 32px 24px; }
   .ui h1 { font-size: 22px; letter-spacing: -.02em; margin: 0 0 6px; }
@@ -178,7 +198,7 @@
 
 <header class="ui">
   <h1>deshrimp Visitenkarten</h1>
-  <p>Five cards to hand across the desk. Trim 85 x 55 mm, shown here with the 3 mm bleed; the dashed line is where the cut lands.</p>
+  <p>Six cards to hand across the desk. Trim 85 x 55 mm, shown here with the 3 mm bleed; the dashed line is where the cut lands.</p>
   <p class="note">Print files: <code>node render.mjs</code> writes a two-page PDF per idea into <code>out/</code>. One idea alone: add <code>#only=satz</code> to this address.</p>
 </header>
 
@@ -368,6 +388,51 @@
   </div>
 </section>
 
+<!-- ============================================================ 6 -->
+<section class="variant" id="garnele">
+  <div class="ui">
+    <h2>6 · Die Garnele</h2>
+    <p>His call: a shrimp at a desk, folded up on the left, upright on the right. The design system says no illustration; the owner's request outranks it, so the drawing is made of nothing the system does not have: the mark's own bars laid along a spine, the head dot, furniture as hairlines, and the measured angle over each one.</p>
+  </div>
+  <div class="pair">
+    <div class="page front"><div class="card dark garnele">
+      <div class="safe">
+        <div class="label">Kopf vor den Schultern</div>
+        <div class="scenes">
+          <div class="scene breached">
+            <svg class="shrimp" data-shrimp="folded" viewBox="0 0 100 78" aria-label="Garnele, zusammengeklappt"></svg>
+            <div class="caption"><span class="label">Vorher</span><span class="mono" data-angle></span></div>
+          </div>
+          <div class="scene">
+            <svg class="shrimp" data-shrimp="upright" viewBox="0 0 100 78" aria-label="Garnele, aufrecht"></svg>
+            <div class="caption"><span class="label">Nachher</span><span class="mono" data-angle></span></div>
+          </div>
+        </div>
+        <div class="foot">
+          <div class="label">Grenze <b class="mono">18°</b></div>
+          <div class="url">deshrimp.com</div>
+        </div>
+      </div>
+      <div class="trim"></div>
+    </div></div>
+    <div class="page back"><div class="card dark">
+      <div class="safe">
+        <div class="who">
+          <div class="brand">
+            <svg class="mark" viewBox="0 0 48 48" width="9mm" height="9mm" aria-hidden="true"><use href="#mark"/></svg>
+            <div class="wordmark">deshrimp</div>
+          </div>
+          <div class="label what">Webcam-Haltungstrainer für den Schreibtisch</div>
+          <div class="text">Schaut über die Webcam zu, wie du sitzt, und gibt einen Ton, wenn du zusammenklappst. Kein Konto, keine Installation, und kein Bild verlässt deinen Rechner.</div>
+          <div class="url">deshrimp.com</div>
+        </div>
+        <div class="code"><div class="qr-plate"><svg viewBox="-4 -4 37 37" shape-rendering="crispEdges" aria-label="deshrimp.com"><path d="M0 0h7v1h-7zM8 0h1v1h-1zM10 0h1v1h-1zM15 0h1v1h-1zM18 0h2v1h-2zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM10 1h3v1h-3zM14 1h2v1h-2zM19 1h2v1h-2zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM8 2h1v1h-1zM10 2h1v1h-1zM12 2h2v1h-2zM16 2h1v1h-1zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM8 3h2v1h-2zM11 3h2v1h-2zM14 3h2v1h-2zM18 3h1v1h-1zM20 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h1v1h-1zM11 4h1v1h-1zM13 4h2v1h-2zM16 4h4v1h-4zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM13 5h2v1h-2zM17 5h4v1h-4zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM8 7h3v1h-3zM16 7h2v1h-2zM19 7h2v1h-2zM1 8h2v1h-2zM4 8h1v1h-1zM6 8h2v1h-2zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h3v1h-3zM18 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h5v1h-5zM1 9h3v1h-3zM5 9h1v1h-1zM8 9h1v1h-1zM10 9h1v1h-1zM12 9h1v1h-1zM16 9h1v1h-1zM20 9h3v1h-3zM25 9h1v1h-1zM28 9h1v1h-1zM1 10h2v1h-2zM6 10h2v1h-2zM9 10h2v1h-2zM12 10h2v1h-2zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM24 10h2v1h-2zM27 10h2v1h-2zM1 11h1v1h-1zM4 11h1v1h-1zM7 11h1v1h-1zM11 11h1v1h-1zM14 11h2v1h-2zM17 11h1v1h-1zM19 11h4v1h-4zM27 11h1v1h-1zM2 12h3v1h-3zM6 12h2v1h-2zM9 12h1v1h-1zM11 12h7v1h-7zM20 12h1v1h-1zM22 12h2v1h-2zM3 13h1v1h-1zM7 13h4v1h-4zM12 13h1v1h-1zM14 13h1v1h-1zM16 13h1v1h-1zM18 13h1v1h-1zM20 13h4v1h-4zM27 13h2v1h-2zM1 14h2v1h-2zM4 14h1v1h-1zM6 14h1v1h-1zM8 14h1v1h-1zM12 14h3v1h-3zM17 14h1v1h-1zM20 14h4v1h-4zM26 14h3v1h-3zM0 15h1v1h-1zM3 15h2v1h-2zM8 15h1v1h-1zM13 15h3v1h-3zM19 15h2v1h-2zM23 15h1v1h-1zM27 15h2v1h-2zM2 16h2v1h-2zM5 16h2v1h-2zM8 16h3v1h-3zM13 16h2v1h-2zM22 16h1v1h-1zM25 16h1v1h-1zM27 16h1v1h-1zM4 17h1v1h-1zM7 17h2v1h-2zM12 17h1v1h-1zM14 17h2v1h-2zM17 17h1v1h-1zM20 17h3v1h-3zM26 17h3v1h-3zM0 18h1v1h-1zM3 18h1v1h-1zM6 18h4v1h-4zM11 18h1v1h-1zM17 18h2v1h-2zM20 18h2v1h-2zM23 18h1v1h-1zM25 18h1v1h-1zM27 18h2v1h-2zM1 19h1v1h-1zM3 19h2v1h-2zM10 19h6v1h-6zM17 19h1v1h-1zM19 19h1v1h-1zM22 19h1v1h-1zM24 19h1v1h-1zM27 19h1v1h-1zM0 20h1v1h-1zM3 20h4v1h-4zM8 20h3v1h-3zM14 20h1v1h-1zM17 20h1v1h-1zM19 20h6v1h-6zM27 20h1v1h-1zM8 21h1v1h-1zM12 21h1v1h-1zM16 21h2v1h-2zM19 21h2v1h-2zM24 21h1v1h-1zM27 21h2v1h-2zM0 22h7v1h-7zM8 22h3v1h-3zM14 22h1v1h-1zM18 22h3v1h-3zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM28 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM9 23h3v1h-3zM13 23h1v1h-1zM15 23h4v1h-4zM20 23h1v1h-1zM24 23h1v1h-1zM27 23h1v1h-1zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h2v1h-2zM11 24h3v1h-3zM15 24h2v1h-2zM18 24h1v1h-1zM20 24h6v1h-6zM28 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM10 25h2v1h-2zM13 25h4v1h-4zM18 25h1v1h-1zM20 25h2v1h-2zM24 25h1v1h-1zM26 25h1v1h-1zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h1v1h-1zM14 26h3v1h-3zM18 26h2v1h-2zM23 26h4v1h-4zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM8 27h1v1h-1zM10 27h3v1h-3zM16 27h5v1h-5zM22 27h2v1h-2zM25 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM13 28h5v1h-5zM19 28h2v1h-2zM24 28h1v1h-1zM27 28h2v1h-2z"/></svg></div></div>
+      </div>
+      <div class="trim"></div>
+    </div></div>
+  </div>
+</section>
+
 <!-- the mark, once; every <use> above points here. Geometry is public/brand/mark.svg. -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -390,6 +455,49 @@
       if (c !== ' ') bar.className = c;
       return bar;
     }));
+  }
+  // The shrimp at the desk, from the mark's own vocabulary: 14 x 4 bars with
+  // 2px corners laid along a spine, and the coral dot for the head. Each pose
+  // is a list of bar centres with the bar's rotation, hand placed like the
+  // bars of the mark; the angle under each scene is measured off the drawing
+  // the way the page measures it, shoulder to ear against the vertical, so
+  // the number and the picture cannot disagree.
+  const SVG = 'http://www.w3.org/2000/svg';
+  const el = (name, attrs) => {
+    const node = document.createElementNS(SVG, name);
+    for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
+    return node;
+  };
+  const POSES = {
+    // rises off the seat, rounds forward, and ends with the head at the screen
+    folded:  { bars: [[28,58,0],[29,50,8],[32,43,20],[38,37,38],[45,32,55],[52,29,70]],
+               head: [58,30], feelers: [[[64,25],[68,20]],[[64,33],[69,35]]], shoulder: 2 },
+    // rises with the slight S the mark has, the head above the shoulders
+    upright: { bars: [[28,58,0],[26,51,4],[27,44,2],[29,37,-3],[30,30,-4],[29,23,0]],
+               head: [31,15], feelers: [[[39,10],[46,6]],[[40,17],[48,18]]], shoulder: 2 },
+  };
+  for (const svg of document.querySelectorAll('svg[data-shrimp]')) {
+    const pose = POSES[svg.dataset.shrimp];
+    // the furniture: chair, desk, monitor
+    svg.append(el('path', { class: 'furniture', d: 'M8 40 V62 H40 M24 62 V78 M52 50 H100 M96 50 V78 M70 44 H92 V28 H70 Z M81 44 V50' }));
+    // the tail, resting on the seat behind
+    svg.append(el('rect', { class: 'bar', x: -5, y: -2, width: 10, height: 4, rx: 2, transform: 'translate(20 61) rotate(-35)' }));
+    svg.append(el('rect', { class: 'bar', x: -4, y: -2, width: 8, height: 4, rx: 2, transform: 'translate(13 64) rotate(-15)' }));
+    for (const [x, y, deg] of pose.bars) {
+      svg.append(el('rect', { class: 'bar', x: -7, y: -2, width: 14, height: 4, rx: 2, transform: `translate(${x} ${y}) rotate(${deg})` }));
+    }
+    const [hx, hy] = pose.head;
+    for (const [[ax, ay], [bx, by]] of pose.feelers) {
+      svg.append(el('path', { class: 'feeler', d: `M${hx} ${hy} Q${ax} ${ay} ${bx} ${by}` }));
+    }
+    // the reading: plumb line up from the shoulder, the line to the ear
+    const [sx, sy] = pose.bars[pose.shoulder];
+    svg.append(el('path', { class: 'plumb', d: `M${sx} ${sy} V${sy - 22}` }));
+    svg.append(el('path', { class: 'ear', d: `M${sx} ${sy} L${hx} ${hy}` }));
+    svg.append(el('circle', { class: 'head', cx: hx, cy: hy, r: 3.5 }));
+    const angle = Math.round(Math.atan2(hx - sx, sy - hy) * 180 / Math.PI);
+    const out = svg.parentElement.querySelector('[data-angle]');
+    if (out) out.textContent = `${angle}°`;
   }
   // #only=name for --print-to-pdf, ?shot=name|all for --screenshot.
   const only = new URLSearchParams(location.hash.slice(1)).get('only');
