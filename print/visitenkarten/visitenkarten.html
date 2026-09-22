@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>deshrimp Visitenkarten</title>
+<!--
+  The source of the business cards. Five ideas, each with a front and a back,
+  drawn with the design system's six colours and its two typefaces and nothing
+  else. Open it in a browser to look at them; `node render.mjs` turns it into
+  the print files in out/ (see README.md).
+
+  Geometry: the trim is 85 x 55 mm, the German standard. Each page here is
+  91 x 61 mm, which is the trim plus 3 mm of bleed on every side; the ground
+  colour runs out to the bleed and everything that must not be cut off stays
+  5 mm inside the trim. The dashed line is the trim, drawn on screen only.
+
+  Three modes, picked by the URL:
+    visitenkarten.html               every idea, with its notes
+    visitenkarten.html#only=satz     one idea, two pages, for --print-to-pdf
+    visitenkarten.html?shot=satz     one idea side by side, for --screenshot
+    visitenkarten.html?shot=all      all of them stacked, for the overview
+-->
+<style>
+  /* ---- fonts: the vendored IBM Plex, the same files the app ships.
+     render.mjs inlines them so out/visitenkarten.html opens anywhere. ---- */
+  @font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 400 700;
+    src: url('../../src/ui/fonts/ibm-plex-sans-latin.woff2') format('woff2'); }
+  @font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 400;
+    src: url('../../src/ui/fonts/ibm-plex-mono-400-latin.woff2') format('woff2'); }
+  @font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 500;
+    src: url('../../src/ui/fonts/ibm-plex-mono-500-latin.woff2') format('woff2'); }
+  @font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 600;
+    src: url('../../src/ui/fonts/ibm-plex-mono-600-latin.woff2') format('woff2'); }
+
+  /* ---- the locked palette, as in src/ui/tokens/colors.css ---- */
+  :root {
+    --slate-950: #0F172A; --slate-800: #1E293B; --slate-750: #273549;
+    --slate-700: #334155; --slate-650: #3E4C63; --slate-400: #94A3B8;
+    --slate-50: #F8FAFC;  --coral-500: #ff8257; --coral-700: #E14E1D;
+    --slate-100: #F1F5F9; --slate-300: #CBD5E1; --slate-600: #475569;
+    --sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+    --mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+  }
+  /* A card is either the dark brief or the light inversion. Same ladder,
+     flipped, with the two light-mode substitutions from theme-light.css. */
+  .card.dark  { --ground: var(--slate-950); --surface: var(--slate-750); --inset: var(--slate-800);
+                --line: var(--slate-650); --ink: var(--slate-50); --ink-2: var(--slate-400);
+                --accent: var(--coral-500); --control: var(--slate-700); --track: var(--slate-650); }
+  .card.light { --ground: #FFFFFF; --surface: #FFFFFF; --inset: var(--slate-100);
+                --line: var(--slate-300); --ink: var(--slate-800); --ink-2: var(--slate-600);
+                --accent: var(--coral-700); --control: var(--slate-300); --track: var(--slate-300); }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--slate-100); color: var(--slate-800); font-family: var(--sans);
+         -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  /* ---- one page = trim + bleed ---- */
+  .page { position: relative; width: 91mm; height: 61mm; overflow: hidden; }
+  .card { position: absolute; inset: 0; background: var(--ground); color: var(--ink);
+          font-size: 8pt; line-height: 1.45; }
+  /* Everything that must survive the cut lives 5 mm inside the trim. */
+  .safe { position: absolute; inset: 8mm; }
+  .trim { position: absolute; inset: 3mm; border: 0.15mm dashed rgba(148, 163, 184, .55);
+          pointer-events: none; border-radius: 1.5mm; }
+
+  /* ---- type, the app's scale translated to points ---- */
+  .label { font-family: var(--sans); font-size: 6.5pt; font-weight: 600; line-height: 1.2;
+           letter-spacing: .09em; text-transform: uppercase; color: var(--ink-2); }
+  .label b { text-transform: none; letter-spacing: 0; font-weight: 600; }
+  .mono  { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .metric-xl { font-family: var(--mono); font-weight: 500; font-size: 46pt; line-height: 1.05;
+               font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+  .display { font-size: 21pt; font-weight: 700; line-height: 1.1; letter-spacing: -.02em; }
+  .lead { font-size: 12pt; font-weight: 600; line-height: 1.2; letter-spacing: -.01em; }
+  .small { font-size: 7.5pt; line-height: 1.45; color: var(--ink-2); }
+  .url { font-family: var(--mono); font-size: 7.5pt; font-weight: 500; color: var(--ink-2); }
+  .breach { color: var(--accent); }
+
+  /* the mark: four bars and the coral dot, from public/brand/mark.svg */
+  .mark { display: block; }
+  .mark .bar { fill: var(--ink); }
+  .mark .dot { fill: var(--coral-500); }
+
+  /* ---- shared back ---- */
+  .back .safe { display: grid; grid-template-columns: 1fr 24mm; column-gap: 5mm; }
+  .back .who { display: flex; flex-direction: column; }
+  .back .brand { display: flex; align-items: center; gap: 2.2mm; }
+  .back .wordmark { font-size: 16pt; font-weight: 700; letter-spacing: -.03em; line-height: 1; }
+  .back .what { margin-top: 3mm; }
+  .back .text { margin-top: 2.2mm; font-size: 7.5pt; line-height: 1.45; color: var(--ink-2); }
+  .back .url { margin-top: auto; color: var(--ink); }
+  .back .code { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .qr-plate { width: 24mm; height: 24mm; background: var(--slate-50); border-radius: 1mm;
+              border: 0.2mm solid var(--line); }
+  .qr-plate svg { display: block; width: 100%; height: 100%; }
+  .qr-plate path { fill: var(--slate-950); }
+  .card.light .qr-plate { border-color: var(--line); }
+
+  /* ---- 1 · Die Messung ---- */
+  .diagnose .well { position: absolute; inset: 7mm; border: 0.8mm solid var(--accent); border-radius: 2.1mm; }
+  .diagnose .safe { inset: 12mm 12mm 11mm 12mm; display: flex; flex-direction: column; }
+  .diagnose .metric-xl { margin-top: 1mm; }
+  .diagnose .row { margin-top: auto; display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; }
+  .diagnose .row .label { color: var(--ink-2); }
+  .diagnose .row .label b { color: var(--ink); font-weight: 600; }
+
+  /* ---- 2 · Der Satz ---- */
+  .satz .safe { display: flex; flex-direction: column; }
+  .satz .display { margin-top: auto; font-size: 23pt; max-width: 62mm; }
+  .satz .foot { margin-top: 3mm; display: flex; justify-content: space-between; align-items: baseline; }
+
+  /* ---- 3 · Der Nachmittag ---- */
+  .streifen .safe { display: flex; flex-direction: column; }
+  .strip { display: flex; gap: 0.45mm; align-items: stretch; height: 8mm; padding: 1mm;
+           border-radius: 1mm; background: var(--inset); border: 0.2mm solid var(--line); margin-top: 2mm; }
+  .strip i { flex: 1 1 0; border-radius: 0.25mm; background: var(--track); }
+  .strip i.o { background: var(--control); }
+  .strip i.w { background: var(--ink-2); }
+  .strip i.b { background: var(--accent); }
+  .streifen .sum { margin-top: 1.5mm; font-size: 7pt; color: var(--ink-2); display: flex; gap: 3mm; }
+  .streifen .sum .breach { color: var(--accent); }
+  .streifen .lead { margin-top: auto; }
+
+  /* ---- 4 · Der Furz ---- */
+  .furz .safe { display: flex; flex-direction: column; }
+  .furz .field { margin-top: 3.5mm; }
+  .furz .select { margin-top: 1.4mm; height: 9mm; display: flex; align-items: center; justify-content: space-between;
+                  padding: 0 3mm; border: 0.2mm solid var(--line); border-radius: 1.6mm; background: var(--inset);
+                  font-size: 10pt; font-weight: 500; color: var(--ink); }
+  .furz .select svg { width: 3mm; height: 3mm; stroke: var(--ink-2); fill: none; stroke-width: 2.5; stroke-linecap: round; }
+  .furz .small { margin-top: 2mm; max-width: 66mm; }
+  .furz .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: baseline; }
+
+  /* ---- 5 · Der Zettel ---- */
+  .zettel .safe { display: flex; flex-direction: column; }
+  .zettel .head { display: flex; justify-content: space-between; align-items: flex-start; }
+  .zettel .line { display: grid; grid-template-columns: 19mm 1fr; align-items: end; column-gap: 3mm;
+                  border-bottom: 0.2mm solid var(--line); padding-bottom: 1.2mm; margin-top: 4.2mm; }
+  .zettel .line .label { color: var(--ink-2); }
+  .zettel .line .hint { justify-self: end; font-family: var(--mono); font-size: 7pt; color: var(--ink-2);
+                        font-variant-numeric: tabular-nums; }
+  .zettel .lead { margin-top: auto; font-size: 10pt; }
+
+  /* ---- screen chrome, hidden in print and in shot mode ---- */
+  .ui { max-width: 1120px; margin: 0 auto; padding: 32px 24px; }
+  .ui h1 { font-size: 22px; letter-spacing: -.02em; margin: 0 0 6px; }
+  .ui h2 { font-size: 13px; letter-spacing: .09em; text-transform: uppercase; color: var(--slate-600); margin: 40px 0 8px; }
+  .ui p { max-width: 68ch; font-size: 14px; line-height: 1.5; color: var(--slate-800); margin: 0 0 8px; }
+  .ui a { color: var(--slate-800); }
+  .ui .note { color: var(--slate-600); }
+  .pair { display: flex; gap: 4mm; flex-wrap: wrap; }
+  @media screen {
+    body:not(.shot) .pair { zoom: 1.5; margin-top: 12px; }
+    body:not(.shot) .page { outline: 1px solid var(--slate-300); }
+  }
+  /* shot mode: bare pairs at 1:1, for --screenshot */
+  body.shot { background: var(--slate-100); }
+  body.shot .ui, body.shot .trim { display: none; }
+  body.shot .variant { display: none; }
+  body.shot .variant.on { display: block; width: 186mm; }
+  body.shot .variant.on + .variant.on { margin-top: 4mm; }
+  /* only mode: one idea, for --print-to-pdf */
+  body.only .variant:not(.on) { display: none; }
+
+  @page { size: 91mm 61mm; margin: 0; }
+  @media print {
+    body { background: none; }
+    .ui, .trim { display: none !important; }
+    .pair { display: block; zoom: 1; margin: 0; }
+    /* A break *before* each page: a break after the last one would add a blank eleventh page. */
+    .page { break-before: page; outline: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="ui">
+  <h1>deshrimp Visitenkarten</h1>
+  <p>Five cards to hand across the desk. Trim 85 x 55 mm, shown here with the 3 mm bleed; the dashed line is where the cut lands.</p>
+  <p class="note">Print files: <code>node render.mjs</code> writes a two-page PDF per idea into <code>out/</code>. One idea alone: add <code>#only=satz</code> to this address.</p>
+</header>
+
+<!-- ============================================================ 1 -->
+<section class="variant" id="diagnose">
+  <div class="ui">
+    <h2>1 · Die Messung</h2>
+    <p>The card is the camera well at the moment of a breach: the 3px coral stroke, the one number in coral, the threshold it crossed. The reading is the recipient's, taken from across the desk.</p>
+  </div>
+  <div class="pair">
+    <div class="page front"><div class="card dark diagnose">
+      <div class="well"></div>
+      <div class="safe">
+        <div class="label">Kopf vor den Schultern</div>
+        <div class="metric-xl breach">23°</div>
+        <div class="row">
+          <div class="label">Grenze <b class="mono">18°</b></div>
+          <div class="label">Gemessen von schräg gegenüber</div>
+        </div>
+      </div>
+      <div class="trim"></div>
+    </div></div>
+    <div class="page back"><div class="card dark">
+      <div class="safe">
+        <div class="who">
+          <div class="brand">
+            <svg class="mark" viewBox="0 0 48 48" width="9mm" height="9mm" aria-hidden="true"><use href="#mark"/></svg>
+            <div class="wordmark">deshrimp</div>
+          </div>
+          <div class="label what">Webcam-Haltungstrainer für den Schreibtisch</div>
+          <div class="text">Schaut über die Webcam zu, wie du sitzt, und gibt einen Ton, wenn du zusammenklappst. Kein Konto, keine Installation, und kein Bild verlässt deinen Rechner.</div>
+          <div class="url">deshrimp.com</div>
+        </div>
+        <div class="code"><div class="qr-plate"><svg data-qr="https://deshrimp.com/de.html" aria-label="deshrimp.com"></svg></div></div>
+      </div>
+      <div class="trim"></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================================================ 2 -->
+<section class="variant" id="satz">
+  <div class="ui">
+    <h2>2 · Der Satz</h2>
+    <p>His sentence, the mark, the address. Nothing to explain: whoever reads it across the desk has just been told what to do.</p>
+  </div>
+  <div class="pair">
+    <div class="page front"><div class="card dark satz">
+      <div class="safe">
+        <svg class="mark" viewBox="0 0 48 48" width="11mm" height="11mm" aria-hidden="true"><use href="#mark"/></svg>
+        <div class="display">Sitz aufrecht du Garnele!</div>
+        <div class="foot">
+          <div class="label">Sagt die Webcam</div>
+          <div class="url">deshrimp.com</div>
+        </div>
+      </div>
+      <div class="trim"></div>
+    </div></div>
+    <div class="page back"><div class="card dark">
+      <div class="safe">
+        <div class="who">
+          <div class="brand">
+            <svg class="mark" viewBox="0 0 48 48" width="9mm" height="9mm" aria-hidden="true"><use href="#mark"/></svg>
+            <div class="wordmark">deshrimp</div>
+          </div>
+          <div class="label what">Webcam-Haltungstrainer für den Schreibtisch</div>
+          <div class="text">Schaut über die Webcam zu, wie du sitzt, und gibt einen Ton, wenn du zusammenklappst. Kein Konto, keine Installation, und kein Bild verlässt deinen Rechner.</div>
+          <div class="url">deshrimp.com</div>
+        </div>
+        <div class="code"><div class="qr-plate"><svg data-qr="https://deshrimp.com/de.html" aria-label="deshrimp.com"></svg></div></div>
+      </div>
+      <div class="trim"></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================================================ 3 -->
+<section class="variant" id="streifen">
+  <div class="ui">
+    <h2>3 · Der Nachmittag</h2>
+    <p>The status strip, sixty bars for the hour just gone, with the two runs of coral the recipient did not notice. The product's own signature visual, read as an accusation.</p>
+  </div>
+  <div class="pair">
+    <div class="page front"><div class="card dark streifen">
+      <div class="safe">
+        <div class="label">Dein Nachmittag · 14 bis 15 Uhr</div>
+        <div class="strip" data-bars="oooooooooooooooooooowwoooooooobbbbbwoooooowwbbbbbbbbooowoooo"></div>
+        <div class="sum mono"><span>47 min gerade</span><span class="breach">13 min zusammengeklappt</span></div>
+        <div class="lead">Du hast es nicht gemerkt.</div>
+        <div class="label" style="margin-top:1.2mm">Die Webcam schon · deshrimp.com</div>
+      </div>
+      <div class="trim"></div>
+    </div></div>
+    <div class="page back"><div class="card dark">
+      <div class="safe">
+        <div class="who">
+          <div class="brand">
+            <svg class="mark" viewBox="0 0 48 48" width="9mm" height="9mm" aria-hidden="true"><use href="#mark"/></svg>
+            <div class="wordmark">deshrimp</div>
+          </div>
+          <div class="label what">Webcam-Haltungstrainer für den Schreibtisch</div>
+          <div class="text">Schaut über die Webcam zu, wie du sitzt, und gibt einen Ton, wenn du zusammenklappst. Kein Konto, keine Installation, und kein Bild verlässt deinen Rechner.</div>
+          <div class="url">deshrimp.com</div>
+        </div>
+        <div class="code"><div class="qr-plate"><svg data-qr="https://deshrimp.com/de.html" aria-label="deshrimp.com"></svg></div></div>
+      </div>
+      <div class="trim"></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================================================ 4 -->
+<section class="variant" id="furz">
+  <div class="ui">
+    <h2>4 · Der Furz</h2>
+    <p>The settings tile, dead serious: one select, one default. The joke is that it is true, and that the whole office will hear it. The loud one; hand it to the colleague who can take it.</p>
+  </div>
+  <div class="pair">
+    <div class="page front"><div class="card dark furz">
+      <div class="safe">
+        <div class="label">Einstellungen</div>
+        <div class="field">
+          <div class="label">Ton bei Signal</div>
+          <div class="select"><span>Furz</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div>
+        </div>
+        <div class="small">Voreingestellt. Kommt bei jeder schiefen Messung, jede Sekunde, bis du dich aufrichtest. Wer will, nimmt das Räuspern.</div>
+        <div class="foot">
+          <div class="label">Takt <b class="mono" style="color:var(--ink)">1 s</b></div>
+          <div class="url">deshrimp.com</div>
+        </div>
+      </div>
+      <div class="trim"></div>
+    </div></div>
+    <div class="page back"><div class="card dark">
+      <div class="safe">
+        <div class="who">
+          <div class="brand">
+            <svg class="mark" viewBox="0 0 48 48" width="9mm" height="9mm" aria-hidden="true"><use href="#mark"/></svg>
+            <div class="wordmark">deshrimp</div>
+          </div>
+          <div class="label what">Webcam-Haltungstrainer für den Schreibtisch</div>
+          <div class="text">Schaut über die Webcam zu, wie du sitzt, und gibt einen Ton, wenn du zusammenklappst. Kein Konto, keine Installation, und kein Bild verlässt deinen Rechner.</div>
+          <div class="url">deshrimp.com</div>
+        </div>
+        <div class="code"><div class="qr-plate"><svg data-qr="https://deshrimp.com/de.html" aria-label="deshrimp.com"></svg></div></div>
+      </div>
+      <div class="trim"></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============================================================ 5 -->
+<section class="variant" id="zettel">
+  <div class="ui">
+    <h2>5 · Der Zettel</h2>
+    <p>The light inversion, and the one card with room for a pen: who it is for, who saw it, and since when. A note passed across the desk rather than a card handed over.</p>
+  </div>
+  <div class="pair">
+    <div class="page front"><div class="card light zettel">
+      <div class="safe">
+        <div class="head">
+          <div class="label">Notiz vom Nachbartisch</div>
+          <svg class="mark" viewBox="0 0 48 48" width="8mm" height="8mm" aria-hidden="true"><use href="#mark"/></svg>
+        </div>
+        <div class="line"><div class="label">Für</div><div></div></div>
+        <div class="line"><div class="label">Von</div><div></div></div>
+        <div class="line"><div class="label">Schräg seit</div><div class="hint">__:__ Uhr</div></div>
+        <div class="lead">Nichts Persönliches. Nur ein Winkel.</div>
+      </div>
+      <div class="trim"></div>
+    </div></div>
+    <div class="page back"><div class="card light">
+      <div class="safe">
+        <div class="who">
+          <div class="brand">
+            <svg class="mark" viewBox="0 0 48 48" width="9mm" height="9mm" aria-hidden="true"><use href="#mark"/></svg>
+            <div class="wordmark">deshrimp</div>
+          </div>
+          <div class="label what">Webcam-Haltungstrainer für den Schreibtisch</div>
+          <div class="text">Schaut über die Webcam zu, wie du sitzt, und gibt einen Ton, wenn du zusammenklappst. Kein Konto, keine Installation, und kein Bild verlässt deinen Rechner.</div>
+          <div class="url">deshrimp.com</div>
+        </div>
+        <div class="code"><div class="qr-plate"><svg data-qr="https://deshrimp.com/de.html" aria-label="deshrimp.com"></svg></div></div>
+      </div>
+      <div class="trim"></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- the mark, once; every <use> above points here. Geometry is public/brand/mark.svg. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="mark">
+      <rect class="bar" x="20" y="38" width="14" height="4" rx="2"/>
+      <rect class="bar" x="15" y="30" width="14" height="4" rx="2"/>
+      <rect class="bar" x="12" y="22" width="14" height="4" rx="2"/>
+      <rect class="bar" x="14" y="14" width="14" height="4" rx="2"/>
+      <circle class="dot" cx="27" cy="8" r="3.5"/>
+    </g>
+  </defs>
+</svg>
+
+<script>
+  // The sixty bars of a strip, from a pattern of o (fine), w (worth noticing)
+  // and b (breached), so the run of coral is readable in the markup.
+  for (const strip of document.querySelectorAll('.strip[data-bars]')) {
+    strip.replaceChildren(...[...strip.dataset.bars].map((c) => {
+      const bar = document.createElement('i');
+      if (c !== ' ') bar.className = c;
+      return bar;
+    }));
+  }
+  // #only=name for --print-to-pdf, ?shot=name|all for --screenshot.
+  const only = new URLSearchParams(location.hash.slice(1)).get('only');
+  const shot = new URLSearchParams(location.search).get('shot');
+  const pick = (name) => {
+    for (const v of document.querySelectorAll('.variant')) {
+      v.classList.toggle('on', name === 'all' || v.id === name);
+    }
+  };
+  if (shot) { document.body.classList.add('shot'); pick(shot); }
+  else if (only) { document.body.classList.add('only'); pick(only); }
+</script>
+</body>
+</html>
