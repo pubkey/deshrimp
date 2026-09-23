@@ -1,0 +1,51 @@
+<!doctype html>
+<!-- The palette is locked: one accent, six values, no per-page presets any
+     more (src/ui/DESIGN.md). Only the theme is still a choice, and it is
+     restored from localStorage before the first render so the page does not
+     flash the wrong one. Dark is the default the system was drawn for. -->
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="icon" href="./icon.svg" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <meta name="theme-color" content="#F8FAFC" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0F172A" media="(prefers-color-scheme: dark)" />
+    <script>window.__APP_LANG__="ru"</script>
+    <script type="module" crossorigin src="./assets/index-BA7o5KxP.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CDQDhT9B.css">
+      <title>deshrimp - бесплатный тренажёр осанки через веб-камеру</title>
+    <meta name="description" content="Бесплатная страница: смотрит через веб-камеру, как ты сидишь, и подаёт звук, когда ты сутулишься. Кадры и показания остаются на твоём устройстве. Без установки, без аккаунта." />
+    <link rel="canonical" href="https://deshrimp.com/ru.html" />
+    <link rel="alternate" hreflang="de" href="https://deshrimp.com/de.html" />
+    <link rel="alternate" hreflang="en" href="https://deshrimp.com/en.html" />
+    <link rel="alternate" hreflang="es" href="https://deshrimp.com/es.html" />
+    <link rel="alternate" hreflang="fr" href="https://deshrimp.com/fr.html" />
+    <link rel="alternate" hreflang="it" href="https://deshrimp.com/it.html" />
+    <link rel="alternate" hreflang="pt" href="https://deshrimp.com/pt.html" />
+    <link rel="alternate" hreflang="nl" href="https://deshrimp.com/nl.html" />
+    <link rel="alternate" hreflang="pl" href="https://deshrimp.com/pl.html" />
+    <link rel="alternate" hreflang="tr" href="https://deshrimp.com/tr.html" />
+    <link rel="alternate" hreflang="ru" href="https://deshrimp.com/ru.html" />
+    <link rel="alternate" hreflang="zh" href="https://deshrimp.com/zh.html" />
+    <link rel="alternate" hreflang="ja" href="https://deshrimp.com/ja.html" />
+    <link rel="alternate" hreflang="ka" href="https://deshrimp.com/ka.html" />
+    <link rel="alternate" hreflang="x-default" href="https://deshrimp.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="deshrimp" />
+    <meta property="og:url" content="https://deshrimp.com/ru.html" />
+    <meta property="og:title" content="deshrimp - бесплатный тренажёр осанки через веб-камеру" />
+    <meta property="og:description" content="Бесплатная страница: смотрит через веб-камеру, как ты сидишь, и подаёт звук, когда ты сутулишься. Кадры и показания остаются на твоём устройстве. Без установки, без аккаунта." />
+    <meta property="og:image" content="https://deshrimp.com/icon.svg" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="deshrimp - бесплатный тренажёр осанки через веб-камеру" />
+    <meta name="twitter:description" content="Бесплатная страница: смотрит через веб-камеру, как ты сидишь, и подаёт звук, когда ты сутулишься. Кадры и показания остаются на твоём устройстве. Без установки, без аккаунта." />
+    <meta name="twitter:image" content="https://deshrimp.com/icon.svg" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"deshrimp","url":"https://deshrimp.com/ru.html","inLanguage":"ru","applicationCategory":"HealthApplication","operatingSystem":"Any browser","description":"Бесплатная страница: смотрит через веб-камеру, как ты сидишь, и подаёт звук, когда ты сутулишься. Кадры и показания остаются на твоём устройстве. Без установки, без аккаунта.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"isAccessibleForFree":true}</script>
+  </head>
+  <body>
+    <div id="root"><div data-prerendered><h1>deshrimp - бесплатный тренажёр осанки через веб-камеру</h1><p>Эта страница каждую секунду берёт один кадр с веб-камеры и считывает с него три угла: насколько голова вынесена вперёд относительно плеч, насколько линия плеч отклонена от горизонтали и насколько голова наклонена вбок. Важнее всего первый - шея, которую носят слишком далеко вперёд, и есть причина существования этой страницы. Если какой-то из них переходит твой предел, раздаётся звук - при каждом кривом измерении. Все вычисления идут <strong>здесь, в браузере</strong>: модель позы находит 33 точки на твоём теле, а углы страница считает сама. Ни ключа, ни квоты, и ни одного изображения, покидающего это устройство - измерения тоже остаются в этом браузере.</p><section><h2>1 · Запусти</h2><p>Разреши камеру и оставь страницу открытой. Настраивать и калибровать нечего: все три угла - это соотношения, измеренные на твоём собственном теле, поэтому они не зависят от роста и читаются одинаково у любого. Страница измеряет с самого первого кадра и не даёт экрану погаснуть, пока следит.</p></section><section><h2>2 · Выбери темп</h2><p>По умолчанию кадр в секунду, растягивается до двух минут. Поскольку всё считается локально, быстрый темп не стоит ничего, кроме небольшого расхода батареи - запросов, которые нужно было бы считать, здесь нет.</p></section><section><h2>3 · Выбери звук</h2><p>На выбор шесть: пук, покашливание, крик, хруст пальцев, щелчок кнута и бадум-тсс. По умолчанию стоит пук. Его не пропустишь, и он тебя не пугает. Он раздаётся при каждом кривом измерении, то есть на обычном темпе раз в секунду, пока не выпрямишься. Звуки лежат внутри страницы, и ничего не подгружается.</p></section><section><h2>4 · Верь динамике, а не градусу</h2><p>Насколько голова уходит вперёд, оценивается по глубине - самой ненадёжной оси, какая есть у одной камеры. Поэтому мгновенный снимок мягкий, а динамика - нет. Полоса столбиков показывает день, кривая под ней - дни; три красных столбика подряд что-то значат, один красный между зелёными - это момент. Кадры, где никого нет, не учитываются вовсе.</p></section><section><h2>5 · Загляни снова через две недели</h2><p>Меняется ли что-то, за один вечер не увидишь. При кадре в секунду рабочий день - это десятки тысяч измерений, поэтому отдельные удаляются через два дня, а дневная строка, которая из них получается, хранится всегда. Сравнение «последние 7 дней против предыдущих 7» - вот настоящий ответ на вопрос «становится ли лучше».</p></section></div></div>
+  </body>
+</html>

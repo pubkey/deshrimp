@@ -1,0 +1,51 @@
+<!doctype html>
+<!-- The palette is locked: one accent, six values, no per-page presets any
+     more (src/ui/DESIGN.md). Only the theme is still a choice, and it is
+     restored from localStorage before the first render so the page does not
+     flash the wrong one. Dark is the default the system was drawn for. -->
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="icon" href="./icon.svg" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <meta name="theme-color" content="#F8FAFC" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0F172A" media="(prefers-color-scheme: dark)" />
+    <script>window.__APP_LANG__="zh"</script>
+    <script type="module" crossorigin src="./assets/index-DORUQm1i.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CDQDhT9B.css">
+      <title>deshrimp - 免费的摄像头坐姿训练页面</title>
+    <meta name="description" content="一个免费的网页：通过摄像头看你怎么坐着，弯腰驼背的时候会发出声音。画面和测量数据都留在你的设备上。无需安装，无需账号。" />
+    <link rel="canonical" href="https://deshrimp.com/zh.html" />
+    <link rel="alternate" hreflang="de" href="https://deshrimp.com/de.html" />
+    <link rel="alternate" hreflang="en" href="https://deshrimp.com/en.html" />
+    <link rel="alternate" hreflang="es" href="https://deshrimp.com/es.html" />
+    <link rel="alternate" hreflang="fr" href="https://deshrimp.com/fr.html" />
+    <link rel="alternate" hreflang="it" href="https://deshrimp.com/it.html" />
+    <link rel="alternate" hreflang="pt" href="https://deshrimp.com/pt.html" />
+    <link rel="alternate" hreflang="nl" href="https://deshrimp.com/nl.html" />
+    <link rel="alternate" hreflang="pl" href="https://deshrimp.com/pl.html" />
+    <link rel="alternate" hreflang="tr" href="https://deshrimp.com/tr.html" />
+    <link rel="alternate" hreflang="ru" href="https://deshrimp.com/ru.html" />
+    <link rel="alternate" hreflang="zh" href="https://deshrimp.com/zh.html" />
+    <link rel="alternate" hreflang="ja" href="https://deshrimp.com/ja.html" />
+    <link rel="alternate" hreflang="ka" href="https://deshrimp.com/ka.html" />
+    <link rel="alternate" hreflang="x-default" href="https://deshrimp.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="deshrimp" />
+    <meta property="og:url" content="https://deshrimp.com/zh.html" />
+    <meta property="og:title" content="deshrimp - 免费的摄像头坐姿训练页面" />
+    <meta property="og:description" content="一个免费的网页：通过摄像头看你怎么坐着，弯腰驼背的时候会发出声音。画面和测量数据都留在你的设备上。无需安装，无需账号。" />
+    <meta property="og:image" content="https://deshrimp.com/icon.svg" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="deshrimp - 免费的摄像头坐姿训练页面" />
+    <meta name="twitter:description" content="一个免费的网页：通过摄像头看你怎么坐着，弯腰驼背的时候会发出声音。画面和测量数据都留在你的设备上。无需安装，无需账号。" />
+    <meta name="twitter:image" content="https://deshrimp.com/icon.svg" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"deshrimp","url":"https://deshrimp.com/zh.html","inLanguage":"zh","applicationCategory":"HealthApplication","operatingSystem":"Any browser","description":"一个免费的网页：通过摄像头看你怎么坐着，弯腰驼背的时候会发出声音。画面和测量数据都留在你的设备上。无需安装，无需账号。","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"isAccessibleForFree":true}</script>
+  </head>
+  <body>
+    <div id="root"><div data-prerendered><h1>deshrimp - 免费的摄像头坐姿训练页面</h1><p>这个页面每秒从你的摄像头取一张画面，从中读出三个角度：头比肩膀往前多少、肩线偏离水平多少、头往一侧歪了多少。第一个最重要，脖子长期前伸正是这个页面存在的理由。只要有一个超过你设定的上限，就会响一声，每一次坐歪的测量都会响。计算发生在<strong>这里，在浏览器里</strong>：一个姿态模型找出你身上的 33 个点，角度由页面自己算。没有密钥，没有额度，也没有任何画面离开这台设备，测量结果同样留在这个浏览器里。</p><section><h2>1 · 先跑起来</h2><p>允许使用摄像头，并让页面开着。没有什么要配置，也没有什么要校准：三个角度都是在你自己身上量出来的比例，所以跟身高无关，对谁读起来都一样。页面从第一张画面就开始测量，并在盯着的时候不让屏幕休眠。</p></section><section><h2>2 · 选节奏</h2><p>默认每秒一张，最长可以拉到两分钟。因为一切都在本地计算，快节奏除了多耗一点电以外没有代价，根本没有需要计数的请求。</p></section><section><h2>3 · 选声音</h2><p>一共六种：放屁、清嗓子、尖叫、掰手指、鞭子声和咚咚锵。默认是放屁。你不会漏掉它，它也不会吓到你。每一次坐歪的测量都会响，也就是按默认节奏每秒一次，直到你坐直为止。这些声音都随页面一起带上，不会另外下载。</p></section><section><h2>4 · 相信趋势，别盯着度数</h2><p>头往前伸多少是沿着深度方向估算的，那是单个摄像头最没把握的一根轴。所以单次结果是软的，趋势不是。柱条那一行显示这一天，下面的曲线显示这些天；连着三根红柱是有意义的，绿柱之间夹一根红柱只是一瞬间。画面里没有人的那些帧完全不计入。</p></section><section><h2>5 · 两周后再来看</h2><p>有没有在改变，一个下午是看不出来的。按每秒一张算，一个工作日就是几万次测量，所以单次记录两天后清掉，由它们汇总出的每日一行则永久保留。「最近 7 天对比之前 7 天」才是「我有没有进步」的真正答案。</p></section></div></div>
+  </body>
+</html>
