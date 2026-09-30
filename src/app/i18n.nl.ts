@@ -19,7 +19,6 @@ export const nl: Copy = {
     start: 'Starten',
     stop: 'Stoppen',
     checkNow: 'Nu controleren',
-    checking: 'Beeld wordt bekeken …',
     showPoints: 'Punten tonen',
     hidePoints: 'Punten verbergen',
 

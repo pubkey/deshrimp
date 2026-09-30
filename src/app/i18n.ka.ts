@@ -19,7 +19,6 @@ export const ka: Copy = {
     start: 'დაწყება',
     stop: 'გაჩერება',
     checkNow: 'ახლავე შემოწმება',
-    checking: 'სურათი მუშავდება …',
     showPoints: 'წერტილების ჩვენება',
     hidePoints: 'წერტილების დამალვა',
 

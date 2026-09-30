@@ -19,7 +19,6 @@ export const zh: Copy = {
     start: '开始',
     stop: '停止',
     checkNow: '现在检查',
-    checking: '正在分析画面 …',
     showPoints: '显示关键点',
     hidePoints: '隐藏关键点',
 

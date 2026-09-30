@@ -93,7 +93,6 @@ const de = {
     start: 'Starten',
     stop: 'Stoppen',
     checkNow: 'Jetzt prüfen',
-    checking: 'Bild wird ausgewertet …',
     showPoints: 'Punkte zeigen',
     hidePoints: 'Punkte ausblenden',
 
@@ -259,7 +258,6 @@ const en: Copy = {
     start: 'Start',
     stop: 'Stop',
     checkNow: 'Check now',
-    checking: 'Reading the picture …',
     showPoints: 'Show points',
     hidePoints: 'Hide points',
 

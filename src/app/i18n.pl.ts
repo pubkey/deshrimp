@@ -19,7 +19,6 @@ export const pl: Copy = {
     start: 'Start',
     stop: 'Stop',
     checkNow: 'Sprawdź teraz',
-    checking: 'Analizowanie klatki …',
     showPoints: 'Pokaż punkty',
     hidePoints: 'Ukryj punkty',
 

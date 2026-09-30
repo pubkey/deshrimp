@@ -1161,28 +1161,20 @@ function Live() {
                 foot of the tile because in zen this is the only tile with a
                 control in it at all. */}
             <Panel id="controls">
-                <Row gap={3} wrap justify="between" align="bottom">
-                    <Row gap={2} wrap>
-                        {/* The xl trigger: 64px, uppercase, tracked. The design
-                            system keeps this size for the one button a view
-                            leads with, and on this page that is the button
-                            that turns the camera on. */}
-                        {running
-                            ? <Button size="lg" variant="danger" icon={<Icon name="stop" size={20} />}
-                                onClick={stop}>{t.stop}</Button>
-                            : <Button size="lg" variant="primary" icon={<Icon name="play" size={20} />}
-                                onClick={start}>{t.start}</Button>}
-                        <Button icon={<Icon name="refresh" />} onClick={() => void check()}
-                            disabled={!camera.on || checking}>
-                            {t.checkNow}
-                        </Button>
-                    </Row>
-                    {/* Only „the picture is being read" is left here
-                        _(2026-09-16, his call)_. „Next check in 12 s" was the
-                        countdown ring written out in words, and „Last at
-                        14:32" repeated the time that stands at the top of the
-                        log below. */}
-                    <Muted>{checking ? t.checking : ''}</Muted>
+                <Row gap={2} wrap>
+                    {/* The xl trigger: 64px, uppercase, tracked. The design
+                        system keeps this size for the one button a view
+                        leads with, and on this page that is the button
+                        that turns the camera on. */}
+                    {running
+                        ? <Button size="lg" variant="danger" icon={<Icon name="stop" size={20} />}
+                            onClick={stop}>{t.stop}</Button>
+                        : <Button size="lg" variant="primary" icon={<Icon name="play" size={20} />}
+                            onClick={start}>{t.start}</Button>}
+                    <Button icon={<Icon name="refresh" />} onClick={() => void check()}
+                        disabled={!camera.on || checking}>
+                        {t.checkNow}
+                    </Button>
                 </Row>
 
                 <Sound

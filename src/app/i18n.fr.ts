@@ -19,7 +19,6 @@ export const fr: Copy = {
     start: 'Démarrer',
     stop: 'Arrêter',
     checkNow: 'Vérifier maintenant',
-    checking: 'Analyse de l’image …',
     showPoints: 'Afficher les points',
     hidePoints: 'Masquer les points',
 
