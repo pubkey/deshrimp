@@ -17,10 +17,19 @@ wrote them in.
 - **A business card, drawn from his whiteboard** _(his call, verbatim: „mach
   daraus ne Visitenkarte für deshrmip", under a photo of a curled shrimp, an
   arrow, the same shrimp sitting up, and „deshrimp.com")_. The front is that
-  sketch redrawn as vector line work, keeping the hollow-tube bodies of the
-  marker drawing; the back is the logo, the page title's line, and the
+  sketch as vector line work; the back is the logo, the page title's line, and the
   address. `print/visitenkarte/` holds the source (`card.html`), the print
   file and a preview of each side.
+- **The shrimp are Lucide's, not hand-traced** _(his call, verbatim: „such
+  eine schrimp verktorgrafik online die du abwandeln kannst")_. The curled one
+  is Lucide's `shrimp` icon as published; the upright one is derived from it,
+  keeping its head and antenna and straightening the body, with a tail fork
+  in the same idiom. Lucide is ISC, which asks only that its notice travels
+  with the copy, so it sits in `LICENSE-lucide.txt` and nothing has to be
+  printed on the card. Twemoji (CC BY) and OpenMoji (CC BY-SA) were the other
+  candidates; both would have needed a credit on the card, and neither is
+  line art. Both shrimp are drawn at one scale and stand on one baseline, so
+  the upright one is taller because it is sitting up.
 - **The sketch keeps the severity ladder.** The crooked shrimp is the breach,
   so it is the coral one; the upright shrimp is white ink with the mark's
   coral head, and the arrow is secondary ink. The back spends the accent only
