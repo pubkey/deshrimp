@@ -20,6 +20,8 @@ export const nl: Copy = {
     stop: 'Stoppen',
     checkNow: 'Nu controleren',
     checking: 'Beeld wordt bekeken …',
+    showPoints: 'Punten tonen',
+    hidePoints: 'Punten verbergen',
 
     cameraTitle: 'Camera',
     analysisFailed: 'De analyse is niet gelukt',

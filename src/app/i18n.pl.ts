@@ -20,6 +20,8 @@ export const pl: Copy = {
     stop: 'Stop',
     checkNow: 'Sprawdź teraz',
     checking: 'Analizowanie klatki …',
+    showPoints: 'Pokaż punkty',
+    hidePoints: 'Ukryj punkty',
 
     cameraTitle: 'Kamera',
     analysisFailed: 'Analiza się nie udała',

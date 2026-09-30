@@ -94,6 +94,8 @@ const de = {
     stop: 'Stoppen',
     checkNow: 'Jetzt prüfen',
     checking: 'Bild wird ausgewertet …',
+    showPoints: 'Punkte zeigen',
+    hidePoints: 'Punkte ausblenden',
 
     cameraTitle: 'Kamera',
     analysisFailed: 'Die Auswertung hat nicht geklappt',
@@ -258,6 +260,8 @@ const en: Copy = {
     stop: 'Stop',
     checkNow: 'Check now',
     checking: 'Reading the picture …',
+    showPoints: 'Show points',
+    hidePoints: 'Hide points',
 
     cameraTitle: 'Camera',
     analysisFailed: 'The analysis did not work',

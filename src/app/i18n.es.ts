@@ -20,6 +20,8 @@ export const es: Copy = {
     stop: 'Parar',
     checkNow: 'Comprobar ahora',
     checking: 'Analizando la imagen …',
+    showPoints: 'Mostrar puntos',
+    hidePoints: 'Ocultar puntos',
 
     cameraTitle: 'Cámara',
     analysisFailed: 'El análisis no ha funcionado',

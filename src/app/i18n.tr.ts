@@ -20,6 +20,8 @@ export const tr: Copy = {
     stop: 'Durdur',
     checkNow: 'Şimdi kontrol et',
     checking: 'Kare inceleniyor …',
+    showPoints: 'Noktaları göster',
+    hidePoints: 'Noktaları gizle',
 
     cameraTitle: 'Kamera',
     analysisFailed: 'İnceleme başarısız oldu',
