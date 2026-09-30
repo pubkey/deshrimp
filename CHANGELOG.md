@@ -11,7 +11,7 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
-## 2026-09-30 - a business card
+## 2026-09-30 - a business card, in five versions
 
 ### New
 - **A business card, drawn from his whiteboard** _(his call, verbatim: „mach
@@ -19,7 +19,7 @@ wrote them in.
   arrow, the same shrimp sitting up, and „deshrimp.com")_. The front is that
   sketch as vector line work; the back is the logo, the page title's line, and the
   address. `print/visitenkarte/` holds the source (`card.html`), the print
-  file and a preview of each side.
+  files and a preview of each side.
 - **The shrimp are Lucide's, not hand-traced** _(his call, verbatim: „such
   eine schrimp verktorgrafik online die du abwandeln kannst")_. The curled one
   is Lucide's `shrimp` icon as published; the upright one is derived from it,
@@ -30,6 +30,21 @@ wrote them in.
   candidates; both would have needed a credit on the card, and neither is
   line art. Both shrimp are drawn at one scale and stand on one baseline, so
   the upright one is taller because it is sitting up.
+- **Five versions of it** _(his call, verbatim: „mach mehrere Versionen")_,
+  all from the one `card.html`, picked with `?v=`:
+  - `dunkel`: the Lucide shrimp on the product's slate ground.
+  - `hell`: the same on paper white, with the light theme's ladder, so coral
+    deepens to `#E14E1D` for the strokes.
+  - `koralle`: coral as the ground, everything else slate and white, the way
+    `mark-on-accent.svg` already does it.
+  - `messwert`: the two shrimp as a reading, 47° in coral under the crooked
+    one and 6° in white under the upright one, in Plex Mono like every number
+    in the app. A breached readout is one of the places coral is allowed.
+  - `skizze`: the first, hand-traced version with the hollow-tube bodies of
+    the marker drawing, kept because it is closest to the whiteboard.
+  The back is the same drawing in every version and only takes the colours.
+  Each version gets its own two-page PDF and a preview per side, and
+  `uebersicht.png` shows all of them next to each other.
 - **The sketch keeps the severity ladder.** The crooked shrimp is the breach,
   so it is the coral one; the upright shrimp is white ink with the mark's
   coral head, and the arrow is secondary ink. The back spends the accent only

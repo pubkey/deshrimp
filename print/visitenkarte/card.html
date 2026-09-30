@@ -5,12 +5,17 @@
 
   85 x 55 mm trim with 3 mm bleed on every side, so each page is 91 x 61 mm and
   every coordinate below is in millimetres. Keep text 4 mm inside the trim
-  (x 7..84, y 7..54). render.cjs turns this into the PDF and the two previews.
+  (x 7..84, y 7..54). render.cjs turns this into the PDFs and the previews.
 
-  Colour follows src/ui/DESIGN.md: slate ground, white ink, slate-blue
-  secondary, and the coral accent only where the severity ladder puts it. The
-  crooked shrimp is the breach, so it is the coral one; the upright shrimp is
-  white ink with the mark's coral head.
+  One file, several versions: `card.html?v=<name>` picks a colour scheme and a
+  front from the VARIANTS table at the bottom. The back is the same drawing in
+  every version and only takes the scheme's colours.
+
+  Colour follows src/ui/DESIGN.md. On slate, the crooked shrimp is the breach,
+  so it is the coral one, and the upright shrimp is white ink with the mark's
+  coral head. On paper, coral deepens to #E14E1D for strokes as the light theme
+  does. On coral, everything turns to slate and white, as mark-on-accent.svg
+  does.
 -->
 <html lang="de">
 <head>
@@ -28,11 +33,44 @@
     src: url('../../src/ui/fonts/ibm-plex-mono-500-latin.woff2') format('woff2');
   }
 
+  /* dunkel: the product's own ground */
   :root {
     --ground: #0F172A;
     --ink: #F8FAFC;
     --ink-2: #94A3B8;
-    --accent: #ff8257;
+    --rule: #334155;
+    --curled: #ff8257;
+    --upright: #F8FAFC;
+    --eye: #ff8257;
+    --arrow: #94A3B8;
+    --mark: #F8FAFC;
+    --dot: #ff8257;
+  }
+  /* hell: the light theme's ladder, with the brand's logo-inverse colours */
+  :root[data-scheme="hell"] {
+    --ground: #F8FAFC;
+    --ink: #1E293B;
+    --ink-2: #475569;
+    --rule: #CBD5E1;
+    --curled: #E14E1D;
+    --upright: #1E293B;
+    --eye: #E14E1D;
+    --arrow: #475569;
+    --mark: #0F172A;
+    --dot: #ff8257;
+  }
+  /* koralle: the accent as the ground, as mark-on-accent.svg */
+  :root[data-scheme="koralle"] {
+    --ground: #ff8257;
+    --ink: #0F172A;
+    --ink-2: #0F172A;
+    --rule: #0F172A;
+    --curled: #0F172A;
+    --upright: #FFFFFF;
+    --eye: #0F172A;
+    --arrow: #0F172A;
+    --mark: #FFFFFF;
+    --dot: #FFFFFF;
   }
 
   @page { size: 91mm 61mm; margin: 0; }
@@ -47,6 +85,11 @@
   .page:last-child { page-break-after: auto; break-after: auto; }
   svg { display: block; width: 91mm; height: 61mm; }
 
+  .front { display: none; }
+  :root[data-front="lucide"] .front-lucide,
+  :root[data-front="messwert"] .front-messwert,
+  :root[data-front="skizze"] .front-skizze { display: block; }
+
   .sans { font-family: 'IBM Plex Sans', sans-serif; }
   .mono { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
   .label { text-transform: uppercase; letter-spacing: 0.09em; }
@@ -58,34 +101,23 @@
 </head>
 <body>
 
-<!-- Front: the sketch -->
-<div class="page">
-<svg viewBox="0 0 91 61" xmlns="http://www.w3.org/2000/svg" role="img"
-     aria-label="Eine gekrümmte Garnele, ein Pfeil, dieselbe Garnele aufrecht. deshrimp.com">
-  <rect width="91" height="61" fill="var(--ground)" />
-
-  <!--
-    Both shrimp are Lucide's `shrimp` icon on its 24-unit grid (licence in
-    LICENSE-lucide.txt). The curled one is the icon as published; the upright
-    one keeps its head and antenna path and straightens the body, on a grid
-    8 units taller. Both are scaled alike, so the lines match, and they stand
-    on one baseline: sitting up is what makes the second one taller.
-  -->
-  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
-    <!-- crooked: the breach, so coral -->
-    <g transform="translate(11 17.2) scale(1.05)" stroke="var(--accent)">
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!--
+      Both shrimp are Lucide's `shrimp` icon on its 24-unit grid (licence in
+      LICENSE-lucide.txt). The curled one is the icon as published; the upright
+      one keeps its head and antenna path and straightens the body, on a grid
+      8 units taller. Drawn at one scale and on one baseline, sitting up is what
+      makes the second one taller.
+    -->
+    <g id="shrimp-curled">
       <path d="M10 2a3.28 3.28 0 003.227 1.798l6.17-.561A1 1 0 1119.614 8H8.5a6.44 6.44 0 00-5.63 9.75A6.5 6.5 0 008.5 21c1.38 0 2-.5 2.5-1" />
       <path d="M10 8a8.5 8.5 0 000 8" />
       <path d="M11 22c-.5-.5-1.12-1-2.5-1a1 1 0 010-5H12a7 7 0 007-7V8" />
       <path d="M13 12h.01" />
       <path d="M8 16c-2 0-4.5-4-4-6" />
     </g>
-
-    <!-- the arrow, in secondary ink: it is the explanation, not the subject -->
-    <path d="M40 28h9v-4.6l7.4 6.6-7.4 6.6V32h-9z" stroke="var(--ink-2)" stroke-width="0.9" />
-
-    <!-- upright: within tolerance, so white ink, with the mark's coral head -->
-    <g transform="translate(58.9 10) scale(1.05)" stroke="var(--ink)">
+    <g id="shrimp-upright">
       <path d="M10 2a3.28 3.28 0 003.227 1.798l6.17-.561A1 1 0 1119.614 8H8.5A2.5 2.5 0 006 10.5V17c0 4 1.5 7.5 4 8.5" />
       <path d="M14 8v9c0 4-1.5 7.5-4 8.5" />
       <path d="M6 13c2.6 1 5.4 1 8 0" />
@@ -94,13 +126,33 @@
       <path d="M10 25.5c0 1.4.5 2.2 1.6 3" />
       <path d="M14 12c1.6 0 3.2 1.2 3.8 3" />
       <path d="M14 16c1.6 0 3.2 1.2 3.8 3" />
-      <path d="M11 10.6h.01" stroke="var(--accent)" />
+      <path d="M11 10.6h.01" stroke="var(--eye)" />
     </g>
-  </g>
 
+    <!--
+      The whiteboard version draws each shrimp as a hollow tube: one spine
+      path stroked twice, wide in the shrimp's colour, then narrower in the
+      ground colour, which leaves an outline with rounded ends.
+    -->
+    <path id="spine-curled"
+      d="M 33.8 14.4 L 28.6 15.4 C 20.5 13.8, 14.2 20.2, 14.2 28 C 14.2 35.6, 19.6 40.6, 27.8 40.4" />
+    <path id="spine-upright"
+      d="M 72 10.2 L 72 26 C 72 29.2, 73.2 30, 75.4 30.4 C 77.4 30.8, 78 32, 78 34.4 L 78 39.2" />
+  </defs>
+</svg>
+
+<!-- Front, version "lucide": the sketch's story with Lucide's shrimp -->
+<div class="page front front-lucide">
+<svg viewBox="0 0 91 61" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="Eine gekrümmte Garnele, ein Pfeil, dieselbe Garnele aufrecht. deshrimp.com">
+  <rect width="91" height="61" fill="var(--ground)" />
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+    <use href="#shrimp-curled" transform="translate(11 17.2) scale(1.05)" stroke="var(--curled)" />
+    <path d="M40 28h9v-4.6l7.4 6.6-7.4 6.6V32h-9z" stroke="var(--arrow)" stroke-width="0.9" />
+    <use href="#shrimp-upright" transform="translate(58.9 10) scale(1.05)" stroke="var(--upright)" />
+  </g>
   <text x="45.5" y="53" text-anchor="middle" class="sans"
         font-size="4.6" font-weight="700" letter-spacing="-0.12" fill="var(--ink)">deshrimp<tspan fill="var(--ink-2)" font-weight="400">.com</tspan></text>
-
   <g class="guides" fill="none" stroke-width="0.15">
     <rect x="3" y="3" width="85" height="55" stroke="#00FFFF" />
     <rect x="7" y="7" width="77" height="47" stroke="#FF00FF" stroke-dasharray="0.8 0.8" />
@@ -108,19 +160,96 @@
 </svg>
 </div>
 
-<!-- Back: the logo and what it is -->
-<div class="page">
+<!--
+  Front, version "messwert": the same two shrimp as a reading from the app,
+  each with its head angle in Plex Mono. The crooked value is a breached
+  readout, which is one of the places coral is allowed.
+-->
+<div class="page front front-messwert">
+<svg viewBox="0 0 91 61" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="Gekrümmte Garnele, Kopfwinkel 47 Grad. Aufrechte Garnele, 6 Grad. deshrimp.com">
+  <rect width="91" height="61" fill="var(--ground)" />
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+    <use href="#shrimp-curled" transform="translate(13 14.7) scale(0.85)" stroke="var(--curled)" />
+    <path d="M41.5 24.4h6.6v-3.6l5.8 5.2-5.8 5.2v-3.6h-6.6z" stroke="var(--arrow)" stroke-width="0.8" />
+    <use href="#shrimp-upright" transform="translate(63 8.2) scale(0.85)" stroke="var(--upright)" />
+  </g>
+  <text x="22.4" y="44.6" text-anchor="middle" class="mono" font-size="6.4"
+        font-weight="500" fill="var(--curled)">47°</text>
+  <text x="47.6" y="43.2" text-anchor="middle" class="sans label" font-size="1.9"
+        font-weight="500" fill="var(--ink-2)">Kopf vor den Schultern</text>
+  <text x="71.5" y="44.6" text-anchor="middle" class="mono" font-size="6.4"
+        font-weight="500" fill="var(--ink)">6°</text>
+  <text x="45.5" y="53" text-anchor="middle" class="sans"
+        font-size="4.6" font-weight="700" letter-spacing="-0.12" fill="var(--ink)">deshrimp<tspan fill="var(--ink-2)" font-weight="400">.com</tspan></text>
+  <g class="guides" fill="none" stroke-width="0.15">
+    <rect x="3" y="3" width="85" height="55" stroke="#00FFFF" />
+    <rect x="7" y="7" width="77" height="47" stroke="#FF00FF" stroke-dasharray="0.8 0.8" />
+  </g>
+</svg>
+</div>
+
+<!-- Front, version "skizze": his whiteboard drawing, traced as hollow tubes -->
+<div class="page front front-skizze">
+<svg viewBox="0 0 91 61" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="Eine gekrümmte Garnele, ein Pfeil, dieselbe Garnele aufrecht. deshrimp.com">
+  <rect width="91" height="61" fill="var(--ground)" />
+  <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <g stroke="var(--curled)">
+      <line x1="33.6" y1="14.2" x2="38.2" y2="12.4" stroke-width="0.55" />
+      <line x1="33.8" y1="14.8" x2="38.4" y2="14.2" stroke-width="0.55" />
+      <line x1="33.8" y1="14.8" x2="37.2" y2="16.2" stroke-width="0.55" />
+      <line x1="25.6" y1="16.4" x2="26.2" y2="19.4" stroke-width="0.5" />
+      <line x1="23.8" y1="16.8" x2="24.3" y2="19.8" stroke-width="0.5" />
+      <line x1="22" y1="17.4" x2="22.4" y2="20.4" stroke-width="0.5" />
+      <line x1="20.4" y1="18.3" x2="20.7" y2="21.2" stroke-width="0.5" />
+      <path d="M 27.6 40.4 L 30.6 38.6 M 27.6 40.4 L 30.8 42.2" stroke-width="1.15" />
+      <use href="#spine-curled" stroke-width="3.3" />
+    </g>
+    <use href="#spine-curled" stroke="var(--ground)" stroke-width="2.1" />
+    <circle cx="30.2" cy="14.9" r="0.6" fill="var(--curled)" stroke="none" />
+
+    <path d="M 42 25 L 51 25 L 51 20.4 L 58.4 27 L 51 33.6 L 51 29 L 42 29 Z"
+          stroke="var(--arrow)" stroke-width="0.55" />
+
+    <g transform="translate(-1 2.2)">
+      <g stroke="var(--upright)">
+        <line x1="71.2" y1="10" x2="70.2" y2="5.8" stroke-width="0.55" />
+        <line x1="72" y1="10" x2="72" y2="5.2" stroke-width="0.55" />
+        <line x1="72.8" y1="10" x2="73.8" y2="6" stroke-width="0.55" />
+        <line x1="73.2" y1="15.6" x2="76.2" y2="13.8" stroke-width="0.5" />
+        <line x1="73.2" y1="17.6" x2="76.4" y2="15.9" stroke-width="0.5" />
+        <line x1="73.2" y1="19.6" x2="76.2" y2="18.1" stroke-width="0.5" />
+        <line x1="73.2" y1="21.6" x2="75.8" y2="20.4" stroke-width="0.5" />
+        <path d="M 78 39.6 L 76.2 42.4 M 78 39.6 L 79.8 42.4" stroke-width="1.15" />
+        <use href="#spine-upright" stroke-width="3.3" />
+      </g>
+      <use href="#spine-upright" stroke="var(--ground)" stroke-width="2.1" />
+      <circle cx="72.3" cy="12.2" r="0.6" fill="var(--eye)" stroke="none" />
+    </g>
+  </g>
+  <text x="45.5" y="53" text-anchor="middle" class="sans"
+        font-size="4.6" font-weight="700" letter-spacing="-0.12" fill="var(--ink)">deshrimp<tspan fill="var(--ink-2)" font-weight="400">.com</tspan></text>
+  <g class="guides" fill="none" stroke-width="0.15">
+    <rect x="3" y="3" width="85" height="55" stroke="#00FFFF" />
+    <rect x="7" y="7" width="77" height="47" stroke="#FF00FF" stroke-dasharray="0.8 0.8" />
+  </g>
+</svg>
+</div>
+
+<!-- Back: the logo and what it is, the same in every version -->
+<div class="page back">
 <svg viewBox="0 0 91 61" xmlns="http://www.w3.org/2000/svg" role="img"
      aria-label="deshrimp. Sitz aufrecht du Garnele! deshrimp.com">
   <rect width="91" height="61" fill="var(--ground)" />
 
   <!-- the mark from public/brand/mark.svg, geometry copied, at 48 units = 14 mm -->
   <g transform="translate(15.5 15.5) scale(0.2917)">
-    <rect x="20" y="38" width="14" height="4" rx="2" fill="var(--ink)" />
-    <rect x="15" y="30" width="14" height="4" rx="2" fill="var(--ink)" />
-    <rect x="12" y="22" width="14" height="4" rx="2" fill="var(--ink)" />
-    <rect x="14" y="14" width="14" height="4" rx="2" fill="var(--ink)" />
-    <circle cx="27" cy="8" r="3.5" fill="var(--accent)" />
+    <rect x="20" y="38" width="14" height="4" rx="2" fill="var(--mark)" />
+    <rect x="15" y="30" width="14" height="4" rx="2" fill="var(--mark)" />
+    <rect x="12" y="22" width="14" height="4" rx="2" fill="var(--mark)" />
+    <rect x="14" y="14" width="14" height="4" rx="2" fill="var(--mark)" />
+    <circle cx="27" cy="8" r="3.5" fill="var(--dot)" />
   </g>
   <text x="32" y="26.6" class="sans" font-size="9.9" font-weight="700"
         letter-spacing="-0.29" fill="var(--ink)">deshrimp</text>
@@ -128,7 +257,7 @@
   <text x="32" y="33.6" class="sans" font-size="3.3" font-weight="400"
         fill="var(--ink-2)">„Sitz aufrecht du Garnele!“</text>
 
-  <line x1="7" y1="44.4" x2="84" y2="44.4" stroke="#334155" stroke-width="0.25" />
+  <line x1="7" y1="44.4" x2="84" y2="44.4" stroke="var(--rule)" stroke-width="0.25" />
 
   <text x="7" y="51.4" class="sans label" font-size="2.1" font-weight="500"
         fill="var(--ink-2)">Haltung · im Browser · ohne Konto</text>
@@ -142,5 +271,18 @@
 </svg>
 </div>
 
+<script>
+  // name: [colour scheme, front]. render.cjs reads this table too.
+  var VARIANTS = {
+    dunkel:   ['dunkel', 'lucide'],
+    hell:     ['hell', 'lucide'],
+    koralle:  ['koralle', 'lucide'],
+    messwert: ['dunkel', 'messwert'],
+    skizze:   ['dunkel', 'skizze'],
+  };
+  var v = VARIANTS[new URLSearchParams(location.search).get('v')] || VARIANTS.dunkel;
+  document.documentElement.dataset.scheme = v[0];
+  document.documentElement.dataset.front = v[1];
+</script>
 </body>
 </html>
