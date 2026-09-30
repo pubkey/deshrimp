@@ -19,7 +19,6 @@ export const ja: Copy = {
     start: '開始',
     stop: '停止',
     checkNow: 'いますぐチェック',
-    checking: '画像を解析中 …',
     showPoints: 'ポイントを表示',
     hidePoints: 'ポイントを隠す',
 

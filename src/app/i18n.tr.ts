@@ -19,7 +19,6 @@ export const tr: Copy = {
     start: 'Başlat',
     stop: 'Durdur',
     checkNow: 'Şimdi kontrol et',
-    checking: 'Kare inceleniyor …',
     showPoints: 'Noktaları göster',
     hidePoints: 'Noktaları gizle',
 

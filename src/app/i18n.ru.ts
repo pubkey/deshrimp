@@ -19,7 +19,6 @@ export const ru: Copy = {
     start: 'Запустить',
     stop: 'Остановить',
     checkNow: 'Проверить сейчас',
-    checking: 'Кадр обрабатывается …',
     showPoints: 'Показать точки',
     hidePoints: 'Скрыть точки',
 

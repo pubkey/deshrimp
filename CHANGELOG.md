@@ -11,6 +11,18 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-09-30 - no words while a picture is read
+
+### Removed
+- **„Bild wird ausgewertet …" is gone from under the buttons** _(his call,
+  verbatim: „der "bild wird ausgewerted" text macht dass die renderpositionen
+  flaggern. wir brauchen den text nicht")_. It appeared and vanished with
+  every check, and as the last child of a wrapping row it pushed the sound
+  setting and the view switch around each time. The row that held it is gone
+  with it, and so is the `checking` label in all thirteen languages. „Jetzt
+  prüfen" still greys out while a check runs, which is the only sign of it
+  left.
+
 ## 2026-09-30 - the model's points, drawn over the picture
 
 ### New
