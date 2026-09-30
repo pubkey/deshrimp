@@ -11,6 +11,70 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-09-30 - a business card, in nine versions
+
+### New
+- **A business card, drawn from his whiteboard** _(his call, verbatim: „mach
+  daraus ne Visitenkarte für deshrmip", under a photo of a curled shrimp, an
+  arrow, the same shrimp sitting up, and „deshrimp.com")_. The front is that
+  sketch as vector line work; the back is the logo, the page title's line, and the
+  address. `print/visitenkarte/` holds the source (`card.html`), the print
+  files and a preview of each side.
+- **The shrimp are Lucide's, not hand-traced** _(his call, verbatim: „such
+  eine schrimp verktorgrafik online die du abwandeln kannst")_. The curled one
+  is Lucide's `shrimp` icon as published; the upright one is derived from it,
+  keeping its head and antenna and straightening the body, with a tail fork
+  in the same idiom. Lucide is ISC, which asks only that its notice travels
+  with the copy, so it sits in the licence file and nothing has to be
+  printed on the card. Twemoji (CC BY) and OpenMoji (CC BY-SA) were the other
+  candidates; both would have needed a credit on the card, and neither is
+  line art. Both shrimp are drawn at one scale and stand on one baseline, so
+  the upright one is taller because it is sitting up.
+- **Five versions of it** _(his call, verbatim: „mach mehrere Versionen")_,
+  all from the one `card.html`, picked with `?v=`:
+  - `dunkel`: the Lucide shrimp on the product's slate ground.
+  - `hell`: the same on paper white, with the light theme's ladder, so coral
+    deepens to `#E14E1D` for the strokes.
+  - `koralle`: coral as the ground, everything else slate and white, the way
+    `mark-on-accent.svg` already does it.
+  - `messwert`: the two shrimp as a reading, 47° in coral under the crooked
+    one and 6° in white under the upright one, in Plex Mono like every number
+    in the app. A breached readout is one of the places coral is allowed.
+  - `skizze`: the first, hand-traced version with the hollow-tube bodies of
+    the marker drawing, kept because it is closest to the whiteboard.
+  The back is the same drawing in every version and only takes the colours.
+  Each version gets its own two-page PDF and a preview per side, and
+  `uebersicht.png` shows all of them next to each other.
+- **Four more versions from other shrimp icons** _(his call, verbatim: „mehr
+  mit verschiedenen basis svgs")_. Iconify turned up about forty-five shrimp
+  across open icon sets; these four are ones whose licence needs no credit
+  printed on the card and whose drawing differs from Lucide's:
+  - `iconpark`: IconPark's outline shrimp, a C like the whiteboard's.
+  - `hugeicons`: Hugeicons' round shrimp.
+  - `meteor`: Meteor Icons' bold shrimp, on paper white.
+  - `noto`: Google's Noto emoji. Its colours are not ours, so the main orange
+    becomes the shrimp's colour and the rest is cut out in the ground, which
+    leaves its shell stripes. It is a straight shrimp already, so the two
+    poses are the same drawing turned: head down, then standing on its tail.
+  For the three line icons the upright shrimp is derived the way Lucide's is:
+  the icon's own head and antenna, the body straightened. A small script in
+  `card.html` scales each pair to one factor, so both keep the same line
+  weight, and stands them on the same baseline as the hand-placed versions.
+  Phosphor was left out: its shrimp is drawn as filled outlines, not lines,
+  so it does not straighten. `LICENSES.txt` replaces `LICENSE-lucide.txt` and
+  holds the notices for all five sources.
+- **The sketch keeps the severity ladder.** The crooked shrimp is the breach,
+  so it is the coral one; the upright shrimp is white ink with the mark's
+  coral head, and the arrow is secondary ink. The back spends the accent only
+  on the mark's dot.
+- **Print format:** 85 x 55 mm, the German standard, with 3 mm bleed on every
+  side, so each PDF page is 91 x 61 mm, front first. Text stays 4 mm inside
+  the trim. The PDF is RGB; the print shop converts it, and the coral will
+  come out a touch duller in CMYK. `node print/visitenkarte/render.cjs`
+  rebuilds everything (see the file for the Playwright it borrows).
+- The mark on the back is its geometry copied, not the signed SVG embedded,
+  so `public/brand/` stays untouched.
+
 ## 2026-09-30 - vibration, and a notification that actually arrives
 
 ### New
