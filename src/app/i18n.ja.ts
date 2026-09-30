@@ -20,6 +20,9 @@ export const ja: Copy = {
     stop: '停止',
     checkNow: 'いますぐチェック',
     checking: '画像を解析中 …',
+    showPoints: 'ポイントを表示',
+    hidePoints: 'ポイントを隠す',
+    pointsHint: '開発者向け：モデルが検出したポイントをカメラ映像の上に描きます。これで何かを測るわけではありません。',
 
     cameraTitle: 'カメラ',
     analysisFailed: '解析できませんでした',

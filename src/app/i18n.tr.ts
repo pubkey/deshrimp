@@ -20,6 +20,9 @@ export const tr: Copy = {
     stop: 'Durdur',
     checkNow: 'Şimdi kontrol et',
     checking: 'Kare inceleniyor …',
+    showPoints: 'Noktaları göster',
+    hidePoints: 'Noktaları gizle',
+    pointsHint: 'Geliştiriciler için: modelin algıladığı noktaları kamera görüntüsünün üzerine çizer. Hiçbir şey ölçmez.',
 
     cameraTitle: 'Kamera',
     analysisFailed: 'İnceleme başarısız oldu',

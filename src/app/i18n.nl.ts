@@ -20,6 +20,9 @@ export const nl: Copy = {
     stop: 'Stoppen',
     checkNow: 'Nu controleren',
     checking: 'Beeld wordt bekeken …',
+    showPoints: 'Punten tonen',
+    hidePoints: 'Punten verbergen',
+    pointsHint: 'Voor ontwikkelaars: tekent de punten die het model herkent over het camerabeeld. Er wordt niets mee gemeten.',
 
     cameraTitle: 'Camera',
     analysisFailed: 'De analyse is niet gelukt',

@@ -31,7 +31,7 @@
  */
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, RefObject } from 'react';
 import {
     Badge, Button, Callout, Checkbox, ConfirmButton, Empty,
     Grid, Icon, IconButton, LoadingOverlay, Muted, Page, Panel,
@@ -51,8 +51,9 @@ import { LineChart, formatNumber, withUnit } from '@charts';
 import { copyFor, localeFor, LANGUAGES, type Copy, type Lang } from './i18n';
 import { langHref, pageLang, seoTitle } from './lang-url';
 import {
-    analysePose, frameOf as canvasFrame, loadPose, onPoseProgress, poseProgress,
-    poseReady, PoseError, preloadPose, type Analysis,
+    analysePose, frameOf as canvasFrame, landmarksOf, loadPose, MEASURED_LINES,
+    MEASURED_POINTS, onPoseProgress, POINT_MIN_VISIBILITY, poseProgress,
+    poseReady, PoseError, preloadPose, type Analysis, type Landmark,
 } from './pose';
 
 /* ------------------------------------------------------------------ types */
@@ -355,6 +356,90 @@ function useCamera(t: Copy) {
     useEffect(() => stop, [stop]);
 
     return { videoRef, on, error, start, stop };
+}
+
+/* ---------------------------------------------------------- pose overlay */
+
+/** Where the developer toggle remembers itself. A convenience, not a setting. */
+const POINTS_KEY = 'deshrimp-show-points';
+
+function readShowPoints(): boolean {
+    try { return localStorage.getItem(POINTS_KEY) === '1'; } catch { return false; }
+}
+
+function writeShowPoints(on: boolean): void {
+    try {
+        if (on) localStorage.setItem(POINTS_KEY, '1');
+        else localStorage.removeItem(POINTS_KEY);
+    } catch { /* private window: it just will not be remembered */ }
+}
+
+/** How often the overlay asks the model, in ms. Ten a second is plenty to see. */
+const OVERLAY_MS = 100;
+
+/**
+ * The model's landmarks drawn over the live picture - a developer's tool
+ * _(2026-09-30, his call: „das ist nur so ein Entwickler professionelles
+ * tool")_, off by default and switched from a small button under the well.
+ *
+ * It runs its own loop rather than showing the last check's points, because a
+ * check can be two minutes apart and a frozen skeleton over a moving person
+ * tells you nothing about what the model sees. It measures nothing and writes
+ * nothing; the check loop is untouched.
+ *
+ * The SVG's `viewBox` is the video's own pixel size with `meet`, which is
+ * exactly what `object-fit: contain` does to the picture, so the points land
+ * on the letterboxed image and not on the bars. It is mirrored with the same
+ * `scaleX(-1)` as the video, and the model is fed the unmirrored frame, as
+ * everywhere else.
+ */
+function PoseOverlay({ videoRef }: { videoRef: RefObject<HTMLVideoElement | null> }) {
+    const [points, setPoints] = useState<Landmark[] | null>(null);
+    const [size, setSize] = useState<[number, number]>([0, 0]);
+
+    useEffect(() => {
+        const canvas = document.createElement('canvas');
+        const id = window.setInterval(() => {
+            const video = videoRef.current;
+            if (!video || !poseReady()) return;
+            const frame = canvasFrame(video, canvas);
+            if (!frame) return;
+            setSize((prev) => (prev[0] === video.videoWidth && prev[1] === video.videoHeight
+                ? prev : [video.videoWidth, video.videoHeight]));
+            try {
+                setPoints(landmarksOf(frame));
+            } catch {
+                setPoints(null);
+            }
+        }, OVERLAY_MS);
+        return () => window.clearInterval(id);
+    }, [videoRef]);
+
+    const [w, h] = size;
+    if (!points || !w || !h) return null;
+    const seen = (p: Landmark | undefined): p is Landmark =>
+        !!p && (p.visibility ?? 0) >= POINT_MIN_VISIBILITY;
+
+    return (
+        <svg className="haltung-points" viewBox={`0 0 ${w} ${h}`}
+            preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            {MEASURED_LINES.map(([a, b]) => {
+                const p = points[a];
+                const q = points[b];
+                return seen(p) && seen(q) ? (
+                    <line key={`${a}-${b}`} x1={p.x * w} y1={p.y * h} x2={q.x * w} y2={q.y * h} />
+                ) : null;
+            })}
+            {points.map((p, i) => (
+                <circle
+                    key={i}
+                    cx={p.x * w} cy={p.y * h}
+                    r={(MEASURED_POINTS.includes(i) ? 0.009 : 0.005) * w}
+                    className={seen(p) ? undefined : 'unseen'}
+                />
+            ))}
+        </svg>
+    );
 }
 
 /* ----------------------------------------------------------------- signal */
@@ -715,6 +800,8 @@ function Live() {
     const [apiError, setApiError] = useState<string | null>(null);
     const [note, setNote] = useState<string | null>(null);
     const [flash, setFlash] = useState(false);
+    /** The developer overlay. Remembered per browser, off until asked for. */
+    const [showPoints, setShowPoints] = useState(readShowPoints);
     /**
      * Whether the 17 MB model is still coming down.
      *
@@ -986,6 +1073,7 @@ function Live() {
             <Panel id="video" className="haltung-videotile">
                 <div className={`haltung-camera${flash ? ' haltung-alarm' : ''}`}>
                     <video ref={camera.videoRef} muted playsInline autoPlay />
+                    {showPoints && camera.on ? <PoseOverlay videoRef={camera.videoRef} /> : null}
                     {!camera.on ? (
                         <div className="haltung-camera-off">{t.cameraOff}</div>
                     ) : null}
@@ -1015,6 +1103,21 @@ function Live() {
                             />
                         </svg>
                     ) : null}
+                </div>
+
+                {/* The developer toggle, small and on the right under the well
+                    _(2026-09-30, his call: „der Button muss rechts unter das
+                    Video so einen kleinen")_. Ghost and `sm`, so it does not
+                    read as part of what the page is for. */}
+                <div className="haltung-devbar">
+                    <Button size="sm" variant="ghost" icon={<Icon name="eye" />}
+                        title={t.pointsHint}
+                        onClick={() => {
+                            writeShowPoints(!showPoints);
+                            setShowPoints(!showPoints);
+                        }}>
+                        {showPoints ? t.hidePoints : t.showPoints}
+                    </Button>
                 </div>
 
                 {/* The verdict reads under the picture, not over it _(2026-09-15,

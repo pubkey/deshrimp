@@ -20,6 +20,9 @@ export const it: Copy = {
     stop: 'Ferma',
     checkNow: 'Controlla adesso',
     checking: 'Analisi dell’immagine …',
+    showPoints: 'Mostra i punti',
+    hidePoints: 'Nascondi i punti',
+    pointsHint: 'Per sviluppatori: disegna sull’immagine della fotocamera i punti che il modello rileva. Non misura nulla.',
 
     cameraTitle: 'Fotocamera',
     analysisFailed: 'L’analisi non ha funzionato',

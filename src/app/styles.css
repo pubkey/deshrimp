@@ -121,6 +121,43 @@
   }
 }
 
+/* The developer overlay _(2026-09-30, his call)_: the model's landmarks over
+ * the picture. Mirrored like the video, so a point sits on the part of the face
+ * it names. White ink on a ground-coloured outline, so it reads on any picture
+ * without spending the accent, which the well keeps for a breach. A point the
+ * model is guessing at is drawn in secondary ink rather than hidden: seeing
+ * where it guesses is half of why this exists. */
+.haltung-points {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(-1);
+  pointer-events: none;
+}
+.haltung-points circle {
+  fill: var(--text-primary);
+  stroke: var(--bg-app);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+.haltung-points circle.unseen { fill: var(--text-secondary); }
+.haltung-points line {
+  stroke: var(--text-primary);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+/* The toggle for it: small, on the right, directly under the well, and as
+ * wide as the well so "right" means the picture's right edge. */
+.haltung-devbar {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 560px;
+  margin: var(--space-2) auto 0;
+}
+
 /* The prose under the well: the verdict, a camera error, a note. Its height is
  * reserved rather than measured _(2026-09-15, his call: the tile must not
  * change size on a state change)_. Without this the tile grew when the first

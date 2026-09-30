@@ -11,6 +11,27 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-09-30 - the model's points, drawn over the picture
+
+### New
+- **A small button under the camera draws what the model sees** _(his call,
+  verbatim: „mach einen Button rein, so dass die vom Model diese Punkte, die da
+  erkannt werden, mit angezeigt werdem im screen. der Button muss rechts unter
+  das Video so einen kleinen. das ist nur so ein Entwickler professionelles
+  tool")_. A ghost `sm` button on the right edge under the well switches an
+  overlay of all 33 landmarks. The six the angles are computed from (eyes,
+  ears, shoulders) are drawn larger and joined by the three lines the angles
+  run along; a point below the visibility cut is drawn in secondary ink rather
+  than hidden, because where the model guesses is half of what the tool is
+  for.
+- **It has its own loop, ten times a second**, rather than showing the points
+  of the last check: at a two-minute pace a frozen skeleton over a moving
+  person says nothing. It measures, judges and stores nothing, and it never
+  starts the model download by itself. Off by default, remembered per browser.
+- The overlay's `viewBox` is the video's own size with `meet`, which is what
+  `object-fit: contain` does to the picture, so the points land on the image
+  and not on the letterbox. Checked in a real browser against a photo.
+
 ## 2026-09-20 - the model is cached by its hash, not by the build
 
 ### Fixed

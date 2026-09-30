@@ -182,6 +182,9 @@ let landmarkerPromise: Promise<any> | null = null;
  */
 let landmarkerLoaded = false;
 
+/** The loaded model itself, for `landmarksOf`, which cannot await. */
+let currentLandmarker: any = null;
+
 /* ------------------------------------------------------------- progress */
 
 /**
@@ -351,10 +354,12 @@ export function loadPose(): Promise<any> {
             // handle the loader needed to reach them.
             if (blobUrl) URL.revokeObjectURL(blobUrl);
             landmarkerLoaded = true;
+            currentLandmarker = landmarker;
             return landmarker;
         })().catch((err) => {
             landmarkerPromise = null;
             landmarkerLoaded = false;
+            currentLandmarker = null;
             setProgress(null);
             // The page prints `t.modelFailed` for a PoseError; `detail` is the
             // browser's own words, appended so a real diagnosis is not lost.
@@ -497,11 +502,16 @@ function detect(landmarker: any, frame: HTMLCanvasElement): Detection {
  * Taken from the element, not from the mirrored CSS: the model has to see the
  * real camera, or every side comes out swapped.
  */
-export function frameOf(video: HTMLVideoElement): HTMLCanvasElement | null {
+export function frameOf(
+    video: HTMLVideoElement,
+    reuse?: HTMLCanvasElement,
+): HTMLCanvasElement | null {
     const vw = video.videoWidth;
     const vh = video.videoHeight;
     if (!vw || !vh) return null;
-    const canvas = document.createElement('canvas');
+    // `reuse` is for the overlay, which asks several times a second and
+    // should not leave a canvas behind on every call.
+    const canvas = reuse ?? document.createElement('canvas');
     canvas.width = FRAME_WIDTH;
     canvas.height = Math.round((vh / vw) * FRAME_WIDTH);
     const ctx = canvas.getContext('2d');
@@ -509,6 +519,38 @@ export function frameOf(video: HTMLVideoElement): HTMLCanvasElement | null {
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     return canvas;
 }
+
+/**
+ * The raw landmarks of one frame, for the developer overlay _(2026-09-30, his
+ * call: „mach einen Button rein, so dass die vom Model diese Punkte, die da
+ * erkannt werden, mit angezeigt werden")_.
+ *
+ * Synchronous and model-only: it measures nothing, judges nothing and stores
+ * nothing, and it returns null rather than starting the seventeen-megabyte
+ * download, because an overlay is no reason to spend it. Coordinates are
+ * normalised to the frame, 0 to 1, unmirrored - the caller mirrors them the
+ * same way the CSS mirrors the video.
+ */
+export function landmarksOf(frame: HTMLCanvasElement): Landmark[] | null {
+    if (!currentLandmarker) return null;
+    return detect(currentLandmarker, frame).landmarks[0] ?? null;
+}
+
+/**
+ * The points the three angles are actually computed from. The overlay draws
+ * them larger, so a wrong number can be traced to a wrong point at a glance.
+ */
+export const MEASURED_POINTS: readonly number[] = [EYE_L, EYE_R, EAR_L, EAR_R, SHOULDER_L, SHOULDER_R];
+
+/** The lines the angles are drawn along: eye line, ear line, shoulder line. */
+export const MEASURED_LINES: readonly (readonly [number, number])[] = [
+    [EYE_L, EYE_R], [EAR_L, EAR_R], [SHOULDER_L, SHOULDER_R],
+];
+
+/** The visibility below which a point counts as not seen at all. */
+export const POINT_MIN_VISIBILITY = MIN_VISIBILITY;
+
+export type { Landmark };
 
 /**
  * Measure one frame.
