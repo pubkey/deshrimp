@@ -193,6 +193,13 @@ export type Settings = {
     /** Also raise a system notification. */
     notify: boolean;
     /**
+     * Vibrate on the signal _(2026-09-30: „we need three checkboxes: sound,
+     * notification, vibrate")_. Buzzes the device the page runs on where the
+     * browser can (Android), and gives the notification a vibration pattern,
+     * which is what reaches a paired watch.
+     */
+    vibrate: boolean;
+    /**
      * Zen or the full dashboard _(2026-09-16: „im default ist die webseite zu
      * techlastig mit den vielen daten. mach einen zen-mode als default")_.
      *
@@ -229,11 +236,12 @@ export const DEFAULTS: Settings = {
     sound: true,
     soundName: 'fart',
     notify: false,
+    vibrate: false,
     view: 'zen',
 };
 
 const settingsSchema: RxJsonSchema<Settings> = {
-    version: 13,
+    version: 14,
     primaryKey: 'id',
     type: 'object',
     properties: {
@@ -249,6 +257,7 @@ const settingsSchema: RxJsonSchema<Settings> = {
             enum: ['fart', 'scream', 'knuckles', 'rimshot', 'ahem', 'whip'],
         },
         notify: { type: 'boolean' },
+        vibrate: { type: 'boolean' },
         lang: {
             type: 'string',
             enum: ['de', 'en', 'es', 'fr', 'it', 'pt',
@@ -257,7 +266,7 @@ const settingsSchema: RxJsonSchema<Settings> = {
         view: { type: 'string', enum: ['zen', 'dashboard'] },
     },
     required: ['id', 'intervalSec', 'maxLean', 'maxForward', 'maxHeadTilt',
-        'sound', 'soundName', 'notify', 'lang', 'windowMin', 'view'],
+        'sound', 'soundName', 'notify', 'vibrate', 'lang', 'windowMin', 'view'],
 };
 
 /**
@@ -270,7 +279,7 @@ const settingsSchema: RxJsonSchema<Settings> = {
  * language enum from two to twelve; v10 adds the view and starts everyone in
  * zen; v11 widens the language enum again, for Georgian; v12 widens the sound
  * enum again, for the whip crack; v13 renames every sound from German to
- * English.
+ * English; v14 adds vibration, off.
  * Every step keeps the thresholds he set - a schema change must never be the
  * thing that resets his settings, and v3 in particular must not change the
  * language a device is already showing.
@@ -341,6 +350,9 @@ const settingsMigrations = {
         ...old,
         soundName: RENAMED_SOUNDS[String(old.soundName)] || DEFAULTS.soundName,
     }),
+    // v14 adds the vibrate switch. Off, like the notification: a device that
+    // starts buzzing after an update is a change nobody asked for.
+    14: (old: Record<string, unknown>) => ({ ...old, vibrate: false }),
 };
 
 /** The v13 rename, old name to new. `rimshot` was already English. */

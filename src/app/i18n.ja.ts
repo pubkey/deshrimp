@@ -111,6 +111,8 @@ export const ja: Copy = {
     noDataYet: 'まだデータがありません。計測が始まるとグラフが埋まります。',
     soundOnSignal: '通知時に音を鳴らす',
     alsoNotify: '通知も表示する',
+    vibrateOnSignal: '通知時に振動する',
+    vibrateUnsupported: 'この端末はブラウザから振動できません。',
     thresholdNote: '3 つのしきい値は決め打ちの許容範囲であって、臨床の基準値ではありません - 正面のカメラで測れるものについて、そもそも基準値は存在しません。鳴りすぎるならしきい値を上げてください。それが唯一正しい調整のしかたです。',
 
     whichSound: 'どの音にするか',

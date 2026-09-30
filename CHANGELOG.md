@@ -11,6 +11,34 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-09-30 - vibration, and a notification that actually arrives
+
+### New
+- **A third checkbox, "Vibrate on signal"**, next to the sound and the
+  notification _(his call, verbatim: „can we make a smartwatch or apple watch
+  vibrate instead of playing a sound", then „we need three checkboxes: sound,
+  notification, vibrate")_. The three are independent, so vibrating instead
+  of a sound is unticking the first and ticking the third. Where the browser
+  can (Android) it buzzes the device the page runs on; the notification
+  carries the same pattern. Ticking it buzzes once as proof; where the browser
+  has no vibration at all (Safari, Firefox) it stays off and says so. Off by
+  default, and settings v14 adds it as off for existing devices.
+- **What reaches a watch, honestly:** a web page cannot talk to a watch. The
+  only route to the wrist is a system notification that the phone passes on.
+  That works with the page open on an Android phone and a Wear OS or Galaxy
+  watch. It does not work from a laptop (a Mac does not forward to an Apple
+  Watch), and on an iPhone only from the Home Screen app and only while the
+  phone is locked, which a running camera prevents.
+
+### Fixed
+- **The notification goes through the service worker.** Chrome on Android
+  throws on `new Notification()`, and the `catch` hid it, so on exactly the
+  platform that forwards to a watch the checkbox did nothing. The constructor
+  stays as the fallback where there is no worker (dev).
+- **Every crooked reading notifies again**, not only the first: the shared
+  tag now comes with `renotify`, so a new notification alerts instead of
+  quietly replacing the last one.
+
 ## 2026-09-30 - no words while a picture is read
 
 ### Removed

@@ -111,6 +111,8 @@ export const nl: Copy = {
     noDataYet: 'Nog geen gegevens. De grafiek vult zich zodra de meting loopt.',
     soundOnSignal: 'Geluid bij het signaal',
     alsoNotify: 'Ook een melding tonen',
+    vibrateOnSignal: 'Trillen bij het signaal',
+    vibrateUnsupported: 'Dit apparaat kan niet trillen vanuit de browser.',
     thresholdNote: 'De drie grenzen zijn gestelde toleranties, geen klinische normen - voor wat een camera van voren kan meten bestaan die niet. Piept het te vaak, zet de grens hoger; dat is de enige juiste manier om ze af te stellen.',
 
     whichSound: 'Welk geluid',

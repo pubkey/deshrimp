@@ -935,12 +935,9 @@ function Live() {
                 setFlash(true);
                 window.setTimeout(() => setFlash(false), 4000);
                 if (s.sound) live.current.beep.play(s.soundName, loudness(badRun.current));
-                if (s.notify && 'Notification' in window && Notification.permission === 'granted') {
-                    try {
-                        new Notification(copy.notifyTitle, {
-                            body: copy.advice[result.advice], tag: 'haltung',
-                        });
-                    } catch { /* some browsers only allow this from a worker */ }
+                if (s.vibrate) buzz();
+                if (s.notify) {
+                    void showNotification(copy.notifyTitle, copy.advice[result.advice], s.vibrate);
                 }
             }
         } catch (failure) {
@@ -1652,6 +1649,51 @@ function History({ readings, intervalSec }: { readings: Reading[]; intervalSec: 
     );
 }
 
+/* ---------------------------------------------------------------- the buzz */
+
+/** Two short pulses: enough to feel on a desk or a wrist, short enough to repeat every second. */
+const VIBRATION = [200, 100, 200];
+
+/**
+ * Vibrates the device the page runs on. Only Android browsers do anything
+ * here; Safari has no `navigator.vibrate` at all and a desktop has nothing to
+ * shake, which is why the notification carries the same pattern.
+ */
+function buzz() {
+    try { navigator.vibrate?.(VIBRATION); } catch { /* no motor, no harm */ }
+}
+
+/**
+ * The system notification, and **the only way to a watch**: a web page cannot
+ * talk to one, but a phone passes its notifications on.
+ *
+ * It goes through the service worker where there is one, because Chrome on
+ * Android refuses `new Notification()` outright - the constructor throws, and
+ * the phone that could forward it to a Wear OS watch never showed anything.
+ * `renotify` is what makes a notification with the same tag alert again
+ * instead of quietly replacing the last one, so every crooked reading buzzes,
+ * not only the first _(2026-09-08: „play it each time the user sits wrong")_.
+ *
+ * `renotify` and `vibrate` are real options that TypeScript's DOM types no
+ * longer list, hence the widened type.
+ */
+async function showNotification(title: string, body: string, vibrate: boolean) {
+    if (!('Notification' in window) || Notification.permission !== 'granted') return;
+    const options: NotificationOptions & { renotify: boolean; vibrate?: number[] } = {
+        body, tag: 'haltung', renotify: true,
+        ...(vibrate ? { vibrate: VIBRATION } : {}),
+    };
+    try {
+        const worker = 'serviceWorker' in navigator
+            ? await navigator.serviceWorker.getRegistration() : undefined;
+        if (worker) {
+            await worker.showNotification(title, options);
+            return;
+        }
+        new Notification(title, options);
+    } catch { /* a refused notification costs the notification, not the check */ }
+}
+
 /* ------------------------------------------------------------------ setup */
 
 type SetupProps = {
@@ -1667,7 +1709,8 @@ type SoundProps = SetupProps & {
 
 /**
  * Everything about the noise: whether it sounds, which one, and a button to
- * hear it.
+ * hear it - and, beside it, the two quieter ways of being told: a notification
+ * and a vibration.
  *
  * It sits in the control tile next to Start and Stop _(2026-09-15, his call:
  * „move the settings with the sounds and the start/stop into the same tile")_
@@ -1694,17 +1737,34 @@ function Sound(props: SoundProps) {
         await change({ notify: on });
     };
 
+    /* Same honesty for vibration: where the browser has no way to vibrate
+       (Safari, Firefox), the switch stays off and says so. A buzz right away
+       is the proof it works, the way „Listen" is for the sound. */
+    const toggleVibrate = async (on: boolean) => {
+        if (on && typeof navigator.vibrate !== 'function') {
+            toast(t.vibrateUnsupported);
+            return;
+        }
+        if (on) buzz();
+        await change({ vibrate: on });
+    };
+
     return (
         <>
-            {/* The two ways of being told, side by side _(2026-09-15, his
+            {/* The ways of being told, side by side _(2026-09-15, his
                 call)_. They answer one question - how should this thing get my
                 attention - and splitting them across two tiles made you set
-                half the answer in each. */}
+                half the answer in each. Vibration joined as the third
+                _(2026-09-30: „we need three checkboxes: sound, notification,
+                vibrate")_, each independent, so „vibrate instead of a sound"
+                is unticking the first and ticking the third. */}
             <Row gap={4} wrap>
                 <Checkbox label={t.soundOnSignal} checked={s.sound}
                     onChange={(on) => void change({ sound: on })} />
                 <Checkbox label={t.alsoNotify} checked={s.notify}
                     onChange={(on) => void toggleNotify(on)} />
+                <Checkbox label={t.vibrateOnSignal} checked={s.vibrate}
+                    onChange={(on) => void toggleVibrate(on)} />
             </Row>
             {/* Picking a sound switches the sound on _(2026-09-18, his
                 call)_. Reaching for this select while `soundOnSignal` is off

@@ -111,6 +111,8 @@ export const tr: Copy = {
     noDataYet: 'Henüz veri yok. Ölçüm başlayınca grafik dolmaya başlar.',
     soundOnSignal: 'Sinyalde ses',
     alsoNotify: 'Ayrıca bir bildirim göster',
+    vibrateOnSignal: 'Sinyalde titreşim',
+    vibrateUnsupported: 'Bu cihaz tarayıcıdan titreşemez.',
     thresholdNote: 'Üç sınır konulmuş toleranslardır, klinik ölçüt değil - önden bakan bir kameranın ölçebildiği şey için böyle bir ölçüt yok. Çok sık ötüyorsa sınırı yükselt; onları ayarlamanın tek doğru yolu budur.',
 
     whichSound: 'Hangi ses',

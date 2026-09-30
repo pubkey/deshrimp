@@ -111,6 +111,8 @@ export const it: Copy = {
     noDataYet: 'Ancora nessun dato. Il grafico si riempie appena parte la misurazione.',
     soundOnSignal: 'Suono al segnale',
     alsoNotify: 'Mostra anche una notifica',
+    vibrateOnSignal: 'Vibrazione al segnale',
+    vibrateUnsupported: 'Questo dispositivo non può vibrare dal browser.',
     thresholdNote: 'I tre limiti sono tolleranze poste, non valori clinici - per quello che una fotocamera frontale può misurare non ne esistono. Se suona troppo spesso, alza il limite; è l’unico modo giusto di regolarli.',
 
     whichSound: 'Quale suono',

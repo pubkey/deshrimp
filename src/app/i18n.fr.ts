@@ -111,6 +111,8 @@ export const fr: Copy = {
     noDataYet: 'Pas encore de données. Le graphique se remplit dès que la mesure tourne.',
     soundOnSignal: 'Son au signal',
     alsoNotify: 'Afficher aussi une notification',
+    vibrateOnSignal: 'Vibrer au signal',
+    vibrateUnsupported: 'Cet appareil ne peut pas vibrer depuis le navigateur.',
     thresholdNote: 'Les trois limites sont des tolérances posées, pas des normes cliniques - pour ce qu’une caméra de face peut mesurer, il n’en existe pas. Si ça bipe trop souvent, monte la limite ; c’est la seule bonne façon de les régler.',
 
     whichSound: 'Quel son',
