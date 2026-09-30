@@ -22,7 +22,6 @@ export const pt: Copy = {
     checking: 'A analisar a imagem …',
     showPoints: 'Mostrar pontos',
     hidePoints: 'Ocultar pontos',
-    pointsHint: 'Para programadores: desenha sobre a imagem da câmara os pontos que o modelo deteta. Não mede nada.',
 
     cameraTitle: 'Câmara',
     analysisFailed: 'A análise não resultou',

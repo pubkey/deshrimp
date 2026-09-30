@@ -1074,6 +1074,24 @@ function Live() {
                 <div className={`haltung-camera${flash ? ' haltung-alarm' : ''}`}>
                     <video ref={camera.videoRef} muted playsInline autoPlay />
                     {showPoints && camera.on ? <PoseOverlay videoRef={camera.videoRef} /> : null}
+                    {/* The developer toggle: a glyph, no words, in the well's
+                        bottom right corner _(2026-09-30, his call: „no text,
+                        make a small button with only the icon. schoe it on the
+                        bottom right inside of the videoframes")_. Only while
+                        the camera runs, because without a picture there is
+                        nothing to draw the points on. The words are still its
+                        title and accessible name. */}
+                    {camera.on ? (
+                        <IconButton
+                            className={`haltung-pointsbtn${showPoints ? ' on' : ''}`}
+                            icon={<Icon name="eye" />}
+                            label={showPoints ? t.hidePoints : t.showPoints}
+                            onClick={() => {
+                                writeShowPoints(!showPoints);
+                                setShowPoints(!showPoints);
+                            }}
+                        />
+                    ) : null}
                     {!camera.on ? (
                         <div className="haltung-camera-off">{t.cameraOff}</div>
                     ) : null}
@@ -1103,21 +1121,6 @@ function Live() {
                             />
                         </svg>
                     ) : null}
-                </div>
-
-                {/* The developer toggle, small and on the right under the well
-                    _(2026-09-30, his call: „der Button muss rechts unter das
-                    Video so einen kleinen")_. Ghost and `sm`, so it does not
-                    read as part of what the page is for. */}
-                <div className="haltung-devbar">
-                    <Button size="sm" variant="ghost" icon={<Icon name="eye" />}
-                        title={t.pointsHint}
-                        onClick={() => {
-                            writeShowPoints(!showPoints);
-                            setShowPoints(!showPoints);
-                        }}>
-                        {showPoints ? t.hidePoints : t.showPoints}
-                    </Button>
                 </div>
 
                 {/* The verdict reads under the picture, not over it _(2026-09-15,

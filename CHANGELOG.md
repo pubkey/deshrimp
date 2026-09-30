@@ -18,7 +18,10 @@ wrote them in.
   verbatim: „mach einen Button rein, so dass die vom Model diese Punkte, die da
   erkannt werden, mit angezeigt werdem im screen. der Button muss rechts unter
   das Video so einen kleinen. das ist nur so ein Entwickler professionelles
-  tool")_. A ghost `sm` button on the right edge under the well switches an
+  tool")_, and then, the same morning: „no text, make a small button with
+  only the icon. schoe it on the bottom right inside of the videoframes". So it
+  is a 32px eye glyph in the well's bottom right corner, shown while the camera
+  runs, with the words kept as its title and accessible name. It switches an
   overlay of all 33 landmarks. The six the angles are computed from (eyes,
   ears, shoulders) are drawn larger and joined by the three lines the angles
   run along; a point below the visibility cut is drawn in secondary ink rather

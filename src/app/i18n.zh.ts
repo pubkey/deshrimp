@@ -22,7 +22,6 @@ export const zh: Copy = {
     checking: '正在分析画面 …',
     showPoints: '显示关键点',
     hidePoints: '隐藏关键点',
-    pointsHint: '开发者工具：在摄像头画面上画出模型识别到的关键点。它不做任何测量。',
 
     cameraTitle: '摄像头',
     analysisFailed: '分析没有成功',

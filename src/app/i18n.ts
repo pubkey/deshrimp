@@ -96,7 +96,6 @@ const de = {
     checking: 'Bild wird ausgewertet …',
     showPoints: 'Punkte zeigen',
     hidePoints: 'Punkte ausblenden',
-    pointsHint: 'Für Entwickler: zeichnet die Punkte, die das Modell erkennt, über das Kamerabild. Gemessen wird damit nichts.',
 
     cameraTitle: 'Kamera',
     analysisFailed: 'Die Auswertung hat nicht geklappt',
@@ -263,7 +262,6 @@ const en: Copy = {
     checking: 'Reading the picture …',
     showPoints: 'Show points',
     hidePoints: 'Hide points',
-    pointsHint: 'For developers: draws the points the model detects over the camera picture. Nothing is measured by it.',
 
     cameraTitle: 'Camera',
     analysisFailed: 'The analysis did not work',

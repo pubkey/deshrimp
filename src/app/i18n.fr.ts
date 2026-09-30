@@ -22,7 +22,6 @@ export const fr: Copy = {
     checking: 'Analyse de l’image …',
     showPoints: 'Afficher les points',
     hidePoints: 'Masquer les points',
-    pointsHint: 'Pour les développeurs : dessine sur l’image de la caméra les points que le modèle détecte. Rien n’est mesuré ainsi.',
 
     cameraTitle: 'Caméra',
     analysisFailed: 'L’analyse n’a pas fonctionné',
