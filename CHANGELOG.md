@@ -11,6 +11,28 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-09-30 - a business card
+
+### New
+- **A business card, drawn from his whiteboard** _(his call, verbatim: „mach
+  daraus ne Visitenkarte für deshrmip", under a photo of a curled shrimp, an
+  arrow, the same shrimp sitting up, and „deshrimp.com")_. The front is that
+  sketch redrawn as vector line work, keeping the hollow-tube bodies of the
+  marker drawing; the back is the logo, the page title's line, and the
+  address. `print/visitenkarte/` holds the source (`card.html`), the print
+  file and a preview of each side.
+- **The sketch keeps the severity ladder.** The crooked shrimp is the breach,
+  so it is the coral one; the upright shrimp is white ink with the mark's
+  coral head, and the arrow is secondary ink. The back spends the accent only
+  on the mark's dot.
+- **Print format:** 85 x 55 mm, the German standard, with 3 mm bleed on every
+  side, so each PDF page is 91 x 61 mm, front first. Text stays 4 mm inside
+  the trim. The PDF is RGB; the print shop converts it, and the coral will
+  come out a touch duller in CMYK. `node print/visitenkarte/render.cjs`
+  rebuilds everything (see the file for the Playwright it borrows).
+- The mark on the back is its geometry copied, not the signed SVG embedded,
+  so `public/brand/` stays untouched.
+
 ## 2026-09-30 - vibration, and a notification that actually arrives
 
 ### New
