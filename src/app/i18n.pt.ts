@@ -111,6 +111,8 @@ export const pt: Copy = {
     noDataYet: 'Ainda sem dados. O gráfico enche-se assim que a medição estiver a correr.',
     soundOnSignal: 'Som no sinal',
     alsoNotify: 'Mostrar também uma notificação',
+    vibrateOnSignal: 'Vibrar no sinal',
+    vibrateUnsupported: 'Este dispositivo não consegue vibrar a partir do navegador.',
     thresholdNote: 'Os três limites são tolerâncias definidas, não normas clínicas - para aquilo que uma câmara frontal consegue medir não existem. Se apitar demasiado, sobe o limite; é a única maneira certa de os afinar.',
 
     whichSound: 'Que som',

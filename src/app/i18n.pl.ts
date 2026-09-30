@@ -111,6 +111,8 @@ export const pl: Copy = {
     noDataYet: 'Jeszcze brak danych. Wykres zapełni się, gdy ruszy pomiar.',
     soundOnSignal: 'Dźwięk przy sygnale',
     alsoNotify: 'Dodatkowo pokaż powiadomienie',
+    vibrateOnSignal: 'Wibracja przy sygnale',
+    vibrateUnsupported: 'To urządzenie nie może wibrować z przeglądarki.',
     thresholdNote: 'Trzy granice to przyjęte tolerancje, a nie normy kliniczne - dla tego, co potrafi zmierzyć kamera z przodu, takich norm nie ma. Jeśli piszczy za często, podnieś granicę; to jedyny właściwy sposób ich ustawiania.',
 
     whichSound: 'Jaki dźwięk',

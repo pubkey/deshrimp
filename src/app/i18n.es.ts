@@ -111,6 +111,8 @@ export const es: Copy = {
     noDataYet: 'Aún no hay datos. El gráfico se llena en cuanto haya mediciones.',
     soundOnSignal: 'Sonido al avisar',
     alsoNotify: 'Mostrar además una notificación',
+    vibrateOnSignal: 'Vibrar al avisar',
+    vibrateUnsupported: 'Este dispositivo no puede vibrar desde el navegador.',
     thresholdNote: 'Los tres límites son tolerancias fijadas, no normas clínicas - para lo que puede medir una cámara frontal no las hay. Si pita demasiado, sube el límite; esa es la única forma correcta de ajustarlos.',
 
     whichSound: 'Qué sonido',

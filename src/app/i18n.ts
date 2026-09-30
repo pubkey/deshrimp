@@ -188,6 +188,8 @@ const de = {
     noDataYet: 'Noch keine Daten - sobald die Messung läuft, füllt sich der Chart.',
     soundOnSignal: 'Ton beim Signal',
     alsoNotify: 'Zusätzlich ein Hinweisfenster',
+    vibrateOnSignal: 'Vibrieren beim Signal',
+    vibrateUnsupported: 'Dieses Gerät kann im Browser nicht vibrieren.',
     thresholdNote: 'Die drei Grenzen sind gesetzte Toleranzen, keine Normwerte - für das, was eine Frontalkamera messen kann, gibt es keine. Piept es zu oft, dreh die Grenze hoch; das ist die einzige richtige Art, sie einzustellen.',
 
     whichSound: 'Welches Geräusch',
@@ -350,6 +352,8 @@ const en: Copy = {
     noDataYet: 'No data yet. The chart fills up once a measurement is running.',
     soundOnSignal: 'Sound on signal',
     alsoNotify: 'Also show a notification',
+    vibrateOnSignal: 'Vibrate on signal',
+    vibrateUnsupported: 'This device cannot vibrate from the browser.',
     thresholdNote: 'The three limits are set tolerances, not clinical norms - for what a front-facing camera can measure, there are none. If it beeps too often, raise the limit; that is the only right way to tune them.',
 
     whichSound: 'Which sound',
