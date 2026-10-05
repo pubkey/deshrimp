@@ -16,9 +16,9 @@ for deshrimp and carries no third-party licence.
   meteor              Meteor Icons `shrimp`, zkreations       MIT
   noto                Noto Emoji `shrimp` (U+1F990),          Apache-2.0
                       Google; recoloured, the curled pose
-                      turned, the upright one the drawing
-                      with its tail unrolled straight,
-                      then turned and mirrored
+                      turned and mirrored, the upright one
+                      the drawing with its tail unrolled
+                      straight, then turned
 
 
 ================================================================ Lucide

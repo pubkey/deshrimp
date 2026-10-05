@@ -27,7 +27,11 @@ wrote them in.
   point inside the curl, taken around its centre, is laid out along a line
   at the curl's radius, so the length along the spine and the shell stripes
   are kept, and head, legs and antennae are untouched. It is turned 7° so it
-  stands plumb. The curled pose is unchanged.
+  stands plumb.
+- **Both Noto shrimp look to the right** _(his call, verbatim: „in noto both
+  should look to the right")_. The curled one is mirrored, so its head is on
+  the right like Lucide's; the upright one is no longer mirrored, so its head,
+  eye and antennae point up and to the right.
 
 ## 2026-09-30 - a business card, in nine versions
 
