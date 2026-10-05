@@ -468,14 +468,24 @@ function PoseOverlay({ videoRef }: { videoRef: RefObject<HTMLVideoElement | null
  * worse than no signal.
  */
 
-/** The bundled sound files under `snd/`. */
-const SOUND_FILE: Record<SoundName, string> = {
-    fart: 'fart.mp3',
-    ahem: 'ahem.mp3',
-    scream: 'scream.mp3',
-    knuckles: 'knuckles.mp3',
-    whip: 'whip.wav',
-    rimshot: 'rimshot.mp3',
+/**
+ * The bundled sound files under `snd/`. A sound with more than one file plays
+ * a random one of them each time.
+ *
+ * The fart has twelve: the eleven recordings he sent _(2026-10-05: „on
+ * fartsound setting it should always play a random one of those, not the same
+ * fart sound each time")_ and the one it always had, which he asked to keep
+ * („keep also the previous fart sound"). He sent twelve files; two were the
+ * same bytes under different names, so they are one file here. `fart-12.mp3`
+ * is the old `fart.mp3`, bytes untouched.
+ */
+const SOUND_FILES: Record<SoundName, string[]> = {
+    fart: Array.from({ length: 12 }, (_, i) => `fart-${String(i + 1).padStart(2, '0')}.mp3`),
+    ahem: ['ahem.mp3'],
+    scream: ['scream.mp3'],
+    knuckles: ['knuckles.mp3'],
+    whip: ['whip.wav'],
+    rimshot: ['rimshot.mp3'],
 };
 
 /**
@@ -563,7 +573,14 @@ function loudness(run: number): number {
 
 function useBeep() {
     const ctxRef = useRef<AudioContext | null>(null);
-    const players = useRef<Partial<Record<SoundName, HTMLAudioElement>>>({});
+    const players = useRef<Partial<Record<SoundName, HTMLAudioElement[]>>>({});
+    /**
+     * The files of each sound still to come in this round, shuffled. Drawn
+     * from the end, refilled when empty.
+     */
+    const deck = useRef<Partial<Record<SoundName, number[]>>>({});
+    /** Which file of each sound played last, so a new round cannot open with it. */
+    const lastPick = useRef<Partial<Record<SoundName, number>>>({});
 
     const prepare = useCallback(() => {
         if (ctxRef.current) {
@@ -576,12 +593,14 @@ function useBeep() {
 
         // Build the elements inside the gesture too. Created later, iOS treats
         // the first play() as un-gestured and stays quiet.
-        (Object.keys(SOUND_FILE) as SoundName[]).forEach((name) => {
+        (Object.keys(SOUND_FILES) as SoundName[]).forEach((name) => {
             if (players.current[name]) return;
-            const el = new Audio(SOUND_DIR + '/' + SOUND_FILE[name]);
-            el.preload = 'auto';
-            el.volume = SOUND_GAIN[name];
-            players.current[name] = el;
+            players.current[name] = SOUND_FILES[name].map((file) => {
+                const el = new Audio(SOUND_DIR + '/' + file);
+                el.preload = 'auto';
+                el.volume = SOUND_GAIN[name];
+                return el;
+            });
         });
     }, []);
 
@@ -731,8 +750,28 @@ function useBeep() {
     }, []);
 
     const play = useCallback((name: SoundName, level = 1) => {
-        const template = players.current[name];
-        if (!template) { synth(name, level); return; }
+        const pool = players.current[name];
+        if (!pool?.length) { synth(name, level); return; }
+
+        // A shuffled deck rather than a fresh random pick each time _(„ar
+        // random picking ensure we never play the same sound twice")_: every
+        // file plays once before any of them plays again, and a new round never
+        // opens with the file that closed the last one.
+        let cards = deck.current[name];
+        if (!cards?.length) {
+            cards = pool.map((_, i) => i);
+            for (let i = cards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cards[i], cards[j]] = [cards[j], cards[i]];
+            }
+            if (cards.length > 1 && cards[cards.length - 1] === lastPick.current[name]) {
+                [cards[0], cards[cards.length - 1]] = [cards[cards.length - 1], cards[0]];
+            }
+            deck.current[name] = cards;
+        }
+        const pick = cards.pop()!;
+        lastPick.current[name] = pick;
+        const template = pool[pick];
 
         // A fresh node per play, so a second alarm layers over the first
         // instead of restarting it. The preloaded template is never played
