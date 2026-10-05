@@ -189,9 +189,11 @@ copy alike. It is a static page written by `scripts/legal-notice.mjs` out of
 the same shell as the language pages, so it has the stylesheet and no bundle.
 German first, the same facts in English below, and `noindex`.
 
-The details are the ones on the rxdb.info legal notice (same person, same sole
-proprietorship, the coworking address rather than the home one). When they
-change there, they change in `scripts/legal-notice.mjs` too.
+Name, email and VAT ID are the ones on the rxdb.info legal notice (same person,
+same sole proprietorship); when they change there, they change in
+`scripts/legal-notice.mjs` too. The address differs on purpose: deshrimp shows
+Friedrichstraße 5, rxdb.info the coworking space at Nr. 13 (his call,
+2026-10-05).
 
 `public/CNAME` carries the domain, and `.github/workflows/deploy.yml` builds
 every push to `master` and force-pushes `dist/` to the `github-pages` branch. It

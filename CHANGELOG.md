@@ -15,9 +15,11 @@ wrote them in.
 
 ### New
 - **`/legal-notice.html`, the Impressum** _(his call, verbatim: „add a
-  legal-notice page to deshrimp")_. Name, the Stuttgart coworking address,
-  email and VAT ID, the same details the rxdb.info legal notice publishes,
-  because it is the same person and the same sole proprietorship. German first,
+  legal-notice page to deshrimp")_. Name, email and VAT ID are the ones the
+  rxdb.info legal notice publishes, because it is the same person and the same
+  sole proprietorship. The address is **Friedrichstraße 5**, not the
+  coworking space at Nr. 13 that rxdb.info shows _(his call, verbatim: „use
+  "friedrichstraße 5" as street name")_. German first,
   since that is the language the obligation (§ 5 DDG) is in, then the same
   facts once in English. Not thirteen translations: an address translated
   thirteen times is thirteen places for it to go stale.

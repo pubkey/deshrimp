@@ -15,9 +15,12 @@
  * same stylesheet (tokens, IBM Plex, light and dark), minus the module script:
  * no bundle runs here.
  *
- * The details are the ones published in the rxdb.info legal notice, because it
- * is the same person and the same sole proprietorship: the coworking address,
- * deliberately not the home one. Change them there and here together.
+ * Name, email and VAT ID are the ones published in the rxdb.info legal notice,
+ * because it is the same person and the same sole proprietorship. The address
+ * is not: rxdb.info shows the coworking space (Friedrichstraße 13), this page
+ * shows Friedrichstraße 5 _(2026-10-05, his call, verbatim: „use
+ * "friedrichstraße 5" as street name")_. Change name, email or VAT ID there and
+ * here together; the address is this page's own.
  *
  * Written in German, which is the language the obligation is in, with the same
  * facts once more in English for everyone else. Thirteen translations of an
@@ -39,7 +42,7 @@ const BODY = `<div class="ui-shell">
       <h1 lang="de">Impressum</h1>
       <section lang="de">
         <h2>Angaben gemäß § 5 DDG</h2>
-        <p>Daniel Meyer<br />Friedrichstraße 13<br />70174 Stuttgart<br />Deutschland</p>
+        <p>Daniel Meyer<br />Friedrichstraße 5<br />70174 Stuttgart<br />Deutschland</p>
         <h2>Kontakt</h2>
         <p>E-Mail: ${EMAIL}</p>
         <h2>Umsatzsteuer-Identifikationsnummer</h2>
@@ -50,7 +53,7 @@ const BODY = `<div class="ui-shell">
 
       <h2 lang="en" class="legal-lang">Legal notice</h2>
       <section lang="en">
-        <p>deshrimp is run by Daniel Meyer, Friedrichstraße 13, 70174 Stuttgart,
+        <p>deshrimp is run by Daniel Meyer, Friedrichstraße 5, 70174 Stuttgart,
         Germany. Email: ${EMAIL}. VAT ID: DE357840955.</p>
       </section>
     </div>
