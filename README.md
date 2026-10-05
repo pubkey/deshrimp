@@ -151,7 +151,8 @@ plugins on top of it, both `apply: 'build'`:
   hreflang, Open Graph, Twitter, a `SoftwareApplication` JSON-LD block - and
   renders the intro and the five steps into `#root` as plain HTML. Then it
   writes the thirteen per-language pages, `sitemap.xml` and `robots.txt` (see
-  [One URL per language](#one-url-per-language)).
+  [One URL per language](#one-url-per-language)), and the legal notice (see
+  [Legal notice](#legal-notice)).
 
   This is prerendering, not server-side rendering, and the difference is the
   point: the page's claim is that no server exists, so rendering per request is
@@ -178,6 +179,21 @@ plugins on top of it, both `apply: 'build'`:
   `scripts/pose-model.sha256` and survives every deploy that does not move the
   pin. The model is 17 MB and is the same file across builds, so putting it in
   the versioned cache meant re-downloading it for every typo fix.
+
+### Legal notice
+
+`/legal-notice.html` is the Impressum German law (§ 5 DDG) asks of a website
+run by a business: name, servable address, email and VAT ID, reachable from
+every page. Every page links it in its footer, the app and the prerendered
+copy alike. It is a static page written by `scripts/legal-notice.mjs` out of
+the same shell as the language pages, so it has the stylesheet and no bundle.
+German first, the same facts in English below, and `noindex`.
+
+Name, email and VAT ID are the ones on the rxdb.info legal notice (same person,
+same sole proprietorship); when they change there, they change in
+`scripts/legal-notice.mjs` too. The address differs on purpose: deshrimp shows
+Friedrichstraße 5, rxdb.info the coworking space at Nr. 13 (his call,
+2026-10-05).
 
 `public/CNAME` carries the domain, and `.github/workflows/deploy.yml` builds
 every push to `master` and force-pushes `dist/` to the `github-pages` branch. It

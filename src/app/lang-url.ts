@@ -25,6 +25,10 @@
  *   sentence in that language, out of `seo.json`. The prerendered head is
  *   built from the same two strings, so the tab does not change wording the
  *   moment React takes the page over.
+ * - `legalLabel(lang)` / `LEGAL_HREF` - the footer link to the legal notice.
+ *   Its label lives in `seo.json` rather than in the i18n tables because the
+ *   prerendered copy carries the same link and `scripts/seo.mjs` cannot read
+ *   TypeScript.
  *
  * ## Examples
  * ```ts
@@ -33,13 +37,14 @@
  * ```
  *
  * ## Changelog
+ * - 2026-10-05 `legalLabel` and `LEGAL_HREF`, for the legal notice.
  * - 2026-09-19 First version, with the per-language pages themselves.
  */
 
 import seo from './seo.json';
 import type { Lang } from './i18n';
 
-type SeoText = { title: string; description: string };
+type SeoText = { title: string; description: string; legal: string };
 
 const LANGS = seo.langs as Record<string, SeoText>;
 
@@ -71,4 +76,12 @@ export function seoTitle(lang: Lang): string {
 /** The sentence under it, in `lang`. */
 export function seoDescription(lang: Lang): string {
     return (LANGS[lang] || LANGS.en).description;
+}
+
+/** Where the legal notice is, relative like `langHref` (`scripts/legal-notice.mjs`). */
+export const LEGAL_HREF = './legal-notice.html';
+
+/** The label of the link to it, in `lang`. */
+export function legalLabel(lang: Lang): string {
+    return (LANGS[lang] || LANGS.en).legal;
 }
