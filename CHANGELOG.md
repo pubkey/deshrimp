@@ -30,8 +30,12 @@ wrote them in.
   stands plumb.
 - **Both Noto shrimp look to the right** _(his call, verbatim: „in noto both
   should look to the right")_. The curled one is mirrored, so its head is on
-  the right like Lucide's; the upright one is no longer mirrored, so its head,
-  eye and antennae point up and to the right.
+  the right like Lucide's. For the upright one, mirroring alone turned its
+  face right but its legs left _(his call, verbatim: „on noto the right one
+  looks to left, it should look to right, also the legs")_, so it keeps its
+  legs on the right and its head is bent 45° forward at the neck, the head,
+  legs and antennae turning together and the neck blending into the bend.
+  Head and legs now both point right.
 
 ## 2026-09-30 - a business card, in nine versions
 
