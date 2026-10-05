@@ -36,6 +36,9 @@ wrote them in.
   legs on the right and its head is bent 45° forward at the neck, the head,
   legs and antennae turning together and the neck blending into the bend.
   Head and legs now both point right.
+- **`noto` is the one he picked** _(his call, verbatim: „take noto. wo in
+  deutschland soll ich die drucken lassen?")_. `card.html` without `?v=` now
+  shows it; the other seven stay in the folder for now.
 
 ## 2026-09-30 - a business card, in nine versions
 

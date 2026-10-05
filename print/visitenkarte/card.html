@@ -308,7 +308,7 @@
     meteor:    ['hell', 'pair', 'c-meteor', 'up-meteor'],
     noto:      ['dunkel', 'pair', 'c-noto', 'up-noto'],
   };
-  var v = VARIANTS[new URLSearchParams(location.search).get('v')] || VARIANTS.dunkel;
+  var v = VARIANTS[new URLSearchParams(location.search).get('v')] || VARIANTS.noto;
   document.documentElement.dataset.scheme = v[0];
   document.documentElement.dataset.front = v[1];
 
