@@ -11,6 +11,24 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-10-05 - the business card loses its sketch, and Noto's shrimp sits up straight
+
+### Removed
+- **The `skizze` version** _(his call, verbatim: „delete "skizze" it looks
+  shit")_. Its front, the hollow-tube spines that only it drew, its table
+  entry and its print files are gone. The card has eight versions now.
+
+### Fixed
+- **Noto's upright shrimp is straight** _(his call, verbatim: „"noto" is
+  also wrong", then „in noto the second shrimp should be "straight"")_. The
+  emoji's tail curls under, so turning the drawing upright kept the hook;
+  the 2026-09-30 entry called it a straight shrimp already, and it was not.
+  The upright pose is now the same drawing with the tail unrolled: every
+  point inside the curl, taken around its centre, is laid out along a line
+  at the curl's radius, so the length along the spine and the shell stripes
+  are kept, and head, legs and antennae are untouched. It is turned 7° so it
+  stands plumb. The curled pose is unchanged.
+
 ## 2026-09-30 - a business card, in nine versions
 
 ### New

@@ -4,8 +4,8 @@ Every base below was picked because its licence asks for a notice in the
 source and nothing printed on the card. Each version's curled shrimp is the
 icon as published, recoloured; each upright shrimp is derived from it (the
 same head and antenna, the body straightened), which is the modification
-Apache 2.0 section 4(b) asks to be stated. The version "skizze" and the
-mark on the back are drawn for deshrimp and carry no third-party licence.
+Apache 2.0 section 4(b) asks to be stated. The mark on the back is drawn
+for deshrimp and carries no third-party licence.
 
   version             source                                  licence
   dunkel, hell,       Lucide `shrimp`, lucide-static 1.49.0   ISC
@@ -15,9 +15,10 @@ mark on the back are drawn for deshrimp and carry no third-party licence.
   hugeicons           Hugeicons `shrimp` (stroke rounded)     MIT
   meteor              Meteor Icons `shrimp`, zkreations       MIT
   noto                Noto Emoji `shrimp` (U+1F990),          Apache-2.0
-                      Google; recoloured, both poses are
-                      the drawing turned, the upright one
-                      also mirrored, neither straightened
+                      Google; recoloured, the curled pose
+                      turned, the upright one the drawing
+                      with its tail unrolled straight,
+                      then turned and mirrored
 
 
 ================================================================ Lucide
