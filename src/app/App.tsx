@@ -468,14 +468,22 @@ function PoseOverlay({ videoRef }: { videoRef: RefObject<HTMLVideoElement | null
  * worse than no signal.
  */
 
-/** The bundled sound files under `snd/`. */
-const SOUND_FILE: Record<SoundName, string> = {
-    fart: 'fart.mp3',
-    ahem: 'ahem.mp3',
-    scream: 'scream.mp3',
-    knuckles: 'knuckles.mp3',
-    whip: 'whip.wav',
-    rimshot: 'rimshot.mp3',
+/**
+ * The bundled sound files under `snd/`. A sound with more than one file plays
+ * a random one of them each time.
+ *
+ * The fart has eleven, the recordings he sent _(2026-10-05: „on fartsound
+ * setting it should always play a random one of those, not the same fart sound
+ * each time")_. He sent twelve; two were the same bytes under different names,
+ * so they are one file here.
+ */
+const SOUND_FILES: Record<SoundName, string[]> = {
+    fart: Array.from({ length: 11 }, (_, i) => `fart-${String(i + 1).padStart(2, '0')}.mp3`),
+    ahem: ['ahem.mp3'],
+    scream: ['scream.mp3'],
+    knuckles: ['knuckles.mp3'],
+    whip: ['whip.wav'],
+    rimshot: ['rimshot.mp3'],
 };
 
 /**
@@ -563,7 +571,9 @@ function loudness(run: number): number {
 
 function useBeep() {
     const ctxRef = useRef<AudioContext | null>(null);
-    const players = useRef<Partial<Record<SoundName, HTMLAudioElement>>>({});
+    const players = useRef<Partial<Record<SoundName, HTMLAudioElement[]>>>({});
+    /** Which file of each sound played last, so the next pick can skip it. */
+    const lastPick = useRef<Partial<Record<SoundName, number>>>({});
 
     const prepare = useCallback(() => {
         if (ctxRef.current) {
@@ -576,12 +586,14 @@ function useBeep() {
 
         // Build the elements inside the gesture too. Created later, iOS treats
         // the first play() as un-gestured and stays quiet.
-        (Object.keys(SOUND_FILE) as SoundName[]).forEach((name) => {
+        (Object.keys(SOUND_FILES) as SoundName[]).forEach((name) => {
             if (players.current[name]) return;
-            const el = new Audio(SOUND_DIR + '/' + SOUND_FILE[name]);
-            el.preload = 'auto';
-            el.volume = SOUND_GAIN[name];
-            players.current[name] = el;
+            players.current[name] = SOUND_FILES[name].map((file) => {
+                const el = new Audio(SOUND_DIR + '/' + file);
+                el.preload = 'auto';
+                el.volume = SOUND_GAIN[name];
+                return el;
+            });
         });
     }, []);
 
@@ -731,8 +743,17 @@ function useBeep() {
     }, []);
 
     const play = useCallback((name: SoundName, level = 1) => {
-        const template = players.current[name];
-        if (!template) { synth(name, level); return; }
+        const pool = players.current[name];
+        if (!pool?.length) { synth(name, level); return; }
+
+        // A random file, but never the one that just played: with the same
+        // recording twice in a row, random would not sound random.
+        let pick = Math.floor(Math.random() * pool.length);
+        if (pool.length > 1 && pick === lastPick.current[name]) {
+            pick = (pick + 1 + Math.floor(Math.random() * (pool.length - 1))) % pool.length;
+        }
+        lastPick.current[name] = pick;
+        const template = pool[pick];
 
         // A fresh node per play, so a second alarm layers over the first
         // instead of restarting it. The preloaded template is never played

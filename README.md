@@ -256,13 +256,14 @@ binary" is not good enough. The script is idempotent, so a second
 
 ## The sounds
 
-Fart, throat-clear, scream, knuckle-crack, whip crack, rimshot - six bundled
-sound files in `public/snd/`. Oscillators remain as a fallback, one waveform
+Fart, throat-clear, scream, knuckle-crack, whip crack, rimshot - six sounds,
+bundled as files in `public/snd/`. The fart is eleven recordings, and each
+signal plays a random one of them, never the same one twice in a row. Oscillators remain as a fallback, one waveform
 per sound, because a posture watcher whose signal is silent is not one.
 
 These *are* committed, which is the opposite of the rule applied to the model:
 that one is a third-party binary, re-fetchable from a pinned URL at any time.
-These ~200 KB exist nowhere else.
+These ~750 KB exist nowhere else.
 
 ## Privacy
 
