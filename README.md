@@ -257,8 +257,9 @@ binary" is not good enough. The script is idempotent, so a second
 ## The sounds
 
 Fart, throat-clear, scream, knuckle-crack, whip crack, rimshot - six sounds,
-bundled as files in `public/snd/`. The fart is eleven recordings, and each
-signal plays a random one of them, never the same one twice in a row. Oscillators remain as a fallback, one waveform
+bundled as files in `public/snd/`. The fart is twelve recordings, played in a
+shuffled order: each one once before any of them repeats, and never the same
+one twice in a row. Oscillators remain as a fallback, one waveform
 per sound, because a posture watcher whose signal is silent is not one.
 
 These *are* committed, which is the opposite of the rule applied to the model:

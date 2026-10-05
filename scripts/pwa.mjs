@@ -74,6 +74,7 @@ const STATIC = [
     'snd/fart-09.mp3',
     'snd/fart-10.mp3',
     'snd/fart-11.mp3',
+    'snd/fart-12.mp3',
     'snd/knuckles.mp3',
     'snd/rimshot.mp3',
     'snd/scream.mp3',

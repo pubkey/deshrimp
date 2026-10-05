@@ -14,18 +14,20 @@ wrote them in.
 ## 2026-10-05 - a different fart each time
 
 ### Changed
-- **The fart is eleven recordings, and each signal picks one at random**
+- **The fart is twelve recordings, played in a shuffled order**
   _(his call, verbatim: „i give you some fart sounds. on fartsound setting it
   should always play a random one of those, not the same fart sound each
-  time")_. He sent twelve files; `apebble-fart-2` and `apebble-fart-10` are the
-  same bytes, so they are one file. They are `public/snd/fart-01.mp3` to
-  `fart-11.mp3`, precached for offline like the rest, with their hashes in
-  `sounds.sha256`.
-- **Never the same one twice in a row.** A plain random pick out of eleven
-  repeats about one signal in eleven, and at one signal a second that is heard
+  time", then „keep also the previous fart sound. ar random picking ensure we
+  never play the same sound twice")_. He sent twelve files; `apebble-fart-2`
+  and `apebble-fart-10` are the same bytes, so they are one file. They are
+  `public/snd/fart-01.mp3` to `fart-11.mp3`, and the old `fart.mp3` stays as
+  `fart-12.mp3` with its bytes untouched. All twelve are precached for offline,
+  with their hashes in `sounds.sha256`.
+- **No repeats.** The recordings are dealt from a shuffled deck: every one
+  plays once before any of them plays again, and a new round never opens with
+  the one that closed the last round. A fresh random pick each time would
+  repeat about one signal in twelve, and at one signal a second that is heard
   as "the same fart again", which is exactly what he asked to stop.
-- **The old `fart.mp3` is gone.** He asked for a random one of *those*, and it
-  was not among them.
 - Every sound is now a list of files; the other five are lists of one. The
   setting itself is unchanged, so no settings migration.
 

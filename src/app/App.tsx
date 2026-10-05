@@ -472,13 +472,15 @@ function PoseOverlay({ videoRef }: { videoRef: RefObject<HTMLVideoElement | null
  * The bundled sound files under `snd/`. A sound with more than one file plays
  * a random one of them each time.
  *
- * The fart has eleven, the recordings he sent _(2026-10-05: „on fartsound
- * setting it should always play a random one of those, not the same fart sound
- * each time")_. He sent twelve; two were the same bytes under different names,
- * so they are one file here.
+ * The fart has twelve: the eleven recordings he sent _(2026-10-05: „on
+ * fartsound setting it should always play a random one of those, not the same
+ * fart sound each time")_ and the one it always had, which he asked to keep
+ * („keep also the previous fart sound"). He sent twelve files; two were the
+ * same bytes under different names, so they are one file here. `fart-12.mp3`
+ * is the old `fart.mp3`, bytes untouched.
  */
 const SOUND_FILES: Record<SoundName, string[]> = {
-    fart: Array.from({ length: 11 }, (_, i) => `fart-${String(i + 1).padStart(2, '0')}.mp3`),
+    fart: Array.from({ length: 12 }, (_, i) => `fart-${String(i + 1).padStart(2, '0')}.mp3`),
     ahem: ['ahem.mp3'],
     scream: ['scream.mp3'],
     knuckles: ['knuckles.mp3'],
@@ -572,7 +574,12 @@ function loudness(run: number): number {
 function useBeep() {
     const ctxRef = useRef<AudioContext | null>(null);
     const players = useRef<Partial<Record<SoundName, HTMLAudioElement[]>>>({});
-    /** Which file of each sound played last, so the next pick can skip it. */
+    /**
+     * The files of each sound still to come in this round, shuffled. Drawn
+     * from the end, refilled when empty.
+     */
+    const deck = useRef<Partial<Record<SoundName, number[]>>>({});
+    /** Which file of each sound played last, so a new round cannot open with it. */
     const lastPick = useRef<Partial<Record<SoundName, number>>>({});
 
     const prepare = useCallback(() => {
@@ -746,12 +753,23 @@ function useBeep() {
         const pool = players.current[name];
         if (!pool?.length) { synth(name, level); return; }
 
-        // A random file, but never the one that just played: with the same
-        // recording twice in a row, random would not sound random.
-        let pick = Math.floor(Math.random() * pool.length);
-        if (pool.length > 1 && pick === lastPick.current[name]) {
-            pick = (pick + 1 + Math.floor(Math.random() * (pool.length - 1))) % pool.length;
+        // A shuffled deck rather than a fresh random pick each time _(„ar
+        // random picking ensure we never play the same sound twice")_: every
+        // file plays once before any of them plays again, and a new round never
+        // opens with the file that closed the last one.
+        let cards = deck.current[name];
+        if (!cards?.length) {
+            cards = pool.map((_, i) => i);
+            for (let i = cards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cards[i], cards[j]] = [cards[j], cards[i]];
+            }
+            if (cards.length > 1 && cards[cards.length - 1] === lastPick.current[name]) {
+                [cards[0], cards[cards.length - 1]] = [cards[cards.length - 1], cards[0]];
+            }
+            deck.current[name] = cards;
         }
+        const pick = cards.pop()!;
         lastPick.current[name] = pick;
         const template = pool[pick];
 
