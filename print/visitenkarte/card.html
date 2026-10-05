@@ -84,6 +84,9 @@
   }
   .page:last-child { page-break-after: auto; break-after: auto; }
   svg { display: block; width: 91mm; height: 61mm; }
+  /* ?trim: the card cut to 85 x 55 with no bleed, for shops that want only the trim. */
+  :root[data-trim] .page,
+  :root[data-trim] svg { width: 85mm; height: 55mm; }
 
   .front { display: none; }
   :root[data-front="lucide"] .front-lucide,
@@ -311,6 +314,12 @@
   var v = VARIANTS[new URLSearchParams(location.search).get('v')] || VARIANTS.noto;
   document.documentElement.dataset.scheme = v[0];
   document.documentElement.dataset.front = v[1];
+  if (new URLSearchParams(location.search).has('trim')) {
+    document.documentElement.dataset.trim = '';
+    document.querySelectorAll('.page > svg').forEach(function (svg) {
+      svg.setAttribute('viewBox', '3 3 85 55');
+    });
+  }
 
   // Scales a pair to one factor, so both shrimp keep the same line weight,
   // then stands both on the baseline at y 41: the curled one centred on

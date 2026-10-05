@@ -39,6 +39,12 @@ wrote them in.
 - **`noto` is the one he picked** _(his call, verbatim: „take noto. wo in
   deutschland soll ich die drucken lassen?")_. `card.html` without `?v=` now
   shows it; the other seven stay in the folder for now.
+- **Noto as a file cut to exactly 85 x 55 mm** _(his call, verbatim: „gib
+  mir noto in format "85 x 55" millimenter")_.
+  `deshrimp-visitenkarte-noto-85x55.pdf` has the two sides at the final size
+  with no bleed, for a shop that asks for the trim only; `card.html?trim`
+  draws it, and `render.cjs` writes it next to the 91 x 61 mm file. The
+  bleed file stays the one to use when a shop asks for bleed.
 
 ## 2026-09-30 - a business card, in nine versions
 

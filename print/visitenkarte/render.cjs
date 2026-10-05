@@ -5,7 +5,8 @@
 //
 // Playwright is not a dependency of the app, so this borrows a global install.
 // Each PDF is 91 x 61 mm per page (85 x 55 trim plus 3 mm bleed), page 1 the
-// front and page 2 the back, which is what a print shop asks for. The previews
+// front and page 2 the back, which is what a print shop asks for; noto, the
+// chosen version, also gets a -85x55.pdf cut to the trim with no bleed. The previews
 // are cut to the trim so they show the card as it will be held; with --guides,
 // proofs that keep the bleed and draw the trim (cyan) and the safe area
 // (magenta) are written as well. Those are for checking, not for committing.
@@ -37,6 +38,21 @@ const MM = 96 / 25.4;
       height: '61mm',
       printBackground: true,
     });
+
+    // The chosen version also gets a file cut to the trim, 85 x 55 mm with no
+    // bleed, for shops that ask for the final size only.
+    if (name === 'noto') {
+      await page.goto(card + '?v=' + name + '&trim');
+      await page.evaluate(() => document.fonts.ready);
+      await page.pdf({
+        path: path.join(dir, 'deshrimp-visitenkarte-' + name + '-85x55.pdf'),
+        width: '85mm',
+        height: '55mm',
+        printBackground: true,
+      });
+      await page.goto(card + '?v=' + name);
+      await page.evaluate(() => document.fonts.ready);
+    }
 
     // Only the version's own front is displayed, so the first visible page is it.
     const [front, back] = await page.$$('.page:visible');
