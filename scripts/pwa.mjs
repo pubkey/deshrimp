@@ -51,9 +51,11 @@ const here = dirname(fileURLToPath(import.meta.url));
  * The per-language pages (`de.html`, `ja.html`, ...). `scripts/seo.mjs` writes
  * them after the bundle, so they are not in it either - and a site that is one
  * URL per language must be able to open the URL that was installed, not only
- * the root one, when the network is gone.
+ * the root one, when the network is gone. The legal notice rides along: it is
+ * a few hundred bytes, and a page that works offline should not 404 on the one
+ * link in its footer.
  */
-const PAGES = LANGS.map((l) => `./${l}.html`);
+const PAGES = [...LANGS.map((l) => `./${l}.html`), './legal-notice.html'];
 
 /** Served as-is out of `public/`, so Vite's bundle does not list them. */
 const STATIC = [

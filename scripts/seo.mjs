@@ -51,6 +51,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { legalNotice } from './legal-notice.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const read = (p) => JSON.parse(readFileSync(resolve(here, '..', p), 'utf8'));
@@ -79,6 +80,8 @@ for (const lang of LANGS) {
 }
 for (const lang of Object.keys(SEO)) {
     if (!DATA[lang]) throw new Error(`[seo] seo.json has "${lang}", data.json does not`);
+    // The label of the link to the legal notice, which every page must carry.
+    if (!SEO[lang].legal) throw new Error(`[seo] seo.json has no "legal" label for "${lang}"`);
 }
 
 /** The page's own file name. The root page has none: it detects. */
@@ -186,6 +189,9 @@ function body(lang) {
         + `<h1>${esc(SEO[code].title)}</h1>`
         + `<p>${inline(written.intro)}</p>`
         + steps
+        // The legal notice, reachable from the copy a crawler and a reader
+        // without JavaScript get, not only from the app (`legal-notice.mjs`).
+        + `<footer><a href="./legal-notice.html">${esc(SEO[code].legal)}</a></footer>`
         + `</div>`;
 }
 
@@ -260,7 +266,7 @@ const robots = () => [
 
 /**
  * Rewrites `index.html` at build time and writes the thirteen language pages
- * beside it. Dev is untouched - it needs no SEO, and `window.__APP_LANG__` is
+ * and the legal notice beside it. Dev is untouched - it needs no SEO, and `window.__APP_LANG__` is
  * absent there, so `npm run dev` is the detecting page it has always been.
  */
 export default function seo() {
@@ -290,9 +296,10 @@ export default function seo() {
             for (const lang of LANGS) {
                 writeFileSync(join(outDir, pageOf(lang)), render(shell, lang));
             }
+            writeFileSync(join(outDir, 'legal-notice.html'), legalNotice(shell, SITE));
             writeFileSync(join(outDir, 'sitemap.xml'), sitemap());
             writeFileSync(join(outDir, 'robots.txt'), robots());
-            console.log(`[seo] ${LANGS.length} language pages, sitemap.xml, robots.txt`);
+            console.log(`[seo] ${LANGS.length} language pages, legal-notice.html, sitemap.xml, robots.txt`);
         },
     };
 }

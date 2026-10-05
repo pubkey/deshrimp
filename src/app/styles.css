@@ -233,3 +233,38 @@
   overflow: auto;
   border-radius: var(--radius-md);
 }
+
+/* ------------------------------------------------------------- legal notice */
+/* The footer link under the grid, and the static page it leads to
+ * (`scripts/legal-notice.mjs`). Secondary ink, not the accent: the accent is a
+ * budget (DESIGN.md), and a legal link is the last thing on the page that
+ * should spend it. Underlined instead, so it still reads as a link. */
+.haltung-footer {
+  margin-top: var(--space-8);
+  padding-top: var(--space-4);
+  border-top: var(--border-width) solid var(--border-default);
+  font-size: var(--text-sm);
+}
+.haltung-footer a,
+.legal a {
+  color: var(--text-secondary);
+}
+.haltung-footer a:hover,
+.legal a:hover {
+  color: var(--text-primary);
+}
+
+.legal { padding-top: var(--space-8); }
+.legal h1,
+.legal .legal-lang {
+  margin: var(--space-8) 0 var(--space-4);
+  font-size: var(--text-display);
+  color: var(--text-primary);
+}
+.legal h2:not(.legal-lang) {
+  margin: var(--space-6) 0 var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+.legal p { margin: 0; }
+.legal-back { font-size: var(--text-sm); }

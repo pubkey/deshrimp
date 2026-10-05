@@ -95,6 +95,9 @@ jobs:
               || { echo "::error::dist/$lang.html does not force $lang"; exit 1; }
           done
           test -f dist/sitemap.xml || { echo "::error::no dist/sitemap.xml"; exit 1; }
+          # Every page links the legal notice in its footer, and German law
+          # wants it reachable. A build without it publishes a 404 there.
+          test -f dist/legal-notice.html || { echo "::error::no dist/legal-notice.html - the Impressum link would 404"; exit 1; }
           test -f dist/robots.txt  || { echo "::error::no dist/robots.txt"; exit 1; }
           # The custom domain lives in this file and nowhere else. Publishing a
           # tree without it hands the site back to pubkey.github.io and takes

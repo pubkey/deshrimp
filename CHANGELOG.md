@@ -11,6 +11,35 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-10-05 - a legal notice
+
+### New
+- **`/legal-notice.html`, the Impressum** _(his call, verbatim: „add a
+  legal-notice page to deshrimp")_. Name, the Stuttgart coworking address,
+  email and VAT ID, the same details the rxdb.info legal notice publishes,
+  because it is the same person and the same sole proprietorship. German first,
+  since that is the language the obligation (§ 5 DDG) is in, then the same
+  facts once in English. Not thirteen translations: an address translated
+  thirteen times is thirteen places for it to go stale.
+- **Every page links it**, in a small footer under the grid, in zen as well as
+  on the dashboard, and in the prerendered copy a crawler or a reader without
+  JavaScript gets. The label is translated into all thirteen languages and sits
+  in `seo.json`, because the build writes the same link and cannot read the
+  TypeScript tables.
+- It is a static page, not a view of the app: built from the same shell as the
+  language pages, so it has the stylesheet and the stored theme but runs no
+  bundle. It is `noindex`, precached by the service worker, and the deploy
+  refuses a build without it.
+
+### Left out on purpose
+- **No phone number.** rxdb.info does not show one either. Email is the
+  contact channel; adding the number is one line if he wants it there.
+- **No EU online dispute resolution (ODR) paragraph.** The Commission shut the
+  ODR platform down on 2025-07-20 and the duty to link it went with it, and
+  deshrimp sells nothing anyway.
+- **No liability disclaimer boilerplate.** Not required, and a copy of the
+  rxdb.info paragraphs would promise things about content and links this page
+  does not have.
 ## 2026-10-05 - a different fart each time
 
 ### Changed

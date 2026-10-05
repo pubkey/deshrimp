@@ -49,7 +49,7 @@ import {
 } from './db';
 import { LineChart, formatNumber, withUnit } from '@charts';
 import { copyFor, localeFor, LANGUAGES, type Copy, type Lang } from './i18n';
-import { langHref, pageLang, seoTitle } from './lang-url';
+import { LEGAL_HREF, langHref, legalLabel, pageLang, seoTitle } from './lang-url';
 import {
     analysePose, frameOf as canvasFrame, landmarksOf, loadPose, MEASURED_LINES,
     MEASURED_POINTS, onPoseProgress, POINT_MIN_VISIBILITY, poseProgress,
@@ -2063,6 +2063,14 @@ function Content() {
                             </>
                         ) : null}
                     </Tiles>
+
+                    {/* The legal notice, in zen as much as on the dashboard:
+                        the law wants it reachable from every page, and a
+                        page hiding it behind a view switch is not that.
+                        Outside the grid, because it is not a tile. */}
+                    <footer className="haltung-footer">
+                        <a href={LEGAL_HREF}>{legalLabel(lang)}</a>
+                    </footer>
                 </Page>
             </CopyContext.Provider>
         </LangContext.Provider>
