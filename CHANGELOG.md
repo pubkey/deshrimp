@@ -11,6 +11,25 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-10-08 - the email address as a picture
+
+### Changed
+- **The legal notice draws the email address instead of writing it**
+  _(his call, verbatim: „in the legal-notice render the email as image to
+  spammers do not find it that easy")_. `scripts/legal-notice.mjs` turns each
+  glyph into an SVG path from the vendored IBM Plex Sans at build time, so the
+  shipped HTML has no address, no `@` and no `mailto:` in it. Inline SVG rather
+  than a PNG: it takes `currentColor`, so it follows light and dark, and it
+  stays sharp at any zoom. It looks the same as the text around it.
+- **The build checks it.** A `legal-notice.html` that contains the address as
+  text, or a `mailto:`, fails the build.
+
+### Left out on purpose
+- **No spelled-out label.** The picture is labelled "E-Mail-Adresse als Bild"
+  / "email address as an image", not with the address, because a label is text
+  a harvester reads as easily as the address. The cost is that a screen reader
+  cannot read the address out and nobody can copy it.
+
 ## 2026-10-05 - a legal notice
 
 ### New
