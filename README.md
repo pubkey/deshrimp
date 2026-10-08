@@ -195,6 +195,11 @@ same sole proprietorship); when they change there, they change in
 Friedrichstraße 5, rxdb.info the coworking space at Nr. 13 (his call,
 2026-10-05).
 
+The email address is not text. At build time each of its glyphs is turned into
+an SVG path out of the vendored IBM Plex Sans (`fontkit`, a dev dependency), so
+the shipped page carries outlines and no address for a harvester to read. The
+build refuses a page in which the address turns up as text after all.
+
 `public/CNAME` carries the domain, and `.github/workflows/deploy.yml` builds
 every push to `master` and force-pushes `dist/` to the `github-pages` branch. It
 refuses to publish a build whose `dist/mp/` is empty, because that failure is

@@ -267,4 +267,7 @@
   color: var(--text-secondary);
 }
 .legal p { margin: 0; }
+/* The email address, drawn as glyph outlines (`scripts/legal-notice.mjs`).
+ * Inline, because the reset makes every svg a block and it sits in a sentence. */
+.legal-email { display: inline; }
 .legal-back { font-size: var(--text-sm); }

@@ -27,14 +27,49 @@
  * address would add nothing but places for it to go stale.
  */
 
+import { fileURLToPath } from 'node:url';
+import * as fontkit from 'fontkit';
+
 /** The theme the app stored (`src/ui/theme.ts`), so this page opens in it too. */
 const THEME = `<script>try{var t=localStorage.getItem('ui-theme');`
     + `if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>`;
 
-/** Plain text, not a `mailto:` - the address is written out for people to copy. */
-const EMAIL = 'daniel.meyer&#64;rxdb.info';
+/**
+ * The address is drawn, not written _(his call, verbatim: „in the legal-notice
+ * render the email as image to spammers do not find it that easy")_. Each
+ * glyph of IBM Plex Sans becomes an SVG path at build time, so the shipped page
+ * holds outlines and no text: a harvester reading the HTML finds no address,
+ * no `@` and no `mailto:`. Inline rather than a separate file, so it takes
+ * `currentColor` and follows the theme, and stays sharp at any zoom.
+ *
+ * The price is that it cannot be copied or read aloud. The label says what the
+ * picture is without spelling it out, because a spelled-out label is text a
+ * harvester reads just as well.
+ */
+const EMAIL = 'daniel.meyer@rxdb.info';
+const FONT = fileURLToPath(new URL('../src/ui/fonts/ibm-plex-sans-latin.woff2', import.meta.url));
 
-const BODY = `<div class="ui-shell">
+function emailImage(label) {
+    const font = fontkit.openSync(FONT);
+    const run = font.layout(EMAIL);
+    const em = font.unitsPerEm;
+    let x = 0;
+    const paths = run.glyphs.map((glyph, i) => {
+        const d = glyph.path.toSVG();
+        const at = x + run.positions[i].xOffset;
+        x += run.positions[i].xAdvance;
+        return d ? `<path transform="translate(${at} 0)" d="${d}"/>` : '';
+    }).join('');
+    const top = font.ascent;
+    const height = font.ascent - font.descent;
+    return `<svg class="legal-email" role="img" aria-label="${label}"`
+        + ` viewBox="0 ${-top} ${x} ${height}"`
+        + ` style="width:${x / em}em;height:${height / em}em;vertical-align:${font.descent / em}em"`
+        + ` fill="currentColor"><g transform="scale(1 -1)">${paths}</g></svg>`;
+}
+
+/** A function, so the font is only read when the build asks for the page. */
+const body = () => `<div class="ui-shell">
   <main class="ui-main">
     <div class="ui-wrap narrow legal">
       <p class="legal-back"><a href="./">deshrimp</a></p>
@@ -44,7 +79,7 @@ const BODY = `<div class="ui-shell">
         <h2>Angaben gemäß § 5 DDG</h2>
         <p>Daniel Meyer<br />Friedrichstraße 5<br />70174 Stuttgart<br />Deutschland</p>
         <h2>Kontakt</h2>
-        <p>E-Mail: ${EMAIL}</p>
+        <p>E-Mail: ${emailImage('E-Mail-Adresse als Bild')}</p>
         <h2>Umsatzsteuer-Identifikationsnummer</h2>
         <p>gemäß § 27a Umsatzsteuergesetz: DE357840955</p>
         <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
@@ -54,7 +89,7 @@ const BODY = `<div class="ui-shell">
       <h2 lang="en" class="legal-lang">Legal notice</h2>
       <section lang="en">
         <p>deshrimp is run by Daniel Meyer, Friedrichstraße 5, 70174 Stuttgart,
-        Germany. Email: ${EMAIL}. VAT ID: DE357840955.</p>
+        Germany. Email: ${emailImage('email address as an image')}. VAT ID: DE357840955.</p>
       </section>
     </div>
   </main>
@@ -84,12 +119,15 @@ export function legalNotice(shell, site) {
         .replace(/^\s*<link rel="modulepreload"[^>]*>\n?/gm, '')
         .replace('<html lang="en">', '<html lang="de">')
         .replace('</head>', `${head(site)}\n  </head>`)
-        .replace('<div id="root"></div>', BODY);
+        .replace('<div id="root"></div>', body());
     if (html.includes('type="module"')) {
         throw new Error('[legal] the bundle is still referenced from legal-notice.html');
     }
     if (!html.includes('rel="stylesheet"')) {
         throw new Error('[legal] legal-notice.html would have no stylesheet');
+    }
+    if (html.includes(EMAIL.split('@')[1]) || html.includes('mailto:')) {
+        throw new Error('[legal] the email address is in legal-notice.html as text');
     }
     return html;
 }

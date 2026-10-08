@@ -13,7 +13,7 @@
     "postinstall": "node scripts/fetch-pose-model.mjs"
   },
   "dependencies": {
-    "@mediapipe/tasks-vision": "^1.0.1",
+    "@mediapipe/tasks-vision": "1.0.1",
     "events": "3.3.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -26,6 +26,7 @@
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
     "@vitejs/plugin-react": "4.3.4",
+    "fontkit": "2.0.4",
     "typescript": "5.9.3",
     "vite": "^6.4.3"
   }
