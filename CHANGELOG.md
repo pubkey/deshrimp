@@ -11,6 +11,16 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-10-15 - Cloudflare Web Analytics
+
+### New
+- **The Cloudflare Web Analytics beacon is on every page** _(his call,
+  verbatim: „install cloudflare tracking:")_, the snippet pasted as given at
+  the end of `index.html`'s body. `seo.mjs` builds the thirteen language pages
+  and the legal notice from that shell, so all of them carry it. It counts page
+  views without cookies; the camera pictures and the posture readings are still
+  computed and kept on the device and are not part of it.
+
 ## 2026-10-08 - the email address as a picture
 
 ### Changed
