@@ -121,6 +121,7 @@ export const it: Copy = {
     soundName: {
         fart: 'Scoreggia', ahem: 'Colpo di tosse', scream: 'Urlo',
         knuckles: 'Nocche scrocchiate', whip: 'Colpo di frusta', rimshot: 'Rimshot',
+        geiger: 'Contatore Geiger',
     },
 
     leavesTitle: 'Cosa esce da questo dispositivo',

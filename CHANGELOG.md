@@ -11,6 +11,33 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-10-17 - the Geiger counter
+
+### New
+- **A seventh sound, the Geiger counter** _(his call, verbatim: „mach einen
+  "Geiger" sound wo ein geigerzähler schneller oder langsammer wird je nachdem
+  wie weit man falsch sitzt")_. Unlike the others it is not one noise per bad
+  reading: it ticks the whole time, and the rate is how far off he sits. Silent
+  while he sits straight, about 1.5 random clicks a second from the moment a
+  reading turns borderline (70 % of a limit), about 3 a second on the limit,
+  and 40 a second, a near-continuous rattle, at twice the limit. The worst of
+  the three measures decides, the same share `judge()` uses.
+- The clicks are spaced at random like real decays and made with Web Audio,
+  so there is no file to fetch. They are scheduled 1.2 s ahead, which keeps
+  the crackle steady in a background tab, and a new reading takes the queued
+  clicks back, so sitting up silences it at once rather than a second later.
+- „Anhören" plays the whole range once in three seconds, slow to fast.
+- Settings schema v15 widens the sound enum. Nobody is moved onto it.
+
+### Left out on purpose
+- **No volume ramp.** The other sounds start quiet and get louder over four
+  bad readings; here the rate already is the escalation, and a counter that
+  also changes volume blurs the one thing it is saying.
+- **Borderline is audible**, which no other sound is. A counter that only woke
+  up at the threshold would be a beep with extra steps; hearing it speed up as
+  he slumps is the point. Vibration and the notification still only fire on a
+  bad reading.
+
 ## 2026-10-15 - Cloudflare Web Analytics
 
 ### New
