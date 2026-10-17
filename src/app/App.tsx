@@ -484,7 +484,7 @@ const SOUND_FILES: Record<SoundName, string[]> = {
     ahem: ['ahem.mp3'],
     scream: ['scream.mp3'],
     knuckles: ['knuckles.mp3'],
-    whip: ['whip.wav'],
+    whip: ['whip.mp3'],
     rimshot: ['rimshot.mp3'],
 };
 
@@ -494,7 +494,7 @@ const SOUND_FILES: Record<SoundName, string[]> = {
  * least likely to want at full volume behind him in a coworking space.
  */
 const SOUND_GAIN: Record<SoundName, number> = {
-    fart: 1, ahem: 1, scream: 0.6, knuckles: 1, whip: 0.9, rimshot: 0.8,
+    fart: 1, ahem: 1, scream: 0.6, knuckles: 1, whip: 1, rimshot: 0.8,
 };
 
 /**
