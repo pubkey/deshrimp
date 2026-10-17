@@ -1159,6 +1159,40 @@ function Live() {
                     ) : null}
                 </div>
 
+                {/* The three angles sit right under the picture they were read
+                    from _(2026-10-17, his call, verbatim: „das headinfront
+                    sidelean etc muss in die erste bix direkt unter das
+                    video")_. They had a tile of their own beside the controls;
+                    under the well, the number and the picture it came from are
+                    read in one glance. The four are there before the first
+                    reading too, each a plain "-": the tile must not change
+                    height when a state changes (2026-09-15, his call), and an
+                    empty readout says what is going to be measured. */}
+                <div className="haltung-readout">
+                    <Grid min={110}>
+                        {/* An axis over its tolerance is the one place the
+                            accent is allowed to appear on a readout: the
+                            number and its label go coral and pulse, and the
+                            two that are still inside stay in the ink. That is
+                            the whole severity system - whether the accent is
+                            there, not which colour it is. */}
+                        <Stat label={t.statForward} value={last ? deg(last.forward) : '-'}
+                            className={last ? breach(last.forward, settings.maxForward) : undefined}
+                            hint={t.limit(deg(settings.maxForward))} />
+                        <Stat label={t.statLean} value={last ? deg(last.lean) : '-'}
+                            className={last ? breach(last.lean, settings.maxLean) : undefined}
+                            hint={last
+                                ? `${t.sideLabel[last.leanSide]} · ${t.limit(deg(settings.maxLean))}`
+                                : t.limit(deg(settings.maxLean))} />
+                        <Stat label={t.statHeadTilt} value={last ? deg(last.headTilt) : '-'}
+                            className={last ? breach(last.headTilt, settings.maxHeadTilt) : undefined}
+                            hint={t.limit(deg(settings.maxHeadTilt))} />
+                        <Stat label={t.statConfidence}
+                            value={last ? `${Math.round(last.confidence * 100)} %` : '-'}
+                            hint={poseReady() ? t.computedLocally : t.modelLoading} />
+                    </Grid>
+                </div>
+
                 {/* The verdict reads under the picture, not over it _(2026-09-15,
                     his call)_. The camera well is what the tile is for and it
                     should be the first thing in it; a line of prose above it
@@ -1262,37 +1296,10 @@ function Live() {
                 />
             </Panel>
 
-            <Panel id="readout">
-                {last ? (
-                    <Grid min={140}>
-                        {/* An axis over its tolerance is the one place the
-                            accent is allowed to appear on a readout: the number
-                            and its label go coral and pulse, and the two that
-                            are still inside stay white. That is the whole
-                            severity system - whether the accent is there, not
-                            which colour it is. */}
-                        <Stat label={t.statForward} value={deg(last.forward)}
-                            className={breach(last.forward, settings.maxForward)}
-                            hint={t.limit(deg(settings.maxForward))} />
-                        <Stat label={t.statLean} value={deg(last.lean)}
-                            className={breach(last.lean, settings.maxLean)}
-                            hint={`${t.sideLabel[last.leanSide]} · ${t.limit(deg(settings.maxLean))}`} />
-                        <Stat label={t.statHeadTilt} value={deg(last.headTilt)}
-                            className={breach(last.headTilt, settings.maxHeadTilt)}
-                            hint={t.limit(deg(settings.maxHeadTilt))} />
-                        <Stat label={t.statConfidence} value={`${Math.round(last.confidence * 100)} %`}
-                            hint={poseReady() ? t.computedLocally : t.modelLoading} />
-                    </Grid>
-                ) : (
-                    <Empty title={t.noReadingYet} hint={t.noReadingYetHint} />
-                )}
-            </Panel>
-
             {/* Everything below this line is the dashboard _(2026-09-16: „im
                 default ist die webseite zu techlastig mit den vielen daten")_.
-                The three tiles above it are what zen keeps: the picture, the
-                button that starts it, and the three angles the picture just
-                produced. Those answer „am I sitting straight"; the curves, the log,
+                The two tiles above it are what zen keeps: the picture with the
+                three angles it just produced, and the button that starts it. Those answer „am I sitting straight"; the curves, the log,
                 the trend and the thresholds answer questions you ask on
                 purpose, and they are one switch away, at the foot of the
                 control tile above.
@@ -2027,7 +2034,7 @@ function Content() {
                         order here is the order they flow in, and reading order
                         is the only thing that still decides what comes first,
                         because the number of columns is the window's business
-                        rather than ours. In zen the grid is three tiles long
+                        rather than ours. In zen the grid is two tiles long
                         and the rest of this is not rendered at all; the switch
                         at the foot of the control tile brings them back.
 

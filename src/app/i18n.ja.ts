@@ -38,8 +38,6 @@ export const ja: Copy = {
     loadingModelTitle: '少しお待ちください',
     loadingModel: '検出モデルを読み込んでいます - 17 MB、初回だけです。そのあとはブラウザの中に残ります。',
     modelFailed: 'ローカルのモデルを読み込めませんでした。',
-    noReadingYet: 'まだ測定がありません',
-    noReadingYetHint: 'カメラが動き出せば、数秒おきに 1 件ずつ増えていきます。',
 
     verdictTitle: { good: 'まっすぐ座れています', borderline: '傾きはじめています', bad: '姿勢が崩れています' },
     advice: {

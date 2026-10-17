@@ -38,8 +38,6 @@ export const it: Copy = {
     loadingModelTitle: 'Un momento',
     loadingModel: 'Sto caricando il modello di riconoscimento - 17 MB, solo la prima volta. Poi resta nel tuo browser.',
     modelFailed: 'Non è stato possibile caricare il modello locale.',
-    noReadingYet: 'Ancora nessuna misurazione',
-    noReadingYetHint: 'Appena la fotocamera va, ne arriva una ogni pochi secondi.',
 
     verdictTitle: { good: 'Sei seduto dritto', borderline: 'Inizi a piegarti', bad: 'Sei storto' },
     advice: {

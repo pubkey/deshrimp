@@ -158,13 +158,13 @@ Every tile carries a **stable, untranslated id** (`video`, `daychart`,
 not. Nothing spans two columns: two columns plus the gap is 684px, past what a
 tile is allowed to be.
 
-**The grid has two lengths.** Zen is the three tiles that answer the question
+**The grid has two lengths.** Zen is the two tiles that answer the question
 the page is opened with; the dashboard is every tile it has. The switch between
 them is a segmented control at the foot of the tile that holds the controls,
 under its own 11px eyebrow like any other setting, with zen on the left and the
 dashboard on the right. Both words stand there at once: a control that named
 only the view it leads to never said which one you were in. Nothing else marks
-the mode - a page with three tiles on it is visibly a page with three tiles on
+the mode - a page with two tiles on it is visibly a page with two tiles on
 it.
 
 Because there are no section headings any more, **a tile title carries its own

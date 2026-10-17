@@ -38,8 +38,6 @@ export const fr: Copy = {
     loadingModelTitle: 'Un instant',
     loadingModel: 'Le modèle de détection se charge - 17 Mo, seulement la première fois. Ensuite il reste dans ton navigateur.',
     modelFailed: 'Le modèle local n’a pas pu être chargé.',
-    noReadingYet: 'Pas encore de mesure',
-    noReadingYetHint: 'Dès que la caméra tourne, il en arrive une toutes les quelques secondes.',
 
     verdictTitle: { good: 'Tu es assis droit', borderline: 'Ça commence à pencher', bad: 'Tu es de travers' },
     advice: {

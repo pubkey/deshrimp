@@ -38,8 +38,6 @@ export const zh: Copy = {
     loadingModelTitle: '稍等一下',
     loadingModel: '正在加载识别模型，17 MB，只有第一次需要。之后它就留在你的浏览器里。',
     modelFailed: '本地模型没能加载。',
-    noReadingYet: '还没有测量结果',
-    noReadingYetHint: '摄像头一开，每隔几秒就会多出一条。',
 
     verdictTitle: { good: '你坐得很直', borderline: '开始歪了', bad: '你坐歪了' },
     advice: {

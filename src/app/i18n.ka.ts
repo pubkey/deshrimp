@@ -38,8 +38,6 @@ export const ka: Copy = {
     loadingModelTitle: 'ერთი წუთი',
     loadingModel: 'იტვირთება ამომცნობი მოდელი - 17 MB, მხოლოდ პირველად. შემდეგ ბრაუზერში რჩება.',
     modelFailed: 'ლოკალური მოდელი ვერ ჩაიტვირთა.',
-    noReadingYet: 'ჯერ არცერთი გაზომვა',
-    noReadingYetHint: 'როგორც კი კამერა ჩაირთვება, ყოველ რამდენიმე წამში ერთი ემატება.',
 
     verdictTitle: { good: 'სწორად ზიხარ', borderline: 'იწყებ დახრას', bad: 'მრუდედ ზიხარ' },
     advice: {

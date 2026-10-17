@@ -11,6 +11,22 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-10-17 - the angles under the picture
+
+### Changed
+- **The three angles and the confidence sit in the camera tile, right under
+  the picture** _(his call, verbatim: „das headinfront sidelean etc muss in die
+  erste bix direkt unter das video")_. They had a tile of their own beside the
+  controls; now the number and the picture it was read from are one glance.
+  Zen is two tiles instead of three.
+- **The four values are there before the first reading too**, each a plain
+  "-", so the tile does not grow when the first reading lands (his rule of
+  2026-09-15). Four to a row where the tile is wide enough.
+
+### Removed
+- **The "No reading yet" empty state** and its two labels in all thirteen
+  languages: the readout it stood in for is now always drawn.
+
 ## 2026-10-17 - a new palette, light by default, with a dark twin
 
 ### Changed

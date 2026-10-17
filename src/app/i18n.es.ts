@@ -38,8 +38,6 @@ export const es: Copy = {
     loadingModelTitle: 'Un momento',
     loadingModel: 'Se está cargando el modelo de detección - 17 MB, solo la primera vez. Después se queda en tu navegador.',
     modelFailed: 'No se ha podido cargar el modelo local.',
-    noReadingYet: 'Todavía no hay mediciones',
-    noReadingYetHint: 'En cuanto la cámara funcione, llegará una cada pocos segundos.',
 
     verdictTitle: { good: 'Estás sentado derecho', borderline: 'Empiezas a torcerte', bad: 'Estás torcido' },
     advice: {

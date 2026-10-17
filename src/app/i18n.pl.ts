@@ -38,8 +38,6 @@ export const pl: Copy = {
     loadingModelTitle: 'Chwileczkę',
     loadingModel: 'Ładuje się model rozpoznawania - 17 MB, tylko za pierwszym razem. Potem zostaje w przeglądarce.',
     modelFailed: 'Nie udało się załadować lokalnego modelu.',
-    noReadingYet: 'Jeszcze bez pomiarów',
-    noReadingYetHint: 'Gdy kamera ruszy, co kilka sekund dojdzie kolejny.',
 
     verdictTitle: { good: 'Siedzisz prosto', borderline: 'Zaczyna się przechylać', bad: 'Siedzisz krzywo' },
     advice: {

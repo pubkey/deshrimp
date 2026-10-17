@@ -112,8 +112,6 @@ const de = {
     loadingModelTitle: 'Einen Moment',
     loadingModel: 'Das Erkennungsmodell wird geladen - 17 MB, nur beim ersten Mal. Danach liegt es im Browser.',
     modelFailed: 'Das lokale Modell ließ sich nicht laden.',
-    noReadingYet: 'Noch keine Messung',
-    noReadingYetHint: 'Sobald die Kamera läuft, kommt alle paar Sekunden eine dazu.',
 
     verdictTitle: { good: 'Du sitzt gerade', borderline: 'Fängt an zu kippen', bad: 'Du sitzt schief' } as Record<Verdict, string>,
     /** The sentence under the verdict. `pose.ts` picks the key, this is the wording. */
@@ -279,8 +277,6 @@ const en: Copy = {
     loadingModelTitle: 'One moment',
     loadingModel: 'Loading the detection model - 17 MB, only the first time. After that it lives in your browser.',
     modelFailed: 'The local model could not be loaded.',
-    noReadingYet: 'No reading yet',
-    noReadingYetHint: 'Once the camera runs, one arrives every few seconds.',
 
     verdictTitle: { good: 'You are sitting straight', borderline: 'Starting to tip', bad: 'You are sitting crooked' },
     advice: {

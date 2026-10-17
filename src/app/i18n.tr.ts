@@ -38,8 +38,6 @@ export const tr: Copy = {
     loadingModelTitle: 'Bir saniye',
     loadingModel: 'Algılama modeli yükleniyor - 17 MB, yalnızca ilk seferde. Sonrasında tarayıcında kalır.',
     modelFailed: 'Yerel model yüklenemedi.',
-    noReadingYet: 'Henüz ölçüm yok',
-    noReadingYetHint: 'Kamera çalışmaya başlayınca birkaç saniyede bir yenisi gelir.',
 
     verdictTitle: { good: 'Dik oturuyorsun', borderline: 'Yatmaya başlıyor', bad: 'Eğri oturuyorsun' },
     advice: {

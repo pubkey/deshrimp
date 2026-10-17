@@ -38,8 +38,6 @@ export const nl: Copy = {
     loadingModelTitle: 'Een moment',
     loadingModel: 'Het herkenningsmodel wordt geladen - 17 MB, alleen de eerste keer. Daarna staat het in je browser.',
     modelFailed: 'Het lokale model kon niet worden geladen.',
-    noReadingYet: 'Nog geen meting',
-    noReadingYetHint: 'Zodra de camera loopt, komt er om de paar seconden een bij.',
 
     verdictTitle: { good: 'Je zit rechtop', borderline: 'Begint scheef te gaan', bad: 'Je zit scheef' },
     advice: {
