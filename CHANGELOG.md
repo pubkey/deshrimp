@@ -47,9 +47,6 @@ wrote them in.
   is now the default in `colors.css`.
 
 ### Left alone
-- **`mark-on-accent.svg`**, the white mark for a coral ground. Its colours are
-  already right, so it keeps its C2PA credential.
-
 ### Changed, at the cost of a signature
 - **`public/brand/`, six of the seven files, are in the new palette**
   _(his call, verbatim: „fix public/brand/*.svg")_. `mark.svg` and `logo.svg`
@@ -57,10 +54,11 @@ wrote them in.
   `-inverse` pair is `#F0F0F0` with the coral dot for the dark ground; the
   one-colour grey mark is `#8C8C8C`. `mark-mono.svg` loses the em dash in its
   title, which was the last one in the repo.
-- **Their C2PA content credentials are removed rather than left broken.** A
-  credential signs the exact bytes, so any edit makes it report "tampered"; a
-  file without one simply makes no claim. The pictures themselves are drawn
-  the same as before.
+- **All seven lose their C2PA content credentials** _(his call, verbatim:
+  „scheiß auf das prüfsiegel")_, `mark-on-accent.svg` included although its
+  colours were already right. A credential signs the exact bytes, so an edit
+  makes it report "tampered"; a file without one simply makes no claim. The
+  pictures themselves are drawn the same as before.
 - **Two contrast gaps in the palette as given**: the grey `#8C8C8C` is 3.36:1 on
   white and the coral is 2.28:1, both under the 4.5:1 for small text. Written
   up in `src/ui/DESIGN.md` under "Open questions" rather than fixed with a

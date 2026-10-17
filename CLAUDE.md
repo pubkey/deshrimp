@@ -12,10 +12,9 @@ appositive with a doubled em dash; there it becomes a full-width comma `，`, wh
 is what the sentence would otherwise have used.
 
 `public/brand/*.svg` used to be the one exception, because they carried C2PA
-content credentials and editing a byte broke the signature. Six of the seven
-were redrawn in the new palette on 2026-10-17 and lost their credential with it,
-on his call; only `mark-on-accent.svg` is still signed. There is no exception
-any more.
+content credentials and editing a byte broke the signature. The credentials
+were dropped on 2026-10-17 on his call, so those files are ordinary SVGs now and
+there is no exception any more.
 
 To check before committing:
 
