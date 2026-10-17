@@ -31,10 +31,7 @@ export const ka: Copy = {
     statForward: 'თავი მხრებზე წინ',
     statLean: 'გვერდზე დახრა',
     statHeadTilt: 'თავის დახრა',
-    statConfidence: 'სანდოობა',
     limit: (v: string) => `ზღვარი ${v}`,
-    computedLocally: 'ლოკალურად გამოთვლილი',
-    modelLoading: 'მოდელი ჯერ იტვირთება',
     loadingModelTitle: 'ერთი წუთი',
     loadingModel: 'იტვირთება ამომცნობი მოდელი - 17 MB, მხოლოდ პირველად. შემდეგ ბრაუზერში რჩება.',
     modelFailed: 'ლოკალური მოდელი ვერ ჩაიტვირთა.',
@@ -52,7 +49,6 @@ export const ka: Copy = {
         forward: 'თავი მხრებზე წინაა - ნიკაპი შეიკავე და კეფა უკან წაიღე.',
     },
     verdictLabel: { good: 'სწორი', borderline: 'ზღვარზე', bad: 'მრუდე' },
-    sideLabel: { left: 'მარცხნივ', right: 'მარჯვნივ', none: 'სწორად' },
 
     todayTitle: 'დღეს',
     todaySubtitle: 'ყველა გაზომვა შუაღამიდან, აქ, ამ მოწყობილობაზე.',

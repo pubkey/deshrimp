@@ -31,10 +31,7 @@ export const pt: Copy = {
     statForward: 'Cabeça à frente',
     statLean: 'Inclinação lateral',
     statHeadTilt: 'Cabeça inclinada',
-    statConfidence: 'Fiabilidade',
     limit: (v: string) => `limite ${v}`,
-    computedLocally: 'calculado localmente',
-    modelLoading: 'o modelo ainda está a carregar',
     loadingModelTitle: 'Um momento',
     loadingModel: 'A carregar o modelo de deteção - 17 MB, só da primeira vez. Depois fica no teu navegador.',
     modelFailed: 'Não foi possível carregar o modelo local.',
@@ -52,7 +49,6 @@ export const pt: Copy = {
         forward: 'A cabeça está à frente dos ombros - recolhe o queixo e leva a nuca para trás.',
     },
     verdictLabel: { good: 'direito', borderline: 'no limite', bad: 'torto' },
-    sideLabel: { left: 'para a esquerda', right: 'para a direita', none: 'direito' },
 
     todayTitle: 'Hoje',
     todaySubtitle: 'Todas as medições desde a meia-noite, aqui neste aparelho.',

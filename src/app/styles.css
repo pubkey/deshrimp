@@ -174,30 +174,22 @@
   min-height: 8.2em;
 }
 
-/* The three angles and the confidence, between the well and the verdict.
- * Always four to a row, set closer together than a stat elsewhere _(2026-10-17,
- * his call: „schreib das näher zusammen damit die 4 werte in eine reihe
- * passen")_: a tighter gap and padding, and in a narrow tile the number steps
- * down from the 32px metric to 18px so "18°" still fits a quarter of it. */
+/* The three angles, between the well and the verdict. Always one row, set
+ * closer together than a stat elsewhere _(2026-10-17, his call: „schreib das
+ * näher zusammen damit die 4 werte in eine reihe passen")_: a tighter gap and
+ * padding. With three rather than four, a third of the narrowest tile still
+ * holds "18°" at the full 32px metric. */
 .haltung-readout {
   margin-top: var(--space-4);
-  container-type: inline-size;
 }
 .haltung-readout .ui-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-2);
 }
 .haltung-readout .ui-stat {
   min-width: 0;
   padding: var(--space-3) var(--space-2);
   gap: var(--space-1);
-}
-/* A quarter of a phone-width tile is narrower than "CONFIDENCE"; a hyphen
-   at a syllable reads better than a break in the middle of one. */
-.haltung-readout .ui-stat .k,
-.haltung-readout .ui-stat .ui-small { hyphens: auto; }
-@container (max-width: 440px) {
-  .haltung-readout .ui-stat .v { font-size: var(--text-lg); }
 }
 
 /* Camera inactive. An 11px tracked label over the empty well - no illustration,

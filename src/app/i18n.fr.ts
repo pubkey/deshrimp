@@ -31,10 +31,7 @@ export const fr: Copy = {
     statForward: 'Tête en avant',
     statLean: 'Inclinaison latérale',
     statHeadTilt: 'Tête penchée',
-    statConfidence: 'Fiabilité',
     limit: (v: string) => `limite ${v}`,
-    computedLocally: 'calculé en local',
-    modelLoading: 'le modèle charge encore',
     loadingModelTitle: 'Un instant',
     loadingModel: 'Le modèle de détection se charge - 17 Mo, seulement la première fois. Ensuite il reste dans ton navigateur.',
     modelFailed: 'Le modèle local n’a pas pu être chargé.',
@@ -52,7 +49,6 @@ export const fr: Copy = {
         forward: 'Ta tête est en avant de tes épaules - rentre le menton et ramène l’arrière du crâne en arrière.',
     },
     verdictLabel: { good: 'droit', borderline: 'limite', bad: 'de travers' },
-    sideLabel: { left: 'vers la gauche', right: 'vers la droite', none: 'droit' },
 
     todayTitle: 'Aujourd’hui',
     todaySubtitle: 'Toutes les mesures depuis minuit, ici sur cet appareil.',

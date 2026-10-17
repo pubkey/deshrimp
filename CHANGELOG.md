@@ -23,9 +23,20 @@ wrote them in.
   "-", so the tile does not grow when the first reading lands (his rule of
   2026-09-15). Four to a row where the tile is wide enough.
 
+- **The side of a lean is an arrow** _(his call, verbatim: „sidelean should
+  show arrow instead of "to the right"")_: `←` or `→` under the side-lean
+  value, the same pair the day table already used, and nothing when the
+  shoulders are level.
+
 ### Removed
 - **The "No reading yet" empty state** and its two labels in all thirteen
   languages: the readout it stood in for is now always drawn.
+- **The confidence value** _(his call, verbatim: „entfern den confidence
+  kpi")_. Three values under the picture instead of four, which also lets
+  them keep the full 32px figure on a phone. The model's confidence is still
+  stored with every reading. Its three labels (`statConfidence`,
+  `computedLocally`, `modelLoading`) go from all thirteen languages, and so
+  does `sideLabel`, which the arrow replaces.
 
 ## 2026-10-17 - a new palette, light by default, with a dark twin
 

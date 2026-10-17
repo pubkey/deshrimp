@@ -31,10 +31,7 @@ export const ru: Copy = {
     statForward: 'Голова впереди плеч',
     statLean: 'Наклон вбок',
     statHeadTilt: 'Наклон головы',
-    statConfidence: 'Уверенность',
     limit: (v: string) => `предел ${v}`,
-    computedLocally: 'посчитано локально',
-    modelLoading: 'модель ещё загружается',
     loadingModelTitle: 'Одну секунду',
     loadingModel: 'Загружается модель распознавания - 17 МБ, только в первый раз. Дальше она лежит в браузере.',
     modelFailed: 'Локальную модель загрузить не удалось.',
@@ -52,7 +49,6 @@ export const ru: Copy = {
         forward: 'Голова вынесена вперёд относительно плеч - подбери подбородок и отведи затылок назад.',
     },
     verdictLabel: { good: 'прямо', borderline: 'на грани', bad: 'криво' },
-    sideLabel: { left: 'влево', right: 'вправо', none: 'прямо' },
 
     todayTitle: 'Сегодня',
     todaySubtitle: 'Все измерения с полуночи, здесь на этом устройстве.',

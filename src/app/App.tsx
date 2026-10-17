@@ -1164,10 +1164,14 @@ function Live() {
                     sidelean etc muss in die erste bix direkt unter das
                     video")_. They had a tile of their own beside the controls;
                     under the well, the number and the picture it came from are
-                    read in one glance. The four are there before the first
+                    read in one glance. The three are there before the first
                     reading too, each a plain "-": the tile must not change
                     height when a state changes (2026-09-15, his call), and an
-                    empty readout says what is going to be measured. */}
+                    empty readout says what is going to be measured.
+
+                    The model's confidence was a fourth value here until he
+                    took it out _(2026-10-17, verbatim: „entfern den confidence
+                    kpi")_. It is still stored with every reading. */}
                 <div className="haltung-readout">
                     <Grid>
                         {/* An axis over its tolerance is the one place the
@@ -1181,15 +1185,16 @@ function Live() {
                             hint={t.limit(deg(settings.maxForward))} />
                         <Stat label={t.statLean} value={last ? deg(last.lean) : '-'}
                             className={last ? breach(last.lean, settings.maxLean) : undefined}
-                            hint={last
-                                ? `${t.sideLabel[last.leanSide]} · ${t.limit(deg(settings.maxLean))}`
+                            /* The side as an arrow, not as words _(2026-10-17,
+                               his call: „sidelean should show arrow instead of
+                               "to the right"")_, the same ← → the day table
+                               already uses. Level shoulders get no arrow. */
+                            hint={last && last.leanSide !== 'none'
+                                ? `${last.leanSide === 'left' ? '←' : '→'} · ${t.limit(deg(settings.maxLean))}`
                                 : t.limit(deg(settings.maxLean))} />
                         <Stat label={t.statHeadTilt} value={last ? deg(last.headTilt) : '-'}
                             className={last ? breach(last.headTilt, settings.maxHeadTilt) : undefined}
                             hint={t.limit(deg(settings.maxHeadTilt))} />
-                        <Stat label={t.statConfidence}
-                            value={last ? `${Math.round(last.confidence * 100)} %` : '-'}
-                            hint={poseReady() ? t.computedLocally : t.modelLoading} />
                     </Grid>
                 </div>
 

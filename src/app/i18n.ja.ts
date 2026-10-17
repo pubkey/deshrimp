@@ -31,10 +31,7 @@ export const ja: Copy = {
     statForward: '頭の前出し',
     statLean: '左右の傾き',
     statHeadTilt: '頭の傾き',
-    statConfidence: '確からしさ',
     limit: (v: string) => `しきい値 ${v}`,
-    computedLocally: 'ローカルで計算',
-    modelLoading: 'モデルを読み込み中',
     loadingModelTitle: '少しお待ちください',
     loadingModel: '検出モデルを読み込んでいます - 17 MB、初回だけです。そのあとはブラウザの中に残ります。',
     modelFailed: 'ローカルのモデルを読み込めませんでした。',
@@ -52,7 +49,6 @@ export const ja: Copy = {
         forward: '頭が肩より前に出ています - あごを引いて、後頭部を後ろへ。',
     },
     verdictLabel: { good: 'まっすぐ', borderline: 'ぎりぎり', bad: '崩れ' },
-    sideLabel: { left: '左へ', right: '右へ', none: 'まっすぐ' },
 
     todayTitle: '今日',
     todaySubtitle: '今日 0 時からのすべての測定を、この端末の中に。',

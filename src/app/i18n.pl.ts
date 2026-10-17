@@ -31,10 +31,7 @@ export const pl: Copy = {
     statForward: 'Głowa przed barkami',
     statLean: 'Przechył na bok',
     statHeadTilt: 'Przechylenie głowy',
-    statConfidence: 'Pewność',
     limit: (v: string) => `granica ${v}`,
-    computedLocally: 'liczone lokalnie',
-    modelLoading: 'model jeszcze się ładuje',
     loadingModelTitle: 'Chwileczkę',
     loadingModel: 'Ładuje się model rozpoznawania - 17 MB, tylko za pierwszym razem. Potem zostaje w przeglądarce.',
     modelFailed: 'Nie udało się załadować lokalnego modelu.',
@@ -52,7 +49,6 @@ export const pl: Copy = {
         forward: 'Głowa jest przed barkami - cofnij brodę i tył głowy do tyłu.',
     },
     verdictLabel: { good: 'prosto', borderline: 'na granicy', bad: 'krzywo' },
-    sideLabel: { left: 'w lewo', right: 'w prawo', none: 'prosto' },
 
     todayTitle: 'Dzisiaj',
     todaySubtitle: 'Wszystkie pomiary od północy, tutaj na tym urządzeniu.',

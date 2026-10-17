@@ -31,10 +31,7 @@ export const nl: Copy = {
     statForward: 'Hoofd naar voren',
     statLean: 'Zijwaartse helling',
     statHeadTilt: 'Hoofd scheef',
-    statConfidence: 'Zekerheid',
     limit: (v: string) => `grens ${v}`,
-    computedLocally: 'lokaal berekend',
-    modelLoading: 'model laadt nog',
     loadingModelTitle: 'Een moment',
     loadingModel: 'Het herkenningsmodel wordt geladen - 17 MB, alleen de eerste keer. Daarna staat het in je browser.',
     modelFailed: 'Het lokale model kon niet worden geladen.',
@@ -52,7 +49,6 @@ export const nl: Copy = {
         forward: 'Je hoofd staat voor je schouders - trek je kin in en je achterhoofd naar achteren.',
     },
     verdictLabel: { good: 'recht', borderline: 'grensgeval', bad: 'scheef' },
-    sideLabel: { left: 'naar links', right: 'naar rechts', none: 'recht' },
 
     todayTitle: 'Vandaag',
     todaySubtitle: 'Elke meting sinds middernacht, hier op dit apparaat.',

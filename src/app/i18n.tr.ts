@@ -31,10 +31,7 @@ export const tr: Copy = {
     statForward: 'Baş omzun önünde',
     statLean: 'Yana eğim',
     statHeadTilt: 'Baş eğikliği',
-    statConfidence: 'Güven',
     limit: (v: string) => `sınır ${v}`,
-    computedLocally: 'yerelde hesaplandı',
-    modelLoading: 'model hâlâ yükleniyor',
     loadingModelTitle: 'Bir saniye',
     loadingModel: 'Algılama modeli yükleniyor - 17 MB, yalnızca ilk seferde. Sonrasında tarayıcında kalır.',
     modelFailed: 'Yerel model yüklenemedi.',
@@ -52,7 +49,6 @@ export const tr: Copy = {
         forward: 'Başın omuzlarının önünde - çeneni içeri çek, ensen geriye gelsin.',
     },
     verdictLabel: { good: 'dik', borderline: 'sınırda', bad: 'eğri' },
-    sideLabel: { left: 'sola', right: 'sağa', none: 'dik' },
 
     todayTitle: 'Bugün',
     todaySubtitle: 'Gece yarısından beri her ölçüm, burada bu cihazda.',

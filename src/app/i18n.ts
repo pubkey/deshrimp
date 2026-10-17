@@ -105,10 +105,7 @@ const de = {
     statForward: 'Kopf vor der Schulter',
     statLean: 'Seitneigung',
     statHeadTilt: 'Kopfneigung',
-    statConfidence: 'Sicherheit',
     limit: (v: string) => `Grenze ${v}`,
-    computedLocally: 'lokal gerechnet',
-    modelLoading: 'Modell lädt noch',
     loadingModelTitle: 'Einen Moment',
     loadingModel: 'Das Erkennungsmodell wird geladen - 17 MB, nur beim ersten Mal. Danach liegt es im Browser.',
     modelFailed: 'Das lokale Modell ließ sich nicht laden.',
@@ -127,7 +124,6 @@ const de = {
         forward: 'Der Kopf steht vor der Schulter - zieh das Kinn zurück und den Hinterkopf nach hinten.',
     } as Record<AdviceKey, string>,
     verdictLabel: { good: 'gerade', borderline: 'grenzwertig', bad: 'schief' } as Record<Verdict, string>,
-    sideLabel: { left: 'nach links', right: 'nach rechts', none: 'gerade' } as Record<'left' | 'right' | 'none', string>,
 
     /* --- today ---------------------------------------------------------- */
     todayTitle: 'Heute',
@@ -270,10 +266,7 @@ const en: Copy = {
     statForward: 'Head in front',
     statLean: 'Side lean',
     statHeadTilt: 'Head tilt',
-    statConfidence: 'Confidence',
     limit: (v: string) => `limit ${v}`,
-    computedLocally: 'computed locally',
-    modelLoading: 'model still loading',
     loadingModelTitle: 'One moment',
     loadingModel: 'Loading the detection model - 17 MB, only the first time. After that it lives in your browser.',
     modelFailed: 'The local model could not be loaded.',
@@ -291,7 +284,6 @@ const en: Copy = {
         forward: 'Your head is out in front of your shoulders - tuck your chin and bring the back of your head back.',
     },
     verdictLabel: { good: 'straight', borderline: 'borderline', bad: 'crooked' },
-    sideLabel: { left: 'to the left', right: 'to the right', none: 'straight' },
 
     todayTitle: 'Today',
     todaySubtitle: 'Every reading since midnight, here on this device.',

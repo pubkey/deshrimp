@@ -31,10 +31,7 @@ export const it: Copy = {
     statForward: 'Testa in avanti',
     statLean: 'Inclinazione laterale',
     statHeadTilt: 'Testa piegata',
-    statConfidence: 'Affidabilità',
     limit: (v: string) => `limite ${v}`,
-    computedLocally: 'calcolato in locale',
-    modelLoading: 'il modello sta ancora caricando',
     loadingModelTitle: 'Un momento',
     loadingModel: 'Sto caricando il modello di riconoscimento - 17 MB, solo la prima volta. Poi resta nel tuo browser.',
     modelFailed: 'Non è stato possibile caricare il modello locale.',
@@ -52,7 +49,6 @@ export const it: Copy = {
         forward: 'La testa è davanti alle spalle - porta indietro il mento e la nuca.',
     },
     verdictLabel: { good: 'dritto', borderline: 'al limite', bad: 'storto' },
-    sideLabel: { left: 'a sinistra', right: 'a destra', none: 'dritto' },
 
     todayTitle: 'Oggi',
     todaySubtitle: 'Tutte le misurazioni da mezzanotte, qui su questo dispositivo.',

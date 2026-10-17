@@ -31,10 +31,7 @@ export const zh: Copy = {
     statForward: '头在肩前',
     statLean: '侧向倾斜',
     statHeadTilt: '头部歪斜',
-    statConfidence: '可信度',
     limit: (v: string) => `上限 ${v}`,
-    computedLocally: '本地计算',
-    modelLoading: '模型还在加载',
     loadingModelTitle: '稍等一下',
     loadingModel: '正在加载识别模型，17 MB，只有第一次需要。之后它就留在你的浏览器里。',
     modelFailed: '本地模型没能加载。',
@@ -52,7 +49,6 @@ export const zh: Copy = {
         forward: '头伸到肩膀前面了，收下巴，把后脑往后带。',
     },
     verdictLabel: { good: '直', borderline: '临界', bad: '歪' },
-    sideLabel: { left: '向左', right: '向右', none: '正' },
 
     todayTitle: '今天',
     todaySubtitle: '从零点开始的每一次测量，都在这台设备上。',
