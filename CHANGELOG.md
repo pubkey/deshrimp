@@ -11,6 +11,34 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-10-17 - Shrimpcoins
+
+### New
+- **The Shrimpcoin** _(his call, verbatim: „gamification soll machen dass die
+  leute die app direkt beim kennenlernen und länger und öfter benutzten",
+  „im ersten schritt machen wir nur ein "Shrimpcoin"", then „mach jetzt den
+  shrimpcoin")_. The rules are his, settled one by one:
+  - 0.1 coin per second sitting straight, not per reading _(„ja pro sekunde
+    anstatt pro messung")_. A straight reading is paid for the seconds since
+    the reading before it, capped at the pace, so a long pause pays one
+    interval and pressing "Check now" twice in a second pays one second.
+  - 1 coin extra for every ten straight readings in a row, as often as it
+    happens _(„mach 10er serie anstatt 7er serie. ja die serie geht unendlich
+    oft")_.
+  - Only "good" counts _(„es zählt nur good als gerade")_, and only when the
+    model is sure enough to sound the alarm too.
+  - Nobody in the picture earns nothing and breaks the streak _(„bilder ohne
+    person zählen gar nichts", „bildre ohne person brechen die serie ab")_.
+- **The coin is his design**: Bitcoin's two strokes through a white 🍤 on
+  `#E29A86`, tilted 14° like the ₿ _(„nimm gekippt")_. It sits under the start
+  button with the total, today's share and the streak towards its next bonus,
+  in zen and on the dashboard. It is the one coral shape that is not a breach,
+  noted as such in `DESIGN.md`.
+- **Coins are stored per day**, in tenths, in the day rows that are kept
+  forever (schema v3). Days before today start at 0 rather than being paid
+  after the fact. The field is optional, so an older backup or a device still
+  on the previous version can still write its days.
+
 ## 2026-10-17 - the angles under the picture
 
 ### Changed

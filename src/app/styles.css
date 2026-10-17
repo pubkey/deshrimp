@@ -289,3 +289,24 @@
  * Inline, because the reset makes every svg a block and it sits in a sentence. */
 .legal-email { display: inline; }
 .legal-back { font-size: var(--text-sm); }
+
+/* The Shrimpcoin purse under the start button: the coin, then the amount in
+ * the tabular mono every number in the product wears, with today and the
+ * streak in the secondary line under it. */
+.haltung-coins {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.haltung-coins-coin {
+  flex: none;
+  display: block;
+}
+.haltung-coins-total {
+  font-weight: 500;
+}
+.haltung-coins-amount {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-lg);
+}

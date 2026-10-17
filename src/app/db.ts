@@ -388,10 +388,20 @@ export type Day = {
     leanSum: number;
     forwardSum: number;
     headTiltSum: number;
+    /**
+     * Shrimpcoins earned that day, in **tenths**: 0.1 coin is 1, a streak
+     * bonus is 10. Whole numbers, so a day of thirty thousand additions does
+     * not drift the way a float sum of 0.1s would. Divide by ten to show it.
+     *
+     * Optional, and read as 0 when missing: a backup made before the coin, or
+     * a second device still on the old version, writes days without it, and
+     * the validator would refuse those rows if the field were required.
+     */
+    coins?: number;
 };
 
 const daySchema: RxJsonSchema<Day> = {
-    version: 2,
+    version: 3,
     primaryKey: 'id',
     type: 'object',
     properties: {
@@ -405,6 +415,7 @@ const daySchema: RxJsonSchema<Day> = {
         leanSum: { type: 'number' },
         forwardSum: { type: 'number' },
         headTiltSum: { type: 'number' },
+        coins: { type: 'number' },
     },
     required: ['id', 't', 'count', 'good', 'borderline', 'bad', 'alarms',
         'leanSum', 'forwardSum', 'headTiltSum'],
@@ -427,6 +438,10 @@ const dayMigrations = {
     // they were recorded before anything measured this, and the chart skips a
     // day whose sum is 0 rather than drawing a flat line that never happened.
     2: (old: Record<string, unknown>) => ({ ...old, forwardSum: 0 }),
+    // v3 adds the Shrimpcoins. Days before them earned none: the coin did not
+    // exist yet, and minting coins for old days after the fact would make the
+    // total mean something other than "earned since you had the coin".
+    3: (old: Record<string, unknown>) => ({ ...old, coins: 0 }),
 };
 
 /* ------------------------------------------------------------------ open */

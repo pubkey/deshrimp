@@ -68,7 +68,10 @@ Accent is a budget, not a palette entry. It is permitted on:
 - a breached readout,
 - a breached bar fill,
 - the threshold reference line on a chart,
-- the 3px breach stroke.
+- the 3px breach stroke,
+- the Shrimpcoin, which is coral by design and always on screen. It is his
+  call (2026-10-17): the reward is drawn in the colour he chose for it, and
+  it is a picture, not a state, so it does not compete with a breach.
 
 If two accent elements are visible at once and neither is a breach, one is
 wrong.
