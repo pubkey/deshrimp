@@ -12,6 +12,7 @@
 
 export {cx} from './cx';
 export {toast} from './toast';
+export {applyTheme, readTheme, systemIsDark} from './theme';
 export {deDate, daysSince} from './dates';
 export {mapsUrl, directionsUrl, prettyUrl} from './links';
 export {PAGE, mount} from './page-data';
@@ -55,6 +56,7 @@ export {StatusStrip} from './StatusStrip';
 export {Table} from './Table';
 export {Text} from './Text';
 export {Tiles} from './Tiles';
+export {ThemeToggle} from './ThemeToggle';
 export {Wrap} from './Wrap';
 
 /* --------------------------------------------------------------- types */

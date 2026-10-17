@@ -7,8 +7,8 @@
    warning amber. Severity is carried by *whether* the accent appears, not by a
    range of colours - see DESIGN.md §"The 10% rule".
 
-   One theme. There is no dark mode any more: the palette is a light one, and a
-   dark version would need colours it does not have.
+   Light is the default. The dark twin in theme-dark.css turns the same family
+   round and redefines the semantic aliases below.
    ------------------------------------------------------------------------- */
 
 :root {

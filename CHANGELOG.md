@@ -11,7 +11,7 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
-## 2026-10-17 - a new palette, and no dark mode
+## 2026-10-17 - a new palette, light by default, with a dark twin
 
 ### Changed
 - **The whole app is five colours: `#FFFFFF`, `#F0F0F0`, `#1A1A1A`,
@@ -30,12 +30,21 @@ wrote them in.
   that was his own request (2026-09-08), and a palette is not a reason to drop
   a signal.
 
+- **Light is the default now**, not dark. A page with no stored choice and no
+  system preference gets the white ground.
+
+### New
+- **A dark palette from the same family** _(his call, verbatim: „mach eine
+  zusätzliche darkmode palette")_: ground `#1A1A1A`, card `#262626`, ink
+  `#F0F0F0`, secondary ink `#999999`, the coral unchanged. In
+  `src/ui/tokens/theme-dark.css`, replacing the old `theme-light.css`
+  inversion. It follows the system until someone presses the toggle, and the
+  toggle and its stored choice work as before. Every text value in it passes
+  4.5:1 on the dark card, the coral included.
+
 ### Removed
-- **Dark mode and the light/dark toggle.** The palette is a light one and a dark
-  version would need colours it does not have, so the app is light only. With
-  the toggle went `theme.ts`, `ThemeToggle.tsx`, `tokens/theme-light.css`, the
-  sun and moon icons and the `themeLight` / `themeDark` labels in all thirteen
-  languages. A choice someone stored for dark is simply no longer read.
+- **`tokens/theme-light.css`**, the inversion of the old slate theme. Its job
+  is now the default in `colors.css`.
 
 ### Left alone
 - **`public/brand/*.svg`** still carry the old slate and coral. They are signed

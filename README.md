@@ -132,8 +132,9 @@ there is no success green and no warning amber anywhere in the product. The one
 dramatic moment is a breach - the camera well's hairline snaps to a 3px coral
 stroke and the offending readout pulses. Nothing moves, nothing shakes.
 
-There is one theme, light, and no dark mode. The rules, the tokens and the two
-things still waiting on a decision from him are in **`src/ui/DESIGN.md`**.
+Light is the default; dark is its twin from the same family, and the toggle
+works in both directions. The rules, the tokens and the two things still
+waiting on a decision from him are in **`src/ui/DESIGN.md`**.
 
 `src/ui` holds **only what this app renders**. It came from a shared library
 built for several different pages, and the rest of it - shop listings, maps,

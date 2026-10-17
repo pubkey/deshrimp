@@ -30,13 +30,17 @@
 import { fileURLToPath } from 'node:url';
 import * as fontkit from 'fontkit';
 
+/** The theme the app stored (`src/ui/theme.ts`), so this page opens in it too. */
+const THEME = `<script>try{var t=localStorage.getItem('ui-theme');`
+    + `if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>`;
+
 /**
  * The address is drawn, not written _(his call, verbatim: „in the legal-notice
  * render the email as image to spammers do not find it that easy")_. Each
  * glyph of IBM Plex Sans becomes an SVG path at build time, so the shipped page
  * holds outlines and no text: a harvester reading the HTML finds no address,
  * no `@` and no `mailto:`. Inline rather than a separate file, so it takes
- * `currentColor` like the text around it, and stays sharp at any zoom.
+ * `currentColor` and follows the theme, and stays sharp at any zoom.
  *
  * The price is that it cannot be copied or read aloud. The label says what the
  * picture is without spelling it out, because a spelled-out label is text a
@@ -99,6 +103,7 @@ const head = (site) => [
     // Reachable, not a search result: nobody looks for a posture trainer by
     // its operator's street address.
     '<meta name="robots" content="noindex, follow" />',
+    THEME,
 ].map((t) => `    ${t}`).join('\n');
 
 /**

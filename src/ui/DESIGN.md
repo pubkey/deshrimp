@@ -19,6 +19,7 @@ src/ui/tokens/
   spacing.css      4px base, 24px structural constant
   effects.css      radii, hairlines, focus, motion
   bridge.css       the old token names, aliased onto the new ones
+  theme-dark.css   the dark twin
 src/ui/fonts/      the woff2 files
 src/ui/theme.css   the imports, then how components spend the tokens
 src/ui/Tiles.tsx   the page grid, and why its two bounds are held where they are
@@ -72,13 +73,20 @@ colours. As a three-step ladder that is: ink (within tolerance) → grey
 semantic names still resolve - to those three, via `bridge.css` - so the
 sixty-bar status strip and the tab icon keep their reading without a second hue.
 
-### One theme
+### Dark mode
 
-There is no dark mode and no theme toggle. The palette is a light one, and a
-dark version would need colours it does not have. The one asset that still
-reads the system preference is the favicon, because it lands on browser chrome
-the page does not control: its bars are the ink on a light chrome and the white
-on a dark one.
+Light is the default; dark is its twin, scoped in `theme-dark.css`, so every
+component flips with no code change. It is the same family turned round:
+ground `#1A1A1A` (the light ink), card `#262626` (the same 1.15:1 step as
+white to `#F0F0F0`), ink `#F0F0F0` (the light card), secondary ink `#999999`
+and the coral unchanged. Insets, rails and inactive controls step back to the
+ground, exactly as they step back to white in light. Every text value passes
+4.5:1 on the dark card, the coral included (6.6:1), which the light theme
+cannot say.
+
+Three selectors for two states: the media query is what a page shows before
+anyone has pressed anything, and `[data-theme]` is an explicit choice that wins
+in both directions. A page with no signal either way gets light.
 
 ---
 
@@ -195,14 +203,15 @@ holds it; `<Button active>` is the coral version and is for something else.
 ### Native widgets
 
 A `<select>`'s dropdown, a scrollbar and a focus ring are drawn by the platform
-and cannot be styled. The one lever is `color-scheme`, which is `light` on
-`:root` and in the document's meta tag. Left at `dark light` it says "either"
-and a page on a dark system gets a dark dropdown. An `<option>`'s own colours
-are honoured everywhere except macOS, so they are set too and `color-scheme` is
-the whole of the fix there.
+and cannot be styled. The one lever is `color-scheme`, which must follow the
+theme: `light` on bare `:root`, flipped to `dark` in both dark blocks. An
+`<option>`'s own colours are honoured everywhere except macOS, so they are set
+too and `color-scheme` is the whole of the fix there.
 
 The chevron on a closed select is a data URI, so it cannot inherit a token: it
-is drawn in the secondary grey, written out.
+is drawn twice, once in each theme's secondary grey. The dialog scrims are
+written out twice for the same reason, because `::backdrop` does not reliably
+inherit custom properties.
 
 ### Sliders, not number fields
 

@@ -10,6 +10,7 @@
 
 import { createRoot } from 'react-dom/client';
 import { createElement } from 'react';
+import { applyTheme, readTheme } from './theme';
 
 export type PageMeta = {
     title: string;
@@ -52,9 +53,12 @@ export function pageData<T = Record<string, any>>(): T & { meta: PageMeta } {
 }
 
 /**
- * Render `App` into `#root`.
+ * Render `App` into `#root`, restoring the remembered theme first so the page
+ * does not flash the wrong one.
  */
 export function mount(App: (props: any) => any, el?: Element | null): void {
     const root = el || document.getElementById('root') || document.body;
+    const stored = readTheme();
+    if (stored) applyTheme(stored);
     createRoot(root as Element).render(createElement(App, { data: PAGE }));
 }

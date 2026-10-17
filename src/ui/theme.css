@@ -19,11 +19,13 @@
 /* Legacy names → design-system values. Read tokens/bridge.css before adding
    a rule that uses one of the short names (--ink, --card, --s4, --r-md). */
 @import './tokens/bridge.css';
+/* Last: it redefines the semantic aliases the four files above set up. */
+@import './tokens/theme-dark.css';
 
-/* Light, and only light. This is what a <select>'s dropdown, a scrollbar and a
-   native date picker read to decide their own colours: they are drawn by the
-   platform and cannot be styled, so the only lever is telling the platform
-   which way round the page is. */
+/* Light, and the dark blocks in tokens/theme-dark.css flip it. This is what a
+   <select>'s dropdown, a scrollbar and a native date picker read to decide
+   their own colours: they are drawn by the platform and cannot be styled, so
+   the only lever is telling the platform which way round the page is. */
 :root { color-scheme: light; }
 
 /* ------------------------------------------------------------------ reset */
@@ -442,6 +444,21 @@ a:hover { color: var(--ink); }
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238C8C8C' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-position: right var(--s3) center; background-size: 12px 12px;
   background-repeat: no-repeat; }
+/* The two things a token cannot reach in dark mode: the chevron is a data URI
+   and ::backdrop does not reliably inherit custom properties. Both written out
+   in the dark theme's values. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .ui-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999999' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  }
+  :root:not([data-theme='light']) .ui-loadwrap::backdrop,
+  :root:not([data-theme='light']) .ui-modal::backdrop { background: rgba(26, 26, 26, .82); }
+}
+:root[data-theme='dark'] .ui-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999999' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+:root[data-theme='dark'] .ui-loadwrap::backdrop,
+:root[data-theme='dark'] .ui-modal::backdrop { background: rgba(26, 26, 26, .82); }
 /* The open list is drawn by the platform and mostly cannot be reached from
    here. What every engine except macOS does honour is the colour of an
    <option>, so the popup at least lands on our surface rather than on the
