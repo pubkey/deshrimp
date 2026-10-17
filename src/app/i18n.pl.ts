@@ -31,7 +31,7 @@ export const pl: Copy = {
     statForward: 'Przód',
     statLean: 'Przechył na bok',
     statHeadTilt: 'Przechylenie głowy',
-    coinsLabel: 'Shrimpcoins',
+    coinsLabel: 'Shrimpcoin',
     coinsToday: (n: string) => `+${n} dziś`,
     coinsStreak: (n: number, of: number) => `seria ${n}/${of}`,
     limit: (v: string) => `granica ${v}`,

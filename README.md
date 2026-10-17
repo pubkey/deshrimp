@@ -52,7 +52,7 @@ hips, and in a desk-sized crop they come back with a visibility of 0.01 against
 
 ## Other things it does
 
-- **Shrimpcoins.** Every second spent sitting straight earns 0.1 coin, and
+- **Shrimpcoin.** Every second spent sitting straight earns 0.1 coin, and
   every ten straight readings in a row earn one more. Only a "good" reading
   counts; anything else, or nobody in the picture, ends the streak. The total
   sits under the start button and is kept per day with the rest of the

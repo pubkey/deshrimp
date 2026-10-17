@@ -31,7 +31,7 @@ export const nl: Copy = {
     statForward: 'Voren',
     statLean: 'Zijwaartse helling',
     statHeadTilt: 'Hoofd scheef',
-    coinsLabel: 'Shrimpcoins',
+    coinsLabel: 'Shrimpcoin',
     coinsToday: (n: string) => `+${n} vandaag`,
     coinsStreak: (n: number, of: number) => `reeks ${n}/${of}`,
     limit: (v: string) => `grens ${v}`,

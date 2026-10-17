@@ -31,7 +31,7 @@ export const tr: Copy = {
     statForward: 'Ön',
     statLean: 'Yana eğim',
     statHeadTilt: 'Baş eğikliği',
-    coinsLabel: 'Shrimpcoins',
+    coinsLabel: 'Shrimpcoin',
     coinsToday: (n: string) => `bugün +${n}`,
     coinsStreak: (n: number, of: number) => `seri ${n}/${of}`,
     limit: (v: string) => `sınır ${v}`,

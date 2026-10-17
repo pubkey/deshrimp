@@ -31,7 +31,7 @@ export const ka: Copy = {
     statForward: 'წინ',
     statLean: 'გვერდზე დახრა',
     statHeadTilt: 'თავის დახრა',
-    coinsLabel: 'Shrimpcoins',
+    coinsLabel: 'Shrimpcoin',
     coinsToday: (n: string) => `+${n} დღეს`,
     coinsStreak: (n: number, of: number) => `სერია ${n}/${of}`,
     limit: (v: string) => `ზღვარი ${v}`,

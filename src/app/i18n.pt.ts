@@ -31,7 +31,7 @@ export const pt: Copy = {
     statForward: 'Frente',
     statLean: 'Inclinação lateral',
     statHeadTilt: 'Cabeça inclinada',
-    coinsLabel: 'Shrimpcoins',
+    coinsLabel: 'Shrimpcoin',
     coinsToday: (n: string) => `+${n} hoje`,
     coinsStreak: (n: number, of: number) => `sequência ${n}/${of}`,
     limit: (v: string) => `limite ${v}`,

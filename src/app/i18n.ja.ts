@@ -31,7 +31,7 @@ export const ja: Copy = {
     statForward: '前傾',
     statLean: '左右の傾き',
     statHeadTilt: '頭の傾き',
-    coinsLabel: 'Shrimpcoins',
+    coinsLabel: 'Shrimpcoin',
     coinsToday: (n: string) => `今日 +${n}`,
     coinsStreak: (n: number, of: number) => `連続 ${n}/${of}`,
     limit: (v: string) => `しきい値 ${v}`,

@@ -31,7 +31,7 @@ export const ru: Copy = {
     statForward: 'Вперёд',
     statLean: 'Наклон вбок',
     statHeadTilt: 'Наклон головы',
-    coinsLabel: 'Shrimpcoins',
+    coinsLabel: 'Shrimpcoin',
     coinsToday: (n: string) => `+${n} сегодня`,
     coinsStreak: (n: number, of: number) => `серия ${n}/${of}`,
     limit: (v: string) => `предел ${v}`,

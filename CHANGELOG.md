@@ -11,7 +11,7 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
-## 2026-10-17 - Shrimpcoins
+## 2026-10-17 - Shrimpcoin
 
 ### New
 - **The Shrimpcoin** _(his call, verbatim: „gamification soll machen dass die
@@ -34,6 +34,9 @@ wrote them in.
   button with the total, today's share and the streak towards its next bonus,
   in zen and on the dashboard. It is the one coral shape that is not a breach,
   noted as such in `DESIGN.md`.
+- **The plural is Shrimpcoin too** _(his call, verbatim: „isnt the plural also
+  Shrimpcoin")_: "12.3 Shrimpcoin", the way one says 12.3 Bitcoin or 5 Euro.
+  The name is the same in all thirteen languages.
 - **Coins are stored per day**, in tenths, in the day rows that are kept
   forever (schema v3). Days before today start at 0 rather than being paid
   after the fact. The field is optional, so an older backup or a device still

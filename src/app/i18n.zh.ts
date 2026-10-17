@@ -31,7 +31,7 @@ export const zh: Copy = {
     statForward: '前倾',
     statLean: '侧向倾斜',
     statHeadTilt: '头部歪斜',
-    coinsLabel: 'Shrimpcoins',
+    coinsLabel: 'Shrimpcoin',
     coinsToday: (n: string) => `今天 +${n}`,
     coinsStreak: (n: number, of: number) => `连续 ${n}/${of}`,
     limit: (v: string) => `上限 ${v}`,

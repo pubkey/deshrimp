@@ -389,7 +389,7 @@ export type Day = {
     forwardSum: number;
     headTiltSum: number;
     /**
-     * Shrimpcoins earned that day, in **tenths**: 0.1 coin is 1, a streak
+     * Shrimpcoin earned that day, in **tenths**: 0.1 coin is 1, a streak
      * bonus is 10. Whole numbers, so a day of thirty thousand additions does
      * not drift the way a float sum of 0.1s would. Divide by ten to show it.
      *
@@ -438,7 +438,7 @@ const dayMigrations = {
     // they were recorded before anything measured this, and the chart skips a
     // day whose sum is 0 rather than drawing a flat line that never happened.
     2: (old: Record<string, unknown>) => ({ ...old, forwardSum: 0 }),
-    // v3 adds the Shrimpcoins. Days before them earned none: the coin did not
+    // v3 adds the Shrimpcoin. Days before them earned none: the coin did not
     // exist yet, and minting coins for old days after the fact would make the
     // total mean something other than "earned since you had the coin".
     3: (old: Record<string, unknown>) => ({ ...old, coins: 0 }),
