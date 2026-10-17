@@ -1169,7 +1169,7 @@ function Live() {
                     height when a state changes (2026-09-15, his call), and an
                     empty readout says what is going to be measured. */}
                 <div className="haltung-readout">
-                    <Grid min={110}>
+                    <Grid>
                         {/* An axis over its tolerance is the one place the
                             accent is allowed to appear on a readout: the
                             number and its label go coral and pulse, and the
