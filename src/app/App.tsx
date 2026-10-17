@@ -205,7 +205,7 @@ const INTERVALS = [1, 2, 5, 10, 15, 30, 60, 120];
  * this list only fixes which one comes first - `fart` is the default and the
  * one he asked for by name.
  */
-const SOUND_ORDER: SoundName[] = ['fart', 'ahem', 'scream', 'knuckles', 'whip', 'rimshot'];
+const SOUND_ORDER: SoundName[] = ['fart', 'ahem', 'scream', 'knuckles', 'whip', 'rimshot', 'geiger'];
 
 const VERDICT_TONE: Record<Verdict, StatusTone> = {
     good: 'ok', borderline: 'warn', bad: 'bad',
@@ -285,16 +285,24 @@ function frameOf(video: HTMLVideoElement | null): string | null {
 }
 
 /**
+ * How far off he sits, as a share of his own limit: the worst of the three
+ * measures, so 1 is exactly on a threshold and 2 is twice past it.
+ */
+function severity(a: Analysis, s: Settings): number {
+    return Math.max(
+        a.leanDeg / Math.max(1, s.maxLean),
+        a.forwardDeg / Math.max(1, s.maxForward),
+        a.headTiltDeg / Math.max(1, s.maxHeadTilt),
+    );
+}
+
+/**
  * The verdict, from the degrees and his thresholds - not from the model.
  * `borderline` starts at 70 % of a threshold, which is early enough to correct
  * before the signal goes off.
  */
 function judge(a: Analysis, s: Settings): Verdict {
-    const ratio = Math.max(
-        a.leanDeg / Math.max(1, s.maxLean),
-        a.forwardDeg / Math.max(1, s.maxForward),
-        a.headTiltDeg / Math.max(1, s.maxHeadTilt),
-    );
+    const ratio = severity(a, s);
     if (ratio >= 1) return 'bad';
     if (ratio >= 0.7) return 'borderline';
     return 'good';
@@ -486,6 +494,7 @@ const SOUND_FILES: Record<SoundName, string[]> = {
     knuckles: ['knuckles.mp3'],
     whip: ['whip.wav'],
     rimshot: ['rimshot.mp3'],
+    geiger: [],
 };
 
 /**
@@ -494,8 +503,50 @@ const SOUND_FILES: Record<SoundName, string[]> = {
  * least likely to want at full volume behind him in a coworking space.
  */
 const SOUND_GAIN: Record<SoundName, number> = {
-    fart: 1, ahem: 1, scream: 0.6, knuckles: 1, whip: 0.9, rimshot: 0.8,
+    fart: 1, ahem: 1, scream: 0.6, knuckles: 1, whip: 0.9, rimshot: 0.8, geiger: 0.7,
 };
+
+/**
+ * The Geiger counter _(2026-10-17, his call, verbatim: „mach einen "Geiger"
+ * sound wo ein geigerzähler schneller oder langsammer wird je nachdem wie weit
+ * man falsch sitzt")_.
+ *
+ * It is the one sound that is not a single noise per bad reading. It ticks the
+ * whole time, and **how fast it ticks is how far off he sits**: silent while he
+ * sits straight, a slow scattered crackle from the moment a reading turns
+ * borderline, and a near-continuous rattle once he is twice past his limit.
+ * That makes borderline audible, which no other sound is - but a counter that
+ * only woke up at the threshold would be a beep with extra steps, and hearing
+ * it speed up is the whole point.
+ *
+ * The clicks are random, not evenly spaced (a Poisson process, like real
+ * decays), and made in the browser: there is no file to fetch, and a click is
+ * a few milliseconds of shaped noise, which Web Audio does as well as any
+ * recording.
+ */
+const GEIGER_FROM = 0.7;
+/** Clicks a second at `GEIGER_FROM` and at `GEIGER_FULL` times the limit. */
+const GEIGER_SLOW = 1.5;
+const GEIGER_FAST = 40;
+const GEIGER_FULL = 2;
+/**
+ * How far ahead the clicks are scheduled, in seconds. Longer than a second,
+ * because a tab in the background gets its timers at most once a second and the
+ * crackle must not stutter there.
+ */
+const GEIGER_AHEAD = 1.2;
+
+/** Clicks a second for a severity, 0 for silence. Logarithmic, like the ear. */
+function geigerRate(ratio: number): number {
+    if (!(ratio >= GEIGER_FROM)) return 0;
+    const t = Math.min(1, (ratio - GEIGER_FROM) / (GEIGER_FULL - GEIGER_FROM));
+    return GEIGER_SLOW * Math.pow(GEIGER_FAST / GEIGER_SLOW, t);
+}
+
+/** The gap to the next random click at a given rate. */
+function geigerGap(rate: number): number {
+    return -Math.log(1 - Math.random()) / rate;
+}
 
 /**
  * The signal starts quiet and grows while the bad posture holds _(2026-09-08:
@@ -604,6 +655,78 @@ function useBeep() {
         });
     }, []);
 
+    /** One Geiger click: a sharp spike of noise with a short metallic ring. */
+    const clickBuffer = useRef<AudioBuffer | null>(null);
+    const click = (ctx: AudioContext, at: number, level = 1): AudioBufferSourceNode => {
+        if (!clickBuffer.current) {
+            const rate = ctx.sampleRate;
+            const buf = ctx.createBuffer(1, Math.ceil(rate * 0.006), rate);
+            const data = buf.getChannelData(0);
+            for (let i = 0; i < data.length; i++) {
+                const t = i / rate;
+                data[i] = (Math.random() * 2 - 1) * Math.exp(-t / 0.0005) * 0.7
+                    + Math.sin(2 * Math.PI * 3800 * t) * Math.exp(-t / 0.0012) * 0.3;
+            }
+            clickBuffer.current = buf;
+        }
+        const src = ctx.createBufferSource();
+        src.buffer = clickBuffer.current;
+        const g = ctx.createGain();
+        g.gain.value = SOUND_GAIN.geiger * level;
+        src.connect(g); g.connect(ctx.destination);
+        src.start(at);
+        return src;
+    };
+
+    /* The running counter: its rate, when the next click is due, and the clicks
+       already handed to the audio clock but not yet heard - kept so a new rate
+       can take them back and take effect at once rather than a second late. */
+    const geigerNow = useRef(0);
+    const geigerNext = useRef(0);
+    const geigerTimer = useRef<number | null>(null);
+    const geigerQueued = useRef<{ src: AudioBufferSourceNode; at: number }[]>([]);
+
+    /**
+     * Set the counter going at the rate for this severity, or silence it with
+     * 0. Called after every reading; the ticking in between is its own.
+     */
+    const geiger = useCallback((ratio: number) => {
+        const rate = geigerRate(ratio);
+        const ctx = ctxRef.current;
+        if (rate === geigerNow.current) return;
+        geigerNow.current = rate;
+        if (!ctx) return;
+
+        const now = ctx.currentTime;
+        geigerQueued.current.forEach(({ src, at }) => {
+            if (at > now) src.stop();
+        });
+        geigerQueued.current = [];
+
+        if (!rate) {
+            if (geigerTimer.current !== null) window.clearInterval(geigerTimer.current);
+            geigerTimer.current = null;
+            return;
+        }
+
+        void ctx.resume().catch(() => { /* nothing to resume */ });
+        geigerNext.current = now + geigerGap(rate);
+        const pump = () => {
+            const r = geigerNow.current;
+            if (!r) return;
+            const t = ctx.currentTime;
+            geigerQueued.current = geigerQueued.current.filter(({ at }) => at > t);
+            if (geigerNext.current < t) geigerNext.current = t;
+            while (geigerNext.current < t + GEIGER_AHEAD) {
+                const at = geigerNext.current;
+                geigerQueued.current.push({ src: click(ctx, at), at });
+                geigerNext.current += geigerGap(r);
+            }
+        };
+        pump();
+        if (geigerTimer.current === null) geigerTimer.current = window.setInterval(pump, 200);
+    }, []);
+
     /** A short burst of white noise - the raw material for anything breathy. */
     const noiseBuffer = useRef<AudioBuffer | null>(null);
     const noise = (ctx: AudioContext): AudioBufferSourceNode => {
@@ -643,6 +766,20 @@ function useBeep() {
             g.gain.exponentialRampToValueAtTime(0.0001, t + end);
             return g;
         };
+
+        if (name === 'geiger') {
+            // Not a fallback: this is the sound. For „Listen" it walks the
+            // whole range once in three seconds, from the first slow ticks of
+            // borderline to the rattle of sitting far too crooked.
+            const span = 3;
+            for (let at = 0; ;) {
+                const progress = at / span;
+                at += geigerGap(geigerRate(GEIGER_FROM + (GEIGER_FULL - GEIGER_FROM) * progress));
+                if (at >= span) break;
+                click(ctx, t + at, level);
+            }
+            return;
+        }
 
         if (name === 'fart') {
             const osc = ctx.createOscillator();
@@ -786,7 +923,7 @@ function useBeep() {
         }
     }, [synth]);
 
-    return { prepare, play };
+    return { prepare, play, geiger };
 }
 
 /** Keeps the screen awake while a check is running. Absent on most desktops. */
@@ -939,7 +1076,11 @@ function Live() {
             });
             setApiError(null);
 
+            const geiger = s.sound && s.soundName === 'geiger';
+
             if (!result.personDetected) {
+                // Nobody to measure is nothing to count.
+                live.current.beep.geiger(0);
                 setNote(copy.nobodyThere);
                 return;
             }
@@ -948,6 +1089,10 @@ function Live() {
             const now = Date.now();
             const trustworthy = result.confidence >= MIN_CONFIDENCE;
             const alarm = verdict === 'bad' && trustworthy;
+
+            // The counter follows every trustworthy reading, borderline
+            // included - that is what lets him hear it getting worse.
+            live.current.beep.geiger(geiger && trustworthy ? severity(result, s) : 0);
 
             // One reading that is not bad ends the run, so sitting up quiets the
             // signal on the very next check rather than a few seconds later.
@@ -973,7 +1118,9 @@ function Live() {
             if (alarm) {
                 setFlash(true);
                 window.setTimeout(() => setFlash(false), 4000);
-                if (s.sound) live.current.beep.play(s.soundName, loudness(badRun.current));
+                // The Geiger counter is already ticking; a one-off on top would
+                // only blur the rate.
+                if (s.sound && !geiger) live.current.beep.play(s.soundName, loudness(badRun.current));
                 if (s.vibrate) buzz();
                 if (s.notify) {
                     void showNotification(copy.notifyTitle, copy.advice[result.advice], s.vibrate);
@@ -1028,6 +1175,15 @@ function Live() {
         }, 1000);
         return () => window.clearInterval(id);
     }, [running, check, interval]);
+
+    /* The counter stops with the run, and the moment its sound is switched
+       off or swapped for another one - not at the next reading. */
+    const silenceGeiger = beep.geiger;
+    const geigerOn = running && settings.sound && settings.soundName === 'geiger';
+    useEffect(() => {
+        if (!geigerOn) silenceGeiger(0);
+        return () => silenceGeiger(0);
+    }, [geigerOn, silenceGeiger]);
 
     /* The download reports from outside React. Subscribed only while the
        overlay is up, so nothing is listening once the model is in memory. */

@@ -121,6 +121,7 @@ export const nl: Copy = {
     soundName: {
         fart: 'Scheet', ahem: 'Kuchje', scream: 'Schreeuw',
         knuckles: 'Knakkende knokkels', whip: 'Zweepslag', rimshot: 'Rimshot',
+        geiger: 'Geigerteller',
     },
 
     leavesTitle: 'Wat dit apparaat verlaat',

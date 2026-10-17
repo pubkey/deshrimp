@@ -121,6 +121,7 @@ export const ru: Copy = {
     soundName: {
         fart: 'Пук', ahem: 'Покашливание', scream: 'Крик',
         knuckles: 'Хруст пальцев', whip: 'Щелчок кнута', rimshot: 'Бадум-тсс',
+        geiger: 'Счётчик Гейгера',
     },
 
     leavesTitle: 'Что покидает это устройство',

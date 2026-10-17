@@ -121,6 +121,7 @@ export const ka: Copy = {
     soundName: {
         fart: 'გაზის გაშვება', ahem: 'ყელის მოწმენდა', scream: 'ყვირილი',
         knuckles: 'თითების ატკაცუნება', whip: 'მათრახის ტყლაშუნი', rimshot: 'ბადა-ბუმ-ცი',
+        geiger: 'გეიგერის მთვლელი',
     },
 
     leavesTitle: 'რა ტოვებს ამ მოწყობილობას',

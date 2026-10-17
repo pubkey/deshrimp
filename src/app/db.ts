@@ -213,7 +213,8 @@ export type Settings = {
 
 /**
  * The alarm sounds he can pick from. Most are the recordings he sent
- * _(2026-09-08)_, and the whip crack joins them as a bundled file. The default
+ * _(2026-09-08)_, the whip crack joins them as a bundled file, and the Geiger
+ * counter is the one made in the browser rather than recorded. The default
  * is the rude one - he asked for it by name, and a noise you find funny is a
  * noise you leave switched on.
  *
@@ -221,7 +222,7 @@ export type Settings = {
  * `peitsche`); they are what the file under `public/snd/` is called, and they
  * are stored, so the rename is a migration rather than a find and replace.
  */
-export type SoundName = 'fart' | 'scream' | 'knuckles' | 'rimshot' | 'ahem' | 'whip';
+export type SoundName = 'fart' | 'scream' | 'knuckles' | 'rimshot' | 'ahem' | 'whip' | 'geiger';
 
 export const SETTINGS_ID = 'settings';
 
@@ -241,7 +242,7 @@ export const DEFAULTS: Settings = {
 };
 
 const settingsSchema: RxJsonSchema<Settings> = {
-    version: 14,
+    version: 15,
     primaryKey: 'id',
     type: 'object',
     properties: {
@@ -254,7 +255,7 @@ const settingsSchema: RxJsonSchema<Settings> = {
         sound: { type: 'boolean' },
         soundName: {
             type: 'string',
-            enum: ['fart', 'scream', 'knuckles', 'rimshot', 'ahem', 'whip'],
+            enum: ['fart', 'scream', 'knuckles', 'rimshot', 'ahem', 'whip', 'geiger'],
         },
         notify: { type: 'boolean' },
         vibrate: { type: 'boolean' },
@@ -279,7 +280,8 @@ const settingsSchema: RxJsonSchema<Settings> = {
  * language enum from two to twelve; v10 adds the view and starts everyone in
  * zen; v11 widens the language enum again, for Georgian; v12 widens the sound
  * enum again, for the whip crack; v13 renames every sound from German to
- * English; v14 adds vibration, off.
+ * English; v14 adds vibration, off; v15 widens the sound enum for the Geiger
+ * counter.
  * Every step keeps the thresholds he set - a schema change must never be the
  * thing that resets his settings, and v3 in particular must not change the
  * language a device is already showing.
@@ -353,6 +355,9 @@ const settingsMigrations = {
     // v14 adds the vibrate switch. Off, like the notification: a device that
     // starts buzzing after an update is a change nobody asked for.
     14: (old: Record<string, unknown>) => ({ ...old, vibrate: false }),
+    // v15 widens the sound enum for the Geiger counter. Nobody is moved onto
+    // it: the sound a device already plays is the sound it keeps.
+    15: (old: Record<string, unknown>) => old,
 };
 
 /** The v13 rename, old name to new. `rimshot` was already English. */
