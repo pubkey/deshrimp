@@ -28,18 +28,16 @@ export const pl: Copy = {
     nobodyThere: 'Nikogo w kadrze - pomiar odrzucono.',
     lowConfidence: 'Niepewny pomiar - słabe światło albo jesteś tylko w połowie w kadrze.',
 
-    statForward: 'Głowa przed barkami',
+    statForward: 'Przód',
     statLean: 'Przechył na bok',
     statHeadTilt: 'Przechylenie głowy',
-    statConfidence: 'Pewność',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: string) => `+${n} dziś`,
+    coinsStreak: (n: number, of: number) => `seria ${n}/${of}`,
     limit: (v: string) => `granica ${v}`,
-    computedLocally: 'liczone lokalnie',
-    modelLoading: 'model jeszcze się ładuje',
     loadingModelTitle: 'Chwileczkę',
     loadingModel: 'Ładuje się model rozpoznawania - 17 MB, tylko za pierwszym razem. Potem zostaje w przeglądarce.',
     modelFailed: 'Nie udało się załadować lokalnego modelu.',
-    noReadingYet: 'Jeszcze bez pomiarów',
-    noReadingYetHint: 'Gdy kamera ruszy, co kilka sekund dojdzie kolejny.',
 
     verdictTitle: { good: 'Siedzisz prosto', borderline: 'Zaczyna się przechylać', bad: 'Siedzisz krzywo' },
     advice: {
@@ -54,7 +52,6 @@ export const pl: Copy = {
         forward: 'Głowa jest przed barkami - cofnij brodę i tył głowy do tyłu.',
     },
     verdictLabel: { good: 'prosto', borderline: 'na granicy', bad: 'krzywo' },
-    sideLabel: { left: 'w lewo', right: 'w prawo', none: 'prosto' },
 
     todayTitle: 'Dzisiaj',
     todaySubtitle: 'Wszystkie pomiary od północy, tutaj na tym urządzeniu.',

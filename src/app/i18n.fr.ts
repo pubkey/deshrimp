@@ -28,18 +28,16 @@ export const fr: Copy = {
     nobodyThere: 'Personne sur l’image - la mesure a été écartée.',
     lowConfidence: 'Mesure incertaine - mauvaise lumière, ou tu n’es qu’à moitié dans le cadre.',
 
-    statForward: 'Tête en avant',
+    statForward: 'Avant',
     statLean: 'Inclinaison latérale',
     statHeadTilt: 'Tête penchée',
-    statConfidence: 'Fiabilité',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: string) => `+${n} aujourd’hui`,
+    coinsStreak: (n: number, of: number) => `série ${n}/${of}`,
     limit: (v: string) => `limite ${v}`,
-    computedLocally: 'calculé en local',
-    modelLoading: 'le modèle charge encore',
     loadingModelTitle: 'Un instant',
     loadingModel: 'Le modèle de détection se charge - 17 Mo, seulement la première fois. Ensuite il reste dans ton navigateur.',
     modelFailed: 'Le modèle local n’a pas pu être chargé.',
-    noReadingYet: 'Pas encore de mesure',
-    noReadingYetHint: 'Dès que la caméra tourne, il en arrive une toutes les quelques secondes.',
 
     verdictTitle: { good: 'Tu es assis droit', borderline: 'Ça commence à pencher', bad: 'Tu es de travers' },
     advice: {
@@ -54,7 +52,6 @@ export const fr: Copy = {
         forward: 'Ta tête est en avant de tes épaules - rentre le menton et ramène l’arrière du crâne en arrière.',
     },
     verdictLabel: { good: 'droit', borderline: 'limite', bad: 'de travers' },
-    sideLabel: { left: 'vers la gauche', right: 'vers la droite', none: 'droit' },
 
     todayTitle: 'Aujourd’hui',
     todaySubtitle: 'Toutes les mesures depuis minuit, ici sur cet appareil.',

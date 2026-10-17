@@ -20,15 +20,13 @@
    a rule that uses one of the short names (--ink, --card, --s4, --r-md). */
 @import './tokens/bridge.css';
 /* Last: it redefines the semantic aliases the four files above set up. */
-@import './tokens/theme-light.css';
+@import './tokens/theme-dark.css';
 
-/* Dark, and the light blocks in tokens/theme-light.css flip it. This is what
-   a <select>'s dropdown, a scrollbar and a native date picker read to decide
+/* Light, and the dark blocks in tokens/theme-dark.css flip it. This is what a
+   <select>'s dropdown, a scrollbar and a native date picker read to decide
    their own colours: they are drawn by the platform and cannot be styled, so
-   the only lever is telling the platform which way round the page is. Left at
-   `dark light` it said "either, prefer dark" and a light page got a dark
-   dropdown. */
-:root { color-scheme: dark; }
+   the only lever is telling the platform which way round the page is. */
+:root { color-scheme: light; }
 
 /* ------------------------------------------------------------------ reset */
 *, *::before, *::after { box-sizing: border-box; }
@@ -45,7 +43,7 @@ body {
            env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 img, svg, video { max-width: 100%; display: block; }
-a { color: var(--accent); }
+a { color: var(--text-accent); }
 a:hover { color: var(--ink); }
 :focus-visible { outline: none; box-shadow: var(--ring); border-radius: var(--r-xs); }
 @media (prefers-reduced-motion: reduce) {
@@ -208,7 +206,7 @@ a:hover { color: var(--ink); }
 .ui-prose p { margin: 0 0 var(--s3); max-width: 74ch; }
 .ui-prose p:last-child { margin-bottom: 0; }
 .ui-prose b, .ui-prose strong { font-weight: 650; }
-.ui-prose a { color: var(--accent); text-decoration-thickness: 1px;
+.ui-prose a { color: var(--text-accent); text-decoration-thickness: 1px;
               text-underline-offset: 2px; }
 /* Numerals inside prose are still numerals. */
 .ui-prose .ui-mono, .ui-num { font-family: var(--mono);
@@ -281,7 +279,7 @@ a:hover { color: var(--ink); }
    exception: there the icon marks a breach and takes the accent with it. */
 .ui-callout .ui-callout-icon { flex: none; display: flex; padding-top: 2px;
   color: var(--muted); }
-.ui-callout.bad .ui-callout-icon { color: var(--accent); }
+.ui-callout.bad .ui-callout-icon { color: var(--text-accent); }
 /* Title and body were flush; a callout with both reads as one run-on line. */
 .ui-callout > .ui-grow { display: flex; flex-direction: column; gap: var(--s2); }
 .ui-callout { background: var(--bg-sunk); }
@@ -311,7 +309,7 @@ a:hover { color: var(--ink); }
 /* Blur is sanctioned only over live video (the camera-well status pill); a
    dialog scrim is a flat value, written out because ::backdrop does not
    reliably inherit custom properties. */
-.ui-loadwrap::backdrop { background: rgba(15, 23, 42, .78); }
+.ui-loadwrap::backdrop { background: rgba(255, 255, 255, .82); }
 .ui-loadcard { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
   display: flex; flex-direction: column; align-items: center; gap: var(--s4);
   width: min(420px, calc(100vw - var(--s6) * 2)); box-sizing: border-box;
@@ -415,8 +413,9 @@ a:hover { color: var(--ink); }
   background: var(--rec); color: var(--on-semantic); }
 .ui-badge.accent { background: var(--accent); color: var(--on-accent); }
 .ui-badge.ok  { background: var(--ok);  color: var(--on-semantic); }
-.ui-badge.warn{ background: var(--warn);color: var(--on-semantic); }
-.ui-badge.bad { background: var(--bad); color: var(--on-semantic); }
+/* Ink, not white, on the grey and the coral: white measures 3.4:1 and 2.2:1. */
+.ui-badge.warn{ background: var(--warn);color: var(--text-primary); }
+.ui-badge.bad { background: var(--bad); color: var(--text-primary); }
 .ui-badge.quiet { background: transparent; color: var(--muted); border: 1px solid var(--line); }
 
 /* ----------------------------------------------------------------- inputs */
@@ -425,7 +424,7 @@ a:hover { color: var(--ink); }
 .ui-field > label { font-size: var(--t-xs); font-weight: 500; color: var(--muted);
   letter-spacing: var(--track-caps); text-transform: uppercase; }
 .ui-field .ui-hint { font-size: var(--t-sm); color: var(--faint); }
-.ui-field .ui-error { font-size: var(--t-sm); color: var(--bad); }
+.ui-field .ui-error { font-size: var(--t-sm); color: var(--text-accent); }
 .ui-input, .ui-textarea, .ui-select {
   font: inherit; width: 100%; color: var(--ink); background: var(--bg-sunk);
   border: 1px solid var(--line); border-radius: var(--r-sm);
@@ -442,20 +441,24 @@ a:hover { color: var(--ink); }
 /* The closed control is ours: hairline, 6px, 40px, and the one glyph in the
    system (a 2.5px round-capped chevron) as a data URI. */
 .ui-select { appearance: none; padding-right: var(--s8); cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-position: right var(--s3) center; background-size: 12px 12px;
   background-repeat: no-repeat; }
-/* The slate-400 chevron above is drawn for the dark ground and measures 2.2:1
-   on white, the same reason the secondary ink deepens in light mode. Same
-   glyph, the light theme's secondary slate. */
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme='dark']) .ui-select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+/* The two things a token cannot reach in dark mode: the chevron is a data URI
+   and ::backdrop does not reliably inherit custom properties. Both written out
+   in the dark theme's values. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .ui-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999999' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   }
+  :root:not([data-theme='light']) .ui-loadwrap::backdrop,
+  :root:not([data-theme='light']) .ui-modal::backdrop { background: rgba(26, 26, 26, .82); }
 }
-:root[data-theme='light'] .ui-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+:root[data-theme='dark'] .ui-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999999' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
+:root[data-theme='dark'] .ui-loadwrap::backdrop,
+:root[data-theme='dark'] .ui-modal::backdrop { background: rgba(26, 26, 26, .82); }
 /* The open list is drawn by the platform and mostly cannot be reached from
    here. What every engine except macOS does honour is the colour of an
    <option>, so the popup at least lands on our surface rather than on the
@@ -541,7 +544,7 @@ a:hover { color: var(--ink); }
     var(--track-default) var(--pct, 0%), var(--track-default) 100%);
 }
 /* Over tolerance, so it spends accent - the same rule the readouts follow. */
-.ui-slider.breach .ui-slider-value { color: var(--accent); }
+.ui-slider.breach .ui-slider-value { color: var(--text-accent); }
 .ui-slider.breach .ui-slider-range {
   background: linear-gradient(to right,
     var(--fill-alert) 0, var(--fill-alert) var(--pct, 0%),
@@ -651,7 +654,7 @@ a:hover { color: var(--ink); }
 .ui-table thead th.sortable { cursor: pointer; user-select: none; }
 .ui-table thead th.sortable:hover { opacity: .88; }
 .ui-table thead th .ui-sortmark { opacity: .45; margin-left: 4px; }
-.ui-table thead th.on .ui-sortmark { opacity: 1; color: var(--accent); }
+.ui-table thead th.on .ui-sortmark { opacity: 1; color: var(--text-accent); }
 .ui-table tbody tr:last-child td { border-bottom: 0; }
 .ui-table tbody tr.rec { background: var(--accent-soft); }
 /* `.alt` is set by the component, not `:nth-child(even)`: a row and its note
@@ -696,14 +699,14 @@ a:hover { color: var(--ink); }
   align-items: baseline; gap: .3em; font-family: var(--mono);
   font-variant-numeric: tabular-nums; }
 .ui-stat-delta.up { color: var(--ok); }
-.ui-stat-delta.down { color: var(--bad); }
+.ui-stat-delta.down { color: var(--text-accent); }
 .ui-stat-delta.flat { color: var(--muted); }
 .ui-stat .v { font-size: var(--text-metric); font-weight: 500; letter-spacing: 0;
   font-family: var(--mono); font-variant-numeric: tabular-nums;
   line-height: var(--leading-tight); }
 /* The one number a breach is reported on: coral, and the 900ms opacity pulse.
    Nothing moves, nothing shakes, nothing enlarges. */
-.ui-stat.breach .v, .ui-stat.breach .k { color: var(--accent); }
+.ui-stat.breach .v, .ui-stat.breach .k { color: var(--text-accent); }
 .ui-stat.breach { background: var(--accent-soft); border-color: var(--border-alert);
   animation: ds-breach-flash 900ms var(--ease) infinite; }
 @keyframes ds-breach-flash { 0%, 100% { opacity: 1 } 50% { opacity: .45 } }
@@ -730,7 +733,7 @@ a:hover { color: var(--ink); }
 .ui-modal::backdrop {
   /* ::backdrop does not reliably inherit custom properties - literal scrim,
      and it is the design system's --scrim value written out. */
-  background: rgba(15, 23, 42, .78);
+  background: rgba(255, 255, 255, .82);
 }
 /* One of the two sanctioned shadows: a dialog is in the top layer and has
    genuinely left the page, so a hairline alone cannot place it. */
@@ -791,7 +794,7 @@ a:hover { color: var(--ink); }
   padding-top: 1px;
 }
 .ui-because.is-warn .ui-because-label { color: var(--warn); }
-.ui-because.is-bad  .ui-because-label { color: var(--bad); }
+.ui-because.is-bad  .ui-because-label { color: var(--text-accent); }
 .ui-because.is-ok   .ui-because-label { color: var(--ok); }
 .ui-because.is-rec  .ui-because-label { color: var(--rec); }
 
@@ -827,7 +830,7 @@ a:hover { color: var(--ink); }
 .ui-conf-dot { width: 6px; height: 6px; border-radius: var(--r-pill); background: currentColor; }
 .ui-conf.verified   { color: var(--ok);   border-color: color-mix(in srgb, var(--ok) 45%, var(--line)); }
 .ui-conf.estimated  { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 45%, var(--line)); }
-.ui-conf.unverified { color: var(--bad);  border-color: color-mix(in srgb, var(--bad) 45%, var(--line)); }
+.ui-conf.unverified { color: var(--text-accent);  border-color: color-mix(in srgb, var(--bad) 45%, var(--line)); }
 .ui-conf-date { color: var(--muted); font-family: var(--mono);
   font-variant-numeric: tabular-nums; }
 

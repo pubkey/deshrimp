@@ -11,6 +11,127 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-10-17 - Shrimpcoin
+
+### New
+- **The Shrimpcoin** _(his call, verbatim: „gamification soll machen dass die
+  leute die app direkt beim kennenlernen und länger und öfter benutzten",
+  „im ersten schritt machen wir nur ein "Shrimpcoin"", then „mach jetzt den
+  shrimpcoin")_. The rules are his, settled one by one:
+  - 0.1 coin per second sitting straight, not per reading _(„ja pro sekunde
+    anstatt pro messung")_. A straight reading is paid for the seconds since
+    the reading before it, capped at the pace, so a long pause pays one
+    interval and pressing "Check now" twice in a second pays one second.
+  - 1 coin extra for every ten straight readings in a row, as often as it
+    happens _(„mach 10er serie anstatt 7er serie. ja die serie geht unendlich
+    oft")_.
+  - Only "good" counts _(„es zählt nur good als gerade")_, and only when the
+    model is sure enough to sound the alarm too.
+  - Nobody in the picture earns nothing and breaks the streak _(„bilder ohne
+    person zählen gar nichts", „bildre ohne person brechen die serie ab")_.
+- **The coin is his design**: Bitcoin's two strokes through a white 🍤 on
+  `#E29A86`, tilted 14° like the ₿ _(„nimm gekippt")_. It sits under the start
+  button with the total, today's share and the streak towards its next bonus,
+  in zen and on the dashboard. It is the one coral shape that is not a breach,
+  noted as such in `DESIGN.md`.
+- **The plural is Shrimpcoin too** _(his call, verbatim: „isnt the plural also
+  Shrimpcoin")_: "12.3 Shrimpcoin", the way one says 12.3 Bitcoin or 5 Euro.
+  The name is the same in all thirteen languages.
+- **Coins are stored per day**, in tenths, in the day rows that are kept
+  forever (schema v3). Days before today start at 0 rather than being paid
+  after the fact. The field is optional, so an older backup or a device still
+  on the previous version can still write its days.
+
+## 2026-10-17 - the angles under the picture
+
+### Changed
+- **The three angles and the confidence sit in the camera tile, right under
+  the picture** _(his call, verbatim: „das headinfront sidelean etc muss in die
+  erste bix direkt unter das video")_. They had a tile of their own beside the
+  controls; now the number and the picture it was read from are one glance.
+  Zen is two tiles instead of three.
+- **The four values are there before the first reading too**, each a plain
+  "-", so the tile does not grow when the first reading lands (his rule of
+  2026-09-15). Four to a row where the tile is wide enough.
+
+- **The side of a lean is an arrow** _(his call, verbatim: „sidelean should
+  show arrow instead of "to the right"")_: `←` or `→` under the side-lean
+  value, the same pair the day table already used, and nothing when the
+  shoulders are level.
+- **"Head in front" is "Front"** _(his call, verbatim: „write "front" instead
+  of headinfront")_, and the same one short word in the other twelve: Vorne,
+  Delante, Avant, Avanti, 前傾, წინ, Voren, Przód, Frente, Вперёд, Ön, 前倾. It is
+  one label, so the chart legends that name this angle say it too.
+
+### Removed
+- **The "No reading yet" empty state** and its two labels in all thirteen
+  languages: the readout it stood in for is now always drawn.
+- **The confidence value** _(his call, verbatim: „entfern den confidence
+  kpi")_. Three values under the picture instead of four, which also lets
+  them keep the full 32px figure on a phone. The model's confidence is still
+  stored with every reading. Its three labels (`statConfidence`,
+  `computedLocally`, `modelLoading`) go from all thirteen languages, and so
+  does `sideLabel`, which the arrow replaces.
+
+## 2026-10-17 - a new palette, light by default, with a dark twin
+
+### Changed
+- **The whole app is five colours: `#FFFFFF`, `#F0F0F0`, `#1A1A1A`,
+  `#8C8C8C`, `#E29A86`** _(his call, verbatim: „lets change the color palette
+  of the whole app: … "paletteName": "Modern and Minimal" … Rebuild the app
+  with these colors")_. White ground, grey cards, near-black ink, grey
+  secondary ink, dusty coral accent. The change is in `src/ui/tokens/colors.css`;
+  every component reads the semantic tokens, so nothing else had to be
+  recoloured by hand. Cards are told apart from the ground by their fill, and
+  fields, selects and slider rails inside a card step back to the white.
+- **Text on the coral is the ink, not white.** White on `#E29A86` measures
+  2.28:1, the ink 7.62:1. The same goes for the grey and coral badges.
+- **The app icon and the favicon** use the new colours: a coral plate with the
+  white mark for the installed icon, the ink mark with a coral dot for the tab.
+  The tab icon that goes green, amber and red with the posture is unchanged:
+  that was his own request (2026-09-08), and a palette is not a reason to drop
+  a signal.
+
+- **Light is the default now**, not dark. A page with no stored choice and no
+  system preference gets the white ground.
+
+### New
+- **A dark palette from the same family** _(his call, verbatim: „mach eine
+  zusätzliche darkmode palette")_: ground `#1A1A1A`, card `#262626`, ink
+  `#F0F0F0`, secondary ink `#999999`, the coral unchanged. In
+  `src/ui/tokens/theme-dark.css`, replacing the old `theme-light.css`
+  inversion. It follows the system until someone presses the toggle, and the
+  toggle and its stored choice work as before. Every text value in it passes
+  4.5:1 on the dark card, the coral included.
+
+### Removed
+- **`tokens/theme-light.css`**, the inversion of the old slate theme. Its job
+  is now the default in `colors.css`.
+
+### Left alone
+### Changed, at the cost of a signature
+- **`public/brand/`, six of the seven files, are in the new palette**
+  _(his call, verbatim: „fix public/brand/*.svg")_. `mark.svg` and `logo.svg`
+  are the ink `#1A1A1A` with the coral dot for the light default; the
+  `-inverse` pair is `#F0F0F0` with the coral dot for the dark ground; the
+  one-colour grey mark is `#8C8C8C`. `mark-mono.svg` loses the em dash in its
+  title, which was the last one in the repo.
+- **All seven lose their C2PA content credentials** _(his call, verbatim:
+  „scheiß auf das prüfsiegel")_, `mark-on-accent.svg` included although its
+  colours were already right. A credential signs the exact bytes, so an edit
+  makes it report "tampered"; a file without one simply makes no claim. The
+  pictures themselves are drawn the same as before.
+
+### Changed, for legibility
+- **Two darker text steps in light mode** _(his call, verbatim: „ja mach die
+  andern schriftfarben")_. The grey `#8C8C8C` measured 2.95:1 as small text on
+  the card and the coral 2.0:1, both under the 4.5:1 that text needs.
+  Secondary text is now `#666666` (5.0:1) and the accent set as words, a
+  breached readout, a link or an error, is `#A65440` (4.65:1) through a new
+  `--text-accent` token. Both are darker steps of the same colours, and the
+  coral itself stays for every fill, stroke and dot. Dark mode keeps the coral
+  as text, where it already reads at 6.6:1.
+
 ## 2026-10-17 - a real whip crack
 
 ### Changed

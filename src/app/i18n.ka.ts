@@ -28,18 +28,16 @@ export const ka: Copy = {
     nobodyThere: 'კადრში არავინაა - გაზომვა გაუქმდა.',
     lowConfidence: 'არასანდო გაზომვა - ცუდი განათებაა ან მხოლოდ ნახევრად ხარ კადრში.',
 
-    statForward: 'თავი მხრებზე წინ',
+    statForward: 'წინ',
     statLean: 'გვერდზე დახრა',
     statHeadTilt: 'თავის დახრა',
-    statConfidence: 'სანდოობა',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: string) => `+${n} დღეს`,
+    coinsStreak: (n: number, of: number) => `სერია ${n}/${of}`,
     limit: (v: string) => `ზღვარი ${v}`,
-    computedLocally: 'ლოკალურად გამოთვლილი',
-    modelLoading: 'მოდელი ჯერ იტვირთება',
     loadingModelTitle: 'ერთი წუთი',
     loadingModel: 'იტვირთება ამომცნობი მოდელი - 17 MB, მხოლოდ პირველად. შემდეგ ბრაუზერში რჩება.',
     modelFailed: 'ლოკალური მოდელი ვერ ჩაიტვირთა.',
-    noReadingYet: 'ჯერ არცერთი გაზომვა',
-    noReadingYetHint: 'როგორც კი კამერა ჩაირთვება, ყოველ რამდენიმე წამში ერთი ემატება.',
 
     verdictTitle: { good: 'სწორად ზიხარ', borderline: 'იწყებ დახრას', bad: 'მრუდედ ზიხარ' },
     advice: {
@@ -54,7 +52,6 @@ export const ka: Copy = {
         forward: 'თავი მხრებზე წინაა - ნიკაპი შეიკავე და კეფა უკან წაიღე.',
     },
     verdictLabel: { good: 'სწორი', borderline: 'ზღვარზე', bad: 'მრუდე' },
-    sideLabel: { left: 'მარცხნივ', right: 'მარჯვნივ', none: 'სწორად' },
 
     todayTitle: 'დღეს',
     todaySubtitle: 'ყველა გაზომვა შუაღამიდან, აქ, ამ მოწყობილობაზე.',

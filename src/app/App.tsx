@@ -49,6 +49,7 @@ import {
 } from './db';
 import { LineChart, formatNumber, withUnit } from '@charts';
 import { copyFor, localeFor, LANGUAGES, type Copy, type Lang } from './i18n';
+import coinUrl from './shrimpcoin.svg';
 import { LEGAL_HREF, langHref, legalLabel, pageLang, seoTitle } from './lang-url';
 import {
     analysePose, frameOf as canvasFrame, landmarksOf, loadPose, MEASURED_LINES,
@@ -249,6 +250,42 @@ function deg(value: number): string {
  */
 function breach(value: number, limit: number): string | undefined {
     return value > limit ? 'breach' : undefined;
+}
+
+/** A streak bonus is paid on every this-many straight readings in a row. */
+const STREAK_LENGTH = 10;
+
+/**
+ * What one reading earns, in tenths of a Shrimpcoin, and the streak moved on.
+ *
+ * His rules _(2026-10-17)_, verbatim where he gave words:
+ * - **0.1 coin per second sitting straight** - „pro sekunde anstatt pro
+ *   messung", so the pace does not decide the pay. A straight reading is paid
+ *   for the seconds since the reading before it, capped at the pace, so a
+ *   reading after a long pause pays one interval and „Check now" pressed twice
+ *   in a second pays one second.
+ * - **1 coin extra for every ten straight in a row**, as often as it happens:
+ *   „mach 10er serie anstatt 7er serie. ja die serie geht unendlich oft".
+ * - **Only "good" is straight**: „es zählt nur good als gerade". A reading the
+ *   model is not sure of is not counted as good either, the same rule the
+ *   alarm keeps.
+ * - Anything else ends the streak. Nobody in the picture is handled before
+ *   this is called, and also ends it.
+ */
+function shrimpcoins(
+    straight: boolean, now: number, previous: number | null, intervalSec: number,
+    run: { current: number },
+): number {
+    if (!straight) {
+        run.current = 0;
+        return 0;
+    }
+    const seconds = previous == null
+        ? intervalSec
+        : Math.min(intervalSec, Math.max(0, (now - previous) / 1000));
+    run.current += 1;
+    const bonus = run.current % STREAK_LENGTH === 0 ? 10 : 0;
+    return Math.round(seconds) + bonus;
 }
 
 /**
@@ -874,6 +911,11 @@ function Live() {
     const { insert: writeReading, collection: readings } = useCollection<Reading>('readings');
 
     const { collection: days, upsert: writeDay } = useCollection<Day>('days');
+    /* Every day ever recorded, for the Shrimpcoin total. One small row per
+       day, so summing all of them on each change costs nothing. */
+    const { data: allDays } = useQuery<Day>('days', {});
+    const coinTotal = useMemo(() => (allDays || []).reduce((sum, d) => sum + (d.coins || 0), 0), [allDays]);
+    const coinToday = (allDays || []).find((d) => d.id === dayKey(Date.now()))?.coins || 0;
 
     /**
      * Fold one reading into its day.
@@ -884,7 +926,7 @@ function Live() {
      * of thirty thousand rows.
      */
     const rollUp = useCallback(async (
-        when: number, verdict: Verdict, alarm: boolean, a: Analysis,
+        when: number, verdict: Verdict, alarm: boolean, a: Analysis, coinTenths: number,
     ) => {
         if (!days) return;
         const dayId = dayKey(when);
@@ -892,7 +934,7 @@ function Live() {
         const before: Day = existing?.toJSON?.() ?? {
             id: dayId, t: startOfDay(when),
             count: 0, good: 0, borderline: 0, bad: 0, alarms: 0,
-            leanSum: 0, forwardSum: 0, headTiltSum: 0,
+            leanSum: 0, forwardSum: 0, headTiltSum: 0, coins: 0,
         };
         await writeDay({
             ...before,
@@ -904,6 +946,7 @@ function Live() {
             leanSum: before.leanSum + a.leanDeg,
             forwardSum: before.forwardSum + a.forwardDeg,
             headTiltSum: before.headTiltSum + a.headTiltDeg,
+            coins: (before.coins || 0) + coinTenths,
         });
     }, [days, writeDay]);
 
@@ -918,6 +961,11 @@ function Live() {
     const busy = useRef(false);
     /** How many bad readings in a row - the signal grows along it. */
     const badRun = useRef(0);
+    /** How many straight readings in a row - every tenth pays a Shrimpcoin. */
+    const goodRun = useRef(0);
+    const [streak, setStreak] = useState(0);
+    /** When the last reading was taken, so a straight one is paid by the second. */
+    const lastReadingAt = useRef<number | null>(null);
 
     /* ---------------------------------------------------------- one check */
 
@@ -941,6 +989,12 @@ function Live() {
 
             if (!result.personDetected) {
                 setNote(copy.nobodyThere);
+                // Nobody in the picture earns nothing and breaks the streak
+                // _(2026-10-17, his call: „bilder ohne person zählen gar
+                // nichts", „bildre ohne person brechen die serie ab")_.
+                goodRun.current = 0;
+                setStreak(0);
+                lastReadingAt.current = Date.now();
                 return;
             }
 
@@ -952,6 +1006,13 @@ function Live() {
             // One reading that is not bad ends the run, so sitting up quiets the
             // signal on the very next check rather than a few seconds later.
             badRun.current = alarm ? badRun.current + 1 : 0;
+
+            const coinTenths = shrimpcoins(
+                verdict === 'good' && trustworthy,
+                now, lastReadingAt.current, Math.max(MIN_INTERVAL, s.intervalSec), goodRun,
+            );
+            lastReadingAt.current = now;
+            setStreak(goodRun.current);
 
             setNote(trustworthy ? null : copy.lowConfidence);
 
@@ -968,7 +1029,7 @@ function Live() {
                 alarm,
             });
 
-            await live.current.rollUp(now, verdict, alarm, result);
+            await live.current.rollUp(now, verdict, alarm, result, coinTenths);
 
             if (alarm) {
                 setFlash(true);
@@ -1159,6 +1220,45 @@ function Live() {
                     ) : null}
                 </div>
 
+                {/* The three angles sit right under the picture they were read
+                    from _(2026-10-17, his call, verbatim: „das headinfront
+                    sidelean etc muss in die erste bix direkt unter das
+                    video")_. They had a tile of their own beside the controls;
+                    under the well, the number and the picture it came from are
+                    read in one glance. The three are there before the first
+                    reading too, each a plain "-": the tile must not change
+                    height when a state changes (2026-09-15, his call), and an
+                    empty readout says what is going to be measured.
+
+                    The model's confidence was a fourth value here until he
+                    took it out _(2026-10-17, verbatim: „entfern den confidence
+                    kpi")_. It is still stored with every reading. */}
+                <div className="haltung-readout">
+                    <Grid>
+                        {/* An axis over its tolerance is the one place the
+                            accent is allowed to appear on a readout: the
+                            number and its label go coral and pulse, and the
+                            two that are still inside stay in the ink. That is
+                            the whole severity system - whether the accent is
+                            there, not which colour it is. */}
+                        <Stat label={t.statForward} value={last ? deg(last.forward) : '-'}
+                            className={last ? breach(last.forward, settings.maxForward) : undefined}
+                            hint={t.limit(deg(settings.maxForward))} />
+                        <Stat label={t.statLean} value={last ? deg(last.lean) : '-'}
+                            className={last ? breach(last.lean, settings.maxLean) : undefined}
+                            /* The side as an arrow, not as words _(2026-10-17,
+                               his call: „sidelean should show arrow instead of
+                               "to the right"")_, the same ← → the day table
+                               already uses. Level shoulders get no arrow. */
+                            hint={last && last.leanSide !== 'none'
+                                ? `${last.leanSide === 'left' ? '←' : '→'} · ${t.limit(deg(settings.maxLean))}`
+                                : t.limit(deg(settings.maxLean))} />
+                        <Stat label={t.statHeadTilt} value={last ? deg(last.headTilt) : '-'}
+                            className={last ? breach(last.headTilt, settings.maxHeadTilt) : undefined}
+                            hint={t.limit(deg(settings.maxHeadTilt))} />
+                    </Grid>
+                </div>
+
                 {/* The verdict reads under the picture, not over it _(2026-09-15,
                     his call)_. The camera well is what the tile is for and it
                     should be the first thing in it; a line of prose above it
@@ -1213,6 +1313,10 @@ function Live() {
                     </Button>
                 </Row>
 
+                {/* The purse sits under the start button, in zen as well as on
+                    the dashboard: it is what you earn by having pressed it. */}
+                <CoinPurse total={coinTotal} today={coinToday} streak={streak} />
+
                 <Sound
                     settings={settings}
                     change={change}
@@ -1262,37 +1366,10 @@ function Live() {
                 />
             </Panel>
 
-            <Panel id="readout">
-                {last ? (
-                    <Grid min={140}>
-                        {/* An axis over its tolerance is the one place the
-                            accent is allowed to appear on a readout: the number
-                            and its label go coral and pulse, and the two that
-                            are still inside stay white. That is the whole
-                            severity system - whether the accent is there, not
-                            which colour it is. */}
-                        <Stat label={t.statForward} value={deg(last.forward)}
-                            className={breach(last.forward, settings.maxForward)}
-                            hint={t.limit(deg(settings.maxForward))} />
-                        <Stat label={t.statLean} value={deg(last.lean)}
-                            className={breach(last.lean, settings.maxLean)}
-                            hint={`${t.sideLabel[last.leanSide]} · ${t.limit(deg(settings.maxLean))}`} />
-                        <Stat label={t.statHeadTilt} value={deg(last.headTilt)}
-                            className={breach(last.headTilt, settings.maxHeadTilt)}
-                            hint={t.limit(deg(settings.maxHeadTilt))} />
-                        <Stat label={t.statConfidence} value={`${Math.round(last.confidence * 100)} %`}
-                            hint={poseReady() ? t.computedLocally : t.modelLoading} />
-                    </Grid>
-                ) : (
-                    <Empty title={t.noReadingYet} hint={t.noReadingYetHint} />
-                )}
-            </Panel>
-
             {/* Everything below this line is the dashboard _(2026-09-16: „im
                 default ist die webseite zu techlastig mit den vielen daten")_.
-                The three tiles above it are what zen keeps: the picture, the
-                button that starts it, and the three angles the picture just
-                produced. Those answer „am I sitting straight"; the curves, the log,
+                The two tiles above it are what zen keeps: the picture with the
+                three angles it just produced, and the button that starts it. Those answer „am I sitting straight"; the curves, the log,
                 the trend and the thresholds answer questions you ask on
                 purpose, and they are one switch away, at the foot of the
                 control tile above.
@@ -1314,6 +1391,43 @@ function Live() {
                 </>
             ) : null}
         </>
+    );
+}
+
+/* ------------------------------------------------------------- shrimpcoin */
+
+/**
+ * The Shrimpcoin purse: the coin, everything earned so far, today's share and
+ * how far the current streak is towards its next bonus.
+ *
+ * His idea for keeping people at it _(2026-10-17: „gamification soll machen
+ * dass die leute die app direkt beim kennenlernen und länger und öfter
+ * benutzten")_, with the coin he had drawn for it: Bitcoin's two strokes
+ * through a white 🍤 on the coral. The coin is the one place the coral shows
+ * without a breach, and that is his call too - it is the reward, and it is
+ * drawn in the colour he chose for it.
+ *
+ * Amounts arrive in tenths and are shown with one decimal in the page's own
+ * number format, so a German page says 12,3 and an English one 12.3.
+ */
+function CoinPurse({ total, today, streak }: { total: number; today: number; streak: number }) {
+    const t = useCopy();
+    const lang = useLang();
+    const amount = (tenths: number) => (tenths / 10).toLocaleString(localeFor(lang), {
+        minimumFractionDigits: 1, maximumFractionDigits: 1,
+    });
+    return (
+        <div className="haltung-coins">
+            <img className="haltung-coins-coin" src={coinUrl} width={40} height={40} alt="" />
+            <div>
+                <div className="haltung-coins-total">
+                    <span className="haltung-coins-amount">{amount(total)}</span> {t.coinsLabel}
+                </div>
+                <div className="ui-small ui-muted">
+                    {t.coinsToday(amount(today))} · {t.coinsStreak(streak % STREAK_LENGTH, STREAK_LENGTH)}
+                </div>
+            </div>
+        </div>
     );
 }
 
@@ -2027,7 +2141,7 @@ function Content() {
                         order here is the order they flow in, and reading order
                         is the only thing that still decides what comes first,
                         because the number of columns is the window's business
-                        rather than ours. In zen the grid is three tiles long
+                        rather than ours. In zen the grid is two tiles long
                         and the rest of this is not rendered at all; the switch
                         at the foot of the control tile brings them back.
 

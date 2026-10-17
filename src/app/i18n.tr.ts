@@ -28,18 +28,16 @@ export const tr: Copy = {
     nobodyThere: 'Karede kimse yok - ölçüm atıldı.',
     lowConfidence: 'Güvenilirliği düşük ölçüm - ışık kötü ya da kadraja yarım giriyorsun.',
 
-    statForward: 'Baş omzun önünde',
+    statForward: 'Ön',
     statLean: 'Yana eğim',
     statHeadTilt: 'Baş eğikliği',
-    statConfidence: 'Güven',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: string) => `bugün +${n}`,
+    coinsStreak: (n: number, of: number) => `seri ${n}/${of}`,
     limit: (v: string) => `sınır ${v}`,
-    computedLocally: 'yerelde hesaplandı',
-    modelLoading: 'model hâlâ yükleniyor',
     loadingModelTitle: 'Bir saniye',
     loadingModel: 'Algılama modeli yükleniyor - 17 MB, yalnızca ilk seferde. Sonrasında tarayıcında kalır.',
     modelFailed: 'Yerel model yüklenemedi.',
-    noReadingYet: 'Henüz ölçüm yok',
-    noReadingYetHint: 'Kamera çalışmaya başlayınca birkaç saniyede bir yenisi gelir.',
 
     verdictTitle: { good: 'Dik oturuyorsun', borderline: 'Yatmaya başlıyor', bad: 'Eğri oturuyorsun' },
     advice: {
@@ -54,7 +52,6 @@ export const tr: Copy = {
         forward: 'Başın omuzlarının önünde - çeneni içeri çek, ensen geriye gelsin.',
     },
     verdictLabel: { good: 'dik', borderline: 'sınırda', bad: 'eğri' },
-    sideLabel: { left: 'sola', right: 'sağa', none: 'dik' },
 
     todayTitle: 'Bugün',
     todaySubtitle: 'Gece yarısından beri her ölçüm, burada bu cihazda.',

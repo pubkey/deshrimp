@@ -28,18 +28,16 @@ export const ru: Copy = {
     nobodyThere: 'В кадре никого - измерение отброшено.',
     lowConfidence: 'Ненадёжное измерение - плохой свет или ты попал в кадр только наполовину.',
 
-    statForward: 'Голова впереди плеч',
+    statForward: 'Вперёд',
     statLean: 'Наклон вбок',
     statHeadTilt: 'Наклон головы',
-    statConfidence: 'Уверенность',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: string) => `+${n} сегодня`,
+    coinsStreak: (n: number, of: number) => `серия ${n}/${of}`,
     limit: (v: string) => `предел ${v}`,
-    computedLocally: 'посчитано локально',
-    modelLoading: 'модель ещё загружается',
     loadingModelTitle: 'Одну секунду',
     loadingModel: 'Загружается модель распознавания - 17 МБ, только в первый раз. Дальше она лежит в браузере.',
     modelFailed: 'Локальную модель загрузить не удалось.',
-    noReadingYet: 'Измерений пока нет',
-    noReadingYetHint: 'Как только камера заработает, каждые несколько секунд будет добавляться новое.',
 
     verdictTitle: { good: 'Ты сидишь прямо', borderline: 'Начинает заваливаться', bad: 'Ты сидишь криво' },
     advice: {
@@ -54,7 +52,6 @@ export const ru: Copy = {
         forward: 'Голова вынесена вперёд относительно плеч - подбери подбородок и отведи затылок назад.',
     },
     verdictLabel: { good: 'прямо', borderline: 'на грани', bad: 'криво' },
-    sideLabel: { left: 'влево', right: 'вправо', none: 'прямо' },
 
     todayTitle: 'Сегодня',
     todaySubtitle: 'Все измерения с полуночи, здесь на этом устройстве.',

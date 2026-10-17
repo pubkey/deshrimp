@@ -28,18 +28,16 @@ export const es: Copy = {
     nobodyThere: 'No hay nadie en la imagen - la medición se ha descartado.',
     lowConfidence: 'Medición poco fiable - mala luz, o solo sales a medias.',
 
-    statForward: 'Cabeza por delante',
+    statForward: 'Delante',
     statLean: 'Inclinación lateral',
     statHeadTilt: 'Ladeo de la cabeza',
-    statConfidence: 'Fiabilidad',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: string) => `+${n} hoy`,
+    coinsStreak: (n: number, of: number) => `racha ${n}/${of}`,
     limit: (v: string) => `límite ${v}`,
-    computedLocally: 'calculado localmente',
-    modelLoading: 'el modelo aún se está cargando',
     loadingModelTitle: 'Un momento',
     loadingModel: 'Se está cargando el modelo de detección - 17 MB, solo la primera vez. Después se queda en tu navegador.',
     modelFailed: 'No se ha podido cargar el modelo local.',
-    noReadingYet: 'Todavía no hay mediciones',
-    noReadingYetHint: 'En cuanto la cámara funcione, llegará una cada pocos segundos.',
 
     verdictTitle: { good: 'Estás sentado derecho', borderline: 'Empiezas a torcerte', bad: 'Estás torcido' },
     advice: {
@@ -54,7 +52,6 @@ export const es: Copy = {
         forward: 'La cabeza te queda por delante de los hombros - mete la barbilla y lleva la nuca hacia atrás.',
     },
     verdictLabel: { good: 'derecho', borderline: 'al límite', bad: 'torcido' },
-    sideLabel: { left: 'hacia la izquierda', right: 'hacia la derecha', none: 'derecho' },
 
     todayTitle: 'Hoy',
     todaySubtitle: 'Todas las mediciones desde medianoche, aquí en este aparato.',

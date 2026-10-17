@@ -28,18 +28,16 @@ export const pt: Copy = {
     nobodyThere: 'Ninguém na imagem - a medição foi descartada.',
     lowConfidence: 'Medição pouco fiável - pouca luz, ou só apanha metade de ti.',
 
-    statForward: 'Cabeça à frente',
+    statForward: 'Frente',
     statLean: 'Inclinação lateral',
     statHeadTilt: 'Cabeça inclinada',
-    statConfidence: 'Fiabilidade',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: string) => `+${n} hoje`,
+    coinsStreak: (n: number, of: number) => `sequência ${n}/${of}`,
     limit: (v: string) => `limite ${v}`,
-    computedLocally: 'calculado localmente',
-    modelLoading: 'o modelo ainda está a carregar',
     loadingModelTitle: 'Um momento',
     loadingModel: 'A carregar o modelo de deteção - 17 MB, só da primeira vez. Depois fica no teu navegador.',
     modelFailed: 'Não foi possível carregar o modelo local.',
-    noReadingYet: 'Ainda sem medições',
-    noReadingYetHint: 'Assim que a câmara estiver a funcionar, chega uma a cada poucos segundos.',
 
     verdictTitle: { good: 'Estás sentado direito', borderline: 'Começas a inclinar', bad: 'Estás torto' },
     advice: {
@@ -54,7 +52,6 @@ export const pt: Copy = {
         forward: 'A cabeça está à frente dos ombros - recolhe o queixo e leva a nuca para trás.',
     },
     verdictLabel: { good: 'direito', borderline: 'no limite', bad: 'torto' },
-    sideLabel: { left: 'para a esquerda', right: 'para a direita', none: 'direito' },
 
     todayTitle: 'Hoje',
     todaySubtitle: 'Todas as medições desde a meia-noite, aqui neste aparelho.',

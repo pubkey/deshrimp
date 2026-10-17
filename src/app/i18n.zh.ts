@@ -28,18 +28,16 @@ export const zh: Copy = {
     nobodyThere: '画面里没有人，这次测量已丢弃。',
     lowConfidence: '测量不太可靠，光线太差，或者你只有一半在画面里。',
 
-    statForward: '头在肩前',
+    statForward: '前倾',
     statLean: '侧向倾斜',
     statHeadTilt: '头部歪斜',
-    statConfidence: '可信度',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: string) => `今天 +${n}`,
+    coinsStreak: (n: number, of: number) => `连续 ${n}/${of}`,
     limit: (v: string) => `上限 ${v}`,
-    computedLocally: '本地计算',
-    modelLoading: '模型还在加载',
     loadingModelTitle: '稍等一下',
     loadingModel: '正在加载识别模型，17 MB，只有第一次需要。之后它就留在你的浏览器里。',
     modelFailed: '本地模型没能加载。',
-    noReadingYet: '还没有测量结果',
-    noReadingYetHint: '摄像头一开，每隔几秒就会多出一条。',
 
     verdictTitle: { good: '你坐得很直', borderline: '开始歪了', bad: '你坐歪了' },
     advice: {
@@ -54,7 +52,6 @@ export const zh: Copy = {
         forward: '头伸到肩膀前面了，收下巴，把后脑往后带。',
     },
     verdictLabel: { good: '直', borderline: '临界', bad: '歪' },
-    sideLabel: { left: '向左', right: '向右', none: '正' },
 
     todayTitle: '今天',
     todaySubtitle: '从零点开始的每一次测量，都在这台设备上。',

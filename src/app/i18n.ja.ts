@@ -28,18 +28,16 @@ export const ja: Copy = {
     nobodyThere: '画面に誰もいません - この測定は破棄しました。',
     lowConfidence: '測定があいまいです - 光が足りないか、体が半分しか写っていません。',
 
-    statForward: '頭の前出し',
+    statForward: '前傾',
     statLean: '左右の傾き',
     statHeadTilt: '頭の傾き',
-    statConfidence: '確からしさ',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: string) => `今日 +${n}`,
+    coinsStreak: (n: number, of: number) => `連続 ${n}/${of}`,
     limit: (v: string) => `しきい値 ${v}`,
-    computedLocally: 'ローカルで計算',
-    modelLoading: 'モデルを読み込み中',
     loadingModelTitle: '少しお待ちください',
     loadingModel: '検出モデルを読み込んでいます - 17 MB、初回だけです。そのあとはブラウザの中に残ります。',
     modelFailed: 'ローカルのモデルを読み込めませんでした。',
-    noReadingYet: 'まだ測定がありません',
-    noReadingYetHint: 'カメラが動き出せば、数秒おきに 1 件ずつ増えていきます。',
 
     verdictTitle: { good: 'まっすぐ座れています', borderline: '傾きはじめています', bad: '姿勢が崩れています' },
     advice: {
@@ -54,7 +52,6 @@ export const ja: Copy = {
         forward: '頭が肩より前に出ています - あごを引いて、後頭部を後ろへ。',
     },
     verdictLabel: { good: 'まっすぐ', borderline: 'ぎりぎり', bad: '崩れ' },
-    sideLabel: { left: '左へ', right: '右へ', none: 'まっすぐ' },
 
     todayTitle: '今日',
     todaySubtitle: '今日 0 時からのすべての測定を、この端末の中に。',

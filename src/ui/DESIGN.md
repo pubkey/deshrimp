@@ -19,7 +19,7 @@ src/ui/tokens/
   spacing.css      4px base, 24px structural constant
   effects.css      radii, hairlines, focus, motion
   bridge.css       the old token names, aliased onto the new ones
-  theme-light.css  the inversion
+  theme-dark.css   the dark twin
 src/ui/fonts/      the woff2 files
 src/ui/theme.css   the imports, then how components spend the tokens
 src/ui/Tiles.tsx   the page grid, and why its two bounds are held where they are
@@ -38,9 +38,24 @@ components are rewritten against them.
 
 ## Colour
 
-Six values, locked. Deep slate ground `#0F172A`; raised card `#273549`; border
-and inactive-control slate `#3E4C63` / `#334155`; crisp white ink `#F8FAFC`;
-slate-blue secondary ink `#94A3B8`; coral accent `#ff8257`.
+Five values, locked, his "Modern and Minimal" palette (2026-10-17): white
+ground `#FFFFFF`; light grey surface `#F0F0F0` for cards and everything
+raised; near-black ink `#1A1A1A`; grey `#8C8C8C`; dusty coral accent
+`#E29A86`.
+
+Plus two **text-only** steps, also his call: secondary text is `#666666`
+(5.0:1 on the card, where `#8C8C8C` gave 2.95:1) and the accent set as words
+(a breached readout, a link, an error) is `#A65440` via `--text-accent` (4.65:1
+on the card, where `#E29A86` gave 2.0:1). They are darker steps of the same two
+colours, not new hues: the coral stays for every fill, stroke and dot, where
+3:1 is enough. In dark mode `--text-accent` is the coral itself, which already
+reads at 6.6:1.
+
+How they are spent: a card is the grey on the white ground, and anything inset
+in a card (a field, a select, a segmented track, a slider rail) steps back to
+white. The hairline is the grey, so a card's edge is its own fill and a field's
+edge is its white. Telemetry fills are ink. Text on the coral is ink, not
+white: white on `#E29A86` measures 2.2:1, the ink 8:1.
 
 **Nothing else.** No second hue, no success green, no warning amber.
 
@@ -53,7 +68,10 @@ Accent is a budget, not a palette entry. It is permitted on:
 - a breached readout,
 - a breached bar fill,
 - the threshold reference line on a chart,
-- the 3px breach stroke.
+- the 3px breach stroke,
+- the Shrimpcoin, which is coral by design and always on screen. It is his
+  call (2026-10-17): the reward is drawn in the colour he chose for it, and
+  it is a picture, not a state, so it does not compete with a breach.
 
 If two accent elements are visible at once and neither is a breach, one is
 wrong.
@@ -61,22 +79,25 @@ wrong.
 ### Severity without hues
 
 Severity is carried by **whether the accent appears**, not by a range of
-colours. As a three-step ladder that is: white ink (within tolerance) → slate
+colours. As a three-step ladder that is: ink (within tolerance) → grey
 (worth noticing) → coral (breached). The old `--ok` / `--warn` / `--bad`
 semantic names still resolve - to those three, via `bridge.css` - so the
 sixty-bar status strip and the tab icon keep their reading without a second hue.
 
-### Light mode
+### Dark mode
 
-Not in the original brief; added on request. Scoped in `theme-light.css`, so
-every component flips with no code change. The value ladder inverts (ground
-`#F8FAFC`, card `#FFFFFF`, inset `#F1F5F9`, border `#CBD5E1`, ink `#1E293B`,
-secondary ink `#475569`) and white telemetry fills become ink-dark.
+Light is the default; dark is its twin, scoped in `theme-dark.css`, so every
+component flips with no code change. It is the same family turned round:
+ground `#1A1A1A` (the light ink), card `#262626` (the same 1.15:1 step as
+white to `#F0F0F0`), ink `#F0F0F0` (the light card), secondary ink `#999999`
+and the coral unchanged. Insets, rails and inactive controls step back to the
+ground, exactly as they step back to white in light. Every text value passes
+4.5:1 on the dark card, the coral included (6.6:1), which the light theme
+cannot say.
 
 Three selectors for two states: the media query is what a page shows before
 anyone has pressed anything, and `[data-theme]` is an explicit choice that wins
-in both directions. Dark is what the system was drawn for and what a page with
-no signal either way gets.
+in both directions. A page with no signal either way gets light.
 
 ---
 
@@ -140,13 +161,13 @@ Every tile carries a **stable, untranslated id** (`video`, `daychart`,
 not. Nothing spans two columns: two columns plus the gap is 684px, past what a
 tile is allowed to be.
 
-**The grid has two lengths.** Zen is the three tiles that answer the question
+**The grid has two lengths.** Zen is the two tiles that answer the question
 the page is opened with; the dashboard is every tile it has. The switch between
 them is a segmented control at the foot of the tile that holds the controls,
 under its own 11px eyebrow like any other setting, with zen on the left and the
 dashboard on the right. Both words stand there at once: a control that named
 only the view it leads to never said which one you were in. Nothing else marks
-the mode - a page with three tiles on it is visibly a page with three tiles on
+the mode - a page with two tiles on it is visibly a page with two tiles on
 it.
 
 Because there are no section headings any more, **a tile title carries its own
@@ -163,10 +184,10 @@ straight`.
 - **Flat colour only.** No gradients anywhere, including "subtle" ones. No
   photography, illustration, texture, noise, grain, repeating pattern or
   full-bleed imagery. The only depth cue is the two-step value ladder
-  (`#0F172A` → `#273549`), and inset elements step back *down*.
-- **Cards.** `#273549`, 1px `#3E4C63`, 8px, 24px padding, **no shadow**. The
+  (`#FFFFFF` → `#F0F0F0`), and inset elements step back to the white.
+- **Cards.** `#F0F0F0`, 1px `#F0F0F0`, 8px, 24px padding, **no shadow**. The
   title is an 11px uppercase tracked eyebrow, not a heading-size string. Insets
-  sit at `#1E293B` with the same hairline and 6px. Never nest a card inside a
+  sit at `#FFFFFF` with the same hairline and 6px. Never nest a card inside a
   card at the same surface value.
 - **Borders over shadows.** The system separates with hairlines, not elevation.
   Three of the four old elevation steps now resolve to `none`; `--shadow-card`
@@ -177,15 +198,15 @@ straight`.
   above 8px on a container.
 - **Transparency and blur.** Almost never. Two sanctioned uses: a status pill
   over live video (`--scrim` + `blur(6px)`), and `--accent-soft` for a breach row
-  wash. Text is never set at reduced opacity - secondary text uses the slate at
+  wash. Text is never set at reduced opacity - secondary text uses the grey at
   full opacity so contrast stays measurable.
 
 ### Segmented, not two buttons
 
 One of two or three, side by side, with the current one raised out of an inset
 track. The state is carried by the value ladder and the ink - track at the inset
-value, pressed segment back up at the inactive-control slate, its label going
-from secondary slate to white - and **never by the accent**: a view switch is
+value, pressed segment at the inactive-control value, its label going
+from secondary grey to ink - and **never by the accent**: a view switch is
 not one of the six places the 10% budget may be spent. Equal columns, so "the
 left one" stays on the left whatever the two words measure. `Segmented.tsx`
 holds it; `<Button active>` is the coral version and is for something else.
@@ -194,26 +215,27 @@ holds it; `<Button active>` is the coral version and is for something else.
 
 A `<select>`'s dropdown, a scrollbar and a focus ring are drawn by the platform
 and cannot be styled. The one lever is `color-scheme`, which must follow the
-theme: `dark` on bare `:root`, flipped to `light` in both light blocks. Left at
-`dark light` it says "either, prefer dark" and a light page gets a dark
-dropdown. An `<option>`'s own colours are honoured everywhere except macOS, so
-they are set too and `color-scheme` is the whole of the fix there.
+theme: `light` on bare `:root`, flipped to `dark` in both dark blocks. An
+`<option>`'s own colours are honoured everywhere except macOS, so they are set
+too and `color-scheme` is the whole of the fix there.
 
 The chevron on a closed select is a data URI, so it cannot inherit a token: it
-is drawn twice, once in each theme's secondary slate.
+is drawn twice, once in each theme's secondary grey. The dialog scrims are
+written out twice for the same reason, because `::backdrop` does not reliably
+inherit custom properties.
 
 ### Sliders, not number fields
 
 A bounded number is a slider. A tolerance is a dial you feel your way to, not a
 figure you know in advance and type, and the README says as much: treat the
-three numbers as dials. The track is the telemetry track (4px, pill, inactive
-slate behind, white fill in front) and the value sits above it, right aligned,
+three numbers as dials. The track is the telemetry track (4px, pill, white
+rail behind, ink fill in front) and the value sits above it, right aligned,
 in tabular mono because it changes while you drag.
 
 A dial you feel your way to is also a dial you can lose your place on, so a
 slider carries two things besides its track:
 
-- **The default, marked on the track.** A 1px hairline in secondary slate,
+- **The default, marked on the track.** A 1px hairline in secondary grey,
   placed along the thumb's travel rather than the track's width, so it lands on
   the number it names instead of half a thumb off at the ends. It is drawn over
   the rail and over the thumb, not behind them: a reference mark that
@@ -301,8 +323,8 @@ and are the last of them.
 ## Charts
 
 The locked palette has no categorical set, and inventing one would be inventing
-a brand. The six series slots are the three legible values in order - white
-ink, slate, coral - with the darker slates behind them. This product plots three
+a brand. The six series slots are the three legible values in order - ink,
+grey, coral - with the grey and the two surfaces behind them. This product plots three
 lines, which is what that reads well at. A third simultaneous line does spend
 accent budget; past six series `seriesColor` stops handing out values, because
 the answer there is to split the chart.
@@ -323,32 +345,9 @@ person reading it.
 
 ## Open questions
 
-Three things need a decision from whoever owns the brand. All three are
-implemented **as the design system specifies**; none is silently deviated from.
+One thing needs a decision from whoever owns the brand.
 
-### 1. White on coral fails contrast in dark mode
-
-`--text-on-accent` is `#ffffff` and the dark-mode accent is `#ff8257`. White on
-that coral measures **2.47:1** - below the 4.5:1 AA needs for 14px text and
-below the 3:1 for a UI component. It is on the primary trigger, which is the
-most important control on the page.
-
-Light mode is fine: the accent deepens to `#E14E1D` there and white reaches
-4.4:1.
-
-The fix is one line in `tokens/colors.css` - `--text-on-accent: var(--slate-950)`,
-which measures 6.99:1 and keeps the coral exactly as specified. It is not
-applied because `#ffffff` is a locked token and the palette is the brand's call,
-not the implementation's.
-
-### 2. The two light-mode substitutions
-
-Carried over from the design system's own readme, and still awaiting
-confirmation there: secondary ink is `#475569` rather than `#94A3B8` (which
-measures 2.2:1 on `#F8FAFC`), and coral deepens to `#E14E1D` for anything that
-must hold contrast on white. `#ff8257` survives as `--accent-bright`.
-
-### 3. Emoji in the title and the language picker
+### 1. Emoji in the title and the language picker
 
 The design system says emoji never - not in UI, not in copy. Two places still
 have them, both deliberately:

@@ -28,18 +28,16 @@ export const nl: Copy = {
     nobodyThere: 'Niemand in beeld - de meting is weggegooid.',
     lowConfidence: 'Onzekere meting - slecht licht, of je zit maar half in beeld.',
 
-    statForward: 'Hoofd naar voren',
+    statForward: 'Voren',
     statLean: 'Zijwaartse helling',
     statHeadTilt: 'Hoofd scheef',
-    statConfidence: 'Zekerheid',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: string) => `+${n} vandaag`,
+    coinsStreak: (n: number, of: number) => `reeks ${n}/${of}`,
     limit: (v: string) => `grens ${v}`,
-    computedLocally: 'lokaal berekend',
-    modelLoading: 'model laadt nog',
     loadingModelTitle: 'Een moment',
     loadingModel: 'Het herkenningsmodel wordt geladen - 17 MB, alleen de eerste keer. Daarna staat het in je browser.',
     modelFailed: 'Het lokale model kon niet worden geladen.',
-    noReadingYet: 'Nog geen meting',
-    noReadingYetHint: 'Zodra de camera loopt, komt er om de paar seconden een bij.',
 
     verdictTitle: { good: 'Je zit rechtop', borderline: 'Begint scheef te gaan', bad: 'Je zit scheef' },
     advice: {
@@ -54,7 +52,6 @@ export const nl: Copy = {
         forward: 'Je hoofd staat voor je schouders - trek je kin in en je achterhoofd naar achteren.',
     },
     verdictLabel: { good: 'recht', borderline: 'grensgeval', bad: 'scheef' },
-    sideLabel: { left: 'naar links', right: 'naar rechts', none: 'recht' },
 
     todayTitle: 'Vandaag',
     todaySubtitle: 'Elke meting sinds middernacht, hier op dit apparaat.',
