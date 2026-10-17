@@ -11,10 +11,11 @@ This holds for every language in `src/app/i18n.*.ts`. Chinese normally sets an
 appositive with a doubled em dash; there it becomes a full-width comma `，`, which
 is what the sentence would otherwise have used.
 
-One exception, and it is not a style decision: `public/brand/*.svg` are the
-design system's originals and carry C2PA content credentials. Their bytes are
-signed, so editing a `<title>` to remove a dash invalidates the credential.
-`mark-mono.svg` still has one. Leave those files alone.
+`public/brand/*.svg` used to be the one exception, because they carried C2PA
+content credentials and editing a byte broke the signature. Six of the seven
+were redrawn in the new palette on 2026-10-17 and lost their credential with it,
+on his call; only `mark-on-accent.svg` is still signed. There is no exception
+any more.
 
 To check before committing:
 

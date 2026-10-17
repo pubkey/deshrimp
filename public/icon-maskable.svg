@@ -5,8 +5,7 @@
     brand/mark.svg, laid on the coral of the palette and scaled into the
     maskable safe zone (the inner 80%) so a platform that crops to a circle
     keeps all of it. The marker is the ink, because the coral is the plate.
-    The credentialed original of the mark is served alongside this file at
-    brand/mark.svg.
+    The original of the mark is served alongside this file at brand/mark.svg.
   -->
   <title>deshrimp</title>
   <rect width="512" height="512" rx="96" fill="#E29A86"/>
