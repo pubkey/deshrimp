@@ -132,6 +132,19 @@ wrote them in.
   coral itself stays for every fill, stroke and dot. Dark mode keeps the coral
   as text, where it already reads at 6.6:1.
 
+## 2026-10-17 - a real whip crack
+
+### Changed
+- **The whip is the recording he sent** _(his call, verbatim: „nimm den
+  peitschensound")_. `freesound_community-mixed-whip-crack-1-102825.mp3` is
+  `public/snd/whip.mp3` now with its bytes untouched, and the old `whip.wav`
+  is gone. Its hash replaces the old one in `sounds.sha256`, and the service
+  worker precaches the new file instead of the old one.
+- **Its gain is 1 instead of 0.9.** The old file peaked at -0.9 dB, this one
+  at -7.5 dB, about where the knuckle crack and the rimshot sit, so it is
+  played at full strength like them. The sound name stays `whip`, so no
+  settings migration.
+
 ## 2026-10-15 - Cloudflare Web Analytics
 
 ### New

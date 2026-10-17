@@ -80,7 +80,7 @@ const STATIC = [
     'snd/knuckles.mp3',
     'snd/rimshot.mp3',
     'snd/scream.mp3',
-    'snd/whip.wav',
+    'snd/whip.mp3',
 ];
 
 /**
