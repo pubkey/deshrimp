@@ -11,6 +11,40 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-10-17 - a new palette, and no dark mode
+
+### Changed
+- **The whole app is five colours: `#FFFFFF`, `#F0F0F0`, `#1A1A1A`,
+  `#8C8C8C`, `#E29A86`** _(his call, verbatim: „lets change the color palette
+  of the whole app: … "paletteName": "Modern and Minimal" … Rebuild the app
+  with these colors")_. White ground, grey cards, near-black ink, grey
+  secondary ink, dusty coral accent. The change is in `src/ui/tokens/colors.css`;
+  every component reads the semantic tokens, so nothing else had to be
+  recoloured by hand. Cards are told apart from the ground by their fill, and
+  fields, selects and slider rails inside a card step back to the white.
+- **Text on the coral is the ink, not white.** White on `#E29A86` measures
+  2.28:1, the ink 7.62:1. The same goes for the grey and coral badges.
+- **The app icon and the favicon** use the new colours: a coral plate with the
+  white mark for the installed icon, the ink mark with a coral dot for the tab.
+  The tab icon that goes green, amber and red with the posture is unchanged:
+  that was his own request (2026-09-08), and a palette is not a reason to drop
+  a signal.
+
+### Removed
+- **Dark mode and the light/dark toggle.** The palette is a light one and a dark
+  version would need colours it does not have, so the app is light only. With
+  the toggle went `theme.ts`, `ThemeToggle.tsx`, `tokens/theme-light.css`, the
+  sun and moon icons and the `themeLight` / `themeDark` labels in all thirteen
+  languages. A choice someone stored for dark is simply no longer read.
+
+### Left alone
+- **`public/brand/*.svg`** still carry the old slate and coral. They are signed
+  with C2PA credentials and editing them would break the signature.
+- **Two contrast gaps in the palette as given**: the grey `#8C8C8C` is 3.36:1 on
+  white and the coral is 2.28:1, both under the 4.5:1 for small text. Written
+  up in `src/ui/DESIGN.md` under "Open questions" rather than fixed with a
+  sixth colour.
+
 ## 2026-10-15 - Cloudflare Web Analytics
 
 ### New

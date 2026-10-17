@@ -30,8 +30,6 @@ import type { UiLang, UiText } from './lang';
 export const TEXT: Record<UiLang, UiText> = {
     de: {
         share: 'Teilen',
-        themeLight: 'Helles Design',
-        themeDark: 'Dunkles Design',
         confirmTitle: 'Sicher?',
         confirmYes: 'Ja, machen',
         confirmNo: 'Abbrechen',
@@ -113,8 +111,6 @@ export const TEXT: Record<UiLang, UiText> = {
     },
     en: {
         share: 'Share',
-        themeLight: 'Light theme',
-        themeDark: 'Dark theme',
         confirmTitle: 'Are you sure?',
         confirmYes: 'Yes, do it',
         confirmNo: 'Cancel',
@@ -196,8 +192,6 @@ export const TEXT: Record<UiLang, UiText> = {
     },
     es: {
         share: 'Compartir',
-        themeLight: 'Tema claro',
-        themeDark: 'Tema oscuro',
         confirmTitle: '¿Seguro?',
         confirmYes: 'Sí, hazlo',
         confirmNo: 'Cancelar',
@@ -279,8 +273,6 @@ export const TEXT: Record<UiLang, UiText> = {
     },
     fr: {
         share: 'Partager',
-        themeLight: 'Thème clair',
-        themeDark: 'Thème sombre',
         confirmTitle: 'Vraiment ?',
         confirmYes: 'Oui, vas-y',
         confirmNo: 'Annuler',
@@ -362,8 +354,6 @@ export const TEXT: Record<UiLang, UiText> = {
     },
     it: {
         share: 'Condividi',
-        themeLight: 'Tema chiaro',
-        themeDark: 'Tema scuro',
         confirmTitle: 'Sicuro?',
         confirmYes: 'Sì, procedi',
         confirmNo: 'Annulla',
@@ -445,8 +435,6 @@ export const TEXT: Record<UiLang, UiText> = {
     },
     pt: {
         share: 'Partilhar',
-        themeLight: 'Tema claro',
-        themeDark: 'Tema escuro',
         confirmTitle: 'De certeza?',
         confirmYes: 'Sim, avança',
         confirmNo: 'Cancelar',
@@ -528,8 +516,6 @@ export const TEXT: Record<UiLang, UiText> = {
     },
     nl: {
         share: 'Delen',
-        themeLight: 'Licht thema',
-        themeDark: 'Donker thema',
         confirmTitle: 'Zeker weten?',
         confirmYes: 'Ja, doen',
         confirmNo: 'Annuleren',
@@ -611,8 +597,6 @@ export const TEXT: Record<UiLang, UiText> = {
     },
     pl: {
         share: 'Udostępnij',
-        themeLight: 'Jasny motyw',
-        themeDark: 'Ciemny motyw',
         confirmTitle: 'Na pewno?',
         confirmYes: 'Tak, zrób to',
         confirmNo: 'Anuluj',
@@ -694,8 +678,6 @@ export const TEXT: Record<UiLang, UiText> = {
     },
     tr: {
         share: 'Paylaş',
-        themeLight: 'Açık tema',
-        themeDark: 'Koyu tema',
         confirmTitle: 'Emin misin?',
         confirmYes: 'Evet, yap',
         confirmNo: 'Vazgeç',
@@ -777,8 +759,6 @@ export const TEXT: Record<UiLang, UiText> = {
     },
     ru: {
         share: 'Поделиться',
-        themeLight: 'Светлая тема',
-        themeDark: 'Тёмная тема',
         confirmTitle: 'Точно?',
         confirmYes: 'Да, сделать',
         confirmNo: 'Отмена',
@@ -866,8 +846,6 @@ export const TEXT: Record<UiLang, UiText> = {
     },
     zh: {
         share: '分享',
-        themeLight: '浅色主题',
-        themeDark: '深色主题',
         confirmTitle: '确定吗？',
         confirmYes: '确定',
         confirmNo: '取消',
@@ -949,8 +927,6 @@ export const TEXT: Record<UiLang, UiText> = {
     },
     ja: {
         share: '共有',
-        themeLight: 'ライトテーマ',
-        themeDark: 'ダークテーマ',
         confirmTitle: '本当によろしいですか？',
         confirmYes: 'はい、実行',
         confirmNo: 'キャンセル',
@@ -1032,8 +1008,6 @@ export const TEXT: Record<UiLang, UiText> = {
     },
     ka: {
         share: 'გაზიარება',
-        themeLight: 'ღია თემა',
-        themeDark: 'მუქი თემა',
         confirmTitle: 'დარწმუნებული ხარ?',
         confirmYes: 'დიახ, გააკეთე',
         confirmNo: 'გაუქმება',

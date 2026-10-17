@@ -4,7 +4,7 @@
  * ## What it does and how it looks
  * Nothing visible on its own. It holds one value - one of thirteen language
  * codes - and the
- * frame components (`<ShareButton>`, `<ThemeToggle>`, `<Modal>`,
+ * frame components (`<ShareButton>`, `<Modal>`,
  * `<ConfirmButton>`) read their fixed labels out of it instead of hard-coding
  * German.
  *
@@ -78,8 +78,6 @@ import { TEXT } from './lang-text';
 
 export type UiText = {
     share: string;
-    themeLight: string;
-    themeDark: string;
     confirmTitle: string;
     confirmYes: string;
     confirmNo: string;

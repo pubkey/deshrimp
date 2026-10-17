@@ -19,16 +19,12 @@
 /* Legacy names → design-system values. Read tokens/bridge.css before adding
    a rule that uses one of the short names (--ink, --card, --s4, --r-md). */
 @import './tokens/bridge.css';
-/* Last: it redefines the semantic aliases the four files above set up. */
-@import './tokens/theme-light.css';
 
-/* Dark, and the light blocks in tokens/theme-light.css flip it. This is what
-   a <select>'s dropdown, a scrollbar and a native date picker read to decide
-   their own colours: they are drawn by the platform and cannot be styled, so
-   the only lever is telling the platform which way round the page is. Left at
-   `dark light` it said "either, prefer dark" and a light page got a dark
-   dropdown. */
-:root { color-scheme: dark; }
+/* Light, and only light. This is what a <select>'s dropdown, a scrollbar and a
+   native date picker read to decide their own colours: they are drawn by the
+   platform and cannot be styled, so the only lever is telling the platform
+   which way round the page is. */
+:root { color-scheme: light; }
 
 /* ------------------------------------------------------------------ reset */
 *, *::before, *::after { box-sizing: border-box; }
@@ -311,7 +307,7 @@ a:hover { color: var(--ink); }
 /* Blur is sanctioned only over live video (the camera-well status pill); a
    dialog scrim is a flat value, written out because ::backdrop does not
    reliably inherit custom properties. */
-.ui-loadwrap::backdrop { background: rgba(15, 23, 42, .78); }
+.ui-loadwrap::backdrop { background: rgba(255, 255, 255, .82); }
 .ui-loadcard { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
   display: flex; flex-direction: column; align-items: center; gap: var(--s4);
   width: min(420px, calc(100vw - var(--s6) * 2)); box-sizing: border-box;
@@ -415,8 +411,9 @@ a:hover { color: var(--ink); }
   background: var(--rec); color: var(--on-semantic); }
 .ui-badge.accent { background: var(--accent); color: var(--on-accent); }
 .ui-badge.ok  { background: var(--ok);  color: var(--on-semantic); }
-.ui-badge.warn{ background: var(--warn);color: var(--on-semantic); }
-.ui-badge.bad { background: var(--bad); color: var(--on-semantic); }
+/* Ink, not white, on the grey and the coral: white measures 3.4:1 and 2.2:1. */
+.ui-badge.warn{ background: var(--warn);color: var(--text-primary); }
+.ui-badge.bad { background: var(--bad); color: var(--text-primary); }
 .ui-badge.quiet { background: transparent; color: var(--muted); border: 1px solid var(--line); }
 
 /* ----------------------------------------------------------------- inputs */
@@ -442,20 +439,9 @@ a:hover { color: var(--ink); }
 /* The closed control is ours: hairline, 6px, 40px, and the one glyph in the
    system (a 2.5px round-capped chevron) as a data URI. */
 .ui-select { appearance: none; padding-right: var(--s8); cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238C8C8C' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   background-position: right var(--s3) center; background-size: 12px 12px;
   background-repeat: no-repeat; }
-/* The slate-400 chevron above is drawn for the dark ground and measures 2.2:1
-   on white, the same reason the secondary ink deepens in light mode. Same
-   glyph, the light theme's secondary slate. */
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme='dark']) .ui-select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  }
-}
-:root[data-theme='light'] .ui-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-}
 /* The open list is drawn by the platform and mostly cannot be reached from
    here. What every engine except macOS does honour is the colour of an
    <option>, so the popup at least lands on our surface rather than on the
@@ -730,7 +716,7 @@ a:hover { color: var(--ink); }
 .ui-modal::backdrop {
   /* ::backdrop does not reliably inherit custom properties - literal scrim,
      and it is the design system's --scrim value written out. */
-  background: rgba(15, 23, 42, .78);
+  background: rgba(255, 255, 255, .82);
 }
 /* One of the two sanctioned shadows: a dialog is in the top layer and has
    genuinely left the page, so a hairline alone cannot place it. */

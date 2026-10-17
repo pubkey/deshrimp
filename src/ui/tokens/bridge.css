@@ -9,8 +9,8 @@
 
    This is a translation layer, not a second palette: nothing below invents a
    value. Where the old vocabulary was finer than the new one, names collapse -
-   that is the point. The system has six colours; a component asking for a
-   seventh gets the nearest one it is allowed to have.
+   that is the point. The system has five colours; a component asking for a
+   sixth gets the nearest one it is allowed to have.
 
    New work should reference the design-system names directly. This file exists
    so the port could happen in one step, and it shrinks as components are
@@ -47,29 +47,30 @@
 
   /* --- severity --------------------------------------------------------- */
   /* The palette has no green and no amber. Severity is carried by *whether*
-     the accent appears, which as a three-step ladder is: white ink (within
-     tolerance) → slate (worth noticing) → coral (breached). The information
+     the accent appears, which as a three-step ladder is: ink (within
+     tolerance) → grey (worth noticing) → coral (breached). The information
      survives; the hues do not.
      `--rec` was an "our pick" gold - a highlight, not a state - so it becomes
-     the plain white ink rather than spending accent budget. */
+     the plain ink rather than spending accent budget. */
   --rec:         var(--text-primary);
   --ok:          var(--text-primary);
   --warn:        var(--text-secondary);
   --bad:         var(--accent);
-  /* Dark ink on every one of those fills: white on coral measures 2.5:1. */
+  /* White on the ink fills. The grey and the coral fills take the ink instead
+     (theme.css, .ui-badge): white on them measures 3.4:1 and 2.2:1. */
   --on-semantic: var(--bg-app);
 
   /* --- series ------------------------------------------------------------ */
-  /* No categorical palette exists in a six-value system, and inventing one
+  /* No categorical palette exists in a five-value system, and inventing one
      would be inventing a brand. Charts here plot at most three lines, so the
-     three legible values are spent in order: white, slate, coral. A third
+     three legible values are spent in order: ink, grey, coral. A third
      simultaneous line does spend the accent budget - past three series the
-     answer is to split the chart, not to add a hue. Slots 4-6 are the darker
-     slates and read as "rest". */
+     answer is to split the chart, not to add a hue. Slots 4-6 repeat the grey
+     and the two surfaces and read as "rest". */
   --series-1: var(--fill-default);
   --series-2: var(--text-secondary);
   --series-3: var(--accent);
-  --series-4: var(--slate-650);
+  --series-4: var(--text-secondary);
   --series-5: var(--control-inactive);
   --series-6: var(--border-default);
 

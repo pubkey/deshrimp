@@ -120,8 +120,8 @@ them: zen on the left, dashboard on the right. The choice is stored with the
 settings, so it survives a reload.
 
 The interface is the **deshrimp design system**: a clinical instrument rather
-than a wellness app. Six colours, locked - slate ground, slate card, hairline
-border, white ink, slate-blue secondary ink, and a coral accent that is a budget
+than a wellness app. Five colours, locked - white ground, light grey card,
+near-black ink, grey secondary ink, and a dusty coral accent that is a budget
 rather than a palette entry. IBM Plex Sans for words, IBM Plex Mono with tabular
 figures for every number, so a value does not reflow while it ticks. Borders
 instead of shadows, nothing rounder than 8px, no gradients, and motion only
@@ -132,9 +132,8 @@ there is no success green and no warning amber anywhere in the product. The one
 dramatic moment is a breach - the camera well's hairline snaps to a 3px coral
 stroke and the offending readout pulses. Nothing moves, nothing shakes.
 
-Dark is what it was drawn for; light is a scoped inversion and the toggle still
-works in both directions. The rules, the tokens and the three things still
-waiting on a decision from him are in **`src/ui/DESIGN.md`**.
+There is one theme, light, and no dark mode. The rules, the tokens and the two
+things still waiting on a decision from him are in **`src/ui/DESIGN.md`**.
 
 `src/ui` holds **only what this app renders**. It came from a shared library
 built for several different pages, and the rest of it - shop listings, maps,

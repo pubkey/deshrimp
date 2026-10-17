@@ -2,7 +2,7 @@
  * # Page - the frame every generated page wears
  *
  * ## What it does and how it looks
- * Top bar with the share and theme buttons on the right, then the header
+ * Top bar with the share button and the language on the right, then the header
  * (eyebrow, the single `h1`, subtitle), then the content. That is the whole
  * frame: the page ends where its content ends.
  *
@@ -13,9 +13,8 @@
  * ## Core parts
  * - title and subtitle default to `PAGE_DATA.meta`. A page passes them only to
  *   override.
- * - `actions` - extra icon buttons left of share and theme (an export button,
- *   a reset).
- * - `share={false}` / `theme={false}` - remove those buttons. Rarely right.
+ * - `actions` - extra icon buttons left of share (an export button, a reset).
+ * - `share={false}` - removes the share button. Rarely right.
  * - `lang` - `"de"` (default) or `"en"`, for the frame's own labels.
  * - `languages` + `onLangChange` - turn the top-bar language control from a
  *   label into a picker. Without them it shows the one language and nothing else.
@@ -34,6 +33,7 @@
  * ```
  *
  * ## Changelog
+ * - 2026-10-17 No theme toggle: the app has one light palette and no dark mode.
  * - 2026-09-15 The frame's default language is English, not German.
  * - 2026-09-15 The „About this page" block is gone - his call, „wir brauchen
  *   das nicht". With it went the task box, the „Data basis" and „Sources" tabs
@@ -49,7 +49,6 @@ import { useEffect } from 'react';
 import { PAGE } from './page-data';
 import { PageHeader } from './PageHeader';
 import { ShareButton } from './ShareButton';
-import { ThemeToggle } from './ThemeToggle';
 import { LanguagePicker } from './LanguagePicker';
 import { setUiLang, type UiLang } from './lang';
 import { Wrap } from './Wrap';
@@ -65,10 +64,9 @@ export type PageProps = {
      * language can change while it is open needs to say so in the tab too.
      */
     documentTitle?: string;
-    /** Extra buttons in the top bar, left of share and theme. */
+    /** Extra buttons in the top bar, left of share. */
     actions?: ReactNode;
     share?: boolean;
-    theme?: boolean;
     /**
      * The language of the page frame - the labels this component and the ones
      * in the top bar own, not the page's own copy. Defaults to English
@@ -110,8 +108,7 @@ export function Page(props: PageProps) {
             <div className="ui-topbar">
                 {props.actions}
                 {props.share === false ? null : <ShareButton title={typeof title === 'string' ? title : undefined} />}
-                {props.theme === false ? null : <ThemeToggle />}
-                {/* Right of the theme toggle, on every page - a label when the
+                {/* Right of the share button, on every page - a label when the
                     page has one language, a picker when it has several. */}
                 <LanguagePicker
                     value={props.lang}

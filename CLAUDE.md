@@ -30,7 +30,7 @@ It exits 1 and prints nothing when the repo is clean.
 ## Design system
 
 The interface is the deshrimp design system, written up in `src/ui/DESIGN.md`:
-six locked colours, accent as a budget, borders rather than shadows, IBM Plex
+five locked colours, accent as a budget, borders rather than shadows, IBM Plex
 with tabular figures on every number. Read it before adding a colour, a radius,
 a shadow or an animation - most of those answers are already no.
 
