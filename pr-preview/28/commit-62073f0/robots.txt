@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /pr-preview/
+Allow: /
+
+Sitemap: https://deshrimp.com/sitemap.xml
