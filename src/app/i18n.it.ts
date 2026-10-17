@@ -28,7 +28,7 @@ export const it: Copy = {
     nobodyThere: 'Nessuno nell’immagine - la misurazione è stata scartata.',
     lowConfidence: 'Misurazione incerta - poca luce, o sei solo mezzo nell’inquadratura.',
 
-    statForward: 'Testa in avanti',
+    statForward: 'Avanti',
     statLean: 'Inclinazione laterale',
     statHeadTilt: 'Testa piegata',
     limit: (v: string) => `limite ${v}`,

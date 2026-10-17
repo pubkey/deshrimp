@@ -28,7 +28,7 @@ export const nl: Copy = {
     nobodyThere: 'Niemand in beeld - de meting is weggegooid.',
     lowConfidence: 'Onzekere meting - slecht licht, of je zit maar half in beeld.',
 
-    statForward: 'Hoofd naar voren',
+    statForward: 'Voren',
     statLean: 'Zijwaartse helling',
     statHeadTilt: 'Hoofd scheef',
     limit: (v: string) => `grens ${v}`,

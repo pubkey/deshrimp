@@ -102,7 +102,7 @@ const de = {
     nobodyThere: 'Niemand im Bild - die Messung wurde verworfen.',
     lowConfidence: 'Unsichere Messung - schlechtes Licht oder nur halb im Bild.',
 
-    statForward: 'Kopf vor der Schulter',
+    statForward: 'Vorne',
     statLean: 'Seitneigung',
     statHeadTilt: 'Kopfneigung',
     limit: (v: string) => `Grenze ${v}`,
@@ -263,7 +263,7 @@ const en: Copy = {
     nobodyThere: 'Nobody in the picture - the reading was discarded.',
     lowConfidence: 'Uncertain reading - poor light, or only half of you is in frame.',
 
-    statForward: 'Head in front',
+    statForward: 'Front',
     statLean: 'Side lean',
     statHeadTilt: 'Head tilt',
     limit: (v: string) => `limit ${v}`,

@@ -28,7 +28,7 @@ export const pt: Copy = {
     nobodyThere: 'Ninguém na imagem - a medição foi descartada.',
     lowConfidence: 'Medição pouco fiável - pouca luz, ou só apanha metade de ti.',
 
-    statForward: 'Cabeça à frente',
+    statForward: 'Frente',
     statLean: 'Inclinação lateral',
     statHeadTilt: 'Cabeça inclinada',
     limit: (v: string) => `limite ${v}`,

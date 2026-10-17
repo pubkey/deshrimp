@@ -28,7 +28,7 @@ export const pl: Copy = {
     nobodyThere: 'Nikogo w kadrze - pomiar odrzucono.',
     lowConfidence: 'Niepewny pomiar - słabe światło albo jesteś tylko w połowie w kadrze.',
 
-    statForward: 'Głowa przed barkami',
+    statForward: 'Przód',
     statLean: 'Przechył na bok',
     statHeadTilt: 'Przechylenie głowy',
     limit: (v: string) => `granica ${v}`,

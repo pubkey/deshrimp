@@ -28,7 +28,7 @@ export const tr: Copy = {
     nobodyThere: 'Karede kimse yok - ölçüm atıldı.',
     lowConfidence: 'Güvenilirliği düşük ölçüm - ışık kötü ya da kadraja yarım giriyorsun.',
 
-    statForward: 'Baş omzun önünde',
+    statForward: 'Ön',
     statLean: 'Yana eğim',
     statHeadTilt: 'Baş eğikliği',
     limit: (v: string) => `sınır ${v}`,

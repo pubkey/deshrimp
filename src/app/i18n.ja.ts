@@ -28,7 +28,7 @@ export const ja: Copy = {
     nobodyThere: '画面に誰もいません - この測定は破棄しました。',
     lowConfidence: '測定があいまいです - 光が足りないか、体が半分しか写っていません。',
 
-    statForward: '頭の前出し',
+    statForward: '前傾',
     statLean: '左右の傾き',
     statHeadTilt: '頭の傾き',
     limit: (v: string) => `しきい値 ${v}`,

@@ -28,7 +28,7 @@ export const fr: Copy = {
     nobodyThere: 'Personne sur l’image - la mesure a été écartée.',
     lowConfidence: 'Mesure incertaine - mauvaise lumière, ou tu n’es qu’à moitié dans le cadre.',
 
-    statForward: 'Tête en avant',
+    statForward: 'Avant',
     statLean: 'Inclinaison latérale',
     statHeadTilt: 'Tête penchée',
     limit: (v: string) => `limite ${v}`,

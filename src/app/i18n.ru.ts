@@ -28,7 +28,7 @@ export const ru: Copy = {
     nobodyThere: 'В кадре никого - измерение отброшено.',
     lowConfidence: 'Ненадёжное измерение - плохой свет или ты попал в кадр только наполовину.',
 
-    statForward: 'Голова впереди плеч',
+    statForward: 'Вперёд',
     statLean: 'Наклон вбок',
     statHeadTilt: 'Наклон головы',
     limit: (v: string) => `предел ${v}`,

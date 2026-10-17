@@ -28,7 +28,7 @@ export const es: Copy = {
     nobodyThere: 'No hay nadie en la imagen - la medición se ha descartado.',
     lowConfidence: 'Medición poco fiable - mala luz, o solo sales a medias.',
 
-    statForward: 'Cabeza por delante',
+    statForward: 'Delante',
     statLean: 'Inclinación lateral',
     statHeadTilt: 'Ladeo de la cabeza',
     limit: (v: string) => `límite ${v}`,

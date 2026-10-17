@@ -28,7 +28,7 @@ export const zh: Copy = {
     nobodyThere: '画面里没有人，这次测量已丢弃。',
     lowConfidence: '测量不太可靠，光线太差，或者你只有一半在画面里。',
 
-    statForward: '头在肩前',
+    statForward: '前倾',
     statLean: '侧向倾斜',
     statHeadTilt: '头部歪斜',
     limit: (v: string) => `上限 ${v}`,

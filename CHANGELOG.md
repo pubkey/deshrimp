@@ -27,6 +27,10 @@ wrote them in.
   show arrow instead of "to the right"")_: `←` or `→` under the side-lean
   value, the same pair the day table already used, and nothing when the
   shoulders are level.
+- **"Head in front" is "Front"** _(his call, verbatim: „write "front" instead
+  of headinfront")_, and the same one short word in the other twelve: Vorne,
+  Delante, Avant, Avanti, 前傾, წინ, Voren, Przód, Frente, Вперёд, Ön, 前倾. It is
+  one label, so the chart legends that name this angle say it too.
 
 ### Removed
 - **The "No reading yet" empty state** and its two labels in all thirteen

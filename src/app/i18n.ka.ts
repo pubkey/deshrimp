@@ -28,7 +28,7 @@ export const ka: Copy = {
     nobodyThere: 'კადრში არავინაა - გაზომვა გაუქმდა.',
     lowConfidence: 'არასანდო გაზომვა - ცუდი განათებაა ან მხოლოდ ნახევრად ხარ კადრში.',
 
-    statForward: 'თავი მხრებზე წინ',
+    statForward: 'წინ',
     statLean: 'გვერდზე დახრა',
     statHeadTilt: 'თავის დახრა',
     limit: (v: string) => `ზღვარი ${v}`,
