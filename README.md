@@ -133,7 +133,7 @@ dramatic moment is a breach - the camera well's hairline snaps to a 3px coral
 stroke and the offending readout pulses. Nothing moves, nothing shakes.
 
 Light is the default; dark is its twin from the same family, and the toggle
-works in both directions. The rules, the tokens and the two things still
+works in both directions. The rules, the tokens and the one thing still
 waiting on a decision from him are in **`src/ui/DESIGN.md`**.
 
 `src/ui` holds **only what this app renders**. It came from a shared library

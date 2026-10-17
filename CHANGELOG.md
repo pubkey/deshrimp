@@ -59,10 +59,16 @@ wrote them in.
   colours were already right. A credential signs the exact bytes, so an edit
   makes it report "tampered"; a file without one simply makes no claim. The
   pictures themselves are drawn the same as before.
-- **Two contrast gaps in the palette as given**: the grey `#8C8C8C` is 3.36:1 on
-  white and the coral is 2.28:1, both under the 4.5:1 for small text. Written
-  up in `src/ui/DESIGN.md` under "Open questions" rather than fixed with a
-  sixth colour.
+
+### Changed, for legibility
+- **Two darker text steps in light mode** _(his call, verbatim: „ja mach die
+  andern schriftfarben")_. The grey `#8C8C8C` measured 2.95:1 as small text on
+  the card and the coral 2.0:1, both under the 4.5:1 that text needs.
+  Secondary text is now `#666666` (5.0:1) and the accent set as words, a
+  breached readout, a link or an error, is `#A65440` (4.65:1) through a new
+  `--text-accent` token. Both are darker steps of the same colours, and the
+  coral itself stays for every fill, stroke and dot. Dark mode keeps the coral
+  as text, where it already reads at 6.6:1.
 
 ## 2026-10-15 - Cloudflare Web Analytics
 

@@ -42,7 +42,7 @@
   --line-strong: var(--border-default);
 
   /* --- accent ----------------------------------------------------------- */
-  --accent-ink:  var(--accent);
+  --accent-ink:  var(--text-accent);
   --on-accent:   var(--text-on-accent);
 
   /* --- severity --------------------------------------------------------- */

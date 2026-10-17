@@ -35,6 +35,7 @@
     --fill-default:     var(--dark-ink);
     --text-primary:     var(--dark-ink);
     --text-secondary:   var(--dark-muted);
+    --text-accent:      var(--coral);
     --control-inactive: var(--dark-ground);
     --scrim:            rgba(26, 26, 26, .82);
     --shadow-card:      0 1px 2px rgba(0, 0, 0, .4);
@@ -60,6 +61,7 @@
   --fill-default:     var(--dark-ink);
   --text-primary:     var(--dark-ink);
   --text-secondary:   var(--dark-muted);
+  --text-accent:      var(--coral);
   --control-inactive: var(--dark-ground);
   --scrim:            rgba(26, 26, 26, .82);
   --shadow-card:      0 1px 2px rgba(0, 0, 0, .4);

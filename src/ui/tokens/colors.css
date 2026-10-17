@@ -1,11 +1,16 @@
 /* -------------------------------------------------------------------------
    colors.css - the locked palette.
 
-   Five values and nothing else, his "Modern and Minimal" set (CHANGELOG
-   2026-10-17): white ground, light grey surface, near-black ink, grey
-   secondary ink, a dusty coral accent. No second hue, no success green, no
-   warning amber. Severity is carried by *whether* the accent appears, not by a
-   range of colours - see DESIGN.md §"The 10% rule".
+   His "Modern and Minimal" set (CHANGELOG 2026-10-17): white ground, light
+   grey surface, near-black ink, grey secondary ink, a dusty coral accent. No
+   second hue, no success green, no warning amber. Severity is carried by
+   *whether* the accent appears, not by a range of colours - see DESIGN.md
+   §"The 10% rule".
+
+   Plus two text values, also his call: the grey and the coral of the set are
+   too light to read as small text on the grey card (2.95:1 and 2.0:1), so text
+   takes a darker step of each. The coral itself stays for every fill, stroke
+   and dot, where 3:1 is enough.
 
    Light is the default. The dark twin in theme-dark.css turns the same family
    round and redefines the semantic aliases below.
@@ -13,11 +18,13 @@
 
 :root {
   /* base palette - locked, do not deviate */
-  --white:   #FFFFFF;
-  --grey-100: #F0F0F0;
-  --grey-500: #8C8C8C;
-  --ink-900: #1A1A1A;
-  --coral:   #E29A86;
+  --white:      #FFFFFF;
+  --grey-100:   #F0F0F0;
+  --grey-500:   #8C8C8C;
+  --grey-600:   #666666;  /* text only: 5.0:1 on the card */
+  --ink-900:    #1A1A1A;
+  --coral:      #E29A86;
+  --coral-text: #A65440;  /* text only: 4.65:1 on the card */
 
   /* semantic aliases - components reference these, never the raw ramp */
   --bg-app:           var(--white);
@@ -30,8 +37,10 @@
   --fill-default:     var(--ink-900);
   --fill-alert:       var(--coral);
   --text-primary:     var(--ink-900);
-  --text-secondary:   var(--grey-500);
-  /* White on the coral measures 2.2:1; the ink measures 8:1. */
+  --text-secondary:   var(--grey-600);
+  /* A breached readout, a link, an error: the accent set as words. */
+  --text-accent:      var(--coral-text);
+  /* White on the coral measures 2.2:1; the ink measures 7.6:1. */
   --text-on-accent:   var(--ink-900);
   --accent:           var(--coral);
   --accent-bright:    var(--coral);

@@ -40,8 +40,16 @@ components are rewritten against them.
 
 Five values, locked, his "Modern and Minimal" palette (2026-10-17): white
 ground `#FFFFFF`; light grey surface `#F0F0F0` for cards and everything
-raised; near-black ink `#1A1A1A`; grey secondary ink `#8C8C8C`; dusty coral
-accent `#E29A86`.
+raised; near-black ink `#1A1A1A`; grey `#8C8C8C`; dusty coral accent
+`#E29A86`.
+
+Plus two **text-only** steps, also his call: secondary text is `#666666`
+(5.0:1 on the card, where `#8C8C8C` gave 2.95:1) and the accent set as words
+(a breached readout, a link, an error) is `#A65440` via `--text-accent` (4.65:1
+on the card, where `#E29A86` gave 2.0:1). They are darker steps of the same two
+colours, not new hues: the coral stays for every fill, stroke and dot, where
+3:1 is enough. In dark mode `--text-accent` is the coral itself, which already
+reads at 6.6:1.
 
 How they are spent: a card is the grey on the white ground, and anything inset
 in a card (a field, a select, a segmented track, a slider rail) steps back to
@@ -334,26 +342,9 @@ person reading it.
 
 ## Open questions
 
-Two things need a decision from whoever owns the brand. Both are implemented
-**as the palette specifies**; neither is silently deviated from.
+One thing needs a decision from whoever owns the brand.
 
-### 1. The grey and the coral are light for text
-
-The five values are used exactly as given, and two of them do not reach the
-4.5:1 AA needs for small text:
-
-- secondary ink `#8C8C8C` measures **3.36:1** on the white and **2.95:1** on
-  the `#F0F0F0` card, which is where most captions sit;
-- the coral `#E29A86` measures **2.28:1** on white and **2.0:1** on the card,
-  so a breached readout set in coral is easier to see as a colour than to read
-  as a number. The 3px breach stroke still lands.
-
-Text *on* the coral is the ink (7.62:1), not white (2.28:1); that one was
-decidable without leaving the palette. The other two are a darker grey and a
-darker coral for text, which would be a sixth and seventh colour and is his
-call.
-
-### 2. Emoji in the title and the language picker
+### 1. Emoji in the title and the language picker
 
 The design system says emoji never - not in UI, not in copy. Two places still
 have them, both deliberately:
