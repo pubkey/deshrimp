@@ -1,5 +1,5 @@
 /** Dutch. Same keys as `de`, enforced by `Copy`. */
-import type { Copy } from './i18n';
+import type { Coins, Copy } from './i18n';
 
 export const nl: Copy = {
     title: 'Zit rechtop, garnaal! 🦐',
@@ -32,7 +32,7 @@ export const nl: Copy = {
     statLean: 'Zijwaartse helling',
     statHeadTilt: 'Hoofd scheef',
     coinsLabel: 'Shrimpcoin',
-    coinsToday: (n: string) => `+${n} vandaag`,
+    coinsToday: (n: Coins) => ['+', n, ' vandaag'],
     coinsStreak: (n: number, of: number) => `reeks ${n}/${of}`,
     limit: (v: string) => `grens ${v}`,
     loadingModelTitle: 'Een moment',
@@ -115,12 +115,12 @@ export const nl: Copy = {
     whichSound: 'Welk geluid',
     soundLabel: 'Signaalgeluid',
     listen: 'Beluisteren',
-    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    soundLocked: (name: string) => `${name} · vergrendeld`,
     unlockTitle: (name: string) => `${name} ontgrendelen?`,
-    unlockBody: (price: number, balance: string) => `Kost ${price} Shrimpcoin. Je hebt er ${balance}.`,
+    unlockBody: (price: Coins, balance: Coins) => ['Kost ', price, ' Shrimpcoin. Je hebt er ', balance, '.'],
     unlockConfirm: 'Ontgrendelen',
     unlockCancel: 'Annuleren',
-    unlockShort: (missing: string) => `Je komt ${missing} Shrimpcoin tekort. Recht zitten levert ze op.`,
+    unlockShort: (missing: Coins) => ['Je komt ', missing, ' Shrimpcoin tekort. Recht zitten levert ze op.'],
     unlockDone: (name: string) => `${name} ontgrendeld`,
     soundName: {
         fart: 'Scheet', ahem: 'Kuchje', scream: 'Schreeuw',

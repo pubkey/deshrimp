@@ -1,5 +1,5 @@
 /** Georgian. Same keys as `de`, enforced by `Copy`. */
-import type { Copy } from './i18n';
+import type { Coins, Copy } from './i18n';
 
 export const ka: Copy = {
     title: 'სწორად დაჯექი, კრევეტო! 🦐',
@@ -32,7 +32,7 @@ export const ka: Copy = {
     statLean: 'გვერდზე დახრა',
     statHeadTilt: 'თავის დახრა',
     coinsLabel: 'Shrimpcoin',
-    coinsToday: (n: string) => `+${n} დღეს`,
+    coinsToday: (n: Coins) => ['+', n, ' დღეს'],
     coinsStreak: (n: number, of: number) => `სერია ${n}/${of}`,
     limit: (v: string) => `ზღვარი ${v}`,
     loadingModelTitle: 'ერთი წუთი',
@@ -115,12 +115,12 @@ export const ka: Copy = {
     whichSound: 'რომელი ხმა',
     soundLabel: 'სასიგნალო ხმა',
     listen: 'მოსმენა',
-    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    soundLocked: (name: string) => `${name} · დაბლოკილი`,
     unlockTitle: (name: string) => `გავხსნათ ${name}?`,
-    unlockBody: (price: number, balance: string) => `ღირს ${price} Shrimpcoin. გაქვს ${balance}.`,
+    unlockBody: (price: Coins, balance: Coins) => ['ღირს ', price, ' Shrimpcoin. გაქვს ', balance, '.'],
     unlockConfirm: 'გახსნა',
     unlockCancel: 'გაუქმება',
-    unlockShort: (missing: string) => `აკლია ${missing} Shrimpcoin. სწორად ჯდომით დააგროვებ.`,
+    unlockShort: (missing: Coins) => ['აკლია ', missing, ' Shrimpcoin. სწორად ჯდომით დააგროვებ.'],
     unlockDone: (name: string) => `${name} გაიხსნა`,
     soundName: {
         fart: 'გაზის გაშვება', ahem: 'ყელის მოწმენდა', scream: 'ყვირილი',

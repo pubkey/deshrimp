@@ -1,5 +1,5 @@
 /** French. Same keys as `de`, enforced by `Copy`. */
-import type { Copy } from './i18n';
+import type { Coins, Copy } from './i18n';
 
 export const fr: Copy = {
     title: 'Tiens-toi droit, crevette ! 🦐',
@@ -32,7 +32,7 @@ export const fr: Copy = {
     statLean: 'Inclinaison latérale',
     statHeadTilt: 'Tête penchée',
     coinsLabel: 'Shrimpcoin',
-    coinsToday: (n: string) => `+${n} aujourd’hui`,
+    coinsToday: (n: Coins) => ['+', n, ' aujourd’hui'],
     coinsStreak: (n: number, of: number) => `série ${n}/${of}`,
     limit: (v: string) => `limite ${v}`,
     loadingModelTitle: 'Un instant',
@@ -115,12 +115,12 @@ export const fr: Copy = {
     whichSound: 'Quel son',
     soundLabel: 'Son du signal',
     listen: 'Écouter',
-    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    soundLocked: (name: string) => `${name} · verrouillé`,
     unlockTitle: (name: string) => `Débloquer ${name} ?`,
-    unlockBody: (price: number, balance: string) => `Coûte ${price} Shrimpcoin. Tu en as ${balance}.`,
+    unlockBody: (price: Coins, balance: Coins) => ['Coûte ', price, ' Shrimpcoin. Tu en as ', balance, '.'],
     unlockConfirm: 'Débloquer',
     unlockCancel: 'Annuler',
-    unlockShort: (missing: string) => `Il manque ${missing} Shrimpcoin. Se tenir droit en rapporte.`,
+    unlockShort: (missing: Coins) => ['Il manque ', missing, ' Shrimpcoin. Se tenir droit en rapporte.'],
     unlockDone: (name: string) => `${name} débloqué`,
     soundName: {
         fart: 'Pet', ahem: 'Raclement de gorge', scream: 'Cri',

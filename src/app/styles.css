@@ -310,3 +310,21 @@
   font-variant-numeric: tabular-nums;
   font-size: var(--text-lg);
 }
+
+/* A Shrimpcoin amount inside a sentence: the coin, then the figure, kept on
+ * one line so the coin never ends one line and its number starts the next. */
+.haltung-coinamount {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+  vertical-align: -3px;
+}
+.haltung-coinamount img {
+  display: block;
+  flex: none;
+}
+.haltung-coinamount span {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}

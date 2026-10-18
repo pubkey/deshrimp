@@ -25,8 +25,8 @@ wrote them in.
   after about four minutes, which is what he asked for _(„erster sound soll
   nach 4 minuten ca drin sein")_. An earlier note here said 2 a minute; that
   was a miscalculation that left out the streak bonus.
-- **The select is the shop.** A locked sound stays in the list with its
-  price. Picking it opens a dialog with the price, what you have and how much
+- **The select is the shop.** A locked sound stays in the list, marked as
+  locked. Picking it opens a dialog with the price, what you have and how much
   is missing if anything. Unlocking spends the coins and switches to the sound
   in one step.
 - **No free preview** _(his call, verbatim: „vor dem kauf kann man den sound
@@ -47,6 +47,19 @@ wrote them in.
   taken out of the address once applied, so a reload does not pay twice. It
   is not hidden: anyone who reads this can give themselves coins, which on a
   page where the coins buy nothing but a noise is fine.
+
+- **Every Shrimpcoin number has the coin beside it** _(his call, verbatim:
+  „immer neben shrimpcoin zahlen muss das logo stehen")_: today's coins
+  under the purse, the price, the balance and the shortfall in the unlock
+  dialog. The sentences that carry an amount are built from pieces instead
+  of one string, in all thirteen languages, so the amount can be the coin
+  and its number while each language keeps its own word order.
+- **The sound list says "locked" instead of a price.** A native `<option>`
+  is drawn by the platform and can hold text only, so a price there would be
+  a number without its coin. The price, with the coin, is in the dialog that
+  picking a locked sound opens.
+- The debug toast no longer names the amount, for the same reason: a toast is
+  plain text. The purse shows the new balance with its coin.
 
 ### Kept
 - **Whatever sound a device already uses stays unlocked for free** (settings

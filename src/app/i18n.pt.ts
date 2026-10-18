@@ -1,5 +1,5 @@
 /** Portuguese. Same keys as `de`, enforced by `Copy`. */
-import type { Copy } from './i18n';
+import type { Coins, Copy } from './i18n';
 
 export const pt: Copy = {
     title: 'Senta-te direito, camarão! 🦐',
@@ -32,7 +32,7 @@ export const pt: Copy = {
     statLean: 'Inclinação lateral',
     statHeadTilt: 'Cabeça inclinada',
     coinsLabel: 'Shrimpcoin',
-    coinsToday: (n: string) => `+${n} hoje`,
+    coinsToday: (n: Coins) => ['+', n, ' hoje'],
     coinsStreak: (n: number, of: number) => `sequência ${n}/${of}`,
     limit: (v: string) => `limite ${v}`,
     loadingModelTitle: 'Um momento',
@@ -115,12 +115,12 @@ export const pt: Copy = {
     whichSound: 'Que som',
     soundLabel: 'Som do sinal',
     listen: 'Ouvir',
-    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    soundLocked: (name: string) => `${name} · bloqueado`,
     unlockTitle: (name: string) => `Desbloquear ${name}?`,
-    unlockBody: (price: number, balance: string) => `Custa ${price} Shrimpcoin. Tens ${balance}.`,
+    unlockBody: (price: Coins, balance: Coins) => ['Custa ', price, ' Shrimpcoin. Tens ', balance, '.'],
     unlockConfirm: 'Desbloquear',
     unlockCancel: 'Cancelar',
-    unlockShort: (missing: string) => `Faltam ${missing} Shrimpcoin. Sentar direito dá-os.`,
+    unlockShort: (missing: Coins) => ['Faltam ', missing, ' Shrimpcoin. Sentar direito dá-os.'],
     unlockDone: (name: string) => `${name} desbloqueado`,
     soundName: {
         fart: 'Peido', ahem: 'Pigarro', scream: 'Grito',

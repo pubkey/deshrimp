@@ -1,5 +1,5 @@
 /** Russian. Same keys as `de`, enforced by `Copy`. */
-import type { Copy } from './i18n';
+import type { Coins, Copy } from './i18n';
 
 export const ru: Copy = {
     title: 'Сиди прямо, креветка! 🦐',
@@ -32,7 +32,7 @@ export const ru: Copy = {
     statLean: 'Наклон вбок',
     statHeadTilt: 'Наклон головы',
     coinsLabel: 'Shrimpcoin',
-    coinsToday: (n: string) => `+${n} сегодня`,
+    coinsToday: (n: Coins) => ['+', n, ' сегодня'],
     coinsStreak: (n: number, of: number) => `серия ${n}/${of}`,
     limit: (v: string) => `предел ${v}`,
     loadingModelTitle: 'Одну секунду',
@@ -115,12 +115,12 @@ export const ru: Copy = {
     whichSound: 'Какой звук',
     soundLabel: 'Звук сигнала',
     listen: 'Послушать',
-    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    soundLocked: (name: string) => `${name} · закрыт`,
     unlockTitle: (name: string) => `Открыть ${name}?`,
-    unlockBody: (price: number, balance: string) => `Стоит ${price} Shrimpcoin. У тебя ${balance}.`,
+    unlockBody: (price: Coins, balance: Coins) => ['Стоит ', price, ' Shrimpcoin. У тебя ', balance, '.'],
     unlockConfirm: 'Открыть',
     unlockCancel: 'Отмена',
-    unlockShort: (missing: string) => `Не хватает ${missing} Shrimpcoin. Сиди ровно, и они накопятся.`,
+    unlockShort: (missing: Coins) => ['Не хватает ', missing, ' Shrimpcoin. Сиди ровно, и они накопятся.'],
     unlockDone: (name: string) => `${name} открыт`,
     soundName: {
         fart: 'Пук', ahem: 'Покашливание', scream: 'Крик',

@@ -1,5 +1,5 @@
 /** Turkish. Same keys as `de`, enforced by `Copy`. */
-import type { Copy } from './i18n';
+import type { Coins, Copy } from './i18n';
 
 export const tr: Copy = {
     title: 'Dik otur karides! 🦐',
@@ -32,7 +32,7 @@ export const tr: Copy = {
     statLean: 'Yana eğim',
     statHeadTilt: 'Baş eğikliği',
     coinsLabel: 'Shrimpcoin',
-    coinsToday: (n: string) => `bugün +${n}`,
+    coinsToday: (n: Coins) => ['bugün +', n],
     coinsStreak: (n: number, of: number) => `seri ${n}/${of}`,
     limit: (v: string) => `sınır ${v}`,
     loadingModelTitle: 'Bir saniye',
@@ -115,12 +115,12 @@ export const tr: Copy = {
     whichSound: 'Hangi ses',
     soundLabel: 'Sinyal sesi',
     listen: 'Dinle',
-    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    soundLocked: (name: string) => `${name} · kilitli`,
     unlockTitle: (name: string) => `${name} açılsın mı?`,
-    unlockBody: (price: number, balance: string) => `${price} Shrimpcoin tutar. Sende ${balance} var.`,
+    unlockBody: (price: Coins, balance: Coins) => [price, ' Shrimpcoin tutar. Sende ', balance, ' var.'],
     unlockConfirm: 'Aç',
     unlockCancel: 'Vazgeç',
-    unlockShort: (missing: string) => `${missing} Shrimpcoin eksik. Dik oturdukça kazanırsın.`,
+    unlockShort: (missing: Coins) => [missing, ' Shrimpcoin eksik. Dik oturdukça kazanırsın.'],
     unlockDone: (name: string) => `${name} açıldı`,
     soundName: {
         fart: 'Osuruk', ahem: 'Boğaz temizleme', scream: 'Çığlık',

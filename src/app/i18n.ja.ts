@@ -1,5 +1,5 @@
 /** Japanese. Same keys as `de`, enforced by `Copy`. */
-import type { Copy } from './i18n';
+import type { Coins, Copy } from './i18n';
 
 export const ja: Copy = {
     title: '背すじを伸ばせ、エビ！🦐',
@@ -32,7 +32,7 @@ export const ja: Copy = {
     statLean: '左右の傾き',
     statHeadTilt: '頭の傾き',
     coinsLabel: 'Shrimpcoin',
-    coinsToday: (n: string) => `今日 +${n}`,
+    coinsToday: (n: Coins) => ['今日 +', n],
     coinsStreak: (n: number, of: number) => `連続 ${n}/${of}`,
     limit: (v: string) => `しきい値 ${v}`,
     loadingModelTitle: '少しお待ちください',
@@ -115,12 +115,12 @@ export const ja: Copy = {
     whichSound: 'どの音にするか',
     soundLabel: '通知音',
     listen: '試聴',
-    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    soundLocked: (name: string) => `${name} · ロック中`,
     unlockTitle: (name: string) => `${name}を解放しますか？`,
-    unlockBody: (price: number, balance: string) => `${price} Shrimpcoin かかります。所持: ${balance}。`,
+    unlockBody: (price: Coins, balance: Coins) => [price, ' Shrimpcoin かかります。所持: ', balance, '。'],
     unlockConfirm: '解放する',
     unlockCancel: 'キャンセル',
-    unlockShort: (missing: string) => `あと ${missing} Shrimpcoin 足りません。姿勢よく座ると貯まります。`,
+    unlockShort: (missing: Coins) => ['あと ', missing, ' Shrimpcoin 足りません。姿勢よく座ると貯まります。'],
     unlockDone: (name: string) => `${name}を解放しました`,
     soundName: {
         fart: 'おなら', ahem: 'せき払い', scream: '悲鳴',

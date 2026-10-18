@@ -1,5 +1,5 @@
 /** Polish. Same keys as `de`, enforced by `Copy`. */
-import type { Copy } from './i18n';
+import type { Coins, Copy } from './i18n';
 
 export const pl: Copy = {
     title: 'Siedź prosto, krewetko! 🦐',
@@ -32,7 +32,7 @@ export const pl: Copy = {
     statLean: 'Przechył na bok',
     statHeadTilt: 'Przechylenie głowy',
     coinsLabel: 'Shrimpcoin',
-    coinsToday: (n: string) => `+${n} dziś`,
+    coinsToday: (n: Coins) => ['+', n, ' dziś'],
     coinsStreak: (n: number, of: number) => `seria ${n}/${of}`,
     limit: (v: string) => `granica ${v}`,
     loadingModelTitle: 'Chwileczkę',
@@ -115,12 +115,12 @@ export const pl: Copy = {
     whichSound: 'Jaki dźwięk',
     soundLabel: 'Dźwięk sygnału',
     listen: 'Posłuchaj',
-    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    soundLocked: (name: string) => `${name} · zablokowany`,
     unlockTitle: (name: string) => `Odblokować ${name}?`,
-    unlockBody: (price: number, balance: string) => `Kosztuje ${price} Shrimpcoin. Masz ${balance}.`,
+    unlockBody: (price: Coins, balance: Coins) => ['Kosztuje ', price, ' Shrimpcoin. Masz ', balance, '.'],
     unlockConfirm: 'Odblokuj',
     unlockCancel: 'Anuluj',
-    unlockShort: (missing: string) => `Brakuje ${missing} Shrimpcoin. Siedzenie prosto je zarabia.`,
+    unlockShort: (missing: Coins) => ['Brakuje ', missing, ' Shrimpcoin. Siedzenie prosto je zarabia.'],
     unlockDone: (name: string) => `${name} odblokowany`,
     soundName: {
         fart: 'Pierdnięcie', ahem: 'Chrząknięcie', scream: 'Krzyk',

@@ -1166,7 +1166,7 @@ function Live() {
         window.history.replaceState(window.history.state, '', url.toString());
         if (!Number.isFinite(amount) || amount === 0) return;
         void change({ coinsSpent: (settings.coinsSpent || 0) - Math.round(amount * 10) })
-            .then(() => toast(`+${amount} Shrimpcoin (debug)`));
+            .then(() => toast("Shrimpcoin (debug)"));
     }, [settingsLoading]);
 
     /* --------------------------------------------------------- rendering */
@@ -1443,6 +1443,25 @@ function coinAmount(tenths: number, lang: Lang): string {
     });
 }
 
+/**
+ * A Shrimpcoin number with the coin beside it, which is how every one of them
+ * is shown _(2026-10-18, his call: „immer neben shrimpcoin zahlen muss das
+ * logo stehen")_. The coin is sized to the line it sits in, and the number
+ * keeps the tabular mono every figure in the product wears.
+ */
+function CoinAmount({ tenths, whole }: { tenths: number; whole?: boolean }) {
+    const lang = useLang();
+    const text = whole
+        ? Math.round(tenths / 10).toLocaleString(localeFor(lang))
+        : coinAmount(tenths, lang);
+    return (
+        <span className="haltung-coinamount">
+            <img src={coinUrl} alt="" width={16} height={16} />
+            <span>{text}</span>
+        </span>
+    );
+}
+
 function CoinPurse({ total, today, streak }: { total: number; today: number; streak: number }) {
     const t = useCopy();
     const lang = useLang();
@@ -1455,7 +1474,7 @@ function CoinPurse({ total, today, streak }: { total: number; today: number; str
                     <span className="haltung-coins-amount">{amount(total)}</span> {t.coinsLabel}
                 </div>
                 <div className="ui-small ui-muted">
-                    {t.coinsToday(amount(today))} · {t.coinsStreak(streak % STREAK_LENGTH, STREAK_LENGTH)}
+                    {t.coinsToday(<CoinAmount key="today" tenths={today} />)} · {t.coinsStreak(streak % STREAK_LENGTH, STREAK_LENGTH)}
                 </div>
             </div>
         </div>
@@ -2004,7 +2023,7 @@ function Sound(props: SoundProps) {
                         <option key={key} value={key}>
                             {unlocked.indexOf(key) >= 0
                                 ? t.soundName[key]
-                                : t.soundLocked(t.soundName[key], SOUND_PRICE[key])}
+                                : t.soundLocked(t.soundName[key])}
                         </option>
                     ))}
                 </Select>
@@ -2029,9 +2048,12 @@ function Sound(props: SoundProps) {
             >
                 {pending ? (
                     <Col gap={3}>
-                        <Text>{t.unlockBody(price, coinAmount(balance, lang))}</Text>
+                        <Text>{t.unlockBody(
+                            <CoinAmount key="price" tenths={price * 10} whole />,
+                            <CoinAmount key="balance" tenths={balance} />,
+                        )}</Text>
                         {!affordable
-                            ? <Muted>{t.unlockShort(coinAmount(price * 10 - balance, lang))}</Muted>
+                            ? <Muted>{t.unlockShort(<CoinAmount key="missing" tenths={price * 10 - balance} />)}</Muted>
                             : null}
                         {/* No preview here: a locked sound is not heard until
                             it is bought _(2026-10-18, his call, verbatim: „vor

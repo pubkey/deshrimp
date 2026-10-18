@@ -1,5 +1,5 @@
 /** Simplified Chinese. Same keys as `de`, enforced by `Copy`. */
-import type { Copy } from './i18n';
+import type { Coins, Copy } from './i18n';
 
 export const zh: Copy = {
     title: '坐直了，虾米！🦐',
@@ -32,7 +32,7 @@ export const zh: Copy = {
     statLean: '侧向倾斜',
     statHeadTilt: '头部歪斜',
     coinsLabel: 'Shrimpcoin',
-    coinsToday: (n: string) => `今天 +${n}`,
+    coinsToday: (n: Coins) => ['今天 +', n],
     coinsStreak: (n: number, of: number) => `连续 ${n}/${of}`,
     limit: (v: string) => `上限 ${v}`,
     loadingModelTitle: '稍等一下',
@@ -115,12 +115,12 @@ export const zh: Copy = {
     whichSound: '用哪种声音',
     soundLabel: '提示音',
     listen: '试听',
-    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    soundLocked: (name: string) => `${name} · 未解锁`,
     unlockTitle: (name: string) => `解锁${name}？`,
-    unlockBody: (price: number, balance: string) => `需要 ${price} Shrimpcoin。你有 ${balance}。`,
+    unlockBody: (price: Coins, balance: Coins) => ['需要 ', price, ' Shrimpcoin。你有 ', balance, '。'],
     unlockConfirm: '解锁',
     unlockCancel: '取消',
-    unlockShort: (missing: string) => `还差 ${missing} Shrimpcoin。坐直就能攒到。`,
+    unlockShort: (missing: Coins) => ['还差 ', missing, ' Shrimpcoin。坐直就能攒到。'],
     unlockDone: (name: string) => `${name}已解锁`,
     soundName: {
         fart: '放屁', ahem: '清嗓子', scream: '尖叫',

@@ -24,8 +24,18 @@
  *    lives - in `data.json`, keyed by language.
  */
 
+import type { ReactNode } from 'react';
 import type { SoundName, Verdict } from './db';
 import type { AdviceKey } from './pose';
+
+/**
+ * A Shrimpcoin amount as it is set into a sentence: the number with the coin
+ * in front of it, never the bare number _(2026-10-18, his call: „immer neben
+ * shrimpcoin zahlen muss das logo stehen")_. The sentences that carry one
+ * return a list of pieces rather than a string, so the amount can be an
+ * element and each language still decides where in its sentence it goes.
+ */
+export type Coins = ReactNode;
 import { es } from './i18n.es';
 import { fr } from './i18n.fr';
 import { it } from './i18n.it';
@@ -106,7 +116,7 @@ const de = {
     statLean: 'Seitneigung',
     statHeadTilt: 'Kopfneigung',
     coinsLabel: 'Shrimpcoin',
-    coinsToday: (n: string) => `+${n} heute`,
+    coinsToday: (n: Coins) => ['+', n, ' heute'],
     coinsStreak: (n: number, of: number) => `Serie ${n}/${of}`,
     limit: (v: string) => `Grenze ${v}`,
     loadingModelTitle: 'Einen Moment',
@@ -192,12 +202,12 @@ const de = {
     whichSound: 'Welches Geräusch',
     soundLabel: 'Signalton',
     listen: 'Anhören',
-    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    soundLocked: (name: string) => `${name} · gesperrt`,
     unlockTitle: (name: string) => `${name} freischalten?`,
-    unlockBody: (price: number, balance: string) => `Kostet ${price} Shrimpcoin. Du hast ${balance}.`,
+    unlockBody: (price: Coins, balance: Coins) => ['Kostet ', price, ' Shrimpcoin. Du hast ', balance, '.'],
     unlockConfirm: 'Freischalten',
     unlockCancel: 'Abbrechen',
-    unlockShort: (missing: string) => `Es fehlen ${missing} Shrimpcoin. Gerade sitzen bringt welche.`,
+    unlockShort: (missing: Coins) => ['Es fehlen ', missing, ' Shrimpcoin. Gerade sitzen bringt welche.'],
     unlockDone: (name: string) => `${name} freigeschaltet`,
     soundName: {
         fart: 'Furz', ahem: 'Räuspern', scream: 'Schrei',
@@ -277,7 +287,7 @@ const en: Copy = {
     statLean: 'Side lean',
     statHeadTilt: 'Head tilt',
     coinsLabel: 'Shrimpcoin',
-    coinsToday: (n: string) => `+${n} today`,
+    coinsToday: (n: Coins) => ['+', n, ' today'],
     coinsStreak: (n: number, of: number) => `streak ${n}/${of}`,
     limit: (v: string) => `limit ${v}`,
     loadingModelTitle: 'One moment',
@@ -360,12 +370,12 @@ const en: Copy = {
     whichSound: 'Which sound',
     soundLabel: 'Signal sound',
     listen: 'Listen',
-    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    soundLocked: (name: string) => `${name} · locked`,
     unlockTitle: (name: string) => `Unlock ${name}?`,
-    unlockBody: (price: number, balance: string) => `Costs ${price} Shrimpcoin. You have ${balance}.`,
+    unlockBody: (price: Coins, balance: Coins) => ['Costs ', price, ' Shrimpcoin. You have ', balance, '.'],
     unlockConfirm: 'Unlock',
     unlockCancel: 'Cancel',
-    unlockShort: (missing: string) => `${missing} Shrimpcoin short. Sitting straight earns them.`,
+    unlockShort: (missing: Coins) => [missing, ' Shrimpcoin short. Sitting straight earns them.'],
     unlockDone: (name: string) => `${name} unlocked`,
     soundName: {
         fart: 'Fart', ahem: 'Ahem', scream: 'Scream',
