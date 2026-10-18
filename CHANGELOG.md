@@ -66,6 +66,15 @@ wrote them in.
   migration v15). Taking away the noise someone picked, the morning after an
   update, is not what the change is for.
 
+### Decided against
+- **No Shrimpcoin for breaks** _(his call, verbatim: „wir können pausen nicht
+  wirklich trakcen, da soll es nicht belohnt werden")_. The research in
+  `research/idle-game-reward-curves.md` proposed a bonus for coming back after
+  a break and a per-bout cap that resets on one. The camera cannot tell a
+  break from leaning out of frame or covering the lens, so a break bonus would
+  pay for whatever empties the picture. Neither is built; the report records
+  the decision.
+
 ## 2026-10-17 - Shrimpcoin
 
 ### New

@@ -295,6 +295,15 @@ then get up.
 | Long daily streaks | **Only with slack** | If a daily streak is ever added, ship freezes or a weekly allowance from day one (Duolingo, Sharif and Shu). |
 | Prestige resets, big-number inflation | **Avoid** | Nothing here is worth resetting, and coin amounts in the tens and hundreds are already readable. |
 
+**Decided against, 2026-10-18: no reward for breaks.** His call, verbatim:
+„wir können pausen nicht wirklich trakcen, da soll es nicht belohnt werden".
+The camera cannot tell a real break from leaning out of frame, covering the
+lens or walking off for an hour, so a break bonus would pay for whatever
+empties the picture. That rules out the "welcome back" bonus above, the break
+milestones, and the bout cap in the form "until the next break", which
+depends on the same detection. What stands is the fact behind them: the coin
+pays for straight sitting time, and nothing in it pays for getting up.
+
 One honest alternative should be recorded: leave the economy alone and accept
 that Shrimpcoin is onboarding. On the health-app record above, that may be all
 any coin does. A two-hour ladder that gets someone through their first few
