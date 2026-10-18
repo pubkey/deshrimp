@@ -215,6 +215,8 @@ const de = {
     soundName: {
         fart: 'Furz', ahem: 'Räuspern', scream: 'Schrei',
         knuckles: 'Fingerknacken', whip: 'Peitsche', rimshot: 'Bada-Bumm-Tss',
+        geiger: 'Geigerzähler',
+        parking: 'Einparkhilfe',
     } as Record<SoundName, string>,
 
     leavesTitle: 'Was das Gerät verlässt',
@@ -386,6 +388,8 @@ const en: Copy = {
     soundName: {
         fart: 'Fart', ahem: 'Ahem', scream: 'Scream',
         knuckles: 'Knuckle crack', whip: 'Whip crack', rimshot: 'Rimshot',
+        geiger: 'Geiger counter',
+        parking: 'Parking sensor',
     },
 
     leavesTitle: 'What leaves this device',

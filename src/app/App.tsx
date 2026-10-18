@@ -206,7 +206,7 @@ const INTERVALS = [1, 2, 5, 10, 15, 30, 60, 120];
  * this list only fixes which one comes first - `fart` is the default and the
  * one he asked for by name.
  */
-const SOUND_ORDER: SoundName[] = ['fart', 'ahem', 'scream', 'knuckles', 'whip', 'rimshot'];
+const SOUND_ORDER: SoundName[] = ['fart', 'ahem', 'scream', 'knuckles', 'whip', 'rimshot', 'geiger', 'parking'];
 
 const VERDICT_TONE: Record<Verdict, StatusTone> = {
     good: 'ok', borderline: 'warn', bad: 'bad',
@@ -332,16 +332,24 @@ function frameOf(video: HTMLVideoElement | null): string | null {
 }
 
 /**
+ * How far off he sits, as a share of his own limit: the worst of the three
+ * measures, so 1 is exactly on a threshold and 2 is twice past it.
+ */
+function severity(a: Analysis, s: Settings): number {
+    return Math.max(
+        a.leanDeg / Math.max(1, s.maxLean),
+        a.forwardDeg / Math.max(1, s.maxForward),
+        a.headTiltDeg / Math.max(1, s.maxHeadTilt),
+    );
+}
+
+/**
  * The verdict, from the degrees and his thresholds - not from the model.
  * `borderline` starts at 70 % of a threshold, which is early enough to correct
  * before the signal goes off.
  */
 function judge(a: Analysis, s: Settings): Verdict {
-    const ratio = Math.max(
-        a.leanDeg / Math.max(1, s.maxLean),
-        a.forwardDeg / Math.max(1, s.maxForward),
-        a.headTiltDeg / Math.max(1, s.maxHeadTilt),
-    );
+    const ratio = severity(a, s);
     if (ratio >= 1) return 'bad';
     if (ratio >= 0.7) return 'borderline';
     return 'good';
@@ -533,6 +541,8 @@ const SOUND_FILES: Record<SoundName, string[]> = {
     knuckles: ['knuckles.mp3'],
     whip: ['whip.mp3'],
     rimshot: ['rimshot.mp3'],
+    geiger: [],
+    parking: [],
 };
 
 /**
@@ -541,8 +551,83 @@ const SOUND_FILES: Record<SoundName, string[]> = {
  * least likely to want at full volume behind him in a coworking space.
  */
 const SOUND_GAIN: Record<SoundName, number> = {
-    fart: 1, ahem: 1, scream: 0.6, knuckles: 1, whip: 1, rimshot: 0.8,
+    fart: 1, ahem: 1, scream: 0.6, knuckles: 1, whip: 1, rimshot: 0.8, geiger: 0.7,
+    parking: 0.35,
 };
+
+/**
+ * The Geiger counter _(2026-10-17, his call, verbatim: „mach einen "Geiger"
+ * sound wo ein geigerzähler schneller oder langsammer wird je nachdem wie weit
+ * man falsch sitzt")_.
+ *
+ * It is the one sound that is not a single noise per bad reading. It ticks the
+ * whole time, and **how fast it ticks is how far off he sits**: silent while he
+ * sits straight, a slow scattered crackle from the moment a reading turns
+ * borderline, and a near-continuous rattle once he is twice past his limit.
+ * That makes borderline audible, which no other sound is - but a counter that
+ * only woke up at the threshold would be a beep with extra steps, and hearing
+ * it speed up is the whole point.
+ *
+ * The clicks are random, not evenly spaced (a Poisson process, like real
+ * decays), and made in the browser: there is no file to fetch, and a click is
+ * a few milliseconds of shaped noise, which Web Audio does as well as any
+ * recording.
+ */
+const METER_FROM = 0.7;
+/** Twice the limit: the counter is at its fastest, the parking beep is solid. */
+const METER_FULL = 2;
+/** Clicks a second at `METER_FROM` and at `METER_FULL` times the limit. */
+const GEIGER_SLOW = 1.5;
+const GEIGER_FAST = 40;
+/**
+ * How far ahead the clicks and beeps are scheduled, in seconds. Longer than a
+ * second, because a tab in the background gets its timers at most once a
+ * second and the sound must not stutter there.
+ */
+const METER_AHEAD = 1.2;
+
+/**
+ * The parking sensor _(2026-10-18, his call, verbatim: „mach auch nen sound
+ * "mwo es klingt wie die biepser beim auto beim einparken")_.
+ *
+ * The Geiger counter's regular cousin: same range, same scale, but even beeps
+ * instead of random clicks, the way a car's distance warning sounds. A beep a
+ * second from borderline, closer together the further off he sits, and one
+ * solid tone from twice the limit on - the „stop, you are touching the wall"
+ * of the car, which is the one thing everybody recognises about the sound.
+ */
+const PARK_SLOW = 1;
+const PARK_FAST = 0.12;
+/** How long one beep is, in seconds, and its pitch. */
+const PARK_BEEP = 0.07;
+const PARK_PITCH = 1600;
+
+/** The sounds that run the whole time and follow the severity. */
+const METERS: SoundName[] = ['geiger', 'parking'];
+const isMeter = (name: SoundName) => METERS.includes(name);
+
+/** 0 at `METER_FROM`, 1 at `METER_FULL`, below 0 when there is nothing to hear. */
+function meterLevel(ratio: number): number {
+    if (!(ratio >= METER_FROM)) return -1;
+    return Math.min(1, (ratio - METER_FROM) / (METER_FULL - METER_FROM));
+}
+
+/** Clicks a second for a severity, 0 for silence. Logarithmic, like the ear. */
+function geigerRate(ratio: number): number {
+    const t = meterLevel(ratio);
+    return t < 0 ? 0 : GEIGER_SLOW * Math.pow(GEIGER_FAST / GEIGER_SLOW, t);
+}
+
+/** Seconds from one parking beep to the next, 0 for the solid tone. */
+function parkGap(ratio: number): number {
+    const t = meterLevel(ratio);
+    return t >= 1 ? 0 : PARK_SLOW * Math.pow(PARK_FAST / PARK_SLOW, Math.max(0, t));
+}
+
+/** The gap to the next random click at a given rate. */
+function geigerGap(rate: number): number {
+    return -Math.log(1 - Math.random()) / rate;
+}
 
 /**
  * The signal starts quiet and grows while the bad posture holds _(2026-09-08:
@@ -651,6 +736,134 @@ function useBeep() {
         });
     }, []);
 
+    /** One Geiger click: a sharp spike of noise with a short metallic ring. */
+    const clickBuffer = useRef<AudioBuffer | null>(null);
+    const click = (ctx: AudioContext, at: number, level = 1): AudioBufferSourceNode => {
+        if (!clickBuffer.current) {
+            const rate = ctx.sampleRate;
+            const buf = ctx.createBuffer(1, Math.ceil(rate * 0.006), rate);
+            const data = buf.getChannelData(0);
+            for (let i = 0; i < data.length; i++) {
+                const t = i / rate;
+                data[i] = (Math.random() * 2 - 1) * Math.exp(-t / 0.0005) * 0.7
+                    + Math.sin(2 * Math.PI * 3800 * t) * Math.exp(-t / 0.0012) * 0.3;
+            }
+            clickBuffer.current = buf;
+        }
+        const src = ctx.createBufferSource();
+        src.buffer = clickBuffer.current;
+        const g = ctx.createGain();
+        g.gain.value = SOUND_GAIN.geiger * level;
+        src.connect(g); g.connect(ctx.destination);
+        src.start(at);
+        return src;
+    };
+
+    /** One parking beep: a short sine with soft edges, so it does not click. */
+    const parkBeep = (ctx: AudioContext, at: number, level = 1): OscillatorNode => {
+        const osc = ctx.createOscillator();
+        osc.frequency.value = PARK_PITCH;
+        const g = ctx.createGain();
+        const peak = SOUND_GAIN.parking * level;
+        g.gain.setValueAtTime(0, at);
+        g.gain.linearRampToValueAtTime(peak, at + 0.004);
+        g.gain.setValueAtTime(peak, at + PARK_BEEP - 0.008);
+        g.gain.linearRampToValueAtTime(0, at + PARK_BEEP);
+        osc.connect(g); g.connect(ctx.destination);
+        osc.start(at); osc.stop(at + PARK_BEEP);
+        return osc;
+    };
+
+    /* The solid parking tone, while it sounds. One oscillator held open rather
+       than beeps laid end to end, which would click at every seam. */
+    const solid = useRef<{ osc: OscillatorNode; gain: GainNode } | null>(null);
+    const startSolid = (ctx: AudioContext) => {
+        if (solid.current) return;
+        const osc = ctx.createOscillator();
+        osc.frequency.value = PARK_PITCH;
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(SOUND_GAIN.parking, ctx.currentTime + 0.01);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start();
+        solid.current = { osc, gain };
+    };
+    const stopSolid = (ctx: AudioContext) => {
+        const held = solid.current;
+        if (!held) return;
+        const now = ctx.currentTime;
+        held.gain.gain.cancelScheduledValues(now);
+        held.gain.gain.setValueAtTime(held.gain.gain.value, now);
+        held.gain.gain.linearRampToValueAtTime(0, now + 0.015);
+        held.osc.stop(now + 0.02);
+        solid.current = null;
+    };
+
+    /* The running meter: what it is doing, when the next click or beep is due,
+       when the last one already sounded, and the ones handed to the audio
+       clock but not yet heard - kept so a new reading can take them back and
+       take effect at once rather than a second late. */
+    const meterNow = useRef('');
+    const meterNext = useRef(0);
+    const meterLast = useRef(-Infinity);
+    const meterTimer = useRef<number | null>(null);
+    const meterQueued = useRef<{ src: AudioScheduledSourceNode; at: number }[]>([]);
+
+    /**
+     * Set the Geiger counter or the parking sensor going for this severity, or
+     * silence both with `null`. Called after every reading; what sounds in
+     * between is its own.
+     */
+    const meter = useCallback((name: SoundName | null, ratio = 0) => {
+        const rate = name === 'geiger' ? geigerRate(ratio) : 0;
+        const parking = name === 'parking' && meterLevel(ratio) >= 0;
+        const gap = parking ? parkGap(ratio) : 0;
+        const state = rate ? `geiger:${rate}` : parking ? `parking:${gap}` : '';
+        if (state === meterNow.current) return;
+        meterNow.current = state;
+        const ctx = ctxRef.current;
+        if (!ctx) return;
+
+        const now = ctx.currentTime;
+        meterQueued.current.forEach(({ src, at }) => {
+            if (at > now) src.stop();
+            else meterLast.current = Math.max(meterLast.current, at);
+        });
+        meterQueued.current = [];
+        if (!(parking && !gap)) stopSolid(ctx);
+
+        if (!state || (parking && !gap)) {
+            if (meterTimer.current !== null) window.clearInterval(meterTimer.current);
+            meterTimer.current = null;
+            if (state) {
+                void ctx.resume().catch(() => { /* nothing to resume */ });
+                startSolid(ctx);
+            }
+            return;
+        }
+
+        void ctx.resume().catch(() => { /* nothing to resume */ });
+        // A parking beep keeps its rhythm across a reading: the next one comes
+        // a gap after the last one heard, not the moment the reading lands.
+        meterNext.current = rate ? now + geigerGap(rate) : Math.max(now, meterLast.current + gap);
+        const pump = () => {
+            if (!meterNow.current) return;
+            const t = ctx.currentTime;
+            meterQueued.current = meterQueued.current.filter(({ at }) => {
+                if (at <= t) meterLast.current = Math.max(meterLast.current, at);
+                return at > t;
+            });
+            if (meterNext.current < t) meterNext.current = t;
+            while (meterNext.current < t + METER_AHEAD) {
+                const at = meterNext.current;
+                meterQueued.current.push({ src: rate ? click(ctx, at) : parkBeep(ctx, at), at });
+                meterNext.current += rate ? geigerGap(rate) : gap;
+            }
+        };
+        pump();
+        if (meterTimer.current === null) meterTimer.current = window.setInterval(pump, 200);
+    }, []);
+
     /** A short burst of white noise - the raw material for anything breathy. */
     const noiseBuffer = useRef<AudioBuffer | null>(null);
     const noise = (ctx: AudioContext): AudioBufferSourceNode => {
@@ -690,6 +903,43 @@ function useBeep() {
             g.gain.exponentialRampToValueAtTime(0.0001, t + end);
             return g;
         };
+
+        if (name === 'geiger') {
+            // Not a fallback: this is the sound. For „Listen" it walks the
+            // whole range once in three seconds, from the first slow ticks of
+            // borderline to the rattle of sitting far too crooked.
+            const span = 3;
+            for (let at = 0; ;) {
+                const progress = at / span;
+                at += geigerGap(geigerRate(METER_FROM + (METER_FULL - METER_FROM) * progress));
+                if (at >= span) break;
+                click(ctx, t + at, level);
+            }
+            return;
+        }
+
+        if (name === 'parking') {
+            // The same walk for the parking sensor: beeps closing up over
+            // three seconds, then the solid tone for most of one more.
+            const span = 3;
+            let at = 0;
+            while (at < span) {
+                parkBeep(ctx, t + at, level);
+                const progress = at / span;
+                at += Math.max(PARK_FAST, parkGap(METER_FROM + (METER_FULL - METER_FROM) * progress * 0.99));
+            }
+            const osc = ctx.createOscillator();
+            osc.frequency.value = PARK_PITCH;
+            const g = ctx.createGain();
+            const peak = SOUND_GAIN.parking * level;
+            g.gain.setValueAtTime(0, t + at);
+            g.gain.linearRampToValueAtTime(peak, t + at + 0.01);
+            g.gain.setValueAtTime(peak, t + at + 0.8);
+            g.gain.linearRampToValueAtTime(0, t + at + 0.82);
+            osc.connect(g); g.connect(out);
+            osc.start(t + at); osc.stop(t + at + 0.85);
+            return;
+        }
 
         if (name === 'fart') {
             const osc = ctx.createOscillator();
@@ -833,7 +1083,7 @@ function useBeep() {
         }
     }, [synth]);
 
-    return { prepare, play };
+    return { prepare, play, meter };
 }
 
 /** Keeps the screen awake while a check is running. Absent on most desktops. */
@@ -1003,7 +1253,11 @@ function Live() {
             });
             setApiError(null);
 
+            const metered = s.sound && isMeter(s.soundName);
+
             if (!result.personDetected) {
+                // Nobody to measure is nothing to count.
+                live.current.beep.meter(null);
                 setNote(copy.nobodyThere);
                 // Nobody in the picture earns nothing and breaks the streak
                 // _(2026-10-17, his call: „bilder ohne person zählen gar
@@ -1017,6 +1271,11 @@ function Live() {
             const now = Date.now();
             const trustworthy = result.confidence >= MIN_CONFIDENCE;
             const alarm = verdict === 'bad' && trustworthy;
+
+            // The Geiger counter and the parking sensor follow every
+            // trustworthy reading, borderline included - that is what lets him
+            // hear it getting worse.
+            live.current.beep.meter(metered && trustworthy ? s.soundName : null, severity(result, s));
 
             // One reading that is not bad ends the run, so sitting up quiets the
             // signal on the very next check rather than a few seconds later.
@@ -1053,7 +1312,9 @@ function Live() {
             if (alarm) {
                 setFlash(true);
                 window.setTimeout(() => setFlash(false), 4000);
-                if (s.sound) live.current.beep.play(s.soundName, loudness(badRun.current));
+                // A meter is already sounding; a one-off on top would only
+                // blur the rate.
+                if (s.sound && !metered) live.current.beep.play(s.soundName, loudness(badRun.current));
                 if (s.vibrate) buzz();
                 if (s.notify) {
                     void showNotification(copy.notifyTitle, copy.advice[result.advice], s.vibrate);
@@ -1108,6 +1369,15 @@ function Live() {
         }, 1000);
         return () => window.clearInterval(id);
     }, [running, check, interval]);
+
+    /* A meter stops with the run, and the moment its sound is switched off or
+       swapped for another one - not at the next reading. */
+    const meter = beep.meter;
+    const meterOn = running && settings.sound && isMeter(settings.soundName);
+    useEffect(() => {
+        if (!meterOn) meter(null);
+        return () => meter(null);
+    }, [meterOn, settings.soundName, meter]);
 
     /* The download reports from outside React. Subscribed only while the
        overlay is up, so nothing is listening once the model is in memory. */

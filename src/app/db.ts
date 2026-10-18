@@ -236,7 +236,9 @@ export type Settings = {
 
 /**
  * The alarm sounds he can pick from. Most are the recordings he sent
- * _(2026-09-08)_, and the whip crack joins them as a bundled file. The default
+ * _(2026-09-08)_, the whip crack joins them as a bundled file, and the Geiger
+ * counter and the parking sensor are made in the browser rather than
+ * recorded. The default
  * is the rude one - he asked for it by name, and a noise you find funny is a
  * noise you leave switched on.
  *
@@ -244,7 +246,7 @@ export type Settings = {
  * `peitsche`); they are what the file under `public/snd/` is called, and they
  * are stored, so the rename is a migration rather than a find and replace.
  */
-export type SoundName = 'fart' | 'scream' | 'knuckles' | 'rimshot' | 'ahem' | 'whip';
+export type SoundName = 'fart' | 'scream' | 'knuckles' | 'rimshot' | 'ahem' | 'whip' | 'geiger' | 'parking';
 
 export const SETTINGS_ID = 'settings';
 
@@ -274,8 +276,9 @@ export const DEFAULTS: Settings = {
  * steiler")_: each step roughly triples, so the wait stretches the way an
  * idle game's clock does (research/idle-game-reward-curves.md). Bought in
  * order, the sounds unlock after about 4 minutes, 17 minutes, 1 hour, 3 hours
- * and 10 hours of straight sitting. That is usage time, not calendar time:
- * there is no daily cap, so someone who sits with it four hours a day unlocks
+ * and 10 hours of straight sitting, then the Geiger counter after about 31
+ * hours and the parking sensor after about 100. That is usage time, not
+ * calendar time: there is no daily cap, so someone who sits with it four hours a day unlocks
  * correspondingly sooner _(his call: „das freischalten soll nicht pro tag
  * sondern pro nutzungszeit relevant sein")_. The first one stays at four
  * minutes _(his call: „erster sound soll nach 4 minuten ca drin sein")_.
@@ -287,12 +290,14 @@ export const SOUND_PRICE: Record<SoundName, number> = {
     knuckles: 500,
     whip: 1500,
     rimshot: 5000,
+    geiger: 15000,
+    parking: 50000,
 };
 
-const SOUND_NAMES: SoundName[] = ['fart', 'scream', 'knuckles', 'rimshot', 'ahem', 'whip'];
+const SOUND_NAMES: SoundName[] = ['fart', 'scream', 'knuckles', 'rimshot', 'ahem', 'whip', 'geiger', 'parking'];
 
 const settingsSchema: RxJsonSchema<Settings> = {
-    version: 16,
+    version: 17,
     primaryKey: 'id',
     type: 'object',
     properties: {
@@ -305,7 +310,7 @@ const settingsSchema: RxJsonSchema<Settings> = {
         sound: { type: 'boolean' },
         soundName: {
             type: 'string',
-            enum: ['fart', 'scream', 'knuckles', 'rimshot', 'ahem', 'whip'],
+            enum: ['fart', 'scream', 'knuckles', 'rimshot', 'ahem', 'whip', 'geiger', 'parking'],
         },
         notify: { type: 'boolean' },
         vibrate: { type: 'boolean' },
@@ -338,7 +343,8 @@ const settingsSchema: RxJsonSchema<Settings> = {
  * zen; v11 widens the language enum again, for Georgian; v12 widens the sound
  * enum again, for the whip crack; v13 renames every sound from German to
  * English; v14 adds vibration, off; v15 adds the unlocked sounds and the
- * Shrimpcoin spent on them; v16 adds the dates behind the daily visit bonus.
+ * Shrimpcoin spent on them; v16 adds the dates behind the daily visit bonus;
+ * v17 widens the sound enum for the Geiger counter and the parking sensor.
  * Every step keeps the thresholds he set - a schema change must never be the
  * thing that resets his settings, and v3 in particular must not change the
  * language a device is already showing.
@@ -427,6 +433,10 @@ const settingsMigrations = {
     // the next load, so a device that has been in use for weeks is not treated
     // as new.
     16: (old: Record<string, unknown>) => old,
+    // v17 widens the sound enum for the Geiger counter and the parking sensor.
+    // Nobody is moved onto either, and neither is unlocked for free: the sound
+    // a device already plays is the sound it keeps.
+    17: (old: Record<string, unknown>) => old,
 };
 
 /** The v13 rename, old name to new. `rimshot` was already English. */
