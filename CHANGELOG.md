@@ -36,6 +36,14 @@ wrote them in.
   unlocking has cost. The earned coins in the day rows are never touched;
   the spending is its own number in the settings.
 
+- **`?debugcoins=500` hands a device 500 Shrimpcoin** for testing the shop
+  _(his call, verbatim: „add einen debug url parameter mit dem du dir coins
+  geben kannst um das kaufen zu testen")_. It is booked as negative spending,
+  so the day rows still only hold what was sat for, and the parameter is
+  taken out of the address once applied, so a reload does not pay twice. It
+  is not hidden: anyone who reads this can give themselves coins, which on a
+  page where the coins buy nothing but a noise is fine.
+
 ### Kept
 - **Whatever sound a device already uses stays unlocked for free** (settings
   migration v15). Taking away the noise someone picked, the morning after an

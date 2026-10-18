@@ -891,7 +891,7 @@ function Live() {
        Content-Length and there is no denominator to divide by. */
     const [modelProgress, setModelProgress] = useState<number | null>(poseProgress());
 
-    const { data: storedSettings } = useQuery<Settings>('settings', {
+    const { data: storedSettings, loading: settingsLoading } = useQuery<Settings>('settings', {
         selector: { id: SETTINGS_ID },
     });
     // Not DEFAULTS: writing any setting on a fresh device must persist the
@@ -1146,6 +1146,28 @@ function Live() {
 
     const change = (patch: Partial<Settings>) =>
         writeSettings({ ...settings, ...patch, id: SETTINGS_ID });
+
+    /* A debug door for testing the shop: `?debugcoins=500` hands this device
+       500 Shrimpcoin _(2026-10-18, his call: „add einen debug url parameter
+       mit dem du dir coins geben kannst um das kaufen zu testen")_.
+       It is booked as negative spending rather than as earnings, so the day
+       rows keep saying only what was actually sat for. Applied once, after
+       the stored settings have loaded (before that `settings` is the default
+       document, and writing it would wipe his), and then taken out of the
+       address so a reload does not pay out again. */
+    const debugCoinsDone = useRef(false);
+    useEffect(() => {
+        if (settingsLoading || debugCoinsDone.current) return;
+        debugCoinsDone.current = true;
+        const url = new URL(window.location.href);
+        const amount = Number(url.searchParams.get('debugcoins'));
+        if (!url.searchParams.has('debugcoins')) return;
+        url.searchParams.delete('debugcoins');
+        window.history.replaceState(window.history.state, '', url.toString());
+        if (!Number.isFinite(amount) || amount === 0) return;
+        void change({ coinsSpent: (settings.coinsSpent || 0) - Math.round(amount * 10) })
+            .then(() => toast(`+${amount} Shrimpcoin (debug)`));
+    }, [settingsLoading]);
 
     /* --------------------------------------------------------- rendering */
 
