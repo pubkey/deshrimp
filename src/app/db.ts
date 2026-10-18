@@ -262,13 +262,14 @@ export const DEFAULTS: Settings = {
  * straight earns 12 a minute (6 by the second, 6 in streak bonuses).
  *
  * The ladder is steep on purpose _(2026-10-18, his call: „mach die preise
- * steiler")_: each step roughly triples, so the wait grows from minutes to
- * weeks the way an idle game's clock stretches (research/
- * idle-game-reward-curves.md). Bought in order, the sounds unlock after about
- * 4 minutes, 17 minutes, 1 hour, 3 hours and 10 hours of straight sitting;
- * at half an hour of it a day that is the first session, the first session,
- * day 2, day 6 and day 20. The first one stays at four minutes _(his call:
- * „erster sound soll nach 4 minuten ca drin sein")_.
+ * steiler")_: each step roughly triples, so the wait stretches the way an
+ * idle game's clock does (research/idle-game-reward-curves.md). Bought in
+ * order, the sounds unlock after about 4 minutes, 17 minutes, 1 hour, 3 hours
+ * and 10 hours of straight sitting. That is usage time, not calendar time:
+ * there is no daily cap, so someone who sits with it four hours a day unlocks
+ * correspondingly sooner _(his call: „das freischalten soll nicht pro tag
+ * sondern pro nutzungszeit relevant sein")_. The first one stays at four
+ * minutes _(his call: „erster sound soll nach 4 minuten ca drin sein")_.
  */
 export const SOUND_PRICE: Record<SoundName, number> = {
     fart: 0,

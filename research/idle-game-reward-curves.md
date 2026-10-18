@@ -299,8 +299,10 @@ then get up.
 preise steiler". The prices are now 50, 150, 500, 1500 and 5000, each step
 roughly tripling, which goes against the "nearly flat prices" row above in
 favour of the genre's stretching clock: unlocks at about 4 minutes, 17
-minutes, 1 hour, 3 hours and 10 hours of straight sitting, or the first
-session, day 2, day 6 and day 20 at half an hour a day. The same day the coin
+minutes, 1 hour, 3 hours and 10 hours of straight sitting. Those are hours of
+use, not days: there is no daily cap, so heavier use unlocks sooner (his call:
+„das freischalten soll nicht pro tag sondern pro nutzungszeit relevant
+sein"). The same day the coin
 became whole: one per ten straight readings plus the streak bonus, still 12 a
 minute at one reading a second.
 

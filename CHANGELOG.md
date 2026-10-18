@@ -28,10 +28,15 @@ wrote them in.
 - **The prices are steeper** _(his call, verbatim: „mach die preise
   steiler")_: ahem 50, scream 150, knuckle crack 500, whip crack 1,500,
   rimshot 5,000. Each step roughly triples, so the sounds unlock after about
-  4 minutes, 17 minutes, 1 hour, 3 hours and 10 hours of straight sitting,
-  which at half an hour of it a day is the first session, the first session,
-  day 2, day 6 and day 20. The first stays at four minutes, as he asked. The
-  target curve against the old ladder is `research/shrimpcoin-unlock-curve.png`.
+  4 minutes, 17 minutes, 1 hour, 3 hours and 10 hours of straight sitting.
+  The first stays at four minutes, as he asked. The target curve against the
+  old ladder is `research/shrimpcoin-unlock-curve.png`.
+- **Unlocking follows usage time, not days** _(his call, verbatim: „das
+  freischalten soll nicht pro tag sondern pro nutzungszeit relevant sein. dh
+  wenn jjemand 4h am tag das nurzt soll er auch mehr freischalten")_. It
+  already did: there is no daily cap, and coins come from straight readings
+  alone. What changed is the framing: the chart and the notes no longer give
+  "day N" figures, which read like a calendar gate.
 
 ### New
 - **Every payout shows in a snackbar** _(his call, verbatim: „whenver
