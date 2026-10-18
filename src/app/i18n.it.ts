@@ -115,6 +115,13 @@ export const it: Copy = {
     whichSound: 'Quale suono',
     soundLabel: 'Suono del segnale',
     listen: 'Ascolta',
+    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    unlockTitle: (name: string) => `Sbloccare ${name}?`,
+    unlockBody: (price: number, balance: string) => `Costa ${price} Shrimpcoin. Ne hai ${balance}.`,
+    unlockConfirm: 'Sblocca',
+    unlockCancel: 'Annulla',
+    unlockShort: (missing: string) => `Mancano ${missing} Shrimpcoin. Stare dritto li fa guadagnare.`,
+    unlockDone: (name: string) => `${name} sbloccato`,
     soundName: {
         fart: 'Scoreggia', ahem: 'Colpo di tosse', scream: 'Urlo',
         knuckles: 'Nocche scrocchiate', whip: 'Colpo di frusta', rimshot: 'Rimshot',

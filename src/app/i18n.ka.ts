@@ -115,6 +115,13 @@ export const ka: Copy = {
     whichSound: 'რომელი ხმა',
     soundLabel: 'სასიგნალო ხმა',
     listen: 'მოსმენა',
+    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    unlockTitle: (name: string) => `გავხსნათ ${name}?`,
+    unlockBody: (price: number, balance: string) => `ღირს ${price} Shrimpcoin. გაქვს ${balance}.`,
+    unlockConfirm: 'გახსნა',
+    unlockCancel: 'გაუქმება',
+    unlockShort: (missing: string) => `აკლია ${missing} Shrimpcoin. სწორად ჯდომით დააგროვებ.`,
+    unlockDone: (name: string) => `${name} გაიხსნა`,
     soundName: {
         fart: 'გაზის გაშვება', ahem: 'ყელის მოწმენდა', scream: 'ყვირილი',
         knuckles: 'თითების ატკაცუნება', whip: 'მათრახის ტყლაშუნი', rimshot: 'ბადა-ბუმ-ცი',

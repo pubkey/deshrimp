@@ -33,8 +33,8 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties, RefObject } from 'react';
 import {
-    Badge, Button, Callout, Checkbox, ConfirmButton, Empty,
-    Grid, Icon, IconButton, LoadingOverlay, Muted, Page, Panel,
+    Badge, Button, Callout, Checkbox, Col, ConfirmButton, Empty,
+    Grid, Icon, IconButton, LoadingOverlay, Modal, Muted, Page, Panel,
     preferredUiLang, Progress, Row, Segmented, Select, Slider,
     Stat, StatusStrip, type StatusTone, Table, Text, Tiles,
     pageData, toast,
@@ -43,7 +43,7 @@ import {
     DatabaseGate, DataSyncButton, useCollection, useDatabase, useQuery,
 } from '@db';
 import {
-    DEFAULTS, openDatabase, SETTINGS_ID,
+    DEFAULTS, openDatabase, SETTINGS_ID, SOUND_PRICE,
     type Day, type Reading, type Settings, type SoundName, type Verdict,
     type View,
 } from './db';
@@ -916,6 +916,10 @@ function Live() {
     const { data: allDays } = useQuery<Day>('days', {});
     const coinTotal = useMemo(() => (allDays || []).reduce((sum, d) => sum + (d.coins || 0), 0), [allDays]);
     const coinToday = (allDays || []).find((d) => d.id === dayKey(Date.now()))?.coins || 0;
+    /* What is there to spend: everything earned, less what unlocking sounds
+       has cost. The purse shows this rather than the lifetime total, because
+       the number next to a price has to be the one the price comes out of. */
+    const coinBalance = coinTotal - (settings.coinsSpent || 0);
 
     /**
      * Fold one reading into its day.
@@ -1315,13 +1319,14 @@ function Live() {
 
                 {/* The purse sits under the start button, in zen as well as on
                     the dashboard: it is what you earn by having pressed it. */}
-                <CoinPurse total={coinTotal} today={coinToday} streak={streak} />
+                <CoinPurse total={coinBalance} today={coinToday} streak={streak} />
 
                 <Sound
                     settings={settings}
                     change={change}
                     prepareSound={beep.prepare}
                     playSound={beep.play}
+                    balance={coinBalance}
                 />
 
                 {/* The two views, as a switch rather than a button
@@ -1397,7 +1402,7 @@ function Live() {
 /* ------------------------------------------------------------- shrimpcoin */
 
 /**
- * The Shrimpcoin purse: the coin, everything earned so far, today's share and
+ * The Shrimpcoin purse: the coin, what there is to spend, today's share and
  * how far the current streak is towards its next bonus.
  *
  * His idea for keeping people at it _(2026-10-17: „gamification soll machen
@@ -1410,12 +1415,16 @@ function Live() {
  * Amounts arrive in tenths and are shown with one decimal in the page's own
  * number format, so a German page says 12,3 and an English one 12.3.
  */
+function coinAmount(tenths: number, lang: Lang): string {
+    return (tenths / 10).toLocaleString(localeFor(lang), {
+        minimumFractionDigits: 1, maximumFractionDigits: 1,
+    });
+}
+
 function CoinPurse({ total, today, streak }: { total: number; today: number; streak: number }) {
     const t = useCopy();
     const lang = useLang();
-    const amount = (tenths: number) => (tenths / 10).toLocaleString(localeFor(lang), {
-        minimumFractionDigits: 1, maximumFractionDigits: 1,
-    });
+    const amount = (tenths: number) => coinAmount(tenths, lang);
     return (
         <div className="haltung-coins">
             <img className="haltung-coins-coin" src={coinUrl} width={40} height={40} alt="" />
@@ -1858,6 +1867,8 @@ type SoundProps = SetupProps & {
     /** So „Listen" can make the same noise the signal makes. */
     prepareSound: () => void;
     playSound: (name: SoundName) => void;
+    /** Shrimpcoin there to spend, in tenths: earned minus spent. */
+    balance: number;
 };
 
 /**
@@ -1872,8 +1883,30 @@ type SoundProps = SetupProps & {
  * same breath as the stop button.
  */
 function Sound(props: SoundProps) {
-    const { settings: s, change } = props;
+    const { settings: s, change, balance } = props;
     const t = useCopy();
+    const lang = useLang();
+    const unlocked: SoundName[] = s.unlockedSounds && s.unlockedSounds.length
+        ? s.unlockedSounds : ['fart'];
+    /** The locked sound someone picked, while the unlock dialog asks. */
+    const [pending, setPending] = useState<SoundName | null>(null);
+    const price = pending ? SOUND_PRICE[pending] : 0;
+    const affordable = balance >= price * 10;
+
+    /* Buying spends the coins, unlocks the sound and switches to it in one
+       write, the same way picking an unlocked sound switches to it. */
+    const unlock = async () => {
+        if (!pending || !affordable) return;
+        const name = t.soundName[pending];
+        await change({
+            unlockedSounds: [...unlocked, pending],
+            coinsSpent: (s.coinsSpent || 0) + price * 10,
+            soundName: pending,
+            sound: true,
+        });
+        setPending(null);
+        toast(t.unlockDone(name));
+    };
 
     /* Asking for the permission is part of switching it on, not a separate
        step: the browser only grants it inside a gesture, and a toggle that
@@ -1930,14 +1963,27 @@ function Sound(props: SoundProps) {
                 checkbox. Turning the signal back off is one click on that same
                 checkbox, so the rule cannot trap anyone. */}
             <Row gap={2} align="bottom" stack>
+                {/* Only the fart is free; the rest are bought with Shrimpcoin
+                    _(2026-10-18, his call: „nur der furzsound ist umsonst. die
+                    andern müssen mut shrimpcoins freigeschaltet werden")_. A
+                    locked sound stays in the list with its price, so the
+                    list is also the shop, and picking it opens the unlock
+                    dialog instead of switching to it. */}
                 <Select
                     label={t.soundLabel}
                     value={s.soundName}
-                    onChange={(e: { target: { value: string } }) =>
-                        void change({ soundName: e.target.value as SoundName, sound: true })}
+                    onChange={(e: { target: { value: string } }) => {
+                        const key = e.target.value as SoundName;
+                        if (unlocked.indexOf(key) >= 0) void change({ soundName: key, sound: true });
+                        else setPending(key);
+                    }}
                 >
                     {SOUND_ORDER.map((key) => (
-                        <option key={key} value={key}>{t.soundName[key]}</option>
+                        <option key={key} value={key}>
+                            {unlocked.indexOf(key) >= 0
+                                ? t.soundName[key]
+                                : t.soundLocked(t.soundName[key], SOUND_PRICE[key])}
+                        </option>
                     ))}
                 </Select>
                 <Button icon={<Icon name="volume" />}
@@ -1945,6 +1991,37 @@ function Sound(props: SoundProps) {
                     {t.listen}
                 </Button>
             </Row>
+
+            <Modal
+                open={pending != null}
+                onClose={() => setPending(null)}
+                title={pending ? t.unlockTitle(t.soundName[pending]) : undefined}
+                footer={(
+                    <Row gap={2} wrap>
+                        <Button variant="primary" disabled={!affordable} onClick={() => void unlock()}>
+                            {t.unlockConfirm}
+                        </Button>
+                        <Button onClick={() => setPending(null)}>{t.unlockCancel}</Button>
+                    </Row>
+                )}
+            >
+                {pending ? (
+                    <Col gap={3}>
+                        <Text>{t.unlockBody(price, coinAmount(balance, lang))}</Text>
+                        {!affordable
+                            ? <Muted>{t.unlockShort(coinAmount(price * 10 - balance, lang))}</Muted>
+                            : null}
+                        {/* Hearing it first is free: the coins buy the
+                            alarm, not the preview. */}
+                        <Row>
+                            <Button icon={<Icon name="volume" />}
+                                onClick={() => { props.prepareSound(); props.playSound(pending); }}>
+                                {t.listen}
+                            </Button>
+                        </Row>
+                    </Col>
+                ) : null}
+            </Modal>
         </>
     );
 }

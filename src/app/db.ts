@@ -209,6 +209,20 @@ export type Settings = {
      * and migration 10 below puts existing devices there too.
      */
     view: View;
+    /**
+     * The sounds this device may pick. Only the fart is free; every other one
+     * is bought with Shrimpcoin _(2026-10-18, his call, verbatim: „nur der
+     * furzsound ist umsonst. die andern müssen mut shrimpcoins freigeschaltet
+     * werden")_. Optional so a device still on the previous version can sync
+     * its settings without failing validation; missing reads as fart only.
+     */
+    unlockedSounds?: SoundName[];
+    /**
+     * Shrimpcoin spent on unlocking, in tenths like `Day.coins`. The balance is
+     * everything earned minus this; the earned total itself is never touched,
+     * so the history of what he sat for stays honest.
+     */
+    coinsSpent?: number;
 };
 
 /**
@@ -238,10 +252,29 @@ export const DEFAULTS: Settings = {
     notify: false,
     vibrate: false,
     view: 'zen',
+    unlockedSounds: ['fart'],
+    coinsSpent: 0,
 };
 
+/**
+ * What each sound costs to unlock, in whole Shrimpcoin. A ladder in the order
+ * the select lists them, doubling each step: the first is about a quarter of
+ * an hour of sitting straight, so it lands on the first day, and the last is
+ * something to save up for.
+ */
+export const SOUND_PRICE: Record<SoundName, number> = {
+    fart: 0,
+    ahem: 50,
+    scream: 100,
+    knuckles: 200,
+    whip: 400,
+    rimshot: 800,
+};
+
+const SOUND_NAMES: SoundName[] = ['fart', 'scream', 'knuckles', 'rimshot', 'ahem', 'whip'];
+
 const settingsSchema: RxJsonSchema<Settings> = {
-    version: 14,
+    version: 15,
     primaryKey: 'id',
     type: 'object',
     properties: {
@@ -264,6 +297,11 @@ const settingsSchema: RxJsonSchema<Settings> = {
                 'nl', 'pl', 'tr', 'ru', 'zh', 'ja', 'ka'],
         },
         view: { type: 'string', enum: ['zen', 'dashboard'] },
+        unlockedSounds: {
+            type: 'array',
+            items: { type: 'string', enum: SOUND_NAMES },
+        },
+        coinsSpent: { type: 'number' },
     },
     required: ['id', 'intervalSec', 'maxLean', 'maxForward', 'maxHeadTilt',
         'sound', 'soundName', 'notify', 'vibrate', 'lang', 'windowMin', 'view'],
@@ -279,7 +317,8 @@ const settingsSchema: RxJsonSchema<Settings> = {
  * language enum from two to twelve; v10 adds the view and starts everyone in
  * zen; v11 widens the language enum again, for Georgian; v12 widens the sound
  * enum again, for the whip crack; v13 renames every sound from German to
- * English; v14 adds vibration, off.
+ * English; v14 adds vibration, off; v15 adds the unlocked sounds and the
+ * Shrimpcoin spent on them.
  * Every step keeps the thresholds he set - a schema change must never be the
  * thing that resets his settings, and v3 in particular must not change the
  * language a device is already showing.
@@ -353,6 +392,16 @@ const settingsMigrations = {
     // v14 adds the vibrate switch. Off, like the notification: a device that
     // starts buzzing after an update is a change nobody asked for.
     14: (old: Record<string, unknown>) => ({ ...old, vibrate: false }),
+    // v15 puts every sound but the fart behind Shrimpcoin. The sound a device
+    // already has picked stays unlocked for free: taking away the noise
+    // someone chose, the morning after an update, is the one thing this
+    // migration must not do.
+    15: (old: Record<string, unknown>) => {
+        const picked = String(old.soundName);
+        const keep = picked !== 'fart' && SOUND_NAMES.indexOf(picked as SoundName) >= 0
+            ? ['fart', picked] : ['fart'];
+        return { ...old, unlockedSounds: keep, coinsSpent: 0 };
+    },
 };
 
 /** The v13 rename, old name to new. `rimshot` was already English. */

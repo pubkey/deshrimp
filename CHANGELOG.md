@@ -11,6 +11,33 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-10-18 - sounds cost Shrimpcoin
+
+### Changed
+- **Only the fart is free; every other sound is unlocked with Shrimpcoin**
+  _(his call, verbatim: „nur der furzsound ist umsonst. die andern müssen mut
+  shrimpcoins freigeschaltet werden")_. The prices are a ladder in the order
+  the select lists them, doubling each step: ahem 50, scream 100, knuckle
+  crack 200, whip crack 400, rimshot 800. He named no prices, so these are a
+  first guess to tune: at one reading a second, sitting straight earns about
+  2 coin a minute, so the first unlock lands within the first half hour and
+  the last takes a working week.
+- **The select is the shop.** A locked sound stays in the list with its
+  price. Picking it opens a dialog with the price, what you have, how much is
+  missing if anything, and a "Listen" button, because hearing a sound before
+  buying it is free. Unlocking spends the coins and switches to the sound in
+  one step.
+- **"Pick the sound" says so**, in all thirteen languages: only the fart is
+  free, the others are unlocked with the Shrimpcoin earned by sitting straight.
+- **The purse shows what there is to spend**: everything earned less what
+  unlocking has cost. The earned coins in the day rows are never touched;
+  the spending is its own number in the settings.
+
+### Kept
+- **Whatever sound a device already uses stays unlocked for free** (settings
+  migration v15). Taking away the noise someone picked, the morning after an
+  update, is not what the change is for.
+
 ## 2026-10-17 - Shrimpcoin
 
 ### New

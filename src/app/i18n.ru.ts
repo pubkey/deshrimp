@@ -115,6 +115,13 @@ export const ru: Copy = {
     whichSound: 'Какой звук',
     soundLabel: 'Звук сигнала',
     listen: 'Послушать',
+    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    unlockTitle: (name: string) => `Открыть ${name}?`,
+    unlockBody: (price: number, balance: string) => `Стоит ${price} Shrimpcoin. У тебя ${balance}.`,
+    unlockConfirm: 'Открыть',
+    unlockCancel: 'Отмена',
+    unlockShort: (missing: string) => `Не хватает ${missing} Shrimpcoin. Сиди ровно, и они накопятся.`,
+    unlockDone: (name: string) => `${name} открыт`,
     soundName: {
         fart: 'Пук', ahem: 'Покашливание', scream: 'Крик',
         knuckles: 'Хруст пальцев', whip: 'Щелчок кнута', rimshot: 'Бадум-тсс',

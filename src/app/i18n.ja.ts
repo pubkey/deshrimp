@@ -115,6 +115,13 @@ export const ja: Copy = {
     whichSound: 'どの音にするか',
     soundLabel: '通知音',
     listen: '試聴',
+    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    unlockTitle: (name: string) => `${name}を解放しますか？`,
+    unlockBody: (price: number, balance: string) => `${price} Shrimpcoin かかります。所持: ${balance}。`,
+    unlockConfirm: '解放する',
+    unlockCancel: 'キャンセル',
+    unlockShort: (missing: string) => `あと ${missing} Shrimpcoin 足りません。姿勢よく座ると貯まります。`,
+    unlockDone: (name: string) => `${name}を解放しました`,
     soundName: {
         fart: 'おなら', ahem: 'せき払い', scream: '悲鳴',
         knuckles: '指の関節を鳴らす音', whip: 'むちの音', rimshot: 'ドンドンパフ',

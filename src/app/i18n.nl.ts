@@ -115,6 +115,13 @@ export const nl: Copy = {
     whichSound: 'Welk geluid',
     soundLabel: 'Signaalgeluid',
     listen: 'Beluisteren',
+    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    unlockTitle: (name: string) => `${name} ontgrendelen?`,
+    unlockBody: (price: number, balance: string) => `Kost ${price} Shrimpcoin. Je hebt er ${balance}.`,
+    unlockConfirm: 'Ontgrendelen',
+    unlockCancel: 'Annuleren',
+    unlockShort: (missing: string) => `Je komt ${missing} Shrimpcoin tekort. Recht zitten levert ze op.`,
+    unlockDone: (name: string) => `${name} ontgrendeld`,
     soundName: {
         fart: 'Scheet', ahem: 'Kuchje', scream: 'Schreeuw',
         knuckles: 'Knakkende knokkels', whip: 'Zweepslag', rimshot: 'Rimshot',

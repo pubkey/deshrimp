@@ -115,6 +115,13 @@ export const zh: Copy = {
     whichSound: '用哪种声音',
     soundLabel: '提示音',
     listen: '试听',
+    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    unlockTitle: (name: string) => `解锁${name}？`,
+    unlockBody: (price: number, balance: string) => `需要 ${price} Shrimpcoin。你有 ${balance}。`,
+    unlockConfirm: '解锁',
+    unlockCancel: '取消',
+    unlockShort: (missing: string) => `还差 ${missing} Shrimpcoin。坐直就能攒到。`,
+    unlockDone: (name: string) => `${name}已解锁`,
     soundName: {
         fart: '放屁', ahem: '清嗓子', scream: '尖叫',
         knuckles: '掰手指', whip: '鞭子声', rimshot: '咚咚锵',

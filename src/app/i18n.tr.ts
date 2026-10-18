@@ -115,6 +115,13 @@ export const tr: Copy = {
     whichSound: 'Hangi ses',
     soundLabel: 'Sinyal sesi',
     listen: 'Dinle',
+    soundLocked: (name: string, price: number) => `${name} · ${price} Shrimpcoin`,
+    unlockTitle: (name: string) => `${name} açılsın mı?`,
+    unlockBody: (price: number, balance: string) => `${price} Shrimpcoin tutar. Sende ${balance} var.`,
+    unlockConfirm: 'Aç',
+    unlockCancel: 'Vazgeç',
+    unlockShort: (missing: string) => `${missing} Shrimpcoin eksik. Dik oturdukça kazanırsın.`,
+    unlockDone: (name: string) => `${name} açıldı`,
     soundName: {
         fart: 'Osuruk', ahem: 'Boğaz temizleme', scream: 'Çığlık',
         knuckles: 'Parmak çıtlatma', whip: 'Kırbaç şaklaması', rimshot: 'Rimshot',
