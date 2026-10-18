@@ -223,6 +223,15 @@ export type Settings = {
      * so the history of what he sat for stays honest.
      */
     coinsSpent?: number;
+    /**
+     * The first day this device used the page, `YYYY-MM-DD` local. The daily
+     * visit bonus is paid on every later day, never on this one _(2026-10-18,
+     * his call: „jeden vollen tag wo der nutzer die seite besucht gibts es 20
+     * free coins. auser am ersten tag")_.
+     */
+    firstDay?: string;
+    /** The last day the visit bonus was paid, so it is paid once a day. */
+    lastDailyBonus?: string;
 };
 
 /**
@@ -283,7 +292,7 @@ export const SOUND_PRICE: Record<SoundName, number> = {
 const SOUND_NAMES: SoundName[] = ['fart', 'scream', 'knuckles', 'rimshot', 'ahem', 'whip'];
 
 const settingsSchema: RxJsonSchema<Settings> = {
-    version: 15,
+    version: 16,
     primaryKey: 'id',
     type: 'object',
     properties: {
@@ -311,6 +320,8 @@ const settingsSchema: RxJsonSchema<Settings> = {
             items: { type: 'string', enum: SOUND_NAMES },
         },
         coinsSpent: { type: 'number' },
+        firstDay: { type: 'string', maxLength: 10 },
+        lastDailyBonus: { type: 'string', maxLength: 10 },
     },
     required: ['id', 'intervalSec', 'maxLean', 'maxForward', 'maxHeadTilt',
         'sound', 'soundName', 'notify', 'vibrate', 'lang', 'windowMin', 'view'],
@@ -327,7 +338,7 @@ const settingsSchema: RxJsonSchema<Settings> = {
  * zen; v11 widens the language enum again, for Georgian; v12 widens the sound
  * enum again, for the whip crack; v13 renames every sound from German to
  * English; v14 adds vibration, off; v15 adds the unlocked sounds and the
- * Shrimpcoin spent on them.
+ * Shrimpcoin spent on them; v16 adds the dates behind the daily visit bonus.
  * Every step keeps the thresholds he set - a schema change must never be the
  * thing that resets his settings, and v3 in particular must not change the
  * language a device is already showing.
@@ -411,6 +422,11 @@ const settingsMigrations = {
             ? ['fart', picked] : ['fart'];
         return { ...old, unlockedSounds: keep, coinsSpent: 0 };
     },
+    // v16 adds the two dates behind the daily visit bonus. Both optional and
+    // left unset here: the page fills `firstDay` in from the oldest day row on
+    // the next load, so a device that has been in use for weeks is not treated
+    // as new.
+    16: (old: Record<string, unknown>) => old,
 };
 
 /** The v13 rename, old name to new. `rimshot` was already English. */

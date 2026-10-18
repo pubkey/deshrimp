@@ -36,6 +36,7 @@ export const tr: Copy = {
     coinsStreak: (n: number, of: number) => `seri ${n}/${of}`,
     coinsForStraight: '10× dik oturuş',
     coinsForStreak: 'art arda 10',
+    coinsForDaily: 'günlük bonus',
     limit: (v: string) => `sınır ${v}`,
     loadingModelTitle: 'Bir saniye',
     loadingModel: 'Algılama modeli yükleniyor - 17 MB, yalnızca ilk seferde. Sonrasında tarayıcında kalır.',

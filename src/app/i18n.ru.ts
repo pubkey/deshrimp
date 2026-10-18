@@ -36,6 +36,7 @@ export const ru: Copy = {
     coinsStreak: (n: number, of: number) => `серия ${n}/${of}`,
     coinsForStraight: '10× ровная посадка',
     coinsForStreak: '10 подряд',
+    coinsForDaily: 'ежедневный бонус',
     limit: (v: string) => `предел ${v}`,
     loadingModelTitle: 'Одну секунду',
     loadingModel: 'Загружается модель распознавания - 17 МБ, только в первый раз. Дальше она лежит в браузере.',

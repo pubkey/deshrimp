@@ -36,6 +36,7 @@ export const ka: Copy = {
     coinsStreak: (n: number, of: number) => `სერია ${n}/${of}`,
     coinsForStraight: '10× სწორად ჯდომა',
     coinsForStreak: '10 ზედიზედ',
+    coinsForDaily: 'დღის ბონუსი',
     limit: (v: string) => `ზღვარი ${v}`,
     loadingModelTitle: 'ერთი წუთი',
     loadingModel: 'იტვირთება ამომცნობი მოდელი - 17 MB, მხოლოდ პირველად. შემდეგ ბრაუზერში რჩება.',

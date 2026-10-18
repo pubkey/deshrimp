@@ -36,6 +36,7 @@ export const fr: Copy = {
     coinsStreak: (n: number, of: number) => `série ${n}/${of}`,
     coinsForStraight: '10× assis droit',
     coinsForStreak: '10 d’affilée',
+    coinsForDaily: 'bonus du jour',
     limit: (v: string) => `limite ${v}`,
     loadingModelTitle: 'Un instant',
     loadingModel: 'Le modèle de détection se charge - 17 Mo, seulement la première fois. Ensuite il reste dans ton navigateur.',

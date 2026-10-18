@@ -36,6 +36,7 @@ export const it: Copy = {
     coinsStreak: (n: number, of: number) => `serie ${n}/${of}`,
     coinsForStraight: '10× seduto dritto',
     coinsForStreak: '10 di fila',
+    coinsForDaily: 'bonus giornaliero',
     limit: (v: string) => `limite ${v}`,
     loadingModelTitle: 'Un momento',
     loadingModel: 'Sto caricando il modello di riconoscimento - 17 MB, solo la prima volta. Poi resta nel tuo browser.',

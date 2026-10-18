@@ -36,6 +36,7 @@ export const zh: Copy = {
     coinsStreak: (n: number, of: number) => `连续 ${n}/${of}`,
     coinsForStraight: '坐直 10 次',
     coinsForStreak: '连续 10 次',
+    coinsForDaily: '每日奖励',
     limit: (v: string) => `上限 ${v}`,
     loadingModelTitle: '稍等一下',
     loadingModel: '正在加载识别模型，17 MB，只有第一次需要。之后它就留在你的浏览器里。',

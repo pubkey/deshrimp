@@ -258,6 +258,9 @@ const STREAK_LENGTH = 10;
 /** One whole Shrimpcoin is paid for every this-many straight readings. */
 const READINGS_PER_COIN = 10;
 
+/** Shrimpcoin paid once on every day the page is opened, bar the first. */
+const DAILY_BONUS = 20;
+
 /**
  * What one reading earns, in tenths of a Shrimpcoin (always a whole coin or
  * nothing, see below), with the two counters moved on.
@@ -908,7 +911,7 @@ function Live() {
        below takes it as a dependency, which is what makes a new pace restart
        the wait instead of serving out the old one. */
     const interval = Math.max(MIN_INTERVAL, settings.intervalSec);
-    const { upsert: writeSettings } = useCollection<Settings>('settings');
+    const { upsert: writeSettings, collection: settingsStore } = useCollection<Settings>('settings');
 
     const since = useMemo(startOfToday, []);
     const { data: today } = useQuery<Reading>('readings', {
@@ -920,7 +923,7 @@ function Live() {
     const { collection: days, upsert: writeDay } = useCollection<Day>('days');
     /* Every day ever recorded, for the Shrimpcoin total. One small row per
        day, so summing all of them on each change costs nothing. */
-    const { data: allDays } = useQuery<Day>('days', {});
+    const { data: allDays, loading: daysLoading } = useQuery<Day>('days', {});
     const coinTotal = useMemo(() => (allDays || []).reduce((sum, d) => sum + (d.coins || 0), 0), [allDays]);
     const coinToday = (allDays || []).find((d) => d.id === dayKey(Date.now()))?.coins || 0;
     /* What is there to spend: everything earned, less what unlocking sounds
@@ -1180,6 +1183,55 @@ function Live() {
         void change({ coinsSpent: (settings.coinsSpent || 0) - Math.round(amount) * 10 })
             .then(() => toast("Shrimpcoin (debug)"));
     }, [settingsLoading]);
+
+    /* The daily visit bonus: 20 Shrimpcoin on every day the page is opened,
+       except the first one _(2026-10-18, his call: „jeden vollen tag wo der
+       nutzer die seite besucht gibts es 20 free coins. auser am ersten
+       tag")_. Booked into that day's row like any coin earned that day, so
+       the purse counts it as earned, and announced in the snackbar.
+
+       Checked when the stored data has loaded and then once a minute, so a
+       tab left open over midnight pays the new day too. `firstDay` comes
+       from the oldest day row when a device predates the field, so weeks of
+       use do not count as a first day. The settings are patched rather than
+       rewritten whole, which keeps this from overwriting what the debug
+       grant above writes in the same moment. */
+    const dailyChecked = useRef<string | null>(null);
+    useEffect(() => {
+        if (settingsLoading || daysLoading || !days || !settingsStore) return;
+        const grant = async () => {
+            const today = dayKey(Date.now());
+            if (dailyChecked.current === today) return;
+            dailyChecked.current = today;
+            const doc = await settingsStore.findOne(SETTINGS_ID).exec();
+            const stored = doc?.toJSON?.() as Settings | undefined;
+            const oldest = await days.findOne({ selector: {}, sort: [{ t: 'asc' }] }).exec();
+            const firstDay = stored?.firstDay || oldest?.id || today;
+            if (!doc) {
+                // A device on its very first load: no settings yet, and
+                // nothing to pay. Record the day it started.
+                await writeSettings({ ...live.current.settings, id: SETTINGS_ID, firstDay });
+                return;
+            }
+            const due = firstDay < today && stored?.lastDailyBonus !== today;
+            await doc.incrementalPatch(due ? { firstDay, lastDailyBonus: today } : { firstDay });
+            if (!due) return;
+            const row = await days.findOne(today).exec();
+            if (row) {
+                await row.incrementalModify((d: Day) => ({ ...d, coins: (d.coins || 0) + DAILY_BONUS * 10 }));
+            } else {
+                await writeDay({
+                    id: today, t: startOfDay(Date.now()),
+                    count: 0, good: 0, borderline: 0, bad: 0, alarms: 0,
+                    leanSum: 0, forwardSum: 0, headTiltSum: 0, coins: DAILY_BONUS * 10,
+                });
+            }
+            setCoinGain({ tenths: DAILY_BONUS * 10, base: false, bonus: false, daily: true, id: Date.now() });
+        };
+        void grant();
+        const id = window.setInterval(() => void grant(), 60_000);
+        return () => window.clearInterval(id);
+    }, [settingsLoading, daysLoading, days, settingsStore]);
 
     /* --------------------------------------------------------- rendering */
 
@@ -1486,9 +1538,10 @@ function CoinAmount({ tenths }: { tenths: number }) {
  *
  * It always says what the coins were for _(2026-10-18, his call: „in der
  * snackbar soll immer stehen wofür die coins gewonnen wurden")_: ten straight
- * readings, ten in a row, or both when one reading completes both counts.
+ * readings, ten in a row, or both when one reading completes both counts,
+ * and the daily visit bonus.
  */
-type CoinGain = { tenths: number; base: boolean; bonus: boolean; id: number };
+type CoinGain = { tenths: number; base: boolean; bonus: boolean; daily?: boolean; id: number };
 
 function CoinSnackbar({ gain }: { gain: CoinGain | null }) {
     const t = useCopy();
@@ -1504,7 +1557,8 @@ function CoinSnackbar({ gain }: { gain: CoinGain | null }) {
         <div className={`haltung-snackbar${shown ? ' on' : ''}`} aria-hidden="true">
             +<CoinAmount tenths={gain.tenths} />
             <span className="haltung-snackbar-note">
-                {[gain.base ? t.coinsForStraight : null, gain.bonus ? t.coinsForStreak : null]
+                {[gain.base ? t.coinsForStraight : null, gain.bonus ? t.coinsForStreak : null,
+                    gain.daily ? t.coinsForDaily : null]
                     .filter(Boolean).join(' + ')}
             </span>
         </div>

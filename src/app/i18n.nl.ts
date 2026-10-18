@@ -36,6 +36,7 @@ export const nl: Copy = {
     coinsStreak: (n: number, of: number) => `reeks ${n}/${of}`,
     coinsForStraight: '10× recht gezeten',
     coinsForStreak: '10 op rij',
+    coinsForDaily: 'dagbonus',
     limit: (v: string) => `grens ${v}`,
     loadingModelTitle: 'Een moment',
     loadingModel: 'Het herkenningsmodel wordt geladen - 17 MB, alleen de eerste keer. Daarna staat het in je browser.',

@@ -55,7 +55,8 @@ hips, and in a desk-sized crop they come back with a visibility of 0.01 against
 - **Shrimpcoin.** Whole coins only: every ten straight readings earn one, and
   every ten straight readings in a row earn one more, so at the default pace
   of one reading a second that is 12 a minute. Only a "good" reading counts;
-  anything else, or nobody in the picture, ends the streak. Each payout shows
+  anything else, or nobody in the picture, ends the streak. Every day the page
+  is opened after the first pays 20 more. Each payout shows
   briefly in a snackbar; the balance sits under the start button and is kept
   per day with the rest of the history, on the device. It is what the alarm
   sounds are bought with: the fart is free, the other five cost 50, 150, 500,

@@ -49,6 +49,17 @@ wrote them in.
   text and every coin number carries the coin. A newer payout replaces it, and
   it is not read out by screen readers, which would otherwise announce a coin
   every ten seconds. The label is in all thirteen languages.
+- **20 Shrimpcoin for every day the page is visited, except the first**
+  _(his call, verbatim: „jeden vollen tag wo der nutzer die seite besucht
+  gibts es 20 free coins. auser am ersten tag.")_. Counted by calendar day on
+  the device: the first day a device opens the page pays nothing, every later
+  day pays 20 once, on the first visit. The page checks on load and once a
+  minute, so a tab left open over midnight collects the new day too. Days
+  without a visit pay nothing and are not paid back. A device that already
+  has history takes its oldest day as its first, so it collects from today.
+  The coins are booked into today's day row like any other, and the snackbar
+  says "+20 · daily bonus". Settings schema v16 keeps the first day and the
+  last day paid.
 
 ## 2026-10-18 - sounds cost Shrimpcoin
 

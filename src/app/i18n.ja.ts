@@ -36,6 +36,7 @@ export const ja: Copy = {
     coinsStreak: (n: number, of: number) => `連続 ${n}/${of}`,
     coinsForStraight: '正しい姿勢 10 回',
     coinsForStreak: '10 回連続',
+    coinsForDaily: 'デイリーボーナス',
     limit: (v: string) => `しきい値 ${v}`,
     loadingModelTitle: '少しお待ちください',
     loadingModel: '検出モデルを読み込んでいます - 17 MB、初回だけです。そのあとはブラウザの中に残ります。',

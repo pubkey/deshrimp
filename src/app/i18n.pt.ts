@@ -36,6 +36,7 @@ export const pt: Copy = {
     coinsStreak: (n: number, of: number) => `sequência ${n}/${of}`,
     coinsForStraight: '10× sentado direito',
     coinsForStreak: '10 seguidas',
+    coinsForDaily: 'bónus diário',
     limit: (v: string) => `limite ${v}`,
     loadingModelTitle: 'Um momento',
     loadingModel: 'A carregar o modelo de deteção - 17 MB, só da primeira vez. Depois fica no teu navegador.',
