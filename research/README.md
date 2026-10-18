@@ -62,6 +62,12 @@ already out there rather than against a guess.
   about paying for behaviour, and what that means for Shrimpcoin: the opening
   is right, the doubling price ladder empties in about two hours, and a coin
   that pays most for unbroken sitting works against taking breaks.
+- [`chance-mechanics-and-gambling.md`](./chance-mechanics-and-gambling.md) -
+  how games use chance to keep people playing (golden cookies, gacha pity,
+  loot boxes, daily spins, near-misses, streak insurance), what the psychology
+  and the law say in 2025-2026, and which surprise rewards Shrimpcoin could
+  use without becoming gambling: free, disclosed, on top of a fixed payout,
+  never taking anything away.
 
 ## What the folder concluded
 
