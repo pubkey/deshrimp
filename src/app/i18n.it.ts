@@ -1,5 +1,5 @@
 /** Italian. Same keys as `de`, enforced by `Copy`. */
-import type { Copy } from './i18n';
+import type { Coins, Copy } from './i18n';
 
 export const it: Copy = {
     title: 'Siediti dritto, gambero! 🦐',
@@ -28,18 +28,19 @@ export const it: Copy = {
     nobodyThere: 'Nessuno nell’immagine - la misurazione è stata scartata.',
     lowConfidence: 'Misurazione incerta - poca luce, o sei solo mezzo nell’inquadratura.',
 
-    statForward: 'Testa in avanti',
+    statForward: 'Avanti',
     statLean: 'Inclinazione laterale',
     statHeadTilt: 'Testa piegata',
-    statConfidence: 'Affidabilità',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: Coins) => ['+', n, ' oggi'],
+    coinsStreak: (n: number, of: number) => `serie ${n}/${of}`,
+    coinsForStraight: '10× seduto dritto',
+    coinsForStreak: '10 di fila',
+    coinsForDaily: 'bonus giornaliero',
     limit: (v: string) => `limite ${v}`,
-    computedLocally: 'calcolato in locale',
-    modelLoading: 'il modello sta ancora caricando',
     loadingModelTitle: 'Un momento',
     loadingModel: 'Sto caricando il modello di riconoscimento - 17 MB, solo la prima volta. Poi resta nel tuo browser.',
     modelFailed: 'Non è stato possibile caricare il modello locale.',
-    noReadingYet: 'Ancora nessuna misurazione',
-    noReadingYetHint: 'Appena la fotocamera va, ne arriva una ogni pochi secondi.',
 
     verdictTitle: { good: 'Sei seduto dritto', borderline: 'Inizi a piegarti', bad: 'Sei storto' },
     advice: {
@@ -54,7 +55,6 @@ export const it: Copy = {
         forward: 'La testa è davanti alle spalle - porta indietro il mento e la nuca.',
     },
     verdictLabel: { good: 'dritto', borderline: 'al limite', bad: 'storto' },
-    sideLabel: { left: 'a sinistra', right: 'a destra', none: 'dritto' },
 
     todayTitle: 'Oggi',
     todaySubtitle: 'Tutte le misurazioni da mezzanotte, qui su questo dispositivo.',
@@ -118,6 +118,13 @@ export const it: Copy = {
     whichSound: 'Quale suono',
     soundLabel: 'Suono del segnale',
     listen: 'Ascolta',
+    soundLocked: (name: string) => `${name} · bloccato`,
+    unlockTitle: (name: string) => `Sbloccare ${name}?`,
+    unlockBody: (price: Coins, balance: Coins) => ['Costa ', price, ' Shrimpcoin. Ne hai ', balance, '.'],
+    unlockConfirm: 'Sblocca',
+    unlockCancel: 'Annulla',
+    unlockShort: (missing: Coins) => ['Mancano ', missing, ' Shrimpcoin. Stare dritto li fa guadagnare.'],
+    unlockDone: (name: string) => `${name} sbloccato`,
     soundName: {
         fart: 'Scoreggia', ahem: 'Colpo di tosse', scream: 'Urlo',
         knuckles: 'Nocche scrocchiate', whip: 'Colpo di frusta', rimshot: 'Rimshot',

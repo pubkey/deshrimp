@@ -33,8 +33,8 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import type { CSSProperties, RefObject } from 'react';
 import {
-    Badge, Button, Callout, Checkbox, ConfirmButton, Empty,
-    Grid, Icon, IconButton, LoadingOverlay, Muted, Page, Panel,
+    Badge, Button, Callout, Checkbox, Col, ConfirmButton, Empty,
+    Grid, Icon, IconButton, LoadingOverlay, Modal, Muted, Page, Panel,
     preferredUiLang, Progress, Row, Segmented, Select, Slider,
     Stat, StatusStrip, type StatusTone, Table, Text, Tiles,
     pageData, toast,
@@ -43,12 +43,13 @@ import {
     DatabaseGate, DataSyncButton, useCollection, useDatabase, useQuery,
 } from '@db';
 import {
-    DEFAULTS, openDatabase, SETTINGS_ID,
+    DEFAULTS, openDatabase, SETTINGS_ID, SOUND_PRICE,
     type Day, type Reading, type Settings, type SoundName, type Verdict,
     type View,
 } from './db';
 import { LineChart, formatNumber, withUnit } from '@charts';
 import { copyFor, localeFor, LANGUAGES, type Copy, type Lang } from './i18n';
+import coinUrl from './shrimpcoin.svg';
 import { LEGAL_HREF, langHref, legalLabel, pageLang, seoTitle } from './lang-url';
 import {
     analysePose, frameOf as canvasFrame, landmarksOf, loadPose, MEASURED_LINES,
@@ -249,6 +250,52 @@ function deg(value: number): string {
  */
 function breach(value: number, limit: number): string | undefined {
     return value > limit ? 'breach' : undefined;
+}
+
+/** A streak bonus is paid on every this-many straight readings in a row. */
+const STREAK_LENGTH = 10;
+
+/** One whole Shrimpcoin is paid for every this-many straight readings. */
+const READINGS_PER_COIN = 10;
+
+/** Shrimpcoin paid once on every day the page is opened, bar the first. */
+const DAILY_BONUS = 20;
+
+/**
+ * What one reading earns, in tenths of a Shrimpcoin (always a whole coin or
+ * nothing, see below), with the two counters moved on.
+ *
+ * His rules, verbatim where he gave words:
+ * - **Whole coins only, one for every ten straight readings** _(2026-10-18:
+ *   „make shrimpcoins nondevisable. instead of givinng 0.1 per second, give
+ *   one full every 10 measurements")_. This replaces 0.1 coin per second
+ *   (2026-10-17). The ten need not be in a row; `count` keeps going across a
+ *   crooked reading. At one reading a second it pays the same 6 a minute the
+ *   per-second rule did.
+ * - **1 coin extra for every ten straight in a row**, as often as it happens:
+ *   „mach 10er serie anstatt 7er serie. ja die serie geht unendlich oft".
+ *   Ten in a row therefore pays two: the tenth reading counts for both.
+ * - **Only "good" is straight**: „es zählt nur good als gerade". A reading the
+ *   model is not sure of is not counted as good either, the same rule the
+ *   alarm keeps.
+ * - Anything else ends the streak. Nobody in the picture is handled before
+ *   this is called, and also ends it.
+ *
+ * Amounts stay in tenths because that is what the day rows have stored since
+ * v3; every payout is a multiple of ten.
+ */
+function shrimpcoins(
+    straight: boolean, count: { current: number }, run: { current: number },
+): number {
+    if (!straight) {
+        run.current = 0;
+        return 0;
+    }
+    count.current += 1;
+    run.current += 1;
+    const base = count.current % READINGS_PER_COIN === 0 ? 10 : 0;
+    const bonus = run.current % STREAK_LENGTH === 0 ? 10 : 0;
+    return base + bonus;
 }
 
 /**
@@ -854,7 +901,7 @@ function Live() {
        Content-Length and there is no denominator to divide by. */
     const [modelProgress, setModelProgress] = useState<number | null>(poseProgress());
 
-    const { data: storedSettings } = useQuery<Settings>('settings', {
+    const { data: storedSettings, loading: settingsLoading } = useQuery<Settings>('settings', {
         selector: { id: SETTINGS_ID },
     });
     // Not DEFAULTS: writing any setting on a fresh device must persist the
@@ -864,7 +911,7 @@ function Live() {
        below takes it as a dependency, which is what makes a new pace restart
        the wait instead of serving out the old one. */
     const interval = Math.max(MIN_INTERVAL, settings.intervalSec);
-    const { upsert: writeSettings } = useCollection<Settings>('settings');
+    const { upsert: writeSettings, collection: settingsStore } = useCollection<Settings>('settings');
 
     const since = useMemo(startOfToday, []);
     const { data: today } = useQuery<Reading>('readings', {
@@ -874,6 +921,15 @@ function Live() {
     const { insert: writeReading, collection: readings } = useCollection<Reading>('readings');
 
     const { collection: days, upsert: writeDay } = useCollection<Day>('days');
+    /* Every day ever recorded, for the Shrimpcoin total. One small row per
+       day, so summing all of them on each change costs nothing. */
+    const { data: allDays, loading: daysLoading } = useQuery<Day>('days', {});
+    const coinTotal = useMemo(() => (allDays || []).reduce((sum, d) => sum + (d.coins || 0), 0), [allDays]);
+    const coinToday = (allDays || []).find((d) => d.id === dayKey(Date.now()))?.coins || 0;
+    /* What is there to spend: everything earned, less what unlocking sounds
+       has cost. The purse shows this rather than the lifetime total, because
+       the number next to a price has to be the one the price comes out of. */
+    const coinBalance = coinTotal - (settings.coinsSpent || 0);
 
     /**
      * Fold one reading into its day.
@@ -884,7 +940,7 @@ function Live() {
      * of thirty thousand rows.
      */
     const rollUp = useCallback(async (
-        when: number, verdict: Verdict, alarm: boolean, a: Analysis,
+        when: number, verdict: Verdict, alarm: boolean, a: Analysis, coinTenths: number,
     ) => {
         if (!days) return;
         const dayId = dayKey(when);
@@ -892,7 +948,7 @@ function Live() {
         const before: Day = existing?.toJSON?.() ?? {
             id: dayId, t: startOfDay(when),
             count: 0, good: 0, borderline: 0, bad: 0, alarms: 0,
-            leanSum: 0, forwardSum: 0, headTiltSum: 0,
+            leanSum: 0, forwardSum: 0, headTiltSum: 0, coins: 0,
         };
         await writeDay({
             ...before,
@@ -904,6 +960,7 @@ function Live() {
             leanSum: before.leanSum + a.leanDeg,
             forwardSum: before.forwardSum + a.forwardDeg,
             headTiltSum: before.headTiltSum + a.headTiltDeg,
+            coins: (before.coins || 0) + coinTenths,
         });
     }, [days, writeDay]);
 
@@ -918,6 +975,13 @@ function Live() {
     const busy = useRef(false);
     /** How many bad readings in a row - the signal grows along it. */
     const badRun = useRef(0);
+    /** How many straight readings in a row - every tenth pays a bonus coin. */
+    const goodRun = useRef(0);
+    /** Straight readings since the last coin, in a row or not - every tenth pays one. */
+    const goodCount = useRef(0);
+    const [streak, setStreak] = useState(0);
+    /** The last payout, for the snackbar; `id` makes a repeat amount show again. */
+    const [coinGain, setCoinGain] = useState<CoinGain | null>(null);
 
     /* ---------------------------------------------------------- one check */
 
@@ -941,6 +1005,11 @@ function Live() {
 
             if (!result.personDetected) {
                 setNote(copy.nobodyThere);
+                // Nobody in the picture earns nothing and breaks the streak
+                // _(2026-10-17, his call: „bilder ohne person zählen gar
+                // nichts", „bildre ohne person brechen die serie ab")_.
+                goodRun.current = 0;
+                setStreak(0);
                 return;
             }
 
@@ -952,6 +1021,17 @@ function Live() {
             // One reading that is not bad ends the run, so sitting up quiets the
             // signal on the very next check rather than a few seconds later.
             badRun.current = alarm ? badRun.current + 1 : 0;
+
+            const coinTenths = shrimpcoins(verdict === 'good' && trustworthy, goodCount, goodRun);
+            setStreak(goodRun.current);
+            if (coinTenths > 0) {
+                setCoinGain({
+                    tenths: coinTenths,
+                    base: goodCount.current % READINGS_PER_COIN === 0,
+                    bonus: goodRun.current % STREAK_LENGTH === 0,
+                    id: now,
+                });
+            }
 
             setNote(trustworthy ? null : copy.lowConfidence);
 
@@ -968,7 +1048,7 @@ function Live() {
                 alarm,
             });
 
-            await live.current.rollUp(now, verdict, alarm, result);
+            await live.current.rollUp(now, verdict, alarm, result, coinTenths);
 
             if (alarm) {
                 setFlash(true);
@@ -1082,6 +1162,77 @@ function Live() {
     const change = (patch: Partial<Settings>) =>
         writeSettings({ ...settings, ...patch, id: SETTINGS_ID });
 
+    /* A debug door for testing the shop: `?debugcoins=500` hands this device
+       500 Shrimpcoin _(2026-10-18, his call: „add einen debug url parameter
+       mit dem du dir coins geben kannst um das kaufen zu testen")_.
+       It is booked as negative spending rather than as earnings, so the day
+       rows keep saying only what was actually sat for. Applied once, after
+       the stored settings have loaded (before that `settings` is the default
+       document, and writing it would wipe his), and then taken out of the
+       address so a reload does not pay out again. */
+    const debugCoinsDone = useRef(false);
+    useEffect(() => {
+        if (settingsLoading || debugCoinsDone.current) return;
+        debugCoinsDone.current = true;
+        const url = new URL(window.location.href);
+        const amount = Number(url.searchParams.get('debugcoins'));
+        if (!url.searchParams.has('debugcoins')) return;
+        url.searchParams.delete('debugcoins');
+        window.history.replaceState(window.history.state, '', url.toString());
+        if (!Number.isFinite(amount) || amount === 0) return;
+        void change({ coinsSpent: (settings.coinsSpent || 0) - Math.round(amount) * 10 })
+            .then(() => toast("Shrimpcoin (debug)"));
+    }, [settingsLoading]);
+
+    /* The daily visit bonus: 20 Shrimpcoin on every day the page is opened,
+       except the first one _(2026-10-18, his call: „jeden vollen tag wo der
+       nutzer die seite besucht gibts es 20 free coins. auser am ersten
+       tag")_. Booked into that day's row like any coin earned that day, so
+       the purse counts it as earned, and announced in the snackbar.
+
+       Checked when the stored data has loaded and then once a minute, so a
+       tab left open over midnight pays the new day too. `firstDay` comes
+       from the oldest day row when a device predates the field, so weeks of
+       use do not count as a first day. The settings are patched rather than
+       rewritten whole, which keeps this from overwriting what the debug
+       grant above writes in the same moment. */
+    const dailyChecked = useRef<string | null>(null);
+    useEffect(() => {
+        if (settingsLoading || daysLoading || !days || !settingsStore) return;
+        const grant = async () => {
+            const today = dayKey(Date.now());
+            if (dailyChecked.current === today) return;
+            dailyChecked.current = today;
+            const doc = await settingsStore.findOne(SETTINGS_ID).exec();
+            const stored = doc?.toJSON?.() as Settings | undefined;
+            const oldest = await days.findOne({ selector: {}, sort: [{ t: 'asc' }] }).exec();
+            const firstDay = stored?.firstDay || oldest?.id || today;
+            if (!doc) {
+                // A device on its very first load: no settings yet, and
+                // nothing to pay. Record the day it started.
+                await writeSettings({ ...live.current.settings, id: SETTINGS_ID, firstDay });
+                return;
+            }
+            const due = firstDay < today && stored?.lastDailyBonus !== today;
+            await doc.incrementalPatch(due ? { firstDay, lastDailyBonus: today } : { firstDay });
+            if (!due) return;
+            const row = await days.findOne(today).exec();
+            if (row) {
+                await row.incrementalModify((d: Day) => ({ ...d, coins: (d.coins || 0) + DAILY_BONUS * 10 }));
+            } else {
+                await writeDay({
+                    id: today, t: startOfDay(Date.now()),
+                    count: 0, good: 0, borderline: 0, bad: 0, alarms: 0,
+                    leanSum: 0, forwardSum: 0, headTiltSum: 0, coins: DAILY_BONUS * 10,
+                });
+            }
+            setCoinGain({ tenths: DAILY_BONUS * 10, base: false, bonus: false, daily: true, id: Date.now() });
+        };
+        void grant();
+        const id = window.setInterval(() => void grant(), 60_000);
+        return () => window.clearInterval(id);
+    }, [settingsLoading, daysLoading, days, settingsStore]);
+
     /* --------------------------------------------------------- rendering */
 
     const verdict: Verdict | null = last && running ? last.verdict : null;
@@ -1159,6 +1310,45 @@ function Live() {
                     ) : null}
                 </div>
 
+                {/* The three angles sit right under the picture they were read
+                    from _(2026-10-17, his call, verbatim: „das headinfront
+                    sidelean etc muss in die erste bix direkt unter das
+                    video")_. They had a tile of their own beside the controls;
+                    under the well, the number and the picture it came from are
+                    read in one glance. The three are there before the first
+                    reading too, each a plain "-": the tile must not change
+                    height when a state changes (2026-09-15, his call), and an
+                    empty readout says what is going to be measured.
+
+                    The model's confidence was a fourth value here until he
+                    took it out _(2026-10-17, verbatim: „entfern den confidence
+                    kpi")_. It is still stored with every reading. */}
+                <div className="haltung-readout">
+                    <Grid>
+                        {/* An axis over its tolerance is the one place the
+                            accent is allowed to appear on a readout: the
+                            number and its label go coral and pulse, and the
+                            two that are still inside stay in the ink. That is
+                            the whole severity system - whether the accent is
+                            there, not which colour it is. */}
+                        <Stat label={t.statForward} value={last ? deg(last.forward) : '-'}
+                            className={last ? breach(last.forward, settings.maxForward) : undefined}
+                            hint={t.limit(deg(settings.maxForward))} />
+                        <Stat label={t.statLean} value={last ? deg(last.lean) : '-'}
+                            className={last ? breach(last.lean, settings.maxLean) : undefined}
+                            /* The side as an arrow, not as words _(2026-10-17,
+                               his call: „sidelean should show arrow instead of
+                               "to the right"")_, the same ← → the day table
+                               already uses. Level shoulders get no arrow. */
+                            hint={last && last.leanSide !== 'none'
+                                ? `${last.leanSide === 'left' ? '←' : '→'} · ${t.limit(deg(settings.maxLean))}`
+                                : t.limit(deg(settings.maxLean))} />
+                        <Stat label={t.statHeadTilt} value={last ? deg(last.headTilt) : '-'}
+                            className={last ? breach(last.headTilt, settings.maxHeadTilt) : undefined}
+                            hint={t.limit(deg(settings.maxHeadTilt))} />
+                    </Grid>
+                </div>
+
                 {/* The verdict reads under the picture, not over it _(2026-09-15,
                     his call)_. The camera well is what the tile is for and it
                     should be the first thing in it; a line of prose above it
@@ -1213,11 +1403,17 @@ function Live() {
                     </Button>
                 </Row>
 
+                {/* The purse sits under the start button, in zen as well as on
+                    the dashboard: it is what you earn by having pressed it. */}
+                <CoinPurse total={coinBalance} today={coinToday} streak={streak} />
+                <CoinSnackbar gain={coinGain} />
+
                 <Sound
                     settings={settings}
                     change={change}
                     prepareSound={beep.prepare}
                     playSound={beep.play}
+                    balance={coinBalance}
                 />
 
                 {/* The two views, as a switch rather than a button
@@ -1262,37 +1458,10 @@ function Live() {
                 />
             </Panel>
 
-            <Panel id="readout">
-                {last ? (
-                    <Grid min={140}>
-                        {/* An axis over its tolerance is the one place the
-                            accent is allowed to appear on a readout: the number
-                            and its label go coral and pulse, and the two that
-                            are still inside stay white. That is the whole
-                            severity system - whether the accent is there, not
-                            which colour it is. */}
-                        <Stat label={t.statForward} value={deg(last.forward)}
-                            className={breach(last.forward, settings.maxForward)}
-                            hint={t.limit(deg(settings.maxForward))} />
-                        <Stat label={t.statLean} value={deg(last.lean)}
-                            className={breach(last.lean, settings.maxLean)}
-                            hint={`${t.sideLabel[last.leanSide]} · ${t.limit(deg(settings.maxLean))}`} />
-                        <Stat label={t.statHeadTilt} value={deg(last.headTilt)}
-                            className={breach(last.headTilt, settings.maxHeadTilt)}
-                            hint={t.limit(deg(settings.maxHeadTilt))} />
-                        <Stat label={t.statConfidence} value={`${Math.round(last.confidence * 100)} %`}
-                            hint={poseReady() ? t.computedLocally : t.modelLoading} />
-                    </Grid>
-                ) : (
-                    <Empty title={t.noReadingYet} hint={t.noReadingYetHint} />
-                )}
-            </Panel>
-
             {/* Everything below this line is the dashboard _(2026-09-16: „im
                 default ist die webseite zu techlastig mit den vielen daten")_.
-                The three tiles above it are what zen keeps: the picture, the
-                button that starts it, and the three angles the picture just
-                produced. Those answer „am I sitting straight"; the curves, the log,
+                The two tiles above it are what zen keeps: the picture with the
+                three angles it just produced, and the button that starts it. Those answer „am I sitting straight"; the curves, the log,
                 the trend and the thresholds answer questions you ask on
                 purpose, and they are one switch away, at the foot of the
                 control tile above.
@@ -1314,6 +1483,104 @@ function Live() {
                 </>
             ) : null}
         </>
+    );
+}
+
+/* ------------------------------------------------------------- shrimpcoin */
+
+/**
+ * The Shrimpcoin purse: the coin, what there is to spend, today's share and
+ * how far the current streak is towards its next bonus.
+ *
+ * His idea for keeping people at it _(2026-10-17: „gamification soll machen
+ * dass die leute die app direkt beim kennenlernen und länger und öfter
+ * benutzten")_, with the coin he had drawn for it: Bitcoin's two strokes
+ * through a white 🍤 on the coral. The coin is the one place the coral shows
+ * without a breach, and that is his call too - it is the reward, and it is
+ * drawn in the colour he chose for it.
+ *
+ * Amounts arrive in tenths, as stored, and are shown as whole coins in the
+ * page's own number format: a Shrimpcoin does not split _(2026-10-18, his
+ * call: „make shrimpcoins nondevisable")_. Rounded down, so a device that
+ * earned under the old 0.1-a-second rule never shows a coin it cannot spend.
+ */
+function coinAmount(tenths: number, lang: Lang): string {
+    return Math.floor(tenths / 10).toLocaleString(localeFor(lang));
+}
+
+/**
+ * A Shrimpcoin number with the coin beside it, which is how every one of them
+ * is shown _(2026-10-18, his call: „immer neben shrimpcoin zahlen muss das
+ * logo stehen")_. The coin is sized to the line it sits in, and the number
+ * keeps the tabular mono every figure in the product wears.
+ */
+function CoinAmount({ tenths }: { tenths: number }) {
+    const lang = useLang();
+    return (
+        <span className="haltung-coinamount">
+            <img src={coinUrl} alt="" width={16} height={16} />
+            <span>{coinAmount(tenths, lang)}</span>
+        </span>
+    );
+}
+
+/**
+ * The snackbar that says a Shrimpcoin was just earned _(2026-10-18, his call:
+ * „whenver shrimpcoin is earned, show it in a snackbar")_. With whole coins
+ * that is every tenth straight reading, plus the streak bonus, so at the
+ * default pace about once every ten seconds rather than every second.
+ *
+ * Its own element rather than the shared toast, because the toast is plain
+ * text and every coin number carries the coin. It shows the latest payout and
+ * replaces itself when the next one lands, so two never stack. Not announced
+ * to a screen reader: a live region speaking every ten seconds would drown out
+ * everything else on the page.
+ *
+ * It always says what the coins were for _(2026-10-18, his call: „in der
+ * snackbar soll immer stehen wofür die coins gewonnen wurden")_: ten straight
+ * readings, ten in a row, or both when one reading completes both counts,
+ * and the daily visit bonus.
+ */
+type CoinGain = { tenths: number; base: boolean; bonus: boolean; daily?: boolean; id: number };
+
+function CoinSnackbar({ gain }: { gain: CoinGain | null }) {
+    const t = useCopy();
+    const [shown, setShown] = useState(false);
+    useEffect(() => {
+        if (!gain) return;
+        setShown(true);
+        const id = window.setTimeout(() => setShown(false), 2500);
+        return () => window.clearTimeout(id);
+    }, [gain?.id]);
+    if (!gain) return null;
+    return (
+        <div className={`haltung-snackbar${shown ? ' on' : ''}`} aria-hidden="true">
+            +<CoinAmount tenths={gain.tenths} />
+            <span className="haltung-snackbar-note">
+                {[gain.base ? t.coinsForStraight : null, gain.bonus ? t.coinsForStreak : null,
+                    gain.daily ? t.coinsForDaily : null]
+                    .filter(Boolean).join(' + ')}
+            </span>
+        </div>
+    );
+}
+
+function CoinPurse({ total, today, streak }: { total: number; today: number; streak: number }) {
+    const t = useCopy();
+    const lang = useLang();
+    const amount = (tenths: number) => coinAmount(tenths, lang);
+    return (
+        <div className="haltung-coins">
+            <img className="haltung-coins-coin" src={coinUrl} width={40} height={40} alt="" />
+            <div>
+                <div className="haltung-coins-total">
+                    <span className="haltung-coins-amount">{amount(total)}</span> {t.coinsLabel}
+                </div>
+                <div className="ui-small ui-muted">
+                    {t.coinsToday(<CoinAmount key="today" tenths={today} />)} · {t.coinsStreak(streak % STREAK_LENGTH, STREAK_LENGTH)}
+                </div>
+            </div>
+        </div>
     );
 }
 
@@ -1744,6 +2011,8 @@ type SoundProps = SetupProps & {
     /** So „Listen" can make the same noise the signal makes. */
     prepareSound: () => void;
     playSound: (name: SoundName) => void;
+    /** Shrimpcoin there to spend, in tenths: earned minus spent. */
+    balance: number;
 };
 
 /**
@@ -1758,8 +2027,30 @@ type SoundProps = SetupProps & {
  * same breath as the stop button.
  */
 function Sound(props: SoundProps) {
-    const { settings: s, change } = props;
+    const { settings: s, change, balance } = props;
     const t = useCopy();
+    const lang = useLang();
+    const unlocked: SoundName[] = s.unlockedSounds && s.unlockedSounds.length
+        ? s.unlockedSounds : ['fart'];
+    /** The locked sound someone picked, while the unlock dialog asks. */
+    const [pending, setPending] = useState<SoundName | null>(null);
+    const price = pending ? SOUND_PRICE[pending] : 0;
+    const affordable = balance >= price * 10;
+
+    /* Buying spends the coins, unlocks the sound and switches to it in one
+       write, the same way picking an unlocked sound switches to it. */
+    const unlock = async () => {
+        if (!pending || !affordable) return;
+        const name = t.soundName[pending];
+        await change({
+            unlockedSounds: [...unlocked, pending],
+            coinsSpent: (s.coinsSpent || 0) + price * 10,
+            soundName: pending,
+            sound: true,
+        });
+        setPending(null);
+        toast(t.unlockDone(name));
+    };
 
     /* Asking for the permission is part of switching it on, not a separate
        step: the browser only grants it inside a gesture, and a toggle that
@@ -1816,14 +2107,27 @@ function Sound(props: SoundProps) {
                 checkbox. Turning the signal back off is one click on that same
                 checkbox, so the rule cannot trap anyone. */}
             <Row gap={2} align="bottom" stack>
+                {/* Only the fart is free; the rest are bought with Shrimpcoin
+                    _(2026-10-18, his call: „nur der furzsound ist umsonst. die
+                    andern müssen mut shrimpcoins freigeschaltet werden")_. A
+                    locked sound stays in the list with its price, so the
+                    list is also the shop, and picking it opens the unlock
+                    dialog instead of switching to it. */}
                 <Select
                     label={t.soundLabel}
                     value={s.soundName}
-                    onChange={(e: { target: { value: string } }) =>
-                        void change({ soundName: e.target.value as SoundName, sound: true })}
+                    onChange={(e: { target: { value: string } }) => {
+                        const key = e.target.value as SoundName;
+                        if (unlocked.indexOf(key) >= 0) void change({ soundName: key, sound: true });
+                        else setPending(key);
+                    }}
                 >
                     {SOUND_ORDER.map((key) => (
-                        <option key={key} value={key}>{t.soundName[key]}</option>
+                        <option key={key} value={key}>
+                            {unlocked.indexOf(key) >= 0
+                                ? t.soundName[key]
+                                : t.soundLocked(t.soundName[key])}
+                        </option>
                     ))}
                 </Select>
                 <Button icon={<Icon name="volume" />}
@@ -1831,6 +2135,36 @@ function Sound(props: SoundProps) {
                     {t.listen}
                 </Button>
             </Row>
+
+            <Modal
+                open={pending != null}
+                onClose={() => setPending(null)}
+                title={pending ? t.unlockTitle(t.soundName[pending]) : undefined}
+                footer={(
+                    <Row gap={2} wrap>
+                        <Button variant="primary" disabled={!affordable} onClick={() => void unlock()}>
+                            {t.unlockConfirm}
+                        </Button>
+                        <Button onClick={() => setPending(null)}>{t.unlockCancel}</Button>
+                    </Row>
+                )}
+            >
+                {pending ? (
+                    <Col gap={3}>
+                        <Text>{t.unlockBody(
+                            <CoinAmount key="price" tenths={price * 10} />,
+                            <CoinAmount key="balance" tenths={balance} />,
+                        )}</Text>
+                        {!affordable
+                            ? <Muted>{t.unlockShort(<CoinAmount key="missing" tenths={price * 10 - balance} />)}</Muted>
+                            : null}
+                        {/* No preview here: a locked sound is not heard until
+                            it is bought _(2026-10-18, his call, verbatim: „vor
+                            dem kauf kann man den sound nicht gratis hören")_.
+                            The name and the price are the whole pitch. */}
+                    </Col>
+                ) : null}
+            </Modal>
         </>
     );
 }
@@ -2027,7 +2361,7 @@ function Content() {
                         order here is the order they flow in, and reading order
                         is the only thing that still decides what comes first,
                         because the number of columns is the window's business
-                        rather than ours. In zen the grid is three tiles long
+                        rather than ours. In zen the grid is two tiles long
                         and the rest of this is not rendered at all; the switch
                         at the foot of the control tile brings them back.
 

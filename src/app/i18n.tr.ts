@@ -1,5 +1,5 @@
 /** Turkish. Same keys as `de`, enforced by `Copy`. */
-import type { Copy } from './i18n';
+import type { Coins, Copy } from './i18n';
 
 export const tr: Copy = {
     title: 'Dik otur karides! 🦐',
@@ -28,18 +28,19 @@ export const tr: Copy = {
     nobodyThere: 'Karede kimse yok - ölçüm atıldı.',
     lowConfidence: 'Güvenilirliği düşük ölçüm - ışık kötü ya da kadraja yarım giriyorsun.',
 
-    statForward: 'Baş omzun önünde',
+    statForward: 'Ön',
     statLean: 'Yana eğim',
     statHeadTilt: 'Baş eğikliği',
-    statConfidence: 'Güven',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: Coins) => ['bugün +', n],
+    coinsStreak: (n: number, of: number) => `seri ${n}/${of}`,
+    coinsForStraight: '10× dik oturuş',
+    coinsForStreak: 'art arda 10',
+    coinsForDaily: 'günlük bonus',
     limit: (v: string) => `sınır ${v}`,
-    computedLocally: 'yerelde hesaplandı',
-    modelLoading: 'model hâlâ yükleniyor',
     loadingModelTitle: 'Bir saniye',
     loadingModel: 'Algılama modeli yükleniyor - 17 MB, yalnızca ilk seferde. Sonrasında tarayıcında kalır.',
     modelFailed: 'Yerel model yüklenemedi.',
-    noReadingYet: 'Henüz ölçüm yok',
-    noReadingYetHint: 'Kamera çalışmaya başlayınca birkaç saniyede bir yenisi gelir.',
 
     verdictTitle: { good: 'Dik oturuyorsun', borderline: 'Yatmaya başlıyor', bad: 'Eğri oturuyorsun' },
     advice: {
@@ -54,7 +55,6 @@ export const tr: Copy = {
         forward: 'Başın omuzlarının önünde - çeneni içeri çek, ensen geriye gelsin.',
     },
     verdictLabel: { good: 'dik', borderline: 'sınırda', bad: 'eğri' },
-    sideLabel: { left: 'sola', right: 'sağa', none: 'dik' },
 
     todayTitle: 'Bugün',
     todaySubtitle: 'Gece yarısından beri her ölçüm, burada bu cihazda.',
@@ -118,6 +118,13 @@ export const tr: Copy = {
     whichSound: 'Hangi ses',
     soundLabel: 'Sinyal sesi',
     listen: 'Dinle',
+    soundLocked: (name: string) => `${name} · kilitli`,
+    unlockTitle: (name: string) => `${name} açılsın mı?`,
+    unlockBody: (price: Coins, balance: Coins) => [price, ' Shrimpcoin tutar. Sende ', balance, ' var.'],
+    unlockConfirm: 'Aç',
+    unlockCancel: 'Vazgeç',
+    unlockShort: (missing: Coins) => [missing, ' Shrimpcoin eksik. Dik oturdukça kazanırsın.'],
+    unlockDone: (name: string) => `${name} açıldı`,
     soundName: {
         fart: 'Osuruk', ahem: 'Boğaz temizleme', scream: 'Çığlık',
         knuckles: 'Parmak çıtlatma', whip: 'Kırbaç şaklaması', rimshot: 'Rimshot',

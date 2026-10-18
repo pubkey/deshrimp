@@ -1,5 +1,5 @@
 /** Polish. Same keys as `de`, enforced by `Copy`. */
-import type { Copy } from './i18n';
+import type { Coins, Copy } from './i18n';
 
 export const pl: Copy = {
     title: 'Siedź prosto, krewetko! 🦐',
@@ -28,18 +28,19 @@ export const pl: Copy = {
     nobodyThere: 'Nikogo w kadrze - pomiar odrzucono.',
     lowConfidence: 'Niepewny pomiar - słabe światło albo jesteś tylko w połowie w kadrze.',
 
-    statForward: 'Głowa przed barkami',
+    statForward: 'Przód',
     statLean: 'Przechył na bok',
     statHeadTilt: 'Przechylenie głowy',
-    statConfidence: 'Pewność',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: Coins) => ['+', n, ' dziś'],
+    coinsStreak: (n: number, of: number) => `seria ${n}/${of}`,
+    coinsForStraight: '10× prosto',
+    coinsForStreak: '10 z rzędu',
+    coinsForDaily: 'bonus dzienny',
     limit: (v: string) => `granica ${v}`,
-    computedLocally: 'liczone lokalnie',
-    modelLoading: 'model jeszcze się ładuje',
     loadingModelTitle: 'Chwileczkę',
     loadingModel: 'Ładuje się model rozpoznawania - 17 MB, tylko za pierwszym razem. Potem zostaje w przeglądarce.',
     modelFailed: 'Nie udało się załadować lokalnego modelu.',
-    noReadingYet: 'Jeszcze bez pomiarów',
-    noReadingYetHint: 'Gdy kamera ruszy, co kilka sekund dojdzie kolejny.',
 
     verdictTitle: { good: 'Siedzisz prosto', borderline: 'Zaczyna się przechylać', bad: 'Siedzisz krzywo' },
     advice: {
@@ -54,7 +55,6 @@ export const pl: Copy = {
         forward: 'Głowa jest przed barkami - cofnij brodę i tył głowy do tyłu.',
     },
     verdictLabel: { good: 'prosto', borderline: 'na granicy', bad: 'krzywo' },
-    sideLabel: { left: 'w lewo', right: 'w prawo', none: 'prosto' },
 
     todayTitle: 'Dzisiaj',
     todaySubtitle: 'Wszystkie pomiary od północy, tutaj na tym urządzeniu.',
@@ -118,6 +118,13 @@ export const pl: Copy = {
     whichSound: 'Jaki dźwięk',
     soundLabel: 'Dźwięk sygnału',
     listen: 'Posłuchaj',
+    soundLocked: (name: string) => `${name} · zablokowany`,
+    unlockTitle: (name: string) => `Odblokować ${name}?`,
+    unlockBody: (price: Coins, balance: Coins) => ['Kosztuje ', price, ' Shrimpcoin. Masz ', balance, '.'],
+    unlockConfirm: 'Odblokuj',
+    unlockCancel: 'Anuluj',
+    unlockShort: (missing: Coins) => ['Brakuje ', missing, ' Shrimpcoin. Siedzenie prosto je zarabia.'],
+    unlockDone: (name: string) => `${name} odblokowany`,
     soundName: {
         fart: 'Pierdnięcie', ahem: 'Chrząknięcie', scream: 'Krzyk',
         knuckles: 'Strzelanie kostkami', whip: 'Trzask bata', rimshot: 'Rimshot',

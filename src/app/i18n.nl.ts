@@ -1,5 +1,5 @@
 /** Dutch. Same keys as `de`, enforced by `Copy`. */
-import type { Copy } from './i18n';
+import type { Coins, Copy } from './i18n';
 
 export const nl: Copy = {
     title: 'Zit rechtop, garnaal! 🦐',
@@ -28,18 +28,19 @@ export const nl: Copy = {
     nobodyThere: 'Niemand in beeld - de meting is weggegooid.',
     lowConfidence: 'Onzekere meting - slecht licht, of je zit maar half in beeld.',
 
-    statForward: 'Hoofd naar voren',
+    statForward: 'Voren',
     statLean: 'Zijwaartse helling',
     statHeadTilt: 'Hoofd scheef',
-    statConfidence: 'Zekerheid',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: Coins) => ['+', n, ' vandaag'],
+    coinsStreak: (n: number, of: number) => `reeks ${n}/${of}`,
+    coinsForStraight: '10× recht gezeten',
+    coinsForStreak: '10 op rij',
+    coinsForDaily: 'dagbonus',
     limit: (v: string) => `grens ${v}`,
-    computedLocally: 'lokaal berekend',
-    modelLoading: 'model laadt nog',
     loadingModelTitle: 'Een moment',
     loadingModel: 'Het herkenningsmodel wordt geladen - 17 MB, alleen de eerste keer. Daarna staat het in je browser.',
     modelFailed: 'Het lokale model kon niet worden geladen.',
-    noReadingYet: 'Nog geen meting',
-    noReadingYetHint: 'Zodra de camera loopt, komt er om de paar seconden een bij.',
 
     verdictTitle: { good: 'Je zit rechtop', borderline: 'Begint scheef te gaan', bad: 'Je zit scheef' },
     advice: {
@@ -54,7 +55,6 @@ export const nl: Copy = {
         forward: 'Je hoofd staat voor je schouders - trek je kin in en je achterhoofd naar achteren.',
     },
     verdictLabel: { good: 'recht', borderline: 'grensgeval', bad: 'scheef' },
-    sideLabel: { left: 'naar links', right: 'naar rechts', none: 'recht' },
 
     todayTitle: 'Vandaag',
     todaySubtitle: 'Elke meting sinds middernacht, hier op dit apparaat.',
@@ -118,6 +118,13 @@ export const nl: Copy = {
     whichSound: 'Welk geluid',
     soundLabel: 'Signaalgeluid',
     listen: 'Beluisteren',
+    soundLocked: (name: string) => `${name} · vergrendeld`,
+    unlockTitle: (name: string) => `${name} ontgrendelen?`,
+    unlockBody: (price: Coins, balance: Coins) => ['Kost ', price, ' Shrimpcoin. Je hebt er ', balance, '.'],
+    unlockConfirm: 'Ontgrendelen',
+    unlockCancel: 'Annuleren',
+    unlockShort: (missing: Coins) => ['Je komt ', missing, ' Shrimpcoin tekort. Recht zitten levert ze op.'],
+    unlockDone: (name: string) => `${name} ontgrendeld`,
     soundName: {
         fart: 'Scheet', ahem: 'Kuchje', scream: 'Schreeuw',
         knuckles: 'Knakkende knokkels', whip: 'Zweepslag', rimshot: 'Rimshot',

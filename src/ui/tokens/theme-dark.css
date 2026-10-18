@@ -1,0 +1,70 @@
+/* -------------------------------------------------------------------------
+   theme-dark.css - the dark palette.
+
+   Light is the default and the brief (colors.css). Dark is the same ladder
+   turned round, built from the same family so the two read as one product:
+
+     ground        #1A1A1A   the light theme's ink
+     card          #262626   one step up, the same 1.15:1 step as #FFFFFF → #F0F0F0
+     ink           #F0F0F0   the light theme's card grey
+     secondary ink #999999   5.3:1 on the card; #8C8C8C would sit at exactly 4.5:1
+     accent        #E29A86   unchanged, and it reads as text here (6.6:1)
+
+   Structure, spacing, radii and motion do not move, so every component follows
+   with no code change.
+
+   Three selectors for two states: the media query is what a page shows before
+   anyone has pressed anything, and the attribute is an explicit choice that has
+   to win in *both* directions - a user on a dark system who asks for light must
+   get light.
+   ------------------------------------------------------------------------- */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --dark-ground: #1A1A1A;
+    --dark-card:   #262626;
+    --dark-ink:    #F0F0F0;
+    --dark-muted:  #999999;
+
+    --bg-app:           var(--dark-ground);
+    --bg-inset:         var(--dark-card);
+    --surface-card:     var(--dark-card);
+    --surface-inset:    var(--dark-ground);
+    --border-default:   var(--dark-card);
+    --track-default:    var(--dark-ground);
+    --fill-default:     var(--dark-ink);
+    --text-primary:     var(--dark-ink);
+    --text-secondary:   var(--dark-muted);
+    --text-accent:      var(--coral);
+    --control-inactive: var(--dark-ground);
+    --scrim:            rgba(26, 26, 26, .82);
+    --shadow-card:      0 1px 2px rgba(0, 0, 0, .4);
+
+    /* The platform draws the dropdown, the scrollbar and the focus ring
+       itself; this is the only thing that tells it which way round we are. */
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --dark-ground: #1A1A1A;
+  --dark-card:   #262626;
+  --dark-ink:    #F0F0F0;
+  --dark-muted:  #999999;
+
+  --bg-app:           var(--dark-ground);
+  --bg-inset:         var(--dark-card);
+  --surface-card:     var(--dark-card);
+  --surface-inset:    var(--dark-ground);
+  --border-default:   var(--dark-card);
+  --track-default:    var(--dark-ground);
+  --fill-default:     var(--dark-ink);
+  --text-primary:     var(--dark-ink);
+  --text-secondary:   var(--dark-muted);
+  --text-accent:      var(--coral);
+  --control-inactive: var(--dark-ground);
+  --scrim:            rgba(26, 26, 26, .82);
+  --shadow-card:      0 1px 2px rgba(0, 0, 0, .4);
+
+  color-scheme: dark;
+}

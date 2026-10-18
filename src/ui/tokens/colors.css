@@ -1,43 +1,50 @@
 /* -------------------------------------------------------------------------
    colors.css - the locked palette.
 
-   Six values and nothing else: deep slate ground, raised card, border slate,
-   crisp white ink, slate-blue secondary ink, coral accent. No second hue, no
-   success green, no warning amber. Severity is carried by *whether* the accent
-   appears, not by a range of colours - see DESIGN.md §"The 10% rule".
+   His "Modern and Minimal" set (CHANGELOG 2026-10-17): white ground, light
+   grey surface, near-black ink, grey secondary ink, a dusty coral accent. No
+   second hue, no success green, no warning amber. Severity is carried by
+   *whether* the accent appears, not by a range of colours - see DESIGN.md
+   §"The 10% rule".
 
-   Dark is the default and the brief; light is a scoped inversion further down
-   in theme-light.css.
+   Plus two text values, also his call: the grey and the coral of the set are
+   too light to read as small text on the grey card (2.95:1 and 2.0:1), so text
+   takes a darker step of each. The coral itself stays for every fill, stroke
+   and dot, where 3:1 is enough.
+
+   Light is the default. The dark twin in theme-dark.css turns the same family
+   round and redefines the semantic aliases below.
    ------------------------------------------------------------------------- */
 
 :root {
   /* base palette - locked, do not deviate */
-  --slate-950: #0F172A;
-  --slate-800: #1E293B;
-  --slate-750: #273549;
-  --slate-700: #334155;
-  --slate-650: #3E4C63;
-  --slate-400: #94A3B8;
-  --slate-50:  #F8FAFC;
-  --coral-500: #ff8257;
-  --coral-700: #E14E1D;
+  --white:      #FFFFFF;
+  --grey-100:   #F0F0F0;
+  --grey-500:   #8C8C8C;
+  --grey-600:   #666666;  /* text only: 5.0:1 on the card */
+  --ink-900:    #1A1A1A;
+  --coral:      #E29A86;
+  --coral-text: #A65440;  /* text only: 4.65:1 on the card */
 
   /* semantic aliases - components reference these, never the raw ramp */
-  --bg-app:           var(--slate-950);
-  --bg-inset:         var(--slate-950);
-  --surface-card:     var(--slate-750);
-  --surface-inset:    var(--slate-800);
-  --border-default:   var(--slate-650);
-  --border-alert:     var(--coral-500);
-  --track-default:    var(--slate-650);
-  --fill-default:     var(--slate-50);
-  --fill-alert:       var(--coral-500);
-  --text-primary:     var(--slate-50);
-  --text-secondary:   var(--slate-400);
-  --text-on-accent:   #ffffff;
-  --accent:           var(--coral-500);
-  --accent-bright:    var(--coral-500);
-  --accent-soft:      rgba(255, 130, 87, .14);
-  --scrim:            rgba(15, 23, 42, .78);
-  --control-inactive: var(--slate-700);
+  --bg-app:           var(--white);
+  --bg-inset:         var(--grey-100);
+  --surface-card:     var(--grey-100);
+  --surface-inset:    var(--white);
+  --border-default:   var(--grey-100);
+  --border-alert:     var(--coral);
+  --track-default:    var(--white);
+  --fill-default:     var(--ink-900);
+  --fill-alert:       var(--coral);
+  --text-primary:     var(--ink-900);
+  --text-secondary:   var(--grey-600);
+  /* A breached readout, a link, an error: the accent set as words. */
+  --text-accent:      var(--coral-text);
+  /* White on the coral measures 2.2:1; the ink measures 7.6:1. */
+  --text-on-accent:   var(--ink-900);
+  --accent:           var(--coral);
+  --accent-bright:    var(--coral);
+  --accent-soft:      rgba(226, 154, 134, .16);
+  --scrim:            rgba(255, 255, 255, .82);
+  --control-inactive: var(--white);
 }

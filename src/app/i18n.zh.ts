@@ -1,5 +1,5 @@
 /** Simplified Chinese. Same keys as `de`, enforced by `Copy`. */
-import type { Copy } from './i18n';
+import type { Coins, Copy } from './i18n';
 
 export const zh: Copy = {
     title: '坐直了，虾米！🦐',
@@ -28,18 +28,19 @@ export const zh: Copy = {
     nobodyThere: '画面里没有人，这次测量已丢弃。',
     lowConfidence: '测量不太可靠，光线太差，或者你只有一半在画面里。',
 
-    statForward: '头在肩前',
+    statForward: '前倾',
     statLean: '侧向倾斜',
     statHeadTilt: '头部歪斜',
-    statConfidence: '可信度',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: Coins) => ['今天 +', n],
+    coinsStreak: (n: number, of: number) => `连续 ${n}/${of}`,
+    coinsForStraight: '坐直 10 次',
+    coinsForStreak: '连续 10 次',
+    coinsForDaily: '每日奖励',
     limit: (v: string) => `上限 ${v}`,
-    computedLocally: '本地计算',
-    modelLoading: '模型还在加载',
     loadingModelTitle: '稍等一下',
     loadingModel: '正在加载识别模型，17 MB，只有第一次需要。之后它就留在你的浏览器里。',
     modelFailed: '本地模型没能加载。',
-    noReadingYet: '还没有测量结果',
-    noReadingYetHint: '摄像头一开，每隔几秒就会多出一条。',
 
     verdictTitle: { good: '你坐得很直', borderline: '开始歪了', bad: '你坐歪了' },
     advice: {
@@ -54,7 +55,6 @@ export const zh: Copy = {
         forward: '头伸到肩膀前面了，收下巴，把后脑往后带。',
     },
     verdictLabel: { good: '直', borderline: '临界', bad: '歪' },
-    sideLabel: { left: '向左', right: '向右', none: '正' },
 
     todayTitle: '今天',
     todaySubtitle: '从零点开始的每一次测量，都在这台设备上。',
@@ -118,6 +118,13 @@ export const zh: Copy = {
     whichSound: '用哪种声音',
     soundLabel: '提示音',
     listen: '试听',
+    soundLocked: (name: string) => `${name} · 未解锁`,
+    unlockTitle: (name: string) => `解锁${name}？`,
+    unlockBody: (price: Coins, balance: Coins) => ['需要 ', price, ' Shrimpcoin。你有 ', balance, '。'],
+    unlockConfirm: '解锁',
+    unlockCancel: '取消',
+    unlockShort: (missing: Coins) => ['还差 ', missing, ' Shrimpcoin。坐直就能攒到。'],
+    unlockDone: (name: string) => `${name}已解锁`,
     soundName: {
         fart: '放屁', ahem: '清嗓子', scream: '尖叫',
         knuckles: '掰手指', whip: '鞭子声', rimshot: '咚咚锵',

@@ -11,6 +11,241 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-10-18 - whole coins, a steeper ladder, a snackbar
+
+### Changed
+- **A Shrimpcoin does not split** _(his call, verbatim: „make shrimpcoins
+  nondevisable. instead of givinng 0.1 per second, give one full every 10
+  measurements")_. Every ten straight readings pay one whole coin, counted
+  across crooked ones; the streak bonus of one more for ten in a row stays,
+  so ten in a row pay two. This replaces 0.1 coin per second (2026-10-17)
+  and makes the pay follow readings, not seconds: at the default one reading
+  a second it is the same 12 a minute, at a slower pace it is less. Amounts
+  are still stored in tenths, each payout a multiple of ten, and are shown
+  rounded down to whole coins, so a device that earned fractions under the
+  old rule never shows a coin it cannot spend. `?debugcoins` rounds to whole
+  coins too.
+- **The prices are steeper** _(his call, verbatim: „mach die preise
+  steiler")_: ahem 50, scream 150, knuckle crack 500, whip crack 1,500,
+  rimshot 5,000. Each step roughly triples, so the sounds unlock after about
+  4 minutes, 17 minutes, 1 hour, 3 hours and 10 hours of straight sitting.
+  The first stays at four minutes, as he asked. The target curve against the
+  old ladder is `research/shrimpcoin-unlock-curve.png`.
+- **Unlocking follows usage time, not days** _(his call, verbatim: „das
+  freischalten soll nicht pro tag sondern pro nutzungszeit relevant sein. dh
+  wenn jjemand 4h am tag das nurzt soll er auch mehr freischalten")_. It
+  already did: there is no daily cap, and coins come from straight readings
+  alone. What changed is the framing: the chart and the notes no longer give
+  "day N" figures, which read like a calendar gate.
+
+### New
+- **Every payout shows in a snackbar** _(his call, verbatim: „whenver
+  shrimpcoin is earned, show it in a snackbar")_, at the bottom of the page
+  for two and a half seconds. It always says what the coins are for _(his
+  call, verbatim: „in der snackbar soll immer stehen wofür die coins gewonnen
+  wurden")_: "+1 · 10× sitting straight", "+1 · 10 in a row", or "+2" with
+  both when one reading completes both counts. At the default pace that is about every ten seconds.
+  Its own element rather than the shared toast, because the toast is plain
+  text and every coin number carries the coin. A newer payout replaces it, and
+  it is not read out by screen readers, which would otherwise announce a coin
+  every ten seconds. The label is in all thirteen languages.
+- **20 Shrimpcoin for every day the page is visited, except the first**
+  _(his call, verbatim: „jeden vollen tag wo der nutzer die seite besucht
+  gibts es 20 free coins. auser am ersten tag.")_. Counted by calendar day on
+  the device: the first day a device opens the page pays nothing, every later
+  day pays 20 once, on the first visit. The page checks on load and once a
+  minute, so a tab left open over midnight collects the new day too. Days
+  without a visit pay nothing and are not paid back. A device that already
+  has history takes its oldest day as its first, so it collects from today.
+  The coins are booked into today's day row like any other, and the snackbar
+  says "+20 · daily bonus". Settings schema v16 keeps the first day and the
+  last day paid.
+
+## 2026-10-18 - sounds cost Shrimpcoin
+
+### Changed
+- **Only the fart is free; every other sound is unlocked with Shrimpcoin**
+  _(his call, verbatim: „nur der furzsound ist umsonst. die andern müssen mut
+  shrimpcoins freigeschaltet werden")_. The prices are a ladder in the order
+  the select lists them, doubling each step: ahem 50, scream 100, knuckle
+  crack 200, whip crack 400, rimshot 800. He named no prices, so these are a
+  first guess to tune. At one reading a second, sitting straight earns 12 a
+  minute (6 by the second, 6 in streak bonuses), so the sounds unlock after
+  about 4, 8, 17, 33 and 67 minutes of straight sitting. The first one lands
+  after about four minutes, which is what he asked for _(„erster sound soll
+  nach 4 minuten ca drin sein")_. An earlier note here said 2 a minute; that
+  was a miscalculation that left out the streak bonus.
+- **The select is the shop.** A locked sound stays in the list, marked as
+  locked. Picking it opens a dialog with the price, what you have and how much
+  is missing if anything. Unlocking spends the coins and switches to the sound
+  in one step.
+- **No free preview** _(his call, verbatim: „vor dem kauf kann man den sound
+  nicht gratis hören")_. The dialog had a "Listen" button for the locked
+  sound; it is gone, so a sound is first heard once it is bought. The
+  "Listen" beside the select still plays the sound that is picked, which is
+  always one already owned.
+- **"Pick the sound" says so**, in all thirteen languages: only the fart is
+  free, the others are unlocked with the Shrimpcoin earned by sitting straight.
+- **The purse shows what there is to spend**: everything earned less what
+  unlocking has cost. The earned coins in the day rows are never touched;
+  the spending is its own number in the settings.
+
+- **`?debugcoins=500` hands a device 500 Shrimpcoin** for testing the shop
+  _(his call, verbatim: „add einen debug url parameter mit dem du dir coins
+  geben kannst um das kaufen zu testen")_. It is booked as negative spending,
+  so the day rows still only hold what was sat for, and the parameter is
+  taken out of the address once applied, so a reload does not pay twice. It
+  is not hidden: anyone who reads this can give themselves coins, which on a
+  page where the coins buy nothing but a noise is fine.
+
+- **Every Shrimpcoin number has the coin beside it** _(his call, verbatim:
+  „immer neben shrimpcoin zahlen muss das logo stehen")_: today's coins
+  under the purse, the price, the balance and the shortfall in the unlock
+  dialog. The sentences that carry an amount are built from pieces instead
+  of one string, in all thirteen languages, so the amount can be the coin
+  and its number while each language keeps its own word order.
+- **The sound list says "locked" instead of a price.** A native `<option>`
+  is drawn by the platform and can hold text only, so a price there would be
+  a number without its coin. The price, with the coin, is in the dialog that
+  picking a locked sound opens.
+- The debug toast no longer names the amount, for the same reason: a toast is
+  plain text. The purse shows the new balance with its coin.
+
+### Kept
+- **Whatever sound a device already uses stays unlocked for free** (settings
+  migration v15). Taking away the noise someone picked, the morning after an
+  update, is not what the change is for.
+
+### Decided against
+- **No Shrimpcoin for breaks** _(his call, verbatim: „wir können pausen nicht
+  wirklich trakcen, da soll es nicht belohnt werden")_. The research in
+  `research/idle-game-reward-curves.md` proposed a bonus for coming back after
+  a break and a per-bout cap that resets on one. The camera cannot tell a
+  break from leaning out of frame or covering the lens, so a break bonus would
+  pay for whatever empties the picture. Neither is built; the report records
+  the decision.
+
+## 2026-10-17 - Shrimpcoin
+
+### New
+- **The Shrimpcoin** _(his call, verbatim: „gamification soll machen dass die
+  leute die app direkt beim kennenlernen und länger und öfter benutzten",
+  „im ersten schritt machen wir nur ein "Shrimpcoin"", then „mach jetzt den
+  shrimpcoin")_. The rules are his, settled one by one:
+  - 0.1 coin per second sitting straight, not per reading _(„ja pro sekunde
+    anstatt pro messung")_. A straight reading is paid for the seconds since
+    the reading before it, capped at the pace, so a long pause pays one
+    interval and pressing "Check now" twice in a second pays one second.
+  - 1 coin extra for every ten straight readings in a row, as often as it
+    happens _(„mach 10er serie anstatt 7er serie. ja die serie geht unendlich
+    oft")_.
+  - Only "good" counts _(„es zählt nur good als gerade")_, and only when the
+    model is sure enough to sound the alarm too.
+  - Nobody in the picture earns nothing and breaks the streak _(„bilder ohne
+    person zählen gar nichts", „bildre ohne person brechen die serie ab")_.
+- **The coin is his design**: Bitcoin's two strokes through a white 🍤 on
+  `#E29A86`, tilted 14° like the ₿ _(„nimm gekippt")_. It sits under the start
+  button with the total, today's share and the streak towards its next bonus,
+  in zen and on the dashboard. It is the one coral shape that is not a breach,
+  noted as such in `DESIGN.md`.
+- **The plural is Shrimpcoin too** _(his call, verbatim: „isnt the plural also
+  Shrimpcoin")_: "12.3 Shrimpcoin", the way one says 12.3 Bitcoin or 5 Euro.
+  The name is the same in all thirteen languages.
+- **Coins are stored per day**, in tenths, in the day rows that are kept
+  forever (schema v3). Days before today start at 0 rather than being paid
+  after the fact. The field is optional, so an older backup or a device still
+  on the previous version can still write its days.
+
+## 2026-10-17 - the angles under the picture
+
+### Changed
+- **The three angles and the confidence sit in the camera tile, right under
+  the picture** _(his call, verbatim: „das headinfront sidelean etc muss in die
+  erste bix direkt unter das video")_. They had a tile of their own beside the
+  controls; now the number and the picture it was read from are one glance.
+  Zen is two tiles instead of three.
+- **The four values are there before the first reading too**, each a plain
+  "-", so the tile does not grow when the first reading lands (his rule of
+  2026-09-15). Four to a row where the tile is wide enough.
+
+- **The side of a lean is an arrow** _(his call, verbatim: „sidelean should
+  show arrow instead of "to the right"")_: `←` or `→` under the side-lean
+  value, the same pair the day table already used, and nothing when the
+  shoulders are level.
+- **"Head in front" is "Front"** _(his call, verbatim: „write "front" instead
+  of headinfront")_, and the same one short word in the other twelve: Vorne,
+  Delante, Avant, Avanti, 前傾, წინ, Voren, Przód, Frente, Вперёд, Ön, 前倾. It is
+  one label, so the chart legends that name this angle say it too.
+
+### Removed
+- **The "No reading yet" empty state** and its two labels in all thirteen
+  languages: the readout it stood in for is now always drawn.
+- **The confidence value** _(his call, verbatim: „entfern den confidence
+  kpi")_. Three values under the picture instead of four, which also lets
+  them keep the full 32px figure on a phone. The model's confidence is still
+  stored with every reading. Its three labels (`statConfidence`,
+  `computedLocally`, `modelLoading`) go from all thirteen languages, and so
+  does `sideLabel`, which the arrow replaces.
+
+## 2026-10-17 - a new palette, light by default, with a dark twin
+
+### Changed
+- **The whole app is five colours: `#FFFFFF`, `#F0F0F0`, `#1A1A1A`,
+  `#8C8C8C`, `#E29A86`** _(his call, verbatim: „lets change the color palette
+  of the whole app: … "paletteName": "Modern and Minimal" … Rebuild the app
+  with these colors")_. White ground, grey cards, near-black ink, grey
+  secondary ink, dusty coral accent. The change is in `src/ui/tokens/colors.css`;
+  every component reads the semantic tokens, so nothing else had to be
+  recoloured by hand. Cards are told apart from the ground by their fill, and
+  fields, selects and slider rails inside a card step back to the white.
+- **Text on the coral is the ink, not white.** White on `#E29A86` measures
+  2.28:1, the ink 7.62:1. The same goes for the grey and coral badges.
+- **The app icon and the favicon** use the new colours: a coral plate with the
+  white mark for the installed icon, the ink mark with a coral dot for the tab.
+  The tab icon that goes green, amber and red with the posture is unchanged:
+  that was his own request (2026-09-08), and a palette is not a reason to drop
+  a signal.
+
+- **Light is the default now**, not dark. A page with no stored choice and no
+  system preference gets the white ground.
+
+### New
+- **A dark palette from the same family** _(his call, verbatim: „mach eine
+  zusätzliche darkmode palette")_: ground `#1A1A1A`, card `#262626`, ink
+  `#F0F0F0`, secondary ink `#999999`, the coral unchanged. In
+  `src/ui/tokens/theme-dark.css`, replacing the old `theme-light.css`
+  inversion. It follows the system until someone presses the toggle, and the
+  toggle and its stored choice work as before. Every text value in it passes
+  4.5:1 on the dark card, the coral included.
+
+### Removed
+- **`tokens/theme-light.css`**, the inversion of the old slate theme. Its job
+  is now the default in `colors.css`.
+
+### Left alone
+### Changed, at the cost of a signature
+- **`public/brand/`, six of the seven files, are in the new palette**
+  _(his call, verbatim: „fix public/brand/*.svg")_. `mark.svg` and `logo.svg`
+  are the ink `#1A1A1A` with the coral dot for the light default; the
+  `-inverse` pair is `#F0F0F0` with the coral dot for the dark ground; the
+  one-colour grey mark is `#8C8C8C`. `mark-mono.svg` loses the em dash in its
+  title, which was the last one in the repo.
+- **All seven lose their C2PA content credentials** _(his call, verbatim:
+  „scheiß auf das prüfsiegel")_, `mark-on-accent.svg` included although its
+  colours were already right. A credential signs the exact bytes, so an edit
+  makes it report "tampered"; a file without one simply makes no claim. The
+  pictures themselves are drawn the same as before.
+
+### Changed, for legibility
+- **Two darker text steps in light mode** _(his call, verbatim: „ja mach die
+  andern schriftfarben")_. The grey `#8C8C8C` measured 2.95:1 as small text on
+  the card and the coral 2.0:1, both under the 4.5:1 that text needs.
+  Secondary text is now `#666666` (5.0:1) and the accent set as words, a
+  breached readout, a link or an error, is `#A65440` (4.65:1) through a new
+  `--text-accent` token. Both are darker steps of the same colours, and the
+  coral itself stays for every fill, stroke and dot. Dark mode keeps the coral
+  as text, where it already reads at 6.6:1.
+
 ## 2026-10-17 - a real whip crack
 
 ### Changed

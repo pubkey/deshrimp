@@ -52,6 +52,15 @@ hips, and in a desk-sized crop they come back with a visibility of 0.01 against
 
 ## Other things it does
 
+- **Shrimpcoin.** Whole coins only: every ten straight readings earn one, and
+  every ten straight readings in a row earn one more, so at the default pace
+  of one reading a second that is 12 a minute. Only a "good" reading counts;
+  anything else, or nobody in the picture, ends the streak. Every day the page
+  is opened after the first pays 20 more. Each payout shows
+  briefly in a snackbar; the balance sits under the start button and is kept
+  per day with the rest of the history, on the device. It is what the alarm
+  sounds are bought with: the fart is free, the other five cost 50, 150, 500,
+  1,500 and 5,000.
 - **Thirteen languages**, switchable top right: de · en · es · fr · it · pt ·
   nl · pl · tr · ru · zh · ja · ka. First visit picks stored choice → browser
   language → English.
@@ -120,8 +129,8 @@ them: zen on the left, dashboard on the right. The choice is stored with the
 settings, so it survives a reload.
 
 The interface is the **deshrimp design system**: a clinical instrument rather
-than a wellness app. Six colours, locked - slate ground, slate card, hairline
-border, white ink, slate-blue secondary ink, and a coral accent that is a budget
+than a wellness app. Five colours, locked - white ground, light grey card,
+near-black ink, grey secondary ink, and a dusty coral accent that is a budget
 rather than a palette entry. IBM Plex Sans for words, IBM Plex Mono with tabular
 figures for every number, so a value does not reflow while it ticks. Borders
 instead of shadows, nothing rounder than 8px, no gradients, and motion only
@@ -132,8 +141,8 @@ there is no success green and no warning amber anywhere in the product. The one
 dramatic moment is a breach - the camera well's hairline snaps to a 3px coral
 stroke and the offending readout pulses. Nothing moves, nothing shakes.
 
-Dark is what it was drawn for; light is a scoped inversion and the toggle still
-works in both directions. The rules, the tokens and the three things still
+Light is the default; dark is its twin from the same family, and the toggle
+works in both directions. The rules, the tokens and the one thing still
 waiting on a decision from him are in **`src/ui/DESIGN.md`**.
 
 `src/ui` holds **only what this app renders**. It came from a shared library

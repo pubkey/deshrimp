@@ -24,8 +24,18 @@
  *    lives - in `data.json`, keyed by language.
  */
 
+import type { ReactNode } from 'react';
 import type { SoundName, Verdict } from './db';
 import type { AdviceKey } from './pose';
+
+/**
+ * A Shrimpcoin amount as it is set into a sentence: the number with the coin
+ * in front of it, never the bare number _(2026-10-18, his call: „immer neben
+ * shrimpcoin zahlen muss das logo stehen")_. The sentences that carry one
+ * return a list of pieces rather than a string, so the amount can be an
+ * element and each language still decides where in its sentence it goes.
+ */
+export type Coins = ReactNode;
 import { es } from './i18n.es';
 import { fr } from './i18n.fr';
 import { it } from './i18n.it';
@@ -102,18 +112,19 @@ const de = {
     nobodyThere: 'Niemand im Bild - die Messung wurde verworfen.',
     lowConfidence: 'Unsichere Messung - schlechtes Licht oder nur halb im Bild.',
 
-    statForward: 'Kopf vor der Schulter',
+    statForward: 'Vorne',
     statLean: 'Seitneigung',
     statHeadTilt: 'Kopfneigung',
-    statConfidence: 'Sicherheit',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: Coins) => ['+', n, ' heute'],
+    coinsStreak: (n: number, of: number) => `Serie ${n}/${of}`,
+    coinsForStraight: '10× gerade gesessen',
+    coinsForStreak: '10× in Folge',
+    coinsForDaily: 'Tagesbonus',
     limit: (v: string) => `Grenze ${v}`,
-    computedLocally: 'lokal gerechnet',
-    modelLoading: 'Modell lädt noch',
     loadingModelTitle: 'Einen Moment',
     loadingModel: 'Das Erkennungsmodell wird geladen - 17 MB, nur beim ersten Mal. Danach liegt es im Browser.',
     modelFailed: 'Das lokale Modell ließ sich nicht laden.',
-    noReadingYet: 'Noch keine Messung',
-    noReadingYetHint: 'Sobald die Kamera läuft, kommt alle paar Sekunden eine dazu.',
 
     verdictTitle: { good: 'Du sitzt gerade', borderline: 'Fängt an zu kippen', bad: 'Du sitzt schief' } as Record<Verdict, string>,
     /** The sentence under the verdict. `pose.ts` picks the key, this is the wording. */
@@ -129,7 +140,6 @@ const de = {
         forward: 'Der Kopf steht vor der Schulter - zieh das Kinn zurück und den Hinterkopf nach hinten.',
     } as Record<AdviceKey, string>,
     verdictLabel: { good: 'gerade', borderline: 'grenzwertig', bad: 'schief' } as Record<Verdict, string>,
-    sideLabel: { left: 'nach links', right: 'nach rechts', none: 'gerade' } as Record<'left' | 'right' | 'none', string>,
 
     /* --- today ---------------------------------------------------------- */
     todayTitle: 'Heute',
@@ -195,6 +205,13 @@ const de = {
     whichSound: 'Welches Geräusch',
     soundLabel: 'Signalton',
     listen: 'Anhören',
+    soundLocked: (name: string) => `${name} · gesperrt`,
+    unlockTitle: (name: string) => `${name} freischalten?`,
+    unlockBody: (price: Coins, balance: Coins) => ['Kostet ', price, ' Shrimpcoin. Du hast ', balance, '.'],
+    unlockConfirm: 'Freischalten',
+    unlockCancel: 'Abbrechen',
+    unlockShort: (missing: Coins) => ['Es fehlen ', missing, ' Shrimpcoin. Gerade sitzen bringt welche.'],
+    unlockDone: (name: string) => `${name} freigeschaltet`,
     soundName: {
         fart: 'Furz', ahem: 'Räuspern', scream: 'Schrei',
         knuckles: 'Fingerknacken', whip: 'Peitsche', rimshot: 'Bada-Bumm-Tss',
@@ -269,18 +286,19 @@ const en: Copy = {
     nobodyThere: 'Nobody in the picture - the reading was discarded.',
     lowConfidence: 'Uncertain reading - poor light, or only half of you is in frame.',
 
-    statForward: 'Head in front',
+    statForward: 'Front',
     statLean: 'Side lean',
     statHeadTilt: 'Head tilt',
-    statConfidence: 'Confidence',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: Coins) => ['+', n, ' today'],
+    coinsStreak: (n: number, of: number) => `streak ${n}/${of}`,
+    coinsForStraight: '10× sitting straight',
+    coinsForStreak: '10 in a row',
+    coinsForDaily: 'daily bonus',
     limit: (v: string) => `limit ${v}`,
-    computedLocally: 'computed locally',
-    modelLoading: 'model still loading',
     loadingModelTitle: 'One moment',
     loadingModel: 'Loading the detection model - 17 MB, only the first time. After that it lives in your browser.',
     modelFailed: 'The local model could not be loaded.',
-    noReadingYet: 'No reading yet',
-    noReadingYetHint: 'Once the camera runs, one arrives every few seconds.',
 
     verdictTitle: { good: 'You are sitting straight', borderline: 'Starting to tip', bad: 'You are sitting crooked' },
     advice: {
@@ -295,7 +313,6 @@ const en: Copy = {
         forward: 'Your head is out in front of your shoulders - tuck your chin and bring the back of your head back.',
     },
     verdictLabel: { good: 'straight', borderline: 'borderline', bad: 'crooked' },
-    sideLabel: { left: 'to the left', right: 'to the right', none: 'straight' },
 
     todayTitle: 'Today',
     todaySubtitle: 'Every reading since midnight, here on this device.',
@@ -359,6 +376,13 @@ const en: Copy = {
     whichSound: 'Which sound',
     soundLabel: 'Signal sound',
     listen: 'Listen',
+    soundLocked: (name: string) => `${name} · locked`,
+    unlockTitle: (name: string) => `Unlock ${name}?`,
+    unlockBody: (price: Coins, balance: Coins) => ['Costs ', price, ' Shrimpcoin. You have ', balance, '.'],
+    unlockConfirm: 'Unlock',
+    unlockCancel: 'Cancel',
+    unlockShort: (missing: Coins) => [missing, ' Shrimpcoin short. Sitting straight earns them.'],
+    unlockDone: (name: string) => `${name} unlocked`,
     soundName: {
         fart: 'Fart', ahem: 'Ahem', scream: 'Scream',
         knuckles: 'Knuckle crack', whip: 'Whip crack', rimshot: 'Rimshot',

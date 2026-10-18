@@ -1,5 +1,5 @@
 /** Russian. Same keys as `de`, enforced by `Copy`. */
-import type { Copy } from './i18n';
+import type { Coins, Copy } from './i18n';
 
 export const ru: Copy = {
     title: 'Сиди прямо, креветка! 🦐',
@@ -28,18 +28,19 @@ export const ru: Copy = {
     nobodyThere: 'В кадре никого - измерение отброшено.',
     lowConfidence: 'Ненадёжное измерение - плохой свет или ты попал в кадр только наполовину.',
 
-    statForward: 'Голова впереди плеч',
+    statForward: 'Вперёд',
     statLean: 'Наклон вбок',
     statHeadTilt: 'Наклон головы',
-    statConfidence: 'Уверенность',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: Coins) => ['+', n, ' сегодня'],
+    coinsStreak: (n: number, of: number) => `серия ${n}/${of}`,
+    coinsForStraight: '10× ровная посадка',
+    coinsForStreak: '10 подряд',
+    coinsForDaily: 'ежедневный бонус',
     limit: (v: string) => `предел ${v}`,
-    computedLocally: 'посчитано локально',
-    modelLoading: 'модель ещё загружается',
     loadingModelTitle: 'Одну секунду',
     loadingModel: 'Загружается модель распознавания - 17 МБ, только в первый раз. Дальше она лежит в браузере.',
     modelFailed: 'Локальную модель загрузить не удалось.',
-    noReadingYet: 'Измерений пока нет',
-    noReadingYetHint: 'Как только камера заработает, каждые несколько секунд будет добавляться новое.',
 
     verdictTitle: { good: 'Ты сидишь прямо', borderline: 'Начинает заваливаться', bad: 'Ты сидишь криво' },
     advice: {
@@ -54,7 +55,6 @@ export const ru: Copy = {
         forward: 'Голова вынесена вперёд относительно плеч - подбери подбородок и отведи затылок назад.',
     },
     verdictLabel: { good: 'прямо', borderline: 'на грани', bad: 'криво' },
-    sideLabel: { left: 'влево', right: 'вправо', none: 'прямо' },
 
     todayTitle: 'Сегодня',
     todaySubtitle: 'Все измерения с полуночи, здесь на этом устройстве.',
@@ -118,6 +118,13 @@ export const ru: Copy = {
     whichSound: 'Какой звук',
     soundLabel: 'Звук сигнала',
     listen: 'Послушать',
+    soundLocked: (name: string) => `${name} · закрыт`,
+    unlockTitle: (name: string) => `Открыть ${name}?`,
+    unlockBody: (price: Coins, balance: Coins) => ['Стоит ', price, ' Shrimpcoin. У тебя ', balance, '.'],
+    unlockConfirm: 'Открыть',
+    unlockCancel: 'Отмена',
+    unlockShort: (missing: Coins) => ['Не хватает ', missing, ' Shrimpcoin. Сиди ровно, и они накопятся.'],
+    unlockDone: (name: string) => `${name} открыт`,
     soundName: {
         fart: 'Пук', ahem: 'Покашливание', scream: 'Крик',
         knuckles: 'Хруст пальцев', whip: 'Щелчок кнута', rimshot: 'Бадум-тсс',

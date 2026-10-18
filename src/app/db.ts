@@ -209,6 +209,29 @@ export type Settings = {
      * and migration 10 below puts existing devices there too.
      */
     view: View;
+    /**
+     * The sounds this device may pick. Only the fart is free; every other one
+     * is bought with Shrimpcoin _(2026-10-18, his call, verbatim: „nur der
+     * furzsound ist umsonst. die andern müssen mut shrimpcoins freigeschaltet
+     * werden")_. Optional so a device still on the previous version can sync
+     * its settings without failing validation; missing reads as fart only.
+     */
+    unlockedSounds?: SoundName[];
+    /**
+     * Shrimpcoin spent on unlocking, in tenths like `Day.coins`. The balance is
+     * everything earned minus this; the earned total itself is never touched,
+     * so the history of what he sat for stays honest.
+     */
+    coinsSpent?: number;
+    /**
+     * The first day this device used the page, `YYYY-MM-DD` local. The daily
+     * visit bonus is paid on every later day, never on this one _(2026-10-18,
+     * his call: „jeden vollen tag wo der nutzer die seite besucht gibts es 20
+     * free coins. auser am ersten tag")_.
+     */
+    firstDay?: string;
+    /** The last day the visit bonus was paid, so it is paid once a day. */
+    lastDailyBonus?: string;
 };
 
 /**
@@ -238,10 +261,38 @@ export const DEFAULTS: Settings = {
     notify: false,
     vibrate: false,
     view: 'zen',
+    unlockedSounds: ['fart'],
+    coinsSpent: 0,
 };
 
+/**
+ * What each sound costs to unlock, in whole Shrimpcoin, in the order the
+ * select lists them. At the default pace of one reading a second, sitting
+ * straight earns 12 a minute (6 by the second, 6 in streak bonuses).
+ *
+ * The ladder is steep on purpose _(2026-10-18, his call: „mach die preise
+ * steiler")_: each step roughly triples, so the wait stretches the way an
+ * idle game's clock does (research/idle-game-reward-curves.md). Bought in
+ * order, the sounds unlock after about 4 minutes, 17 minutes, 1 hour, 3 hours
+ * and 10 hours of straight sitting. That is usage time, not calendar time:
+ * there is no daily cap, so someone who sits with it four hours a day unlocks
+ * correspondingly sooner _(his call: „das freischalten soll nicht pro tag
+ * sondern pro nutzungszeit relevant sein")_. The first one stays at four
+ * minutes _(his call: „erster sound soll nach 4 minuten ca drin sein")_.
+ */
+export const SOUND_PRICE: Record<SoundName, number> = {
+    fart: 0,
+    ahem: 50,
+    scream: 150,
+    knuckles: 500,
+    whip: 1500,
+    rimshot: 5000,
+};
+
+const SOUND_NAMES: SoundName[] = ['fart', 'scream', 'knuckles', 'rimshot', 'ahem', 'whip'];
+
 const settingsSchema: RxJsonSchema<Settings> = {
-    version: 14,
+    version: 16,
     primaryKey: 'id',
     type: 'object',
     properties: {
@@ -264,6 +315,13 @@ const settingsSchema: RxJsonSchema<Settings> = {
                 'nl', 'pl', 'tr', 'ru', 'zh', 'ja', 'ka'],
         },
         view: { type: 'string', enum: ['zen', 'dashboard'] },
+        unlockedSounds: {
+            type: 'array',
+            items: { type: 'string', enum: SOUND_NAMES },
+        },
+        coinsSpent: { type: 'number' },
+        firstDay: { type: 'string', maxLength: 10 },
+        lastDailyBonus: { type: 'string', maxLength: 10 },
     },
     required: ['id', 'intervalSec', 'maxLean', 'maxForward', 'maxHeadTilt',
         'sound', 'soundName', 'notify', 'vibrate', 'lang', 'windowMin', 'view'],
@@ -279,7 +337,8 @@ const settingsSchema: RxJsonSchema<Settings> = {
  * language enum from two to twelve; v10 adds the view and starts everyone in
  * zen; v11 widens the language enum again, for Georgian; v12 widens the sound
  * enum again, for the whip crack; v13 renames every sound from German to
- * English; v14 adds vibration, off.
+ * English; v14 adds vibration, off; v15 adds the unlocked sounds and the
+ * Shrimpcoin spent on them; v16 adds the dates behind the daily visit bonus.
  * Every step keeps the thresholds he set - a schema change must never be the
  * thing that resets his settings, and v3 in particular must not change the
  * language a device is already showing.
@@ -353,6 +412,21 @@ const settingsMigrations = {
     // v14 adds the vibrate switch. Off, like the notification: a device that
     // starts buzzing after an update is a change nobody asked for.
     14: (old: Record<string, unknown>) => ({ ...old, vibrate: false }),
+    // v15 puts every sound but the fart behind Shrimpcoin. The sound a device
+    // already has picked stays unlocked for free: taking away the noise
+    // someone chose, the morning after an update, is the one thing this
+    // migration must not do.
+    15: (old: Record<string, unknown>) => {
+        const picked = String(old.soundName);
+        const keep = picked !== 'fart' && SOUND_NAMES.indexOf(picked as SoundName) >= 0
+            ? ['fart', picked] : ['fart'];
+        return { ...old, unlockedSounds: keep, coinsSpent: 0 };
+    },
+    // v16 adds the two dates behind the daily visit bonus. Both optional and
+    // left unset here: the page fills `firstDay` in from the oldest day row on
+    // the next load, so a device that has been in use for weeks is not treated
+    // as new.
+    16: (old: Record<string, unknown>) => old,
 };
 
 /** The v13 rename, old name to new. `rimshot` was already English. */
@@ -388,10 +462,20 @@ export type Day = {
     leanSum: number;
     forwardSum: number;
     headTiltSum: number;
+    /**
+     * Shrimpcoin earned that day, in **tenths**: 0.1 coin is 1, a streak
+     * bonus is 10. Whole numbers, so a day of thirty thousand additions does
+     * not drift the way a float sum of 0.1s would. Divide by ten to show it.
+     *
+     * Optional, and read as 0 when missing: a backup made before the coin, or
+     * a second device still on the old version, writes days without it, and
+     * the validator would refuse those rows if the field were required.
+     */
+    coins?: number;
 };
 
 const daySchema: RxJsonSchema<Day> = {
-    version: 2,
+    version: 3,
     primaryKey: 'id',
     type: 'object',
     properties: {
@@ -405,6 +489,7 @@ const daySchema: RxJsonSchema<Day> = {
         leanSum: { type: 'number' },
         forwardSum: { type: 'number' },
         headTiltSum: { type: 'number' },
+        coins: { type: 'number' },
     },
     required: ['id', 't', 'count', 'good', 'borderline', 'bad', 'alarms',
         'leanSum', 'forwardSum', 'headTiltSum'],
@@ -427,6 +512,10 @@ const dayMigrations = {
     // they were recorded before anything measured this, and the chart skips a
     // day whose sum is 0 rather than drawing a flat line that never happened.
     2: (old: Record<string, unknown>) => ({ ...old, forwardSum: 0 }),
+    // v3 adds the Shrimpcoin. Days before them earned none: the coin did not
+    // exist yet, and minting coins for old days after the fact would make the
+    // total mean something other than "earned since you had the coin".
+    3: (old: Record<string, unknown>) => ({ ...old, coins: 0 }),
 };
 
 /* ------------------------------------------------------------------ open */

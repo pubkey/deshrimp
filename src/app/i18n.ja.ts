@@ -1,5 +1,5 @@
 /** Japanese. Same keys as `de`, enforced by `Copy`. */
-import type { Copy } from './i18n';
+import type { Coins, Copy } from './i18n';
 
 export const ja: Copy = {
     title: '背すじを伸ばせ、エビ！🦐',
@@ -28,18 +28,19 @@ export const ja: Copy = {
     nobodyThere: '画面に誰もいません - この測定は破棄しました。',
     lowConfidence: '測定があいまいです - 光が足りないか、体が半分しか写っていません。',
 
-    statForward: '頭の前出し',
+    statForward: '前傾',
     statLean: '左右の傾き',
     statHeadTilt: '頭の傾き',
-    statConfidence: '確からしさ',
+    coinsLabel: 'Shrimpcoin',
+    coinsToday: (n: Coins) => ['今日 +', n],
+    coinsStreak: (n: number, of: number) => `連続 ${n}/${of}`,
+    coinsForStraight: '正しい姿勢 10 回',
+    coinsForStreak: '10 回連続',
+    coinsForDaily: 'デイリーボーナス',
     limit: (v: string) => `しきい値 ${v}`,
-    computedLocally: 'ローカルで計算',
-    modelLoading: 'モデルを読み込み中',
     loadingModelTitle: '少しお待ちください',
     loadingModel: '検出モデルを読み込んでいます - 17 MB、初回だけです。そのあとはブラウザの中に残ります。',
     modelFailed: 'ローカルのモデルを読み込めませんでした。',
-    noReadingYet: 'まだ測定がありません',
-    noReadingYetHint: 'カメラが動き出せば、数秒おきに 1 件ずつ増えていきます。',
 
     verdictTitle: { good: 'まっすぐ座れています', borderline: '傾きはじめています', bad: '姿勢が崩れています' },
     advice: {
@@ -54,7 +55,6 @@ export const ja: Copy = {
         forward: '頭が肩より前に出ています - あごを引いて、後頭部を後ろへ。',
     },
     verdictLabel: { good: 'まっすぐ', borderline: 'ぎりぎり', bad: '崩れ' },
-    sideLabel: { left: '左へ', right: '右へ', none: 'まっすぐ' },
 
     todayTitle: '今日',
     todaySubtitle: '今日 0 時からのすべての測定を、この端末の中に。',
@@ -118,6 +118,13 @@ export const ja: Copy = {
     whichSound: 'どの音にするか',
     soundLabel: '通知音',
     listen: '試聴',
+    soundLocked: (name: string) => `${name} · ロック中`,
+    unlockTitle: (name: string) => `${name}を解放しますか？`,
+    unlockBody: (price: Coins, balance: Coins) => [price, ' Shrimpcoin かかります。所持: ', balance, '。'],
+    unlockConfirm: '解放する',
+    unlockCancel: 'キャンセル',
+    unlockShort: (missing: Coins) => ['あと ', missing, ' Shrimpcoin 足りません。姿勢よく座ると貯まります。'],
+    unlockDone: (name: string) => `${name}を解放しました`,
     soundName: {
         fart: 'おなら', ahem: 'せき払い', scream: '悲鳴',
         knuckles: '指の関節を鳴らす音', whip: 'むちの音', rimshot: 'ドンドンパフ',
