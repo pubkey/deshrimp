@@ -2033,14 +2033,10 @@ function Sound(props: SoundProps) {
                         {!affordable
                             ? <Muted>{t.unlockShort(coinAmount(price * 10 - balance, lang))}</Muted>
                             : null}
-                        {/* Hearing it first is free: the coins buy the
-                            alarm, not the preview. */}
-                        <Row>
-                            <Button icon={<Icon name="volume" />}
-                                onClick={() => { props.prepareSound(); props.playSound(pending); }}>
-                                {t.listen}
-                            </Button>
-                        </Row>
+                        {/* No preview here: a locked sound is not heard until
+                            it is bought _(2026-10-18, his call, verbatim: „vor
+                            dem kauf kann man den sound nicht gratis hören")_.
+                            The name and the price are the whole pitch. */}
                     </Col>
                 ) : null}
             </Modal>

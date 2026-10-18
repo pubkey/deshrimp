@@ -26,10 +26,14 @@ wrote them in.
   nach 4 minuten ca drin sein")_. An earlier note here said 2 a minute; that
   was a miscalculation that left out the streak bonus.
 - **The select is the shop.** A locked sound stays in the list with its
-  price. Picking it opens a dialog with the price, what you have, how much is
-  missing if anything, and a "Listen" button, because hearing a sound before
-  buying it is free. Unlocking spends the coins and switches to the sound in
-  one step.
+  price. Picking it opens a dialog with the price, what you have and how much
+  is missing if anything. Unlocking spends the coins and switches to the sound
+  in one step.
+- **No free preview** _(his call, verbatim: „vor dem kauf kann man den sound
+  nicht gratis hören")_. The dialog had a "Listen" button for the locked
+  sound; it is gone, so a sound is first heard once it is bought. The
+  "Listen" beside the select still plays the sound that is picked, which is
+  always one already owned.
 - **"Pick the sound" says so**, in all thirteen languages: only the fart is
   free, the others are unlocked with the Shrimpcoin earned by sitting straight.
 - **The purse shows what there is to spend**: everything earned less what
