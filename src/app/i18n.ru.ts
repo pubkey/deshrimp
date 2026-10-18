@@ -34,6 +34,7 @@ export const ru: Copy = {
     coinsLabel: 'Shrimpcoin',
     coinsToday: (n: Coins) => ['+', n, ' сегодня'],
     coinsStreak: (n: number, of: number) => `серия ${n}/${of}`,
+    coinsStreakBonus: 'бонус за серию',
     limit: (v: string) => `предел ${v}`,
     loadingModelTitle: 'Одну секунду',
     loadingModel: 'Загружается модель распознавания - 17 МБ, только в первый раз. Дальше она лежит в браузере.',

@@ -11,6 +11,38 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-10-18 - whole coins, a steeper ladder, a snackbar
+
+### Changed
+- **A Shrimpcoin does not split** _(his call, verbatim: „make shrimpcoins
+  nondevisable. instead of givinng 0.1 per second, give one full every 10
+  measurements")_. Every ten straight readings pay one whole coin, counted
+  across crooked ones; the streak bonus of one more for ten in a row stays,
+  so ten in a row pay two. This replaces 0.1 coin per second (2026-10-17)
+  and makes the pay follow readings, not seconds: at the default one reading
+  a second it is the same 12 a minute, at a slower pace it is less. Amounts
+  are still stored in tenths, each payout a multiple of ten, and are shown
+  rounded down to whole coins, so a device that earned fractions under the
+  old rule never shows a coin it cannot spend. `?debugcoins` rounds to whole
+  coins too.
+- **The prices are steeper** _(his call, verbatim: „mach die preise
+  steiler")_: ahem 50, scream 150, knuckle crack 500, whip crack 1,500,
+  rimshot 5,000. Each step roughly triples, so the sounds unlock after about
+  4 minutes, 17 minutes, 1 hour, 3 hours and 10 hours of straight sitting,
+  which at half an hour of it a day is the first session, the first session,
+  day 2, day 6 and day 20. The first stays at four minutes, as he asked. The
+  target curve against the old ladder is `research/shrimpcoin-unlock-curve.png`.
+
+### New
+- **Every payout shows in a snackbar** _(his call, verbatim: „whenver
+  shrimpcoin is earned, show it in a snackbar")_: "+1" with the coin, or "+2"
+  and "streak bonus" when a ten-in-a-row lands, at the bottom of the page for
+  two and a half seconds. At the default pace that is about every ten seconds.
+  Its own element rather than the shared toast, because the toast is plain
+  text and every coin number carries the coin. A newer payout replaces it, and
+  it is not read out by screen readers, which would otherwise announce a coin
+  every ten seconds. The label is in all thirteen languages.
+
 ## 2026-10-18 - sounds cost Shrimpcoin
 
 ### Changed

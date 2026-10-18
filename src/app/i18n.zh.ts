@@ -34,6 +34,7 @@ export const zh: Copy = {
     coinsLabel: 'Shrimpcoin',
     coinsToday: (n: Coins) => ['今天 +', n],
     coinsStreak: (n: number, of: number) => `连续 ${n}/${of}`,
+    coinsStreakBonus: '连续奖励',
     limit: (v: string) => `上限 ${v}`,
     loadingModelTitle: '稍等一下',
     loadingModel: '正在加载识别模型，17 MB，只有第一次需要。之后它就留在你的浏览器里。',

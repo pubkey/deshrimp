@@ -34,6 +34,7 @@ export const ja: Copy = {
     coinsLabel: 'Shrimpcoin',
     coinsToday: (n: Coins) => ['今日 +', n],
     coinsStreak: (n: number, of: number) => `連続 ${n}/${of}`,
+    coinsStreakBonus: '連続ボーナス',
     limit: (v: string) => `しきい値 ${v}`,
     loadingModelTitle: '少しお待ちください',
     loadingModel: '検出モデルを読み込んでいます - 17 MB、初回だけです。そのあとはブラウザの中に残ります。',

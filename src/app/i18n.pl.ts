@@ -34,6 +34,7 @@ export const pl: Copy = {
     coinsLabel: 'Shrimpcoin',
     coinsToday: (n: Coins) => ['+', n, ' dziś'],
     coinsStreak: (n: number, of: number) => `seria ${n}/${of}`,
+    coinsStreakBonus: 'bonus za serię',
     limit: (v: string) => `granica ${v}`,
     loadingModelTitle: 'Chwileczkę',
     loadingModel: 'Ładuje się model rozpoznawania - 17 MB, tylko za pierwszym razem. Potem zostaje w przeglądarce.',

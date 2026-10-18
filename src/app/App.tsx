@@ -255,37 +255,44 @@ function breach(value: number, limit: number): string | undefined {
 /** A streak bonus is paid on every this-many straight readings in a row. */
 const STREAK_LENGTH = 10;
 
+/** One whole Shrimpcoin is paid for every this-many straight readings. */
+const READINGS_PER_COIN = 10;
+
 /**
- * What one reading earns, in tenths of a Shrimpcoin, and the streak moved on.
+ * What one reading earns, in tenths of a Shrimpcoin (always a whole coin or
+ * nothing, see below), with the two counters moved on.
  *
- * His rules _(2026-10-17)_, verbatim where he gave words:
- * - **0.1 coin per second sitting straight** - „pro sekunde anstatt pro
- *   messung", so the pace does not decide the pay. A straight reading is paid
- *   for the seconds since the reading before it, capped at the pace, so a
- *   reading after a long pause pays one interval and „Check now" pressed twice
- *   in a second pays one second.
+ * His rules, verbatim where he gave words:
+ * - **Whole coins only, one for every ten straight readings** _(2026-10-18:
+ *   „make shrimpcoins nondevisable. instead of givinng 0.1 per second, give
+ *   one full every 10 measurements")_. This replaces 0.1 coin per second
+ *   (2026-10-17). The ten need not be in a row; `count` keeps going across a
+ *   crooked reading. At one reading a second it pays the same 6 a minute the
+ *   per-second rule did.
  * - **1 coin extra for every ten straight in a row**, as often as it happens:
  *   „mach 10er serie anstatt 7er serie. ja die serie geht unendlich oft".
+ *   Ten in a row therefore pays two: the tenth reading counts for both.
  * - **Only "good" is straight**: „es zählt nur good als gerade". A reading the
  *   model is not sure of is not counted as good either, the same rule the
  *   alarm keeps.
  * - Anything else ends the streak. Nobody in the picture is handled before
  *   this is called, and also ends it.
+ *
+ * Amounts stay in tenths because that is what the day rows have stored since
+ * v3; every payout is a multiple of ten.
  */
 function shrimpcoins(
-    straight: boolean, now: number, previous: number | null, intervalSec: number,
-    run: { current: number },
+    straight: boolean, count: { current: number }, run: { current: number },
 ): number {
     if (!straight) {
         run.current = 0;
         return 0;
     }
-    const seconds = previous == null
-        ? intervalSec
-        : Math.min(intervalSec, Math.max(0, (now - previous) / 1000));
+    count.current += 1;
     run.current += 1;
+    const base = count.current % READINGS_PER_COIN === 0 ? 10 : 0;
     const bonus = run.current % STREAK_LENGTH === 0 ? 10 : 0;
-    return Math.round(seconds) + bonus;
+    return base + bonus;
 }
 
 /**
@@ -965,11 +972,13 @@ function Live() {
     const busy = useRef(false);
     /** How many bad readings in a row - the signal grows along it. */
     const badRun = useRef(0);
-    /** How many straight readings in a row - every tenth pays a Shrimpcoin. */
+    /** How many straight readings in a row - every tenth pays a bonus coin. */
     const goodRun = useRef(0);
+    /** Straight readings since the last coin, in a row or not - every tenth pays one. */
+    const goodCount = useRef(0);
     const [streak, setStreak] = useState(0);
-    /** When the last reading was taken, so a straight one is paid by the second. */
-    const lastReadingAt = useRef<number | null>(null);
+    /** The last payout, for the snackbar; `id` makes a repeat amount show again. */
+    const [coinGain, setCoinGain] = useState<{ tenths: number; bonus: boolean; id: number } | null>(null);
 
     /* ---------------------------------------------------------- one check */
 
@@ -998,7 +1007,6 @@ function Live() {
                 // nichts", „bildre ohne person brechen die serie ab")_.
                 goodRun.current = 0;
                 setStreak(0);
-                lastReadingAt.current = Date.now();
                 return;
             }
 
@@ -1011,12 +1019,15 @@ function Live() {
             // signal on the very next check rather than a few seconds later.
             badRun.current = alarm ? badRun.current + 1 : 0;
 
-            const coinTenths = shrimpcoins(
-                verdict === 'good' && trustworthy,
-                now, lastReadingAt.current, Math.max(MIN_INTERVAL, s.intervalSec), goodRun,
-            );
-            lastReadingAt.current = now;
+            const coinTenths = shrimpcoins(verdict === 'good' && trustworthy, goodCount, goodRun);
             setStreak(goodRun.current);
+            if (coinTenths > 0) {
+                setCoinGain({
+                    tenths: coinTenths,
+                    bonus: goodRun.current % STREAK_LENGTH === 0,
+                    id: now,
+                });
+            }
 
             setNote(trustworthy ? null : copy.lowConfidence);
 
@@ -1165,7 +1176,7 @@ function Live() {
         url.searchParams.delete('debugcoins');
         window.history.replaceState(window.history.state, '', url.toString());
         if (!Number.isFinite(amount) || amount === 0) return;
-        void change({ coinsSpent: (settings.coinsSpent || 0) - Math.round(amount * 10) })
+        void change({ coinsSpent: (settings.coinsSpent || 0) - Math.round(amount) * 10 })
             .then(() => toast("Shrimpcoin (debug)"));
     }, [settingsLoading]);
 
@@ -1342,6 +1353,7 @@ function Live() {
                 {/* The purse sits under the start button, in zen as well as on
                     the dashboard: it is what you earn by having pressed it. */}
                 <CoinPurse total={coinBalance} today={coinToday} streak={streak} />
+                <CoinSnackbar gain={coinGain} />
 
                 <Sound
                     settings={settings}
@@ -1434,13 +1446,13 @@ function Live() {
  * without a breach, and that is his call too - it is the reward, and it is
  * drawn in the colour he chose for it.
  *
- * Amounts arrive in tenths and are shown with one decimal in the page's own
- * number format, so a German page says 12,3 and an English one 12.3.
+ * Amounts arrive in tenths, as stored, and are shown as whole coins in the
+ * page's own number format: a Shrimpcoin does not split _(2026-10-18, his
+ * call: „make shrimpcoins nondevisable")_. Rounded down, so a device that
+ * earned under the old 0.1-a-second rule never shows a coin it cannot spend.
  */
 function coinAmount(tenths: number, lang: Lang): string {
-    return (tenths / 10).toLocaleString(localeFor(lang), {
-        minimumFractionDigits: 1, maximumFractionDigits: 1,
-    });
+    return Math.floor(tenths / 10).toLocaleString(localeFor(lang));
 }
 
 /**
@@ -1449,16 +1461,43 @@ function coinAmount(tenths: number, lang: Lang): string {
  * logo stehen")_. The coin is sized to the line it sits in, and the number
  * keeps the tabular mono every figure in the product wears.
  */
-function CoinAmount({ tenths, whole }: { tenths: number; whole?: boolean }) {
+function CoinAmount({ tenths }: { tenths: number }) {
     const lang = useLang();
-    const text = whole
-        ? Math.round(tenths / 10).toLocaleString(localeFor(lang))
-        : coinAmount(tenths, lang);
     return (
         <span className="haltung-coinamount">
             <img src={coinUrl} alt="" width={16} height={16} />
-            <span>{text}</span>
+            <span>{coinAmount(tenths, lang)}</span>
         </span>
+    );
+}
+
+/**
+ * The snackbar that says a Shrimpcoin was just earned _(2026-10-18, his call:
+ * „whenver shrimpcoin is earned, show it in a snackbar")_. With whole coins
+ * that is every tenth straight reading, plus the streak bonus, so at the
+ * default pace about once every ten seconds rather than every second.
+ *
+ * Its own element rather than the shared toast, because the toast is plain
+ * text and every coin number carries the coin. It shows the latest payout and
+ * replaces itself when the next one lands, so two never stack. Not announced
+ * to a screen reader: a live region speaking every ten seconds would drown out
+ * everything else on the page.
+ */
+function CoinSnackbar({ gain }: { gain: { tenths: number; bonus: boolean; id: number } | null }) {
+    const t = useCopy();
+    const [shown, setShown] = useState(false);
+    useEffect(() => {
+        if (!gain) return;
+        setShown(true);
+        const id = window.setTimeout(() => setShown(false), 2500);
+        return () => window.clearTimeout(id);
+    }, [gain?.id]);
+    if (!gain) return null;
+    return (
+        <div className={`haltung-snackbar${shown ? ' on' : ''}`} aria-hidden="true">
+            +<CoinAmount tenths={gain.tenths} />
+            {gain.bonus ? <span className="haltung-snackbar-note">{t.coinsStreakBonus}</span> : null}
+        </div>
     );
 }
 
@@ -2049,7 +2088,7 @@ function Sound(props: SoundProps) {
                 {pending ? (
                     <Col gap={3}>
                         <Text>{t.unlockBody(
-                            <CoinAmount key="price" tenths={price * 10} whole />,
+                            <CoinAmount key="price" tenths={price * 10} />,
                             <CoinAmount key="balance" tenths={balance} />,
                         )}</Text>
                         {!affordable

@@ -295,6 +295,17 @@ then get up.
 | Long daily streaks | **Only with slack** | If a daily streak is ever added, ship freezes or a weekly allowance from day one (Duolingo, Sharif and Shu). |
 | Prestige resets, big-number inflation | **Avoid** | Nothing here is worth resetting, and coin amounts in the tens and hundreds are already readable. |
 
+**Adopted, 2026-10-18: a steeper ladder.** His call, verbatim: „mach die
+preise steiler". The prices are now 50, 150, 500, 1500 and 5000, each step
+roughly tripling, which goes against the "nearly flat prices" row above in
+favour of the genre's stretching clock: unlocks at about 4 minutes, 17
+minutes, 1 hour, 3 hours and 10 hours of straight sitting, or the first
+session, day 2, day 6 and day 20 at half an hour a day. The same day the coin
+became whole: one per ten straight readings plus the streak bonus, still 12 a
+minute at one reading a second.
+
+![Minutes of straight sitting until each unlock, old ladder against the adopted one](./shrimpcoin-unlock-curve.png)
+
 **Decided against, 2026-10-18: no reward for breaks.** His call, verbatim:
 „wir können pausen nicht wirklich trakcen, da soll es nicht belohnt werden".
 The camera cannot tell a real break from leaning out of frame, covering the

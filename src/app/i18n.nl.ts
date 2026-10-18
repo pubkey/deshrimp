@@ -34,6 +34,7 @@ export const nl: Copy = {
     coinsLabel: 'Shrimpcoin',
     coinsToday: (n: Coins) => ['+', n, ' vandaag'],
     coinsStreak: (n: number, of: number) => `reeks ${n}/${of}`,
+    coinsStreakBonus: 'reeksbonus',
     limit: (v: string) => `grens ${v}`,
     loadingModelTitle: 'Een moment',
     loadingModel: 'Het herkenningsmodel wordt geladen - 17 MB, alleen de eerste keer. Daarna staat het in je browser.',

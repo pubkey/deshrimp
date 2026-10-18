@@ -34,6 +34,7 @@ export const tr: Copy = {
     coinsLabel: 'Shrimpcoin',
     coinsToday: (n: Coins) => ['bugün +', n],
     coinsStreak: (n: number, of: number) => `seri ${n}/${of}`,
+    coinsStreakBonus: 'seri bonusu',
     limit: (v: string) => `sınır ${v}`,
     loadingModelTitle: 'Bir saniye',
     loadingModel: 'Algılama modeli yükleniyor - 17 MB, yalnızca ilk seferde. Sonrasında tarayıcında kalır.',

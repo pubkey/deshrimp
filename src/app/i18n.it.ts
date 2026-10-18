@@ -34,6 +34,7 @@ export const it: Copy = {
     coinsLabel: 'Shrimpcoin',
     coinsToday: (n: Coins) => ['+', n, ' oggi'],
     coinsStreak: (n: number, of: number) => `serie ${n}/${of}`,
+    coinsStreakBonus: 'bonus serie',
     limit: (v: string) => `limite ${v}`,
     loadingModelTitle: 'Un momento',
     loadingModel: 'Sto caricando il modello di riconoscimento - 17 MB, solo la prima volta. Poi resta nel tuo browser.',

@@ -34,6 +34,7 @@ export const ka: Copy = {
     coinsLabel: 'Shrimpcoin',
     coinsToday: (n: Coins) => ['+', n, ' დღეს'],
     coinsStreak: (n: number, of: number) => `სერია ${n}/${of}`,
+    coinsStreakBonus: 'სერიის ბონუსი',
     limit: (v: string) => `ზღვარი ${v}`,
     loadingModelTitle: 'ერთი წუთი',
     loadingModel: 'იტვირთება ამომცნობი მოდელი - 17 MB, მხოლოდ პირველად. შემდეგ ბრაუზერში რჩება.',
