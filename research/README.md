@@ -54,6 +54,15 @@ already out there rather than against a guess.
   `deshrimp.com`, what is still free, what is already gone, and why `de-` beat
   `un-`.
 
+**Keeping people coming back**
+
+- [`idle-game-reward-curves.md`](./idle-game-reward-curves.md) - how Cookie
+  Clicker and its relatives pace rewards (geometric costs, milestone
+  multipliers, prestige, golden cookies), what the health-app evidence says
+  about paying for behaviour, and what that means for Shrimpcoin: the opening
+  is right, the doubling price ladder empties in about two hours, and a coin
+  that pays most for unbroken sitting works against taking breaks.
+
 ## What the folder concluded
 
 Four things, if you read nothing else.
