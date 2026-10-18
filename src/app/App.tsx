@@ -978,7 +978,7 @@ function Live() {
     const goodCount = useRef(0);
     const [streak, setStreak] = useState(0);
     /** The last payout, for the snackbar; `id` makes a repeat amount show again. */
-    const [coinGain, setCoinGain] = useState<{ tenths: number; bonus: boolean; id: number } | null>(null);
+    const [coinGain, setCoinGain] = useState<CoinGain | null>(null);
 
     /* ---------------------------------------------------------- one check */
 
@@ -1024,6 +1024,7 @@ function Live() {
             if (coinTenths > 0) {
                 setCoinGain({
                     tenths: coinTenths,
+                    base: goodCount.current % READINGS_PER_COIN === 0,
                     bonus: goodRun.current % STREAK_LENGTH === 0,
                     id: now,
                 });
@@ -1482,8 +1483,14 @@ function CoinAmount({ tenths }: { tenths: number }) {
  * replaces itself when the next one lands, so two never stack. Not announced
  * to a screen reader: a live region speaking every ten seconds would drown out
  * everything else on the page.
+ *
+ * It always says what the coins were for _(2026-10-18, his call: „in der
+ * snackbar soll immer stehen wofür die coins gewonnen wurden")_: ten straight
+ * readings, ten in a row, or both when one reading completes both counts.
  */
-function CoinSnackbar({ gain }: { gain: { tenths: number; bonus: boolean; id: number } | null }) {
+type CoinGain = { tenths: number; base: boolean; bonus: boolean; id: number };
+
+function CoinSnackbar({ gain }: { gain: CoinGain | null }) {
     const t = useCopy();
     const [shown, setShown] = useState(false);
     useEffect(() => {
@@ -1496,7 +1503,10 @@ function CoinSnackbar({ gain }: { gain: { tenths: number; bonus: boolean; id: nu
     return (
         <div className={`haltung-snackbar${shown ? ' on' : ''}`} aria-hidden="true">
             +<CoinAmount tenths={gain.tenths} />
-            {gain.bonus ? <span className="haltung-snackbar-note">{t.coinsStreakBonus}</span> : null}
+            <span className="haltung-snackbar-note">
+                {[gain.base ? t.coinsForStraight : null, gain.bonus ? t.coinsForStreak : null]
+                    .filter(Boolean).join(' + ')}
+            </span>
         </div>
     );
 }

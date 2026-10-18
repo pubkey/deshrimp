@@ -40,9 +40,11 @@ wrote them in.
 
 ### New
 - **Every payout shows in a snackbar** _(his call, verbatim: „whenver
-  shrimpcoin is earned, show it in a snackbar")_: "+1" with the coin, or "+2"
-  and "streak bonus" when a ten-in-a-row lands, at the bottom of the page for
-  two and a half seconds. At the default pace that is about every ten seconds.
+  shrimpcoin is earned, show it in a snackbar")_, at the bottom of the page
+  for two and a half seconds. It always says what the coins are for _(his
+  call, verbatim: „in der snackbar soll immer stehen wofür die coins gewonnen
+  wurden")_: "+1 · 10× sitting straight", "+1 · 10 in a row", or "+2" with
+  both when one reading completes both counts. At the default pace that is about every ten seconds.
   Its own element rather than the shared toast, because the toast is plain
   text and every coin number carries the coin. A newer payout replaces it, and
   it is not read out by screen readers, which would otherwise announce a coin
