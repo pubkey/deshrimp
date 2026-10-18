@@ -19,9 +19,12 @@ wrote them in.
   shrimpcoins freigeschaltet werden")_. The prices are a ladder in the order
   the select lists them, doubling each step: ahem 50, scream 100, knuckle
   crack 200, whip crack 400, rimshot 800. He named no prices, so these are a
-  first guess to tune: at one reading a second, sitting straight earns about
-  2 coin a minute, so the first unlock lands within the first half hour and
-  the last takes a working week.
+  first guess to tune. At one reading a second, sitting straight earns 12 a
+  minute (6 by the second, 6 in streak bonuses), so the sounds unlock after
+  about 4, 8, 17, 33 and 67 minutes of straight sitting. The first one lands
+  after about four minutes, which is what he asked for _(„erster sound soll
+  nach 4 minuten ca drin sein")_. An earlier note here said 2 a minute; that
+  was a miscalculation that left out the streak bonus.
 - **The select is the shop.** A locked sound stays in the list with its
   price. Picking it opens a dialog with the price, what you have, how much is
   missing if anything, and a "Listen" button, because hearing a sound before

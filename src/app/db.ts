@@ -258,9 +258,11 @@ export const DEFAULTS: Settings = {
 
 /**
  * What each sound costs to unlock, in whole Shrimpcoin. A ladder in the order
- * the select lists them, doubling each step: the first is about a quarter of
- * an hour of sitting straight, so it lands on the first day, and the last is
- * something to save up for.
+ * the select lists them, doubling each step. At the default pace of one
+ * reading a second, sitting straight earns 12 a minute (6 by the second, 6 in
+ * streak bonuses), so the first unlocks after about four minutes _(2026-10-18,
+ * his call: „erster sound soll nach 4 minuten ca drin sein")_ and the last
+ * after a bit over an hour.
  */
 export const SOUND_PRICE: Record<SoundName, number> = {
     fart: 0,
