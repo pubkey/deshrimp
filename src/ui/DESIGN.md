@@ -191,8 +191,8 @@ straight`.
   card at the same surface value.
 - **Borders over shadows.** The system separates with hairlines, not elevation.
   Three of the four old elevation steps now resolve to `none`; `--shadow-card`
-  survives for the two things that genuinely leave the page - a dialog in the
-  top layer and the toast.
+  survives for the three things that genuinely leave the page - a dialog in the
+  top layer, the toast, and the open list of a `<Listbox>`.
 - **Radii.** 4px (bars, small tiles), 6px (buttons, fields, stat tiles), 8px
   (cards, camera well), pill (switches, status pills, telemetry tracks). Nothing
   above 8px on a container.
@@ -218,6 +218,13 @@ and cannot be styled. The one lever is `color-scheme`, which must follow the
 theme: `light` on bare `:root`, flipped to `dark` in both dark blocks. An
 `<option>`'s own colours are honoured everywhere except macOS, so they are set
 too and `color-scheme` is the whole of the fix there.
+
+Where a row has to show more than a word - the sound picker shows each
+sound's price with the coin beside it - the list is `<Listbox>` instead, which
+draws the open list itself: an inset at the white with the hairline and
+`--shadow-card`, the highlighted row stepped up to the card value, the chosen
+one marked by a tick in ink and never by the accent. Everywhere else the native
+`<select>` stays, because on a phone the system picker beats anything drawn.
 
 The chevron on a closed select is a data URI, so it cannot inherit a token: it
 is drawn twice, once in each theme's secondary grey. The dialog scrims are

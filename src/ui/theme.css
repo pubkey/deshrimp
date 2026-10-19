@@ -468,6 +468,38 @@ a:hover { color: var(--ink); }
   background: var(--bg-sunk);
   color: var(--ink);
 }
+/* --- Listbox ------------------------------------------------------------ */
+/* The closed button is a .ui-select in every respect, chevron included; it
+   only has to say which way its text runs, which a <select> knows by itself. */
+.ui-listbox-button { display: flex; align-items: center; text-align: left; }
+.ui-listbox-current { min-width: 0; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap; }
+/* The open list is drawn on <body>, positioned against the button from the
+   component. It leaves the page the way a dialog does, so it is an inset with
+   the hairline plus the one shadow the system keeps for that. */
+.ui-listbox {
+  position: fixed; z-index: 1000; box-sizing: border-box;
+  overflow-y: auto; overscroll-behavior: contain;
+  padding: var(--space-1) 0;
+  background: var(--surface-inset); color: var(--text-primary);
+  border: var(--border-width) solid var(--border-default); border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+.ui-listbox:focus-visible { outline: none; box-shadow: var(--shadow-card); }
+/* A row: a tick column, the name, and whatever the caller puts on the right
+   in the space a native <option> never had. The highlighted row steps up to
+   the card value; the chosen one carries the tick, never the accent. */
+.ui-listbox-option {
+  display: flex; align-items: center; gap: var(--space-2);
+  min-height: var(--control-height); padding: 0 var(--space-3) 0 var(--space-2);
+  cursor: pointer; user-select: none;
+}
+.ui-listbox-option.is-active { background: var(--surface-card); }
+.ui-listbox-option[aria-disabled='true'] { opacity: .4; cursor: not-allowed; }
+.ui-listbox-tick { flex: none; width: 16px; height: 16px; display: flex; }
+.ui-listbox-label { flex: 1 1 auto; min-width: 0; }
+.ui-listbox-detail { flex: none; display: inline-flex; align-items: center;
+  gap: var(--space-1); color: var(--text-secondary); }
 /* --- Slider ------------------------------------------------------------- */
 /* A bounded number you drag. The track is the telemetry track: 4px, pill, the
    inactive slate behind and the white fill in front. The thumb needs a

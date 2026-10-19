@@ -35,7 +35,7 @@ import type { CSSProperties, RefObject } from 'react';
 import {
     Badge, Button, Callout, Checkbox, Col, ConfirmButton, Empty,
     Grid, Icon, IconButton, LoadingOverlay, Modal, Muted, Page, Panel,
-    preferredUiLang, Progress, Row, Segmented, Select, Slider,
+    Listbox, preferredUiLang, Progress, Row, Segmented, Select, Slider,
     Stat, StatusStrip, type StatusTone, Table, Text, Tiles,
     pageData, toast,
 } from '@ui';
@@ -1773,9 +1773,19 @@ function Live() {
  * page's own number format: a Shrimpcoin does not split _(2026-10-18, his
  * call: „make shrimpcoins nondevisable")_. Rounded down, so a device that
  * earned under the old 0.1-a-second rule never shows a coin it cannot spend.
+ *
+ * From a thousand on it is shortened to `1k`, `1.5k`, `50k`, and from a million
+ * to `1M` _(2026-10-19, his call, verbatim: „can you always display 1000 coins
+ * as 1k instead of these long numbers")_. At most one decimal, in the page's
+ * own decimal sign, and rounded down like the whole coins: 1999 is `1.9k`, so
+ * a purse never reads as enough for a 2k sound it cannot buy. The `k` and `M`
+ * are the same in every language, the way the coin is.
  */
 function coinAmount(tenths: number, lang: Lang): string {
-    return Math.floor(tenths / 10).toLocaleString(localeFor(lang));
+    const coins = Math.floor(tenths / 10);
+    const [size, unit] = coins >= 1e6 ? [1e6, 'M'] : coins >= 1e3 ? [1e3, 'k'] : [1, ''];
+    const shown = Math.floor((coins * 10) / size) / 10;
+    return shown.toLocaleString(localeFor(lang), { maximumFractionDigits: 1 }) + unit;
 }
 
 /**
@@ -2383,23 +2393,29 @@ function Sound(props: SoundProps) {
                     locked sound stays in the list with its price, so the
                     list is also the shop, and picking it opens the unlock
                     dialog instead of switching to it. */}
-                <Select
+                <Listbox
                     label={t.soundLabel}
                     value={s.soundName}
-                    onChange={(e: { target: { value: string } }) => {
-                        const key = e.target.value as SoundName;
+                    onChange={(key: SoundName) => {
                         if (unlocked.indexOf(key) >= 0) void change({ soundName: key, sound: true });
                         else setPending(key);
                     }}
-                >
-                    {SOUND_ORDER.map((key) => (
-                        <option key={key} value={key}>
-                            {unlocked.indexOf(key) >= 0
-                                ? t.soundName[key]
-                                : t.soundLocked(t.soundName[key])}
-                        </option>
-                    ))}
-                </Select>
+                    options={SOUND_ORDER.map((key) => {
+                        const name = t.soundName[key];
+                        if (unlocked.indexOf(key) >= 0) return { value: key, label: name, text: name };
+                        /* The row says what it costs, with the coin, which a
+                           native <option> could only spell out in words
+                           _(2026-10-19, his call)_. The screen reader gets
+                           the same: the name, that it is locked, the price. */
+                        const tenths = SOUND_PRICE[key] * 10;
+                        return {
+                            value: key,
+                            label: name,
+                            text: `${t.soundLocked(name)} · ${coinAmount(tenths, lang)}`,
+                            detail: <><Icon name="lock" /><CoinAmount tenths={tenths} /></>,
+                        };
+                    })}
+                />
                 <Button icon={<Icon name="volume" />}
                     onClick={() => { props.prepareSound(); props.playSound(s.soundName); }}>
                     {t.listen}
