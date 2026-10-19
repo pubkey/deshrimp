@@ -25,6 +25,14 @@ wrote them in.
   letter to jump), drawn on the page body so a tile cannot clip it, opening
   upwards when there is no room below.
 
+- **Big coin numbers are shortened** _(his call, verbatim: „can you always
+  display 1000 coins as 1k instead of these long numbers")_. From a thousand
+  on a Shrimpcoin number reads `1k`, `1.5k`, `50k`, from a million `1M`, with
+  at most one decimal in the page's own decimal sign. It is rounded down, like
+  the whole coins: 1999 coins read `1.9k`, so the purse never looks like
+  enough for a 2k sound it cannot buy. Everywhere a coin number is shown: the
+  purse, the snackbar, the sound list and the unlock dialog.
+
 ### Left out on purpose
 - **The other select stays native.** The chart window picker has nothing to
   show but words, and on a phone the system picker is better than anything

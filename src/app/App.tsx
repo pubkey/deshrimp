@@ -1773,9 +1773,19 @@ function Live() {
  * page's own number format: a Shrimpcoin does not split _(2026-10-18, his
  * call: „make shrimpcoins nondevisable")_. Rounded down, so a device that
  * earned under the old 0.1-a-second rule never shows a coin it cannot spend.
+ *
+ * From a thousand on it is shortened to `1k`, `1.5k`, `50k`, and from a million
+ * to `1M` _(2026-10-19, his call, verbatim: „can you always display 1000 coins
+ * as 1k instead of these long numbers")_. At most one decimal, in the page's
+ * own decimal sign, and rounded down like the whole coins: 1999 is `1.9k`, so
+ * a purse never reads as enough for a 2k sound it cannot buy. The `k` and `M`
+ * are the same in every language, the way the coin is.
  */
 function coinAmount(tenths: number, lang: Lang): string {
-    return Math.floor(tenths / 10).toLocaleString(localeFor(lang));
+    const coins = Math.floor(tenths / 10);
+    const [size, unit] = coins >= 1e6 ? [1e6, 'M'] : coins >= 1e3 ? [1e3, 'k'] : [1, ''];
+    const shown = Math.floor((coins * 10) / size) / 10;
+    return shown.toLocaleString(localeFor(lang), { maximumFractionDigits: 1 }) + unit;
 }
 
 /**
