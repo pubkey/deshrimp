@@ -128,6 +128,8 @@ export const zh: Copy = {
     soundName: {
         fart: '放屁', ahem: '清嗓子', scream: '尖叫',
         knuckles: '掰手指', whip: '鞭子声', rimshot: '咚咚锵',
+        geiger: '盖革计数器',
+        parking: '倒车雷达',
     },
 
     leavesTitle: '什么会离开这台设备',

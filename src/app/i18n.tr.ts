@@ -128,6 +128,8 @@ export const tr: Copy = {
     soundName: {
         fart: 'Osuruk', ahem: 'Boğaz temizleme', scream: 'Çığlık',
         knuckles: 'Parmak çıtlatma', whip: 'Kırbaç şaklaması', rimshot: 'Rimshot',
+        geiger: 'Geiger sayacı',
+        parking: 'Park sensörü',
     },
 
     leavesTitle: 'Bu cihazdan ne çıkıyor',

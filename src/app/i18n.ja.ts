@@ -128,6 +128,8 @@ export const ja: Copy = {
     soundName: {
         fart: 'おなら', ahem: 'せき払い', scream: '悲鳴',
         knuckles: '指の関節を鳴らす音', whip: 'むちの音', rimshot: 'ドンドンパフ',
+        geiger: 'ガイガーカウンター',
+        parking: 'バックソナー',
     },
 
     leavesTitle: 'この端末から出ていくもの',
