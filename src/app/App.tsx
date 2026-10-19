@@ -35,7 +35,7 @@ import type { CSSProperties, RefObject } from 'react';
 import {
     Badge, Button, Callout, Checkbox, Col, ConfirmButton, Empty,
     Grid, Icon, IconButton, LoadingOverlay, Modal, Muted, Page, Panel,
-    preferredUiLang, Progress, Row, Segmented, Select, Slider,
+    Listbox, preferredUiLang, Progress, Row, Segmented, Select, Slider,
     Stat, StatusStrip, type StatusTone, Table, Text, Tiles,
     pageData, toast,
 } from '@ui';
@@ -2383,23 +2383,29 @@ function Sound(props: SoundProps) {
                     locked sound stays in the list with its price, so the
                     list is also the shop, and picking it opens the unlock
                     dialog instead of switching to it. */}
-                <Select
+                <Listbox
                     label={t.soundLabel}
                     value={s.soundName}
-                    onChange={(e: { target: { value: string } }) => {
-                        const key = e.target.value as SoundName;
+                    onChange={(key: SoundName) => {
                         if (unlocked.indexOf(key) >= 0) void change({ soundName: key, sound: true });
                         else setPending(key);
                     }}
-                >
-                    {SOUND_ORDER.map((key) => (
-                        <option key={key} value={key}>
-                            {unlocked.indexOf(key) >= 0
-                                ? t.soundName[key]
-                                : t.soundLocked(t.soundName[key])}
-                        </option>
-                    ))}
-                </Select>
+                    options={SOUND_ORDER.map((key) => {
+                        const name = t.soundName[key];
+                        if (unlocked.indexOf(key) >= 0) return { value: key, label: name, text: name };
+                        /* The row says what it costs, with the coin, which a
+                           native <option> could only spell out in words
+                           _(2026-10-19, his call)_. The screen reader gets
+                           the same: the name, that it is locked, the price. */
+                        const tenths = SOUND_PRICE[key] * 10;
+                        return {
+                            value: key,
+                            label: name,
+                            text: `${t.soundLocked(name)} · ${coinAmount(tenths, lang)}`,
+                            detail: <><Icon name="lock" /><CoinAmount tenths={tenths} /></>,
+                        };
+                    })}
+                />
                 <Button icon={<Icon name="volume" />}
                     onClick={() => { props.prepareSound(); props.playSound(s.soundName); }}>
                     {t.listen}

@@ -11,6 +11,25 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-10-19 - the sound picker shows prices
+
+### New
+- **The sound list is drawn by the page, not the browser** _(his call,
+  verbatim: „make a custom select-component so in the dropdown for the sounds
+  we can dispplay the shrimpcoin price of the sounds etc.")_. Every locked
+  sound now shows a lock and its price with the coin beside it, the way every
+  Shrimpcoin number is shown; before, a native `<option>` could only say
+  „locked" in words. Picking a locked sound still opens the unlock dialog.
+- `<Listbox>` in `src/ui` is the component behind it: a WAI-ARIA listbox with
+  the keys a native select has (arrows, Home, End, Enter, Space, Escape, a
+  letter to jump), drawn on the page body so a tile cannot clip it, opening
+  upwards when there is no room below.
+
+### Left out on purpose
+- **The other select stays native.** The chart window picker has nothing to
+  show but words, and on a phone the system picker is better than anything
+  drawn.
+
 ## 2026-10-18 - the parking sensor
 
 ### New
