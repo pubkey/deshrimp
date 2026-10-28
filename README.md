@@ -296,6 +296,24 @@ These *are* committed, which is the opposite of the rule applied to the model:
 that one is a third-party binary, re-fetchable from a pinned URL at any time.
 These ~750 KB exist nowhere else.
 
+## Debug addresses
+
+Two URL parameters make the shop testable without sitting for hours first.
+Both work on `localhost` and on a pull request preview as well as on the live
+site, and both can be combined (`?bought&debugcoins=500`).
+
+| parameter | what it does | what it leaves behind |
+| --- | --- | --- |
+| `?bought` | every sound is unlocked, as long as the parameter is in the address | nothing: no coins are spent and the stored list of bought sounds is not touched. A sound picked meanwhile is saved like any pick, though, and stays the sound afterwards |
+| `?debugcoins=500` | adds 500 Shrimpcoin to the purse once, with a toast; a negative number takes coins away | the coins are real and stay. They are booked as negative spending rather than earnings, so the day rows still count only what was sat for. The parameter is removed from the address after it is applied, so a reload does not pay again |
+
+    http://localhost:5173/?bought
+    http://localhost:5173/?debugcoins=500
+    https://deshrimp.com/pr-preview/<pr>/commit-<sha>/?bought
+
+`?bought` is for hearing every sound; `?debugcoins` is for testing the buying
+itself, the unlock dialog and the prices.
+
 ## Privacy
 
 The camera frame goes to a `<canvas>`, to the pose model, and nowhere else.
