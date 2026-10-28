@@ -9,11 +9,10 @@
  * Three things are worth knowing before changing anything here:
  *
  * 1. **The loop lives in one effect keyed on `running`, and reads its settings
- *    out of a ref.** Putting the interval or the thresholds in the dependency
- *    array would tear the interval down and rebuild it every time a setting
- *    changes, which resets the countdown mid-check. The ref is refreshed on
- *    every render, so a check always uses the current values without the effect
- *    ever restarting. A check that is still running when the next tick fires is
+ *    out of a ref.** Putting the thresholds in the dependency array would
+ *    tear the interval down and rebuild it every time a setting changes. The
+ *    ref is refreshed on every render, so a check always uses the current
+ *    values without the effect ever restarting. A check that is still running when the next tick fires is
  *    skipped rather than queued - at one second apart that matters.
  * 2. **The model measures, the page judges.** `pose.ts` returns degrees only;
  *    the verdict is computed here against his own thresholds. That way the
@@ -179,34 +178,25 @@ const SOUND_DIR = 'snd';
  * ends wherever the readings stop, whatever the reason: nobody in frame, camera
  * off, tab closed.
  *
- * The threshold has to scale with the cadence: at a fixed 30 s, a page set to
- * one picture every two minutes would score every ordinary reading as a hole
- * and no run could ever grow past zero. Three missed pictures is the break,
- * with a 30 s floor so the fast cadences do not trip over a single slow frame.
+ * Thirty seconds without a reading is the break: at one picture a second that
+ * is thirty missed pictures, so a single slow frame never ends a run.
  */
-const runGapMs = (intervalSec: number) => Math.max(30_000, intervalSec * 3_000);
-
-/** The shortest interval the loop will honour, whatever the setting says. */
-const MIN_INTERVAL = 1;
+const RUN_GAP_MS = 30_000;
 
 /**
- * The corner radius of the countdown ring, in CSS pixels.
- *
- * It has to match the well's own 8px (`--radius-lg`) or the ring cuts its
- * corners inside the border it is drawn on. A number rather than the token
- * because `rx` is an SVG geometry attribute: `var()` in one is honoured by
- * Chromium and ignored by Safari, which would square the corners there.
+ * Seconds between two pictures. Fixed _(2026-10-28, his call, verbatim:
+ * „remove the "one picture every..." settings, jsut keep it fixed at one
+ * second")_; `Settings.intervalSec` is still in the stored document but
+ * nothing reads it any more.
  */
-const RING_RADIUS = 8;
-
-const INTERVALS = [1, 2, 5, 10, 15, 30, 60, 120];
+const INTERVAL_SEC = 1;
 
 /**
  * The order the sounds are offered in. The names themselves are in `i18n.ts`;
  * this list only fixes which one comes first - `fart` is the default and the
  * one he asked for by name.
  */
-const SOUND_ORDER: SoundName[] = ['fart', 'ahem', 'scream', 'knuckles', 'whip', 'rimshot', 'geiger', 'parking'];
+const SOUND_ORDER: SoundName[] = ['fart', 'geiger', 'ahem', 'scream', 'knuckles', 'whip', 'rimshot', 'parking'];
 
 const VERDICT_TONE: Record<Verdict, StatusTone> = {
     good: 'ok', borderline: 'warn', bad: 'bad',
@@ -1119,20 +1109,6 @@ function Live() {
     const wake = useWakeLock();
 
     const [running, setRunning] = useState(false);
-    const [checking, setChecking] = useState(false);
-    /**
-     * Which countdown cycle we are in. It exists only to key the ring: giving
-     * the `<rect>` a `key` that changes remounts it, and remounting is what
-     * restarts its CSS animation from the top. Without that the animation and
-     * the loop would drift apart, and at a two-minute pace the ring would be
-     * visibly finishing at the wrong moment within the hour.
-     */
-    const [cycle, setCycle] = useState(0);
-    /* Seconds until the next picture, and whether the loop was already running
-       on the previous pass. Refs rather than state: the tick reads and writes
-       them every second and must not re-render the page to do it. */
-    const left = useRef(0);
-    const wasRunning = useRef(false);
     const [apiError, setApiError] = useState<string | null>(null);
     const [note, setNote] = useState<string | null>(null);
     const [flash, setFlash] = useState(false);
@@ -1157,10 +1133,6 @@ function Live() {
     // Not DEFAULTS: writing any setting on a fresh device must persist the
     // detected language, not silently pin it to German.
     const settings: Settings = storedSettings[0] || INITIAL_SETTINGS;
-    /* Declared here rather than down with the render values: the tick effect
-       below takes it as a dependency, which is what makes a new pace restart
-       the wait instead of serving out the old one. */
-    const interval = Math.max(MIN_INTERVAL, settings.intervalSec);
     const { upsert: writeSettings, collection: settingsStore } = useCollection<Settings>('settings');
 
     const since = useMemo(startOfToday, []);
@@ -1238,7 +1210,6 @@ function Live() {
     const check = useCallback(async () => {
         if (busy.current) return;
         busy.current = true;
-        setChecking(true);
         const { settings: s, t: copy } = live.current;
         try {
             const video = live.current.camera.videoRef.current;
@@ -1327,48 +1298,25 @@ function Live() {
                 : detail || String(failure));
         } finally {
             busy.current = false;
-            setChecking(false);
         }
     }, []);
 
     /* ----------------------------------------------------------- the loop */
 
     /**
-     * The tick.
-     *
-     * `interval` is a dependency, so **changing the pace restarts the wait
-     * rather than serving out the old one** _(2026-09-15, his call)_. Before
-     * this the loop read the setting only when it reloaded the counter, so
-     * going from two minutes to one second left you watching the old two
-     * minutes drain before anything changed.
-     *
-     * A restart is not a start, though, and the two want different things: the
-     * button should take a picture immediately, a new pace should not. That is
-     * what `wasRunning` separates - on the first pass after Start the counter
-     * begins at zero and fires at once; on a later pass it begins at the new
-     * interval and counts it down.
+     * The tick: one picture on Start, then one every `INTERVAL_SEC`. A check
+     * still running when the next tick fires is skipped, not queued.
      */
     useEffect(() => {
         runningRef.current = running;
-        if (!running) {
-            wasRunning.current = false;
-            return;
-        }
-        left.current = wasRunning.current ? interval : 0;
-        wasRunning.current = true;
-        setCycle((n) => n + 1);
+        if (!running) return;
+        void check();
         const id = window.setInterval(() => {
             if (!runningRef.current || busy.current) return;
-            if (left.current > 0) {
-                left.current -= 1;
-                return;
-            }
-            left.current = interval;
-            setCycle((n) => n + 1);
             void check();
-        }, 1000);
+        }, INTERVAL_SEC * 1000);
         return () => window.clearInterval(id);
-    }, [running, check, interval]);
+    }, [running, check]);
 
     /* A meter stops with the run, and the moment its sound is switched off or
        swapped for another one - not at the next reading. */
@@ -1552,32 +1500,6 @@ function Live() {
                     {!camera.on ? (
                         <div className="haltung-camera-off">{t.cameraOff}</div>
                     ) : null}
-                    {/* The countdown to the next picture, drawn as the well's
-                        own border filling up _(2026-09-15, his call, in place
-                        of a labelled bar)_. `pathLength="100"` is what makes it
-                        exact: it renormalises the perimeter to 100 units
-                        whatever the box measures, so the dash offset runs from
-                        100 to 0 and no JavaScript has to measure anything. The
-                        rect starts at its top left corner and runs clockwise.
-
-                        **The sweep is one CSS animation over the whole
-                        interval** _(2026-09-15, his call: steadily, not once a
-                        second)_. React sets its duration and nothing else; the
-                        browser draws every frame in between. The `key` is the
-                        sync: it changes when the loop reloads its counter, and
-                        remounting the rect restarts the animation exactly
-                        there, so the ring cannot drift away from the tick that
-                        it is counting down to. */}
-                    {running ? (
-                        <svg className="haltung-tick" aria-hidden="true">
-                            <rect
-                                key={cycle}
-                                width="100%" height="100%"
-                                rx={RING_RADIUS} pathLength={100}
-                                style={{ '--tick-duration': `${interval}s` } as CSSProperties}
-                            />
-                        </svg>
-                    ) : null}
                 </div>
 
                 {/* The three angles sit right under the picture they were read
@@ -1667,10 +1589,6 @@ function Live() {
                             onClick={stop}>{t.stop}</Button>
                         : <Button size="lg" variant="primary" icon={<Icon name="play" size={20} />}
                             onClick={start}>{t.start}</Button>}
-                    <Button icon={<Icon name="refresh" />} onClick={() => void check()}
-                        disabled={!camera.on || checking}>
-                        {t.checkNow}
-                    </Button>
                 </Row>
 
                 {/* The purse sits under the start button, in zen as well as on
@@ -1745,7 +1663,7 @@ function Live() {
                     <Recent readings={today} windowMin={settings.windowMin}
                         change={change} />
 
-                    <History readings={today} intervalSec={settings.intervalSec} />
+                    <History readings={today} />
 
                     <Trend />
 
@@ -2114,10 +2032,9 @@ function Trend() {
     );
 }
 
-function History({ readings, intervalSec }: { readings: Reading[]; intervalSec: number }) {
+function History({ readings }: { readings: Reading[] }) {
     const t = useCopy();
     const lang = useLang();
-    const gap = runGapMs(intervalSec);
     const numbers = useMemo(() => {
         const total = readings.length;
         const good = readings.filter((r) => r.verdict === 'good').length;
@@ -2126,12 +2043,12 @@ function History({ readings, intervalSec }: { readings: Reading[]; intervalSec: 
         // The longest unbroken run of good readings, in wall-clock time: from
         // the first good reading of a run to the last one before it breaks. A
         // bad reading breaks it, and so does a hole in the recording - see
-        // runGapMs().
+        // RUN_GAP_MS.
         let bestMs = 0;
         let runFrom: number | null = null;
         let previous: number | null = null;
         readings.forEach((r) => {
-            const gapped = previous !== null && r.t - previous > gap;
+            const gapped = previous !== null && r.t - previous > RUN_GAP_MS;
             previous = r.t;
             if (r.verdict !== 'good' || gapped) {
                 runFrom = r.verdict === 'good' ? r.t : null;
@@ -2142,7 +2059,7 @@ function History({ readings, intervalSec }: { readings: Reading[]; intervalSec: 
         });
 
         return { total, good, signals, bestMs, share: total ? good / total : 0 };
-    }, [readings, gap]);
+    }, [readings]);
 
     const bars = readings.slice(-60).map((r) => ({
         tone: VERDICT_TONE[r.verdict],
@@ -2306,12 +2223,26 @@ type SoundProps = SetupProps & {
  * what the page does while it runs, and it is the setting you reach for in the
  * same breath as the stop button.
  */
+/**
+ * `?bought` in the address unlocks every sound, for trying them out without
+ * sitting through 50k coins first _(2026-10-28, his call, verbatim: „add a
+ * debug url where everything is bought already")_. It is read, never written:
+ * no coins are spent and the stored unlocked list is not touched. Only a sound
+ * picked while it is on is saved, like any pick, and stays the sound.
+ */
+const DEBUG_ALL_BOUGHT = typeof location !== 'undefined'
+    && new URLSearchParams(location.search).has('bought');
+
 function Sound(props: SoundProps) {
     const { settings: s, change, balance } = props;
     const t = useCopy();
     const lang = useLang();
-    const unlocked: SoundName[] = s.unlockedSounds && s.unlockedSounds.length
-        ? s.unlockedSounds : ['fart'];
+    /* A sound priced at nothing is unlocked whether or not it was ever bought,
+       so making one free reaches devices that stored their list before. */
+    const unlocked: SoundName[] = DEBUG_ALL_BOUGHT ? SOUND_ORDER : [
+        ...(s.unlockedSounds && s.unlockedSounds.length ? s.unlockedSounds : []),
+        ...SOUND_ORDER.filter((key) => SOUND_PRICE[key] === 0),
+    ];
     /** The locked sound someone picked, while the unlock dialog asks. */
     const [pending, setPending] = useState<SoundName | null>(null);
     const price = pending ? SOUND_PRICE[pending] : 0;
@@ -2387,7 +2318,8 @@ function Sound(props: SoundProps) {
                 checkbox. Turning the signal back off is one click on that same
                 checkbox, so the rule cannot trap anyone. */}
             <Row gap={2} align="bottom" stack>
-                {/* Only the fart is free; the rest are bought with Shrimpcoin
+                {/* The fart and the Geiger counter are free _(2026-10-28 for
+                    the Geiger counter)_; the rest are bought with Shrimpcoin
                     _(2026-10-18, his call: „nur der furzsound ist umsonst. die
                     andern müssen mut shrimpcoins freigeschaltet werden")_. A
                     locked sound stays in the list with its price, so the
@@ -2458,42 +2390,19 @@ function Sound(props: SoundProps) {
 function Setup(props: SetupProps) {
     const { settings: s, change } = props;
     const t = useCopy();
-    const defaultPaceIndex = Math.max(0, INTERVALS.indexOf(DEFAULTS.intervalSec));
-    const paceIndex = INTERVALS.indexOf(s.intervalSec) >= 0
-        ? INTERVALS.indexOf(s.intervalSec) : defaultPaceIndex;
-    const atDefaults = s.intervalSec === DEFAULTS.intervalSec
-        && s.maxForward === DEFAULTS.maxForward
+    const atDefaults = s.maxForward === DEFAULTS.maxForward
         && s.maxLean === DEFAULTS.maxLean
         && s.maxHeadTilt === DEFAULTS.maxHeadTilt;
 
     return (
         <>
-            <Panel id="thresholds" title={t.paceAndLimits}>
+            <Panel id="thresholds" title={t.limitsTitle}>
                 {/* One column, not two _(2026-09-15)_. Two fitted while a
                     slider was a bare track, but the stepper takes 80px of the
                     row and a 190px cell left about 100px of track: 40 degrees
                     across 100px is not a dial you can feel your way along.
                     Wide enough that the tile never splits these. */}
                 <Grid min={220}>
-                    {/* The pace is a slider too _(2026-09-15, his call)_, and
-                        it is the one whose positions are not the number they
-                        stand for: the eight intervals are 1, 2, 5, 10, 15, 30,
-                        60 and 120 seconds, so the slider runs over the index
-                        and `format` writes what that index means. A linear
-                        slider over 1 to 120 would spend seven eighths of its
-                        travel on intervals nobody picks. `indexOf` falls back
-                        to the default's slot rather than -1, so a stored value
-                        that is not on the list cannot push the thumb off the
-                        left-hand end. */}
-                    <Slider
-                        label={t.onePictureEvery}
-                        min={0} max={INTERVALS.length - 1} step={1}
-                        value={paceIndex}
-                        defaultValue={defaultPaceIndex}
-                        format={(i) => (INTERVALS[i] === 1
-                            ? t.oneSecond : t.nSeconds(INTERVALS[i]))}
-                        onChange={(i) => void change({ intervalSec: INTERVALS[i] })}
-                    />
                     {/* Sliders, not number fields _(2026-09-15, his call, and
                         the design system's control for a bounded number)_. A
                         tolerance is a dial you feel your way to rather than a
@@ -2524,8 +2433,7 @@ function Setup(props: SetupProps) {
                     />
                 </Grid>
                 {/* One reset for the tile _(2026-09-15, his call: not one per
-                    slider)_. It covers the pace as well, now that the pace is
-                    a slider too - "all at once" is every dial in the tile. It
+                    slider)_: "all at once" is every dial in the tile. It
                     puts back the numbers in `DEFAULTS`, which is also what each
                     track marks with its hairline, so the button and the marks
                     cannot disagree. Disabled while they are all already there:
@@ -2539,7 +2447,6 @@ function Setup(props: SetupProps) {
                         disabled={atDefaults}
                         title={`${t.resetLimits}: ${DEFAULTS.maxForward}° · ${DEFAULTS.maxLean}° · ${DEFAULTS.maxHeadTilt}°`}
                         onClick={() => void change({
-                            intervalSec: DEFAULTS.intervalSec,
                             maxForward: DEFAULTS.maxForward,
                             maxLean: DEFAULTS.maxLean,
                             maxHeadTilt: DEFAULTS.maxHeadTilt,

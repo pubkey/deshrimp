@@ -18,7 +18,6 @@ export const zh: Copy = {
     cameraOff: '摄像头是关着的。只要它关着，就不会录下任何东西，也不会发送任何东西。',
     start: '开始',
     stop: '停止',
-    checkNow: '现在检查',
     showPoints: '显示关键点',
     hidePoints: '隐藏关键点',
 
@@ -97,10 +96,7 @@ export const zh: Copy = {
     settingsTitle: '设置',
     settingsSubtitle: '只留在这个浏览器里。',
 
-    paceAndLimits: '节奏和上限',
-    onePictureEvery: '每隔多久一张画面',
-    oneSecond: '1 秒',
-    nSeconds: (n: number) => `${n} 秒`,
+    limitsTitle: '上限',
     signalFromForward: '头在肩前多少度时提示',
     signalFromForwardHint: '相对垂直方向的度数，耳朵对肩膀',
     signalFromLean: '侧向倾斜多少度时提示',

@@ -18,7 +18,6 @@ export const pl: Copy = {
     cameraOff: 'Kamera jest wyłączona. Dopóki jest wyłączona, nic nie jest nagrywane ani wysyłane.',
     start: 'Start',
     stop: 'Stop',
-    checkNow: 'Sprawdź teraz',
     showPoints: 'Pokaż punkty',
     hidePoints: 'Ukryj punkty',
 
@@ -97,10 +96,7 @@ export const pl: Copy = {
     settingsTitle: 'Ustawienia',
     settingsSubtitle: 'Zostają w tej przeglądarce.',
 
-    paceAndLimits: 'Tempo i granice',
-    onePictureEvery: 'Jedna klatka co',
-    oneSecond: 'sekundę',
-    nSeconds: (n: number) => `${n} sekund`,
+    limitsTitle: 'Granice',
     signalFromForward: 'Sygnał od głowy przed barkami',
     signalFromForwardHint: 'stopnie od pionu, ucho względem barku',
     signalFromLean: 'Sygnał od przechyłu na bok',

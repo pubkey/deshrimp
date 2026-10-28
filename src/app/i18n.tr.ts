@@ -18,7 +18,6 @@ export const tr: Copy = {
     cameraOff: 'Kamera kapalı. Kapalı olduğu sürece hiçbir şey kaydedilmez ve hiçbir şey gönderilmez.',
     start: 'Başlat',
     stop: 'Durdur',
-    checkNow: 'Şimdi kontrol et',
     showPoints: 'Noktaları göster',
     hidePoints: 'Noktaları gizle',
 
@@ -97,10 +96,7 @@ export const tr: Copy = {
     settingsTitle: 'Ayarlar',
     settingsSubtitle: 'Bu tarayıcıda kalır.',
 
-    paceAndLimits: 'Tempo ve sınırlar',
-    onePictureEvery: 'Bir kare, her',
-    oneSecond: 'saniyede',
-    nSeconds: (n: number) => `${n} saniyede`,
+    limitsTitle: 'Sınırlar',
     signalFromForward: 'Baş öne geçince sinyal',
     signalFromForwardHint: 'dikeyden derece, kulak omza karşı',
     signalFromLean: 'Yana eğilince sinyal',

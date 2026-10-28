@@ -18,7 +18,6 @@ export const es: Copy = {
     cameraOff: 'La cámara está apagada. Mientras lo esté, no se graba nada ni se envía nada.',
     start: 'Empezar',
     stop: 'Parar',
-    checkNow: 'Comprobar ahora',
     showPoints: 'Mostrar puntos',
     hidePoints: 'Ocultar puntos',
 
@@ -97,10 +96,7 @@ export const es: Copy = {
     settingsTitle: 'Ajustes',
     settingsSubtitle: 'Se quedan en este navegador.',
 
-    paceAndLimits: 'Ritmo y límites',
-    onePictureEvery: 'Una imagen cada',
-    oneSecond: 'segundo',
-    nSeconds: (n: number) => `${n} segundos`,
+    limitsTitle: 'Límites',
     signalFromForward: 'Señal a partir de cabeza por delante',
     signalFromForwardHint: 'grados respecto a la vertical, oreja contra hombro',
     signalFromLean: 'Señal a partir de inclinación lateral',

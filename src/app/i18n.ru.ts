@@ -18,7 +18,6 @@ export const ru: Copy = {
     cameraOff: 'Камера выключена. Пока она выключена, ничего не записывается и никуда не отправляется.',
     start: 'Запустить',
     stop: 'Остановить',
-    checkNow: 'Проверить сейчас',
     showPoints: 'Показать точки',
     hidePoints: 'Скрыть точки',
 
@@ -97,10 +96,7 @@ export const ru: Copy = {
     settingsTitle: 'Настройки',
     settingsSubtitle: 'Остаются в этом браузере.',
 
-    paceAndLimits: 'Темп и пределы',
-    onePictureEvery: 'Один кадр каждые',
-    oneSecond: 'секунду',
-    nSeconds: (n: number) => `${n} секунд`,
+    limitsTitle: 'Пределы',
     signalFromForward: 'Сигнал от головы впереди плеч',
     signalFromForwardHint: 'градусы от вертикали, ухо относительно плеча',
     signalFromLean: 'Сигнал от наклона вбок',
