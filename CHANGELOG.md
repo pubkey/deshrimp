@@ -11,6 +11,19 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-10-28 - no "Check now" button, a debug address
+
+### Removed
+- **The "Check now" button is gone** _(his call, verbatim: „remove the "Check
+  now" button")_. The camera tile leads with start and stop alone; checks run
+  on the timer as before. Its label went from all thirteen tables with it.
+
+### New
+- **A debug address where every sound is bought** _(his call, verbatim: „add a
+  debug url where everything is bought already")_. Open the page with
+  `?bought` and every sound is unlocked. No coins are spent and the unlocked
+  list is not written; a sound picked meanwhile is saved like any pick.
+
 ## 2026-10-19 - the sound picker shows prices
 
 ### New

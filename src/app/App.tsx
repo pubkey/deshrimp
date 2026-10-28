@@ -1119,7 +1119,6 @@ function Live() {
     const wake = useWakeLock();
 
     const [running, setRunning] = useState(false);
-    const [checking, setChecking] = useState(false);
     /**
      * Which countdown cycle we are in. It exists only to key the ring: giving
      * the `<rect>` a `key` that changes remounts it, and remounting is what
@@ -1238,7 +1237,6 @@ function Live() {
     const check = useCallback(async () => {
         if (busy.current) return;
         busy.current = true;
-        setChecking(true);
         const { settings: s, t: copy } = live.current;
         try {
             const video = live.current.camera.videoRef.current;
@@ -1327,7 +1325,6 @@ function Live() {
                 : detail || String(failure));
         } finally {
             busy.current = false;
-            setChecking(false);
         }
     }, []);
 
@@ -1667,10 +1664,6 @@ function Live() {
                             onClick={stop}>{t.stop}</Button>
                         : <Button size="lg" variant="primary" icon={<Icon name="play" size={20} />}
                             onClick={start}>{t.start}</Button>}
-                    <Button icon={<Icon name="refresh" />} onClick={() => void check()}
-                        disabled={!camera.on || checking}>
-                        {t.checkNow}
-                    </Button>
                 </Row>
 
                 {/* The purse sits under the start button, in zen as well as on
@@ -2306,12 +2299,22 @@ type SoundProps = SetupProps & {
  * what the page does while it runs, and it is the setting you reach for in the
  * same breath as the stop button.
  */
+/**
+ * `?bought` in the address unlocks every sound, for trying them out without
+ * sitting through 50k coins first _(2026-10-28, his call, verbatim: „add a
+ * debug url where everything is bought already")_. It is read, never written:
+ * no coins are spent and the stored unlocked list is not touched. Only a sound
+ * picked while it is on is saved, like any pick, and stays the sound.
+ */
+const DEBUG_ALL_BOUGHT = typeof location !== 'undefined'
+    && new URLSearchParams(location.search).has('bought');
+
 function Sound(props: SoundProps) {
     const { settings: s, change, balance } = props;
     const t = useCopy();
     const lang = useLang();
-    const unlocked: SoundName[] = s.unlockedSounds && s.unlockedSounds.length
-        ? s.unlockedSounds : ['fart'];
+    const unlocked: SoundName[] = DEBUG_ALL_BOUGHT ? SOUND_ORDER
+        : s.unlockedSounds && s.unlockedSounds.length ? s.unlockedSounds : ['fart'];
     /** The locked sound someone picked, while the unlock dialog asks. */
     const [pending, setPending] = useState<SoundName | null>(null);
     const price = pending ? SOUND_PRICE[pending] : 0;

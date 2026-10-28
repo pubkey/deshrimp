@@ -102,7 +102,6 @@ const de = {
     cameraOff: 'Die Kamera ist aus. Solange sie aus ist, wird nichts aufgenommen und nichts verschickt.',
     start: 'Starten',
     stop: 'Stoppen',
-    checkNow: 'Jetzt prüfen',
     showPoints: 'Punkte zeigen',
     hidePoints: 'Punkte ausblenden',
 
@@ -278,7 +277,6 @@ const en: Copy = {
     cameraOff: 'The camera is off. While it is off, nothing is recorded and nothing is sent.',
     start: 'Start',
     stop: 'Stop',
-    checkNow: 'Check now',
     showPoints: 'Show points',
     hidePoints: 'Hide points',
 

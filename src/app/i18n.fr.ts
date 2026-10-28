@@ -18,7 +18,6 @@ export const fr: Copy = {
     cameraOff: 'La caméra est éteinte. Tant qu’elle l’est, rien n’est enregistré et rien n’est envoyé.',
     start: 'Démarrer',
     stop: 'Arrêter',
-    checkNow: 'Vérifier maintenant',
     showPoints: 'Afficher les points',
     hidePoints: 'Masquer les points',
 

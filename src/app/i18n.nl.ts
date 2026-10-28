@@ -18,7 +18,6 @@ export const nl: Copy = {
     cameraOff: 'De camera staat uit. Zolang dat zo is, wordt er niets opgenomen en niets verstuurd.',
     start: 'Starten',
     stop: 'Stoppen',
-    checkNow: 'Nu controleren',
     showPoints: 'Punten tonen',
     hidePoints: 'Punten verbergen',
 

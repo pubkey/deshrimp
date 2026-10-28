@@ -18,7 +18,6 @@ export const zh: Copy = {
     cameraOff: '摄像头是关着的。只要它关着，就不会录下任何东西，也不会发送任何东西。',
     start: '开始',
     stop: '停止',
-    checkNow: '现在检查',
     showPoints: '显示关键点',
     hidePoints: '隐藏关键点',
 

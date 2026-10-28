@@ -18,7 +18,6 @@ export const pt: Copy = {
     cameraOff: 'A câmara está desligada. Enquanto estiver, não se grava nem se envia nada.',
     start: 'Começar',
     stop: 'Parar',
-    checkNow: 'Verificar agora',
     showPoints: 'Mostrar pontos',
     hidePoints: 'Ocultar pontos',
 

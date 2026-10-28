@@ -18,7 +18,6 @@ export const pl: Copy = {
     cameraOff: 'Kamera jest wyłączona. Dopóki jest wyłączona, nic nie jest nagrywane ani wysyłane.',
     start: 'Start',
     stop: 'Stop',
-    checkNow: 'Sprawdź teraz',
     showPoints: 'Pokaż punkty',
     hidePoints: 'Ukryj punkty',
 

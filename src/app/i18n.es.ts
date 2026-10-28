@@ -18,7 +18,6 @@ export const es: Copy = {
     cameraOff: 'La cámara está apagada. Mientras lo esté, no se graba nada ni se envía nada.',
     start: 'Empezar',
     stop: 'Parar',
-    checkNow: 'Comprobar ahora',
     showPoints: 'Mostrar puntos',
     hidePoints: 'Ocultar puntos',
 

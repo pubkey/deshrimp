@@ -18,7 +18,6 @@ export const it: Copy = {
     cameraOff: 'La fotocamera è spenta. Finché lo è, non viene registrato né inviato nulla.',
     start: 'Avvia',
     stop: 'Ferma',
-    checkNow: 'Controlla adesso',
     showPoints: 'Mostra i punti',
     hidePoints: 'Nascondi i punti',
 

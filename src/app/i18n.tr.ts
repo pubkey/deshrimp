@@ -18,7 +18,6 @@ export const tr: Copy = {
     cameraOff: 'Kamera kapalı. Kapalı olduğu sürece hiçbir şey kaydedilmez ve hiçbir şey gönderilmez.',
     start: 'Başlat',
     stop: 'Durdur',
-    checkNow: 'Şimdi kontrol et',
     showPoints: 'Noktaları göster',
     hidePoints: 'Noktaları gizle',
 

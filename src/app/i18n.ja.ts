@@ -18,7 +18,6 @@ export const ja: Copy = {
     cameraOff: 'カメラはオフです。オフのあいだは何も記録されず、何も送信されません。',
     start: '開始',
     stop: '停止',
-    checkNow: 'いますぐチェック',
     showPoints: 'ポイントを表示',
     hidePoints: 'ポイントを隠す',
 
