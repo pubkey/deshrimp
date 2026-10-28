@@ -59,8 +59,8 @@ hips, and in a desk-sized crop they come back with a visibility of 0.01 against
   is opened after the first pays 20 more. Each payout shows
   briefly in a snackbar; the balance sits under the start button and is kept
   per day with the rest of the history, on the device. It is what the alarm
-  sounds are bought with: the fart is free, the other five cost 50, 150, 500,
-  1,500 and 5,000.
+  sounds are bought with: the fart and the Geiger counter are free, the other
+  six cost 50, 150, 500, 1,500, 5,000 and 50,000.
 - **Thirteen languages**, switchable top right: de · en · es · fr · it · pt ·
   nl · pl · tr · ru · zh · ja · ka. First visit picks stored choice → browser
   language → English.

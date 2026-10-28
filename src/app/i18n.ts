@@ -183,10 +183,7 @@ const de = {
     /* --- settings ------------------------------------------------------- */
     settingsTitle: 'Einstellungen',
     settingsSubtitle: 'Bleiben in diesem Browser.',
-    paceAndLimits: 'Takt und Grenzen',
-    onePictureEvery: 'Ein Bild alle',
-    oneSecond: 'Sekunde',
-    nSeconds: (n: number) => `${n} Sekunden`,
+    limitsTitle: 'Grenzen',
     signalFromForward: 'Signal ab Kopf vor der Schulter',
     signalFromForwardHint: 'Grad aus der Senkrechten, Ohr gegen Schulter',
     signalFromLean: 'Signal ab Seitneigung',
@@ -355,10 +352,7 @@ const en: Copy = {
     settingsTitle: 'Settings',
     settingsSubtitle: 'They stay in this browser.',
 
-    paceAndLimits: 'Pace and limits',
-    onePictureEvery: 'One picture every',
-    oneSecond: 'second',
-    nSeconds: (n: number) => `${n} seconds`,
+    limitsTitle: 'Limits',
     signalFromForward: 'Signal from head in front',
     signalFromForwardHint: 'degrees off vertical, ear against shoulder',
     signalFromLean: 'Signal from side lean',

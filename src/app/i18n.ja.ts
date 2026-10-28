@@ -96,10 +96,7 @@ export const ja: Copy = {
     settingsTitle: '設定',
     settingsSubtitle: 'このブラウザの中だけに残ります。',
 
-    paceAndLimits: '間隔としきい値',
-    onePictureEvery: '画像を撮る間隔',
-    oneSecond: '1 秒',
-    nSeconds: (n: number) => `${n} 秒`,
+    limitsTitle: 'しきい値',
     signalFromForward: '頭の前出しがこの角度から',
     signalFromForwardHint: '垂直からの度数、耳と肩の関係',
     signalFromLean: '左右の傾きがこの角度から',

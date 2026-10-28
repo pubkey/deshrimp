@@ -96,10 +96,7 @@ export const ka: Copy = {
     settingsTitle: 'პარამეტრები',
     settingsSubtitle: 'რჩება ამ ბრაუზერში.',
 
-    paceAndLimits: 'ტემპი და ზღვრები',
-    onePictureEvery: 'ერთი სურათი ყოველ',
-    oneSecond: 'წამში',
-    nSeconds: (n: number) => `${n} წამში`,
+    limitsTitle: 'ზღვრები',
     signalFromForward: 'სიგნალი, როცა თავი წინაა',
     signalFromForwardHint: 'გრადუსი ვერტიკალიდან, ყური მხრის მიმართ',
     signalFromLean: 'სიგნალი გვერდზე დახრისას',

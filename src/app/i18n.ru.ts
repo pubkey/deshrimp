@@ -96,10 +96,7 @@ export const ru: Copy = {
     settingsTitle: 'Настройки',
     settingsSubtitle: 'Остаются в этом браузере.',
 
-    paceAndLimits: 'Темп и пределы',
-    onePictureEvery: 'Один кадр каждые',
-    oneSecond: 'секунду',
-    nSeconds: (n: number) => `${n} секунд`,
+    limitsTitle: 'Пределы',
     signalFromForward: 'Сигнал от головы впереди плеч',
     signalFromForwardHint: 'градусы от вертикали, ухо относительно плеча',
     signalFromLean: 'Сигнал от наклона вбок',

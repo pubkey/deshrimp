@@ -7,12 +7,12 @@
         "text": "Kamera erlauben, Seite offen liegen lassen. Es gibt nichts einzurichten und nichts zu kalibrieren: alle drei Winkel sind Verhältnisse am eigenen Körper, also unabhängig von Körpergröße und für jeden gleich zu lesen. Die Seite misst ab dem ersten Bild und hält den Bildschirm wach, solange sie prüft."
       },
       {
-        "title": "2 · Den Takt wählen",
-        "text": "Voreingestellt ist eine Sekunde pro Bild, streckbar bis auf zwei Minuten. Weil alles lokal rechnet, kostet ein schneller Takt nichts außer etwas Strom - es gibt keine Anfragen, die man zählen müsste."
+        "title": "2 · Ein Bild pro Sekunde",
+        "text": "Die Seite liest jede Sekunde ein Bild, fest eingestellt. Weil alles lokal rechnet, kostet das nichts außer etwas Strom - es gibt keine Anfragen, die man zählen müsste."
       },
       {
         "title": "3 · Den Ton aussuchen",
-        "text": "Sechs zur Wahl: Furz, Räuspern, Schrei, Fingerknacken, Peitsche und Bada-Bumm-Tss. Voreingestellt ist der Furz. Man überhört ihn nicht und er erschreckt einen nicht. Er kommt bei jeder einzelnen schiefen Messung, im Sekundentakt also jede Sekunde, bis du dich aufrichtest. Die Töne liegen in der Seite, es wird nichts nachgeladen. Nur der Furz ist umsonst, die anderen schaltest du mit Shrimpcoin frei, die du fürs gerade Sitzen bekommst."
+        "text": "Sechs zur Wahl: Furz, Räuspern, Schrei, Fingerknacken, Peitsche und Bada-Bumm-Tss. Voreingestellt ist der Furz. Man überhört ihn nicht und er erschreckt einen nicht. Er kommt bei jeder einzelnen schiefen Messung, also jede Sekunde, bis du dich aufrichtest. Die Töne liegen in der Seite, es wird nichts nachgeladen. Der Furz und der Geigerzähler sind umsonst, die anderen schaltest du mit Shrimpcoin frei, die du fürs gerade Sitzen bekommst."
       },
       {
         "title": "4 · Nicht dem Grad glauben, dem Verlauf",
@@ -114,12 +114,12 @@
         "text": "Allow the camera and leave the page open. There is nothing to set up and nothing to calibrate: all three angles are ratios measured on your own body, so they do not depend on how tall you are and read the same for anyone. The page measures from the very first frame and keeps the screen awake while it checks."
       },
       {
-        "title": "2 · Pick the pace",
-        "text": "One picture a second by default, stretchable to two minutes. Because everything is computed locally, a fast pace costs nothing but a little battery - there are no requests to count."
+        "title": "2 · One picture a second",
+        "text": "The page reads one picture a second, always. Because everything is computed locally, that costs nothing but a little battery - there are no requests to count."
       },
       {
         "title": "3 · Pick the sound",
-        "text": "Six to choose from: fart, ahem, scream, knuckle crack, whip crack and rimshot. The fart is the default. You will not miss it and it will not startle you. It plays on every single crooked reading, so at the default pace once a second until you sit up. The sounds ship inside the page, and nothing is downloaded. Only the fart is free; the others are unlocked with the Shrimpcoin you earn by sitting straight."
+        "text": "Six to choose from: fart, ahem, scream, knuckle crack, whip crack and rimshot. The fart is the default. You will not miss it and it will not startle you. It plays on every single crooked reading, so once a second until you sit up. The sounds ship inside the page, and nothing is downloaded. The fart and the Geiger counter are free; the others are unlocked with the Shrimpcoin you earn by sitting straight."
       },
       {
         "title": "4 · Trust the trend, not the degree",
@@ -221,12 +221,12 @@
         "text": "Da permiso a la cámara y deja la página abierta. No hay nada que configurar ni que calibrar: los tres ángulos son proporciones medidas sobre tu propio cuerpo, así que no dependen de tu estatura y se leen igual para cualquiera. La página mide desde la primera imagen y mantiene la pantalla despierta mientras vigila."
       },
       {
-        "title": "2 · Elige el ritmo",
-        "text": "Por defecto una imagen por segundo, estirable hasta dos minutos. Como todo se calcula localmente, un ritmo rápido no cuesta más que un poco de batería - no hay peticiones que contar."
+        "title": "2 · Una imagen por segundo",
+        "text": "La página lee una imagen por segundo, siempre. Como todo se calcula localmente, eso no cuesta más que un poco de batería - no hay peticiones que contar."
       },
       {
         "title": "3 · Elige el sonido",
-        "text": "Hay seis: pedo, carraspeo, grito, crujido de nudillos, latigazo y redoble. El pedo viene por defecto. No se te escapa y tampoco te sobresalta. Suena en cada medición torcida, o sea, al ritmo normal, una vez por segundo hasta que te endereces. Los sonidos van dentro de la página y no se descarga nada. Solo el pedo es gratis; los demás se desbloquean con los Shrimpcoin que ganas sentándote derecho."
+        "text": "Hay seis: pedo, carraspeo, grito, crujido de nudillos, latigazo y redoble. El pedo viene por defecto. No se te escapa y tampoco te sobresalta. Suena en cada medición torcida, o sea, una vez por segundo hasta que te endereces. Los sonidos van dentro de la página y no se descarga nada. El pedo y el contador Geiger son gratis; los demás se desbloquean con los Shrimpcoin que ganas sentándote derecho."
       },
       {
         "title": "4 · Fíate de la tendencia, no del grado",
@@ -328,12 +328,12 @@
         "text": "Autorise la caméra et laisse la page ouverte. Il n’y a rien à configurer ni à calibrer : les trois angles sont des rapports mesurés sur ton propre corps, ils ne dépendent donc pas de ta taille et se lisent pareil pour tout le monde. La page mesure dès la première image et empêche l’écran de s’éteindre pendant la surveillance."
       },
       {
-        "title": "2 · Choisis le rythme",
-        "text": "Une image par seconde par défaut, extensible jusqu’à deux minutes. Comme tout est calculé en local, un rythme rapide ne coûte qu’un peu de batterie - il n’y a aucune requête à compter."
+        "title": "2 · Une image par seconde",
+        "text": "La page lit une image par seconde, toujours. Comme tout est calculé en local, cela ne coûte qu’un peu de batterie - il n’y a aucune requête à compter."
       },
       {
         "title": "3 · Choisis le son",
-        "text": "Six au choix : pet, raclement de gorge, cri, craquement de doigts, coup de fouet et rimshot. Le pet est le réglage par défaut. Tu ne le rateras pas et il ne te fera pas sursauter. Il se déclenche à chaque mesure de travers, donc au rythme par défaut une fois par seconde jusqu’à ce que tu te redresses. Les sons sont embarqués dans la page et rien n’est téléchargé. Seul le pet est gratuit ; les autres se débloquent avec les Shrimpcoin que tu gagnes en te tenant droit."
+        "text": "Six au choix : pet, raclement de gorge, cri, craquement de doigts, coup de fouet et rimshot. Le pet est le réglage par défaut. Tu ne le rateras pas et il ne te fera pas sursauter. Il se déclenche à chaque mesure de travers, donc une fois par seconde jusqu’à ce que tu te redresses. Les sons sont embarqués dans la page et rien n’est téléchargé. Le pet et le compteur Geiger sont gratuits ; les autres se débloquent avec les Shrimpcoin que tu gagnes en te tenant droit."
       },
       {
         "title": "4 · Fie-toi à la tendance, pas au degré",
@@ -435,12 +435,12 @@
         "text": "Dai il permesso alla fotocamera e lascia la pagina aperta. Non c’è niente da impostare e niente da calibrare: i tre angoli sono rapporti misurati sul tuo stesso corpo, quindi non dipendono da quanto sei alto e si leggono uguale per chiunque. La pagina misura dal primo fotogramma e tiene lo schermo sveglio mentre controlla."
       },
       {
-        "title": "2 · Scegli il ritmo",
-        "text": "Di base un’immagine al secondo, allungabile fino a due minuti. Siccome tutto viene calcolato in locale, un ritmo veloce non costa altro che un po’ di batteria - non ci sono richieste da contare."
+        "title": "2 · Un’immagine al secondo",
+        "text": "La pagina legge un’immagine al secondo, sempre. Siccome tutto viene calcolato in locale, questo non costa altro che un po’ di batteria - non ci sono richieste da contare."
       },
       {
         "title": "3 · Scegli il suono",
-        "text": "Sei a disposizione: scoreggia, colpo di tosse, urlo, nocche scrocchiate, colpo di frusta e rimshot. La scoreggia è quella predefinita. Non te la perdi e non ti fa sobbalzare. Parte a ogni singola misurazione storta, quindi al ritmo predefinito una volta al secondo finché non ti raddrizzi. I suoni viaggiano dentro la pagina e non si scarica nulla. Solo la scoreggia è gratis; gli altri si sbloccano con gli Shrimpcoin che guadagni stando dritto."
+        "text": "Sei a disposizione: scoreggia, colpo di tosse, urlo, nocche scrocchiate, colpo di frusta e rimshot. La scoreggia è quella predefinita. Non te la perdi e non ti fa sobbalzare. Parte a ogni singola misurazione storta, quindi una volta al secondo finché non ti raddrizzi. I suoni viaggiano dentro la pagina e non si scarica nulla. La scoreggia e il contatore Geiger sono gratis; gli altri si sbloccano con gli Shrimpcoin che guadagni stando dritto."
       },
       {
         "title": "4 · Fidati dell’andamento, non del grado",
@@ -542,12 +542,12 @@
         "text": "Dá permissão à câmara e deixa a página aberta. Não há nada para configurar nem para calibrar: os três ângulos são proporções medidas no teu próprio corpo, por isso não dependem da tua altura e leem-se igual para toda a gente. A página mede logo desde o primeiro fotograma e mantém o ecrã acordado enquanto vigia."
       },
       {
-        "title": "2 · Escolhe o ritmo",
-        "text": "Por omissão, uma imagem por segundo, esticável até dois minutos. Como tudo é calculado localmente, um ritmo rápido não custa mais do que um bocado de bateria - não há pedidos para contar."
+        "title": "2 · Uma imagem por segundo",
+        "text": "A página lê uma imagem por segundo, sempre. Como tudo é calculado localmente, isso não custa mais do que um bocado de bateria - não há pedidos para contar."
       },
       {
         "title": "3 · Escolhe o som",
-        "text": "Há seis: peido, pigarro, grito, estalar de dedos, estalo de chicote e rimshot. O peido vem por omissão. Não te escapa e também não te assusta. Toca em cada medição torta, ou seja, no ritmo normal, uma vez por segundo até te endireitares. Os sons vão dentro da página e não se descarrega nada. Só o peido é grátis; os outros desbloqueiam-se com os Shrimpcoin que ganhas a sentar-te direito."
+        "text": "Há seis: peido, pigarro, grito, estalar de dedos, estalo de chicote e rimshot. O peido vem por omissão. Não te escapa e também não te assusta. Toca em cada medição torta, ou seja, uma vez por segundo até te endireitares. Os sons vão dentro da página e não se descarrega nada. O peido e o contador Geiger são grátis; os outros desbloqueiam-se com os Shrimpcoin que ganhas a sentar-te direito."
       },
       {
         "title": "4 · Confia na tendência, não no grau",
@@ -649,12 +649,12 @@
         "text": "Geef de camera toestemming en laat de pagina open staan. Er valt niets in te stellen en niets te kalibreren: alle drie de hoeken zijn verhoudingen op je eigen lichaam, dus ze hangen niet af van hoe lang je bent en lezen voor iedereen hetzelfde. De pagina meet vanaf het allereerste beeld en houdt het scherm wakker zolang hij kijkt."
       },
       {
-        "title": "2 · Kies het tempo",
-        "text": "Standaard één beeld per seconde, uit te rekken tot twee minuten. Omdat alles lokaal wordt berekend, kost een snel tempo niets behalve een beetje accu - er zijn geen verzoeken om te tellen."
+        "title": "2 · Eén beeld per seconde",
+        "text": "De pagina leest elke seconde één beeld, altijd. Omdat alles lokaal wordt berekend, kost dat niets behalve een beetje accu - er zijn geen verzoeken om te tellen."
       },
       {
         "title": "3 · Kies het geluid",
-        "text": "Zes om uit te kiezen: scheet, kuchje, schreeuw, knakkende knokkels, zweepslag en rimshot. De scheet staat standaard aan. Je mist hem niet en je schrikt er niet van. Hij komt bij elke scheve meting, op het standaardtempo dus elke seconde tot je weer rechtop zit. De geluiden zitten in de pagina en er wordt niets gedownload. Alleen de scheet is gratis; de andere ontgrendel je met de Shrimpcoin die je verdient door recht te zitten."
+        "text": "Zes om uit te kiezen: scheet, kuchje, schreeuw, knakkende knokkels, zweepslag en rimshot. De scheet staat standaard aan. Je mist hem niet en je schrikt er niet van. Hij komt bij elke scheve meting, dus elke seconde tot je weer rechtop zit. De geluiden zitten in de pagina en er wordt niets gedownload. De scheet en de geigerteller zijn gratis; de andere ontgrendel je met de Shrimpcoin die je verdient door recht te zitten."
       },
       {
         "title": "4 · Vertrouw op het verloop, niet op de graad",
@@ -756,12 +756,12 @@
         "text": "Zezwól na kamerę i zostaw stronę otwartą. Nie ma nic do ustawiania ani do kalibrowania: wszystkie trzy kąty to proporcje mierzone na twoim własnym ciele, więc nie zależą od wzrostu i czyta się je tak samo u każdego. Strona mierzy od pierwszej klatki i nie pozwala ekranowi zasnąć, dopóki patrzy."
       },
       {
-        "title": "2 · Wybierz tempo",
-        "text": "Domyślnie jedna klatka na sekundę, można rozciągnąć do dwóch minut. Ponieważ wszystko liczy się lokalnie, szybkie tempo nie kosztuje nic poza odrobiną baterii - nie ma żadnych zapytań do zliczania."
+        "title": "2 · Jedna klatka na sekundę",
+        "text": "Strona odczytuje jedną klatkę na sekundę, zawsze. Ponieważ wszystko liczy się lokalnie, nie kosztuje to nic poza odrobiną baterii - nie ma żadnych zapytań do zliczania."
       },
       {
         "title": "3 · Wybierz dźwięk",
-        "text": "Do wyboru sześć: pierdnięcie, chrząknięcie, krzyk, strzelanie kostkami, trzask bata i rimshot. Domyślne jest pierdnięcie. Nie przegapisz go, a jednocześnie nie przestraszy cię. Odzywa się przy każdym krzywym pomiarze, czyli w domyślnym tempie co sekundę, dopóki się nie wyprostujesz. Dźwięki siedzą w środku strony i nic nie jest dociągane. Tylko pierdnięcie jest za darmo; pozostałe odblokowujesz za Shrimpcoin, które zarabiasz, siedząc prosto."
+        "text": "Do wyboru sześć: pierdnięcie, chrząknięcie, krzyk, strzelanie kostkami, trzask bata i rimshot. Domyślne jest pierdnięcie. Nie przegapisz go, a jednocześnie nie przestraszy cię. Odzywa się przy każdym krzywym pomiarze, czyli co sekundę, dopóki się nie wyprostujesz. Dźwięki siedzą w środku strony i nic nie jest dociągane. Pierdnięcie i licznik Geigera są za darmo; pozostałe odblokowujesz za Shrimpcoin, które zarabiasz, siedząc prosto."
       },
       {
         "title": "4 · Ufaj tendencji, nie stopniom",
@@ -863,12 +863,12 @@
         "text": "Kameraya izin verin ve sayfayı açık bırakın. Ayarlanacak ya da kalibre edilecek bir şey yok: üç açı da kendi vücudunuz üzerinde ölçülen oranlardır, yani boyunuza bağlı değildir ve herkeste aynı şekilde okunur. Sayfa ilk kareden itibaren ölçer ve baktığı sürece ekranın kapanmasını engeller."
       },
       {
-        "title": "2 · Temposunu seç",
-        "text": "Varsayılan saniyede bir kare, iki dakikaya kadar esnetilebilir. Her şey yerelde hesaplandığı için hızlı tempo biraz pilden başka bir şeye mal olmaz - sayılacak istek yoktur."
+        "title": "2 · Saniyede bir kare",
+        "text": "Sayfa her zaman saniyede bir kare okur. Her şey yerelde hesaplandığı için bu biraz pilden başka bir şeye mal olmaz - sayılacak istek yoktur."
       },
       {
         "title": "3 · Sesini seç",
-        "text": "Altı tane var: osuruk, boğaz temizleme, çığlık, parmak çıtlatma, kırbaç şaklaması ve rimshot. Varsayılan osuruktur. Kaçırmazsınız ve sizi yerinizden de sıçratmaz. Her eğri ölçümde çalar, yani varsayılan tempoda siz doğrulana kadar saniyede bir. Sesler sayfanın içinde gelirler ve hiçbir şey indirilmez. Yalnızca osuruk ücretsiz; diğerlerini dik oturarak kazandığın Shrimpcoin ile açarsın."
+        "text": "Altı tane var: osuruk, boğaz temizleme, çığlık, parmak çıtlatma, kırbaç şaklaması ve rimshot. Varsayılan osuruktur. Kaçırmazsınız ve sizi yerinizden de sıçratmaz. Her eğri ölçümde çalar, yani siz doğrulana kadar saniyede bir. Sesler sayfanın içinde gelirler ve hiçbir şey indirilmez. Osuruk ve Geiger sayacı ücretsiz; diğerlerini dik oturarak kazandığın Shrimpcoin ile açarsın."
       },
       {
         "title": "4 · Dereceye değil, eğilime güven",
@@ -970,12 +970,12 @@
         "text": "Разреши камеру и оставь страницу открытой. Настраивать и калибровать нечего: все три угла - это соотношения, измеренные на твоём собственном теле, поэтому они не зависят от роста и читаются одинаково у любого. Страница измеряет с самого первого кадра и не даёт экрану погаснуть, пока следит."
       },
       {
-        "title": "2 · Выбери темп",
-        "text": "По умолчанию кадр в секунду, растягивается до двух минут. Поскольку всё считается локально, быстрый темп не стоит ничего, кроме небольшого расхода батареи - запросов, которые нужно было бы считать, здесь нет."
+        "title": "2 · Кадр в секунду",
+        "text": "Страница всегда читает один кадр в секунду. Поскольку всё считается локально, это не стоит ничего, кроме небольшого расхода батареи - запросов, которые нужно было бы считать, здесь нет."
       },
       {
         "title": "3 · Выбери звук",
-        "text": "На выбор шесть: пук, покашливание, крик, хруст пальцев, щелчок кнута и бадум-тсс. По умолчанию стоит пук. Его не пропустишь, и он тебя не пугает. Он раздаётся при каждом кривом измерении, то есть на обычном темпе раз в секунду, пока не выпрямишься. Звуки лежат внутри страницы, и ничего не подгружается. Бесплатен только пук; остальные открываются за Shrimpcoin, которые ты зарабатываешь, сидя ровно."
+        "text": "На выбор шесть: пук, покашливание, крик, хруст пальцев, щелчок кнута и бадум-тсс. По умолчанию стоит пук. Его не пропустишь, и он тебя не пугает. Он раздаётся при каждом кривом измерении, то есть раз в секунду, пока не выпрямишься. Звуки лежат внутри страницы, и ничего не подгружается. Пук и счётчик Гейгера бесплатны; остальные открываются за Shrimpcoin, которые ты зарабатываешь, сидя ровно."
       },
       {
         "title": "4 · Верь динамике, а не градусу",
@@ -1077,12 +1077,12 @@
         "text": "允许使用摄像头，并让页面开着。没有什么要配置，也没有什么要校准：三个角度都是在你自己身上量出来的比例，所以跟身高无关，对谁读起来都一样。页面从第一张画面就开始测量，并在盯着的时候不让屏幕休眠。"
       },
       {
-        "title": "2 · 选节奏",
-        "text": "默认每秒一张，最长可以拉到两分钟。因为一切都在本地计算，快节奏除了多耗一点电以外没有代价，根本没有需要计数的请求。"
+        "title": "2 · 每秒一张",
+        "text": "页面固定每秒读取一张画面。因为一切都在本地计算，这除了多耗一点电以外没有代价，根本没有需要计数的请求。"
       },
       {
         "title": "3 · 选声音",
-        "text": "一共六种：放屁、清嗓子、尖叫、掰手指、鞭子声和咚咚锵。默认是放屁。你不会漏掉它，它也不会吓到你。每一次坐歪的测量都会响，也就是按默认节奏每秒一次，直到你坐直为止。这些声音都随页面一起带上，不会另外下载。只有放屁是免费的，其他的要用坐直赚来的 Shrimpcoin 解锁。"
+        "text": "一共六种：放屁、清嗓子、尖叫、掰手指、鞭子声和咚咚锵。默认是放屁。你不会漏掉它，它也不会吓到你。每一次坐歪的测量都会响，也就是每秒一次，直到你坐直为止。这些声音都随页面一起带上，不会另外下载。放屁和盖革计数器是免费的，其他的要用坐直赚来的 Shrimpcoin 解锁。"
       },
       {
         "title": "4 · 相信趋势，别盯着度数",
@@ -1184,12 +1184,12 @@
         "text": "カメラを許可して、ページを開いたままにしておいてください。設定するものも、キャリブレーションするものもありません。3 つの角度はどれも自分の体の上で測った比率なので、身長に左右されず、誰が見ても同じように読めます。ページは最初の 1 枚から測定を始め、見張っているあいだは画面が消えないようにします。"
       },
       {
-        "title": "2 · 間隔を決める",
-        "text": "既定は 1 秒に 1 枚で、2 分まで延ばせます。すべてローカルで計算するので、間隔を短くしてもバッテリーが少し減るだけです - 数えるべきリクエストがそもそもありません。"
+        "title": "2 · 1 秒に 1 枚",
+        "text": "ページは常に 1 秒に 1 枚の画像を読み取ります。すべてローカルで計算するので、バッテリーが少し減るだけです - 数えるべきリクエストがそもそもありません。"
       },
       {
         "title": "3 · 音を選ぶ",
-        "text": "6 種類から選べます。おなら、せき払い、悲鳴、指の関節を鳴らす音、むちの音、ドンドンパフ。既定はおならです。聞き逃さないうえに、驚かされることもありません。姿勢が崩れた測定のたびに鳴るので、既定の間隔なら座り直すまで 1 秒に 1 回です。音はページの中に入っており、あとから読み込むことはありません。無料なのはおならだけで、ほかは姿勢よく座って貯めた Shrimpcoin で解放します。"
+        "text": "6 種類から選べます。おなら、せき払い、悲鳴、指の関節を鳴らす音、むちの音、ドンドンパフ。既定はおならです。聞き逃さないうえに、驚かされることもありません。姿勢が崩れた測定のたびに鳴るので、座り直すまで 1 秒に 1 回です。音はページの中に入っており、あとから読み込むことはありません。無料なのはおならとガイガーカウンターで、ほかは姿勢よく座って貯めた Shrimpcoin で解放します。"
       },
       {
         "title": "4 · 度数ではなく傾向を信じる",
@@ -1291,12 +1291,12 @@
         "text": "დაუშვი კამერა და გვერდი ღია დატოვე. არაფერია გასამართი და არაფერია დასაკალიბრებელი: სამივე კუთხე შენივე სხეულზე გაზომილი თანაფარდობაა, ამიტომ სიმაღლეზე არ არის დამოკიდებული და ყველასთვის ერთნაირად იკითხება. გვერდი პირველივე კადრიდან ზომავს და, სანამ ამოწმებს, ეკრანს ჩაქრობის საშუალებას არ აძლევს."
       },
       {
-        "title": "2 · აირჩიე ტემპი",
-        "text": "ნაგულისხმევად წამში ერთი სურათია, გაწელვა ორ წუთამდე შეიძლება. რადგან ყველაფერი ლოკალურად ითვლება, სწრაფი ტემპი მხოლოდ ცოტა ბატარეას ხარჯავს - დასათვლელი მოთხოვნები აქ არ არსებობს."
+        "title": "2 · წამში ერთი სურათი",
+        "text": "გვერდი ყოველთვის წამში ერთ სურათს კითხულობს. რადგან ყველაფერი ლოკალურად ითვლება, ეს მხოლოდ ცოტა ბატარეას ხარჯავს - დასათვლელი მოთხოვნები აქ არ არსებობს."
       },
       {
         "title": "3 · აირჩიე ხმა",
-        "text": "ექვსი არჩევანია: გაზის გაშვება, ყელის მოწმენდა, ყვირილი, თითების ატკაცუნება, მათრახის ტყლაშუნი და ბადა-ბუმ-ცი. ნაგულისხმევი გაზის გაშვებაა. ვერ გამოტოვებ და შიშსაც არ მოგგვრის. ის ყოველ ცალკეულ მრუდე გაზომვაზე ჟღერს, ანუ ნაგულისხმევი ტემპით წამში ერთხელ, სანამ არ გასწორდები. ხმები თავად გვერდშივე დევს და არაფერი იტვირთება დამატებით. უფასოა მხოლოდ გაზის გაშვება, დანარჩენს სწორად ჯდომით მოგროვებული Shrimpcoin-ით ხსნი."
+        "text": "ექვსი არჩევანია: გაზის გაშვება, ყელის მოწმენდა, ყვირილი, თითების ატკაცუნება, მათრახის ტყლაშუნი და ბადა-ბუმ-ცი. ნაგულისხმევი გაზის გაშვებაა. ვერ გამოტოვებ და შიშსაც არ მოგგვრის. ის ყოველ ცალკეულ მრუდე გაზომვაზე ჟღერს, ანუ წამში ერთხელ, სანამ არ გასწორდები. ხმები თავად გვერდშივე დევს და არაფერი იტვირთება დამატებით. უფასოა გაზის გაშვება და გეიგერის მთვლელი, დანარჩენს სწორად ჯდომით მოგროვებული Shrimpcoin-ით ხსნი."
       },
       {
         "title": "4 · დაუჯერე დინამიკას და არა გრადუსს",

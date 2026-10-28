@@ -11,12 +11,30 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
-## 2026-10-28 - no "Check now" button, a debug address
+## 2026-10-28 - no "Check now" button, no countdown ring, a fixed pace
 
 ### Removed
 - **The "Check now" button is gone** _(his call, verbatim: „remove the "Check
   now" button")_. The camera tile leads with start and stop alone; checks run
   on the timer as before. Its label went from all thirteen tables with it.
+- **The countdown ring around the camera well is gone** _(his call, verbatim:
+  „remove the one-second loading thing that runs around the video box, its
+  confusing")_.
+- **The pace is fixed at one picture a second** _(his call, verbatim: „remove
+  the "one picture every..." settings, jsut keep it fixed at one second")_. The
+  slider is gone from the limits tile, which is now titled just that, and
+  "Reset" covers the three limits. Step 2 of the written answer says the pace
+  instead of offering it, in all thirteen languages. `intervalSec` stays in the
+  stored settings so old documents stay valid, but nothing reads it. The loop
+  is a plain one-second timer now; the old counter waited one tick and fired on
+  the next, so it really took a picture every two seconds.
+
+### Changed
+- **The Geiger counter is free, like the fart** _(his call, verbatim: „the
+  geiger counter should be free, equal to the fart sound")_. It was 15,000
+  Shrimpcoin. Any sound priced at nothing counts as unlocked, so it is free on
+  devices that stored their list before, too, and it now sits second in the
+  list, after the fart.
 
 ### New
 - **A debug address where every sound is bought** _(his call, verbatim: „add a

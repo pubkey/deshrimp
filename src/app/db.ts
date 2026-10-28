@@ -114,6 +114,9 @@ export type View = 'zen' | 'dashboard';
 export type Settings = {
     id: string;
     /**
+     * No longer read: the pace is fixed at one second since 2026-10-28 (see
+     * `INTERVAL_SEC` in App.tsx). Kept so stored documents stay valid.
+     *
      * Seconds between two checks. One by default _(asked for 2026-09-08)_ -
      * affordable only because the model runs locally: at a second apart the
      * page reacts while he is still moving, and a check that overruns its tick
@@ -276,8 +279,10 @@ export const DEFAULTS: Settings = {
  * steiler")_: each step roughly triples, so the wait stretches the way an
  * idle game's clock does (research/idle-game-reward-curves.md). Bought in
  * order, the sounds unlock after about 4 minutes, 17 minutes, 1 hour, 3 hours
- * and 10 hours of straight sitting, then the Geiger counter after about 31
- * hours and the parking sensor after about 100. That is usage time, not
+ * and 10 hours of straight sitting, and the parking sensor after about 100.
+ * The Geiger counter is free like the fart _(2026-10-28, his call, verbatim:
+ * „the geiger counter should be free, equal to the fart sound")_; it was
+ * 15000. That is usage time, not
  * calendar time: there is no daily cap, so someone who sits with it four hours a day unlocks
  * correspondingly sooner _(his call: „das freischalten soll nicht pro tag
  * sondern pro nutzungszeit relevant sein")_. The first one stays at four
@@ -290,7 +295,7 @@ export const SOUND_PRICE: Record<SoundName, number> = {
     knuckles: 500,
     whip: 1500,
     rimshot: 5000,
-    geiger: 15000,
+    geiger: 0,
     parking: 50000,
 };
 

@@ -96,10 +96,7 @@ export const pt: Copy = {
     settingsTitle: 'Definições',
     settingsSubtitle: 'Ficam neste navegador.',
 
-    paceAndLimits: 'Ritmo e limites',
-    onePictureEvery: 'Uma imagem a cada',
-    oneSecond: 'segundo',
-    nSeconds: (n: number) => `${n} segundos`,
+    limitsTitle: 'Limites',
     signalFromForward: 'Sinal a partir de cabeça à frente',
     signalFromForwardHint: 'graus em relação à vertical, orelha contra o ombro',
     signalFromLean: 'Sinal a partir de inclinação lateral',

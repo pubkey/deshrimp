@@ -96,10 +96,7 @@ export const zh: Copy = {
     settingsTitle: '设置',
     settingsSubtitle: '只留在这个浏览器里。',
 
-    paceAndLimits: '节奏和上限',
-    onePictureEvery: '每隔多久一张画面',
-    oneSecond: '1 秒',
-    nSeconds: (n: number) => `${n} 秒`,
+    limitsTitle: '上限',
     signalFromForward: '头在肩前多少度时提示',
     signalFromForwardHint: '相对垂直方向的度数，耳朵对肩膀',
     signalFromLean: '侧向倾斜多少度时提示',

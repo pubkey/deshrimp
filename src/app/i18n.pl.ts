@@ -96,10 +96,7 @@ export const pl: Copy = {
     settingsTitle: 'Ustawienia',
     settingsSubtitle: 'Zostają w tej przeglądarce.',
 
-    paceAndLimits: 'Tempo i granice',
-    onePictureEvery: 'Jedna klatka co',
-    oneSecond: 'sekundę',
-    nSeconds: (n: number) => `${n} sekund`,
+    limitsTitle: 'Granice',
     signalFromForward: 'Sygnał od głowy przed barkami',
     signalFromForwardHint: 'stopnie od pionu, ucho względem barku',
     signalFromLean: 'Sygnał od przechyłu na bok',

@@ -96,10 +96,7 @@ export const nl: Copy = {
     settingsTitle: 'Instellingen',
     settingsSubtitle: 'Blijven in deze browser.',
 
-    paceAndLimits: 'Tempo en grenzen',
-    onePictureEvery: 'Eén beeld per',
-    oneSecond: 'seconde',
-    nSeconds: (n: number) => `${n} seconden`,
+    limitsTitle: 'Grenzen',
     signalFromForward: 'Signaal vanaf hoofd naar voren',
     signalFromForwardHint: 'graden uit het lood, oor tegen schouder',
     signalFromLean: 'Signaal vanaf zijwaartse helling',
