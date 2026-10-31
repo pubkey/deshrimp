@@ -294,3 +294,18 @@
 }
 .haltung-snackbar.on { opacity: 1; }
 .haltung-snackbar-note { font-weight: 400; }
+
+/* The bought mustache _(2026-10-31, his call)_, over the picture like the
+ * developer points and mirrored the same way, so it sits under the nose and
+ * not beside it. Ink in both themes: it is hair on a photograph, not a part
+ * of the interface, and a mustache that turns white in dark mode is a
+ * different joke. */
+.haltung-mustache {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(-1);
+  pointer-events: none;
+}
+.haltung-mustache path { fill: var(--ink-900); }

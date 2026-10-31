@@ -121,6 +121,9 @@ export const ka: Copy = {
     unlockCancel: 'გაუქმება',
     unlockShort: (missing: Coins) => ['აკლია ', missing, ' Shrimpcoin. სწორად ჯდომით დააგროვებ.'],
     unlockDone: (name: string) => `${name} გაიხსნა`,
+    mustache: 'ულვაში',
+    wearMustache: 'ულვაშის გაკეთება',
+    mustacheDone: 'ულვაში გაიხსნა',
     soundName: {
         fart: 'გაზის გაშვება', ahem: 'ყელის მოწმენდა', scream: 'ყვირილი',
         knuckles: 'თითების ატკაცუნება', whip: 'მათრახის ტყლაშუნი', rimshot: 'ბადა-ბუმ-ცი',

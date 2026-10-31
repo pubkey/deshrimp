@@ -121,6 +121,9 @@ export const nl: Copy = {
     unlockCancel: 'Annuleren',
     unlockShort: (missing: Coins) => ['Je komt ', missing, ' Shrimpcoin tekort. Recht zitten levert ze op.'],
     unlockDone: (name: string) => `${name} ontgrendeld`,
+    mustache: 'Snor',
+    wearMustache: 'Snor opzetten',
+    mustacheDone: 'Snor ontgrendeld',
     soundName: {
         fart: 'Scheet', ahem: 'Kuchje', scream: 'Schreeuw',
         knuckles: 'Knakkende knokkels', whip: 'Zweepslag', rimshot: 'Rimshot',

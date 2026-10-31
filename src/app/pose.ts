@@ -542,6 +542,14 @@ export function landmarksOf(frame: HTMLCanvasElement): Landmark[] | null {
  */
 export const MEASURED_POINTS: readonly number[] = [EYE_L, EYE_R, EAR_L, EAR_R, SHOULDER_L, SHOULDER_R];
 
+/**
+ * The points the mustache hangs from: the nose and the two corners of the
+ * mouth, in MediaPipe's pose topology. Nothing is measured from them.
+ */
+export const NOSE = 0;
+export const MOUTH_L = 9;
+export const MOUTH_R = 10;
+
 /** The lines the angles are drawn along: eye line, ear line, shoulder line. */
 export const MEASURED_LINES: readonly (readonly [number, number])[] = [
     [EYE_L, EYE_R], [EAR_L, EAR_R], [SHOULDER_L, SHOULDER_R],

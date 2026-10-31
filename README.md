@@ -61,6 +61,7 @@ hips, and in a desk-sized crop they come back with a visibility of 0.01 against
   per day with the rest of the history, on the device. It is what the alarm
   sounds are bought with: the fart and the Geiger counter are free, the other
   six cost 50, 150, 500, 1,500, 5,000 and 50,000.
+  They also buy a mustache, 500, drawn under your nose on the live picture.
 - **Thirteen languages**, switchable top right: de · en · es · fr · it · pt ·
   nl · pl · tr · ru · zh · ja · ka. First visit picks stored choice → browser
   language → English.

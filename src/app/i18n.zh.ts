@@ -121,6 +121,9 @@ export const zh: Copy = {
     unlockCancel: '取消',
     unlockShort: (missing: Coins) => ['还差 ', missing, ' Shrimpcoin。坐直就能攒到。'],
     unlockDone: (name: string) => `${name}已解锁`,
+    mustache: '小胡子',
+    wearMustache: '戴上小胡子',
+    mustacheDone: '小胡子已解锁',
     soundName: {
         fart: '放屁', ahem: '清嗓子', scream: '尖叫',
         knuckles: '掰手指', whip: '鞭子声', rimshot: '咚咚锵',

@@ -121,6 +121,9 @@ export const ru: Copy = {
     unlockCancel: 'Отмена',
     unlockShort: (missing: Coins) => ['Не хватает ', missing, ' Shrimpcoin. Сиди ровно, и они накопятся.'],
     unlockDone: (name: string) => `${name} открыт`,
+    mustache: 'Усы',
+    wearMustache: 'Надеть усы',
+    mustacheDone: 'Усы открыты',
     soundName: {
         fart: 'Пук', ahem: 'Покашливание', scream: 'Крик',
         knuckles: 'Хруст пальцев', whip: 'Щелчок кнута', rimshot: 'Бадум-тсс',

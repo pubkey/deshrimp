@@ -11,6 +11,26 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-10-31 - a mustache in the shop
+
+### New
+- **A mustache to buy and wear on the picture** _(his call, verbatim: „mach,
+  dass ich nicht nur Sounds kaufen kann, sondern auch so ein schnurrbart, der
+  mir dann auf die Video gesetzt wird")_. It costs 500 Shrimpcoin, out of the
+  same purse as the sounds, and sits in the control tile under the sound list:
+  a button with the lock and the price until it is bought, then a checkbox to
+  put it on or take it off. Buying puts it on. It is the same unlock dialog the
+  sounds use, now one component for both.
+- It is drawn on the live picture, hung from three points the pose model
+  already reports: the nose and the two corners of the mouth. The mouth line
+  gives its width and tilt, so it follows a head that turns or cocks; it is
+  smoothed between frames so it does not shiver. It is drawn over the video,
+  never into the frame the model reads, so it cannot change a reading.
+- The developer points and the mustache share one landmark loop, so wearing
+  both does not ask the model twice. `?bought` lends the mustache too.
+- Settings v18 adds `mustacheOwned` and `mustache`, both optional and unset:
+  nobody gets it for free.
+
 ## 2026-10-28 - no "Check now" button, no countdown ring, a fixed pace
 
 ### Removed

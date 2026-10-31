@@ -121,6 +121,9 @@ export const tr: Copy = {
     unlockCancel: 'Vazgeç',
     unlockShort: (missing: Coins) => [missing, ' Shrimpcoin eksik. Dik oturdukça kazanırsın.'],
     unlockDone: (name: string) => `${name} açıldı`,
+    mustache: 'Bıyık',
+    wearMustache: 'Bıyığı tak',
+    mustacheDone: 'Bıyık açıldı',
     soundName: {
         fart: 'Osuruk', ahem: 'Boğaz temizleme', scream: 'Çığlık',
         knuckles: 'Parmak çıtlatma', whip: 'Kırbaç şaklaması', rimshot: 'Rimshot',

@@ -42,7 +42,7 @@ import {
     DatabaseGate, DataSyncButton, useCollection, useDatabase, useQuery,
 } from '@db';
 import {
-    DEFAULTS, openDatabase, SETTINGS_ID, SOUND_PRICE,
+    DEFAULTS, MUSTACHE_PRICE, openDatabase, SETTINGS_ID, SOUND_PRICE,
     type Day, type Reading, type Settings, type SoundName, type Verdict,
     type View,
 } from './db';
@@ -52,7 +52,7 @@ import coinUrl from './shrimpcoin.svg';
 import { LEGAL_HREF, langHref, legalLabel, pageLang, seoTitle } from './lang-url';
 import {
     analysePose, frameOf as canvasFrame, landmarksOf, loadPose, MEASURED_LINES,
-    MEASURED_POINTS, onPoseProgress, POINT_MIN_VISIBILITY, poseProgress,
+    MEASURED_POINTS, MOUTH_L, MOUTH_R, NOSE, onPoseProgress, POINT_MIN_VISIBILITY, poseProgress,
     poseReady, PoseError, preloadPose, type Analysis, type Landmark,
 } from './pose';
 
@@ -423,26 +423,24 @@ function writeShowPoints(on: boolean): void {
 const OVERLAY_MS = 100;
 
 /**
- * The model's landmarks drawn over the live picture - a developer's tool
- * _(2026-09-30, his call: „das ist nur so ein Entwickler professionelles
- * tool")_, off by default and switched from a small button under the well.
+ * The model's landmarks for the live picture, several times a second, for the
+ * two things drawn over it: the developer points and the mustache.
  *
  * It runs its own loop rather than showing the last check's points, because a
  * check can be two minutes apart and a frozen skeleton over a moving person
  * tells you nothing about what the model sees. It measures nothing and writes
- * nothing; the check loop is untouched.
- *
- * The SVG's `viewBox` is the video's own pixel size with `meet`, which is
- * exactly what `object-fit: contain` does to the picture, so the points land
- * on the letterboxed image and not on the bars. It is mirrored with the same
- * `scaleX(-1)` as the video, and the model is fed the unmirrored frame, as
- * everywhere else.
+ * nothing; the check loop is untouched. One loop for both overlays, so wearing
+ * the mustache with the points on does not ask the model twice.
  */
-function PoseOverlay({ videoRef }: { videoRef: RefObject<HTMLVideoElement | null> }) {
+function useLandmarks(videoRef: RefObject<HTMLVideoElement | null>, on: boolean) {
     const [points, setPoints] = useState<Landmark[] | null>(null);
     const [size, setSize] = useState<[number, number]>([0, 0]);
 
     useEffect(() => {
+        if (!on) {
+            setPoints(null);
+            return;
+        }
         const canvas = document.createElement('canvas');
         const id = window.setInterval(() => {
             const video = videoRef.current;
@@ -458,12 +456,30 @@ function PoseOverlay({ videoRef }: { videoRef: RefObject<HTMLVideoElement | null
             }
         }, OVERLAY_MS);
         return () => window.clearInterval(id);
-    }, [videoRef]);
+    }, [videoRef, on]);
 
+    return { points, size };
+}
+
+type OverlayProps = { points: Landmark[] | null; size: [number, number] };
+
+const seen = (p: Landmark | undefined): p is Landmark =>
+    !!p && (p.visibility ?? 0) >= POINT_MIN_VISIBILITY;
+
+/**
+ * The model's landmarks drawn over the live picture - a developer's tool
+ * _(2026-09-30, his call: „das ist nur so ein Entwickler professionelles
+ * tool")_, off by default and switched from a small button under the well.
+ *
+ * The SVG's `viewBox` is the video's own pixel size with `meet`, which is
+ * exactly what `object-fit: contain` does to the picture, so the points land
+ * on the letterboxed image and not on the bars. It is mirrored with the same
+ * `scaleX(-1)` as the video, and the model is fed the unmirrored frame, as
+ * everywhere else.
+ */
+function PoseOverlay({ points, size }: OverlayProps) {
     const [w, h] = size;
     if (!points || !w || !h) return null;
-    const seen = (p: Landmark | undefined): p is Landmark =>
-        !!p && (p.visibility ?? 0) >= POINT_MIN_VISIBILITY;
 
     return (
         <svg className="haltung-points" viewBox={`0 0 ${w} ${h}`}
@@ -483,6 +499,89 @@ function PoseOverlay({ videoRef }: { videoRef: RefObject<HTMLVideoElement | null
                     className={seen(p) ? undefined : 'unseen'}
                 />
             ))}
+        </svg>
+    );
+}
+
+/**
+ * One half of the mustache, the wearer's right as seen in the picture, in a
+ * box 100 wide centred on the middle of the upper lip. The other half is the
+ * same path mirrored. A handlebar: full under the nose, thin towards the
+ * tips, and the tips curled up.
+ */
+const MUSTACHE_HALF = 'M0 -3 C6 -10 17 -12 27 -6 C34 -2 40 0 45 -5 '
+    + 'C47 -7 48 -10 46 -13 C51 -9 49 1 38 4 C26 7 11 5 0 3 Z';
+
+/** How far down from the nose towards the mouth the mustache sits, 0 to 1. */
+const MUSTACHE_DROP = 0.55;
+/** How wide it is against the width of the mouth. */
+const MUSTACHE_WIDTH = 2.1;
+/**
+ * How much of the new position each frame takes, 0 to 1. The model answers
+ * ten times a second and wobbles a pixel or two between answers; this keeps
+ * the mustache on the lip rather than shivering on it.
+ */
+const MUSTACHE_FOLLOW = 0.5;
+
+type MustachePose = { x: number; y: number; width: number; angle: number };
+
+/**
+ * The bought mustache, drawn on the live picture under the nose
+ * _(2026-10-31, his call, verbatim: „mach, dass ich nicht nur Sounds kaufen
+ * kann, sondern auch so ein schnurrbart, der mir dann auf die Video gesetzt
+ * wird")_.
+ *
+ * It hangs from three landmarks the pose model already reports: the nose and
+ * the two corners of the mouth. The mouth line gives its width and its tilt,
+ * so it follows a head that turns or cocks to one side; the nose gives how far
+ * above the mouth it sits. Same `viewBox`, same `meet`, same mirror as the
+ * developer points, so it lands on the face and not on the letterbox.
+ *
+ * It is drawn over the picture, never into it: the model is fed the
+ * unmirrored frame straight from the video element, so the mustache cannot
+ * change a single reading. It is ink-coloured in both themes because it is
+ * hair on a photograph, not a part of the interface.
+ */
+function MustacheOverlay({ points, size }: OverlayProps) {
+    const last = useRef<MustachePose | null>(null);
+    const [w, h] = size;
+    const nose = points?.[NOSE];
+    const left = points?.[MOUTH_L];
+    const right = points?.[MOUTH_R];
+    if (!w || !h || !seen(nose) || !seen(left) || !seen(right)) {
+        last.current = null;
+        return null;
+    }
+
+    const mx = ((left.x + right.x) / 2) * w;
+    const my = ((left.y + right.y) / 2) * h;
+    // The wearer's left corner sits on the right of the unmirrored frame, so
+    // right-to-left points along +x when the head is level.
+    const dx = (left.x - right.x) * w;
+    const dy = (left.y - right.y) * h;
+    const target: MustachePose = {
+        x: nose.x * w + (mx - nose.x * w) * MUSTACHE_DROP,
+        y: nose.y * h + (my - nose.y * h) * MUSTACHE_DROP,
+        width: Math.hypot(dx, dy) * MUSTACHE_WIDTH,
+        angle: (Math.atan2(dy, dx) * 180) / Math.PI,
+    };
+    const prev = last.current;
+    const pose: MustachePose = prev ? {
+        x: prev.x + (target.x - prev.x) * MUSTACHE_FOLLOW,
+        y: prev.y + (target.y - prev.y) * MUSTACHE_FOLLOW,
+        width: prev.width + (target.width - prev.width) * MUSTACHE_FOLLOW,
+        angle: prev.angle + (target.angle - prev.angle) * MUSTACHE_FOLLOW,
+    } : target;
+    last.current = pose;
+
+    const scale = pose.width / 100;
+    return (
+        <svg className="haltung-mustache" viewBox={`0 0 ${w} ${h}`}
+            preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <g transform={`translate(${pose.x} ${pose.y}) rotate(${pose.angle}) scale(${scale})`}>
+                <path d={MUSTACHE_HALF} />
+                <path d={MUSTACHE_HALF} transform="scale(-1 1)" />
+            </g>
         </svg>
     );
 }
@@ -1188,6 +1287,11 @@ function Live() {
 
     const last = today.length ? today[today.length - 1] : null;
 
+    /* The mustache is worn when it is bought and switched on; `?bought`
+       lends it like it lends every sound. */
+    const wearing = (settings.mustacheOwned || DEBUG_ALL_BOUGHT) && !!settings.mustache;
+    const landmarks = useLandmarks(camera.videoRef, camera.on && (showPoints || wearing));
+
     /* Everything the loop needs, refreshed every render so the interval never
        has to be rebuilt. */
     const live = useRef({ settings, camera, beep, writeReading, rollUp, t });
@@ -1478,7 +1582,8 @@ function Live() {
             <Panel id="video" className="haltung-videotile">
                 <div className={`haltung-camera${flash ? ' haltung-alarm' : ''}`}>
                     <video ref={camera.videoRef} muted playsInline autoPlay />
-                    {showPoints && camera.on ? <PoseOverlay videoRef={camera.videoRef} /> : null}
+                    {wearing && camera.on ? <MustacheOverlay {...landmarks} /> : null}
+                    {showPoints && camera.on ? <PoseOverlay {...landmarks} /> : null}
                     {/* The developer toggle: a glyph, no words, in the well's
                         bottom right corner _(2026-09-30, his call: „no text,
                         make a small button with only the icon. schoe it on the
@@ -1603,6 +1708,8 @@ function Live() {
                     playSound={beep.play}
                     balance={coinBalance}
                 />
+
+                <Mustache settings={settings} change={change} balance={coinBalance} />
 
                 {/* The two views, as a switch rather than a button
                     _(2026-09-16, his call: „mach einen toggle daraus so links
@@ -2354,35 +2461,115 @@ function Sound(props: SoundProps) {
                 </Button>
             </Row>
 
-            <Modal
-                open={pending != null}
+            <UnlockDialog
+                name={pending ? t.soundName[pending] : null}
+                price={price}
+                balance={balance}
+                onConfirm={() => void unlock()}
                 onClose={() => setPending(null)}
-                title={pending ? t.unlockTitle(t.soundName[pending]) : undefined}
-                footer={(
-                    <Row gap={2} wrap>
-                        <Button variant="primary" disabled={!affordable} onClick={() => void unlock()}>
-                            {t.unlockConfirm}
-                        </Button>
-                        <Button onClick={() => setPending(null)}>{t.unlockCancel}</Button>
-                    </Row>
-                )}
-            >
-                {pending ? (
-                    <Col gap={3}>
-                        <Text>{t.unlockBody(
-                            <CoinAmount key="price" tenths={price * 10} />,
-                            <CoinAmount key="balance" tenths={balance} />,
-                        )}</Text>
-                        {!affordable
-                            ? <Muted>{t.unlockShort(<CoinAmount key="missing" tenths={price * 10 - balance} />)}</Muted>
-                            : null}
-                        {/* No preview here: a locked sound is not heard until
-                            it is bought _(2026-10-18, his call, verbatim: „vor
-                            dem kauf kann man den sound nicht gratis hören")_.
-                            The name and the price are the whole pitch. */}
-                    </Col>
-                ) : null}
-            </Modal>
+            />
+        </>
+    );
+}
+
+/**
+ * The question before anything is bought: what it is, what it costs, what
+ * there is, and what is missing when that is not enough. The sounds and the
+ * mustache ask it the same way. `name` null is closed.
+ */
+function UnlockDialog({ name, price, balance, onConfirm, onClose }: {
+    name: string | null;
+    /** Whole Shrimpcoin. */
+    price: number;
+    /** Tenths, as stored. */
+    balance: number;
+    onConfirm: () => void;
+    onClose: () => void;
+}) {
+    const t = useCopy();
+    const affordable = balance >= price * 10;
+    return (
+        <Modal
+            open={name != null}
+            onClose={onClose}
+            title={name != null ? t.unlockTitle(name) : undefined}
+            footer={(
+                <Row gap={2} wrap>
+                    <Button variant="primary" disabled={!affordable} onClick={onConfirm}>
+                        {t.unlockConfirm}
+                    </Button>
+                    <Button onClick={onClose}>{t.unlockCancel}</Button>
+                </Row>
+            )}
+        >
+            {name != null ? (
+                <Col gap={3}>
+                    <Text>{t.unlockBody(
+                        <CoinAmount key="price" tenths={price * 10} />,
+                        <CoinAmount key="balance" tenths={balance} />,
+                    )}</Text>
+                    {!affordable
+                        ? <Muted>{t.unlockShort(<CoinAmount key="missing" tenths={price * 10 - balance} />)}</Muted>
+                        : null}
+                    {/* No preview here: a locked sound is not heard until
+                        it is bought _(2026-10-18, his call, verbatim: „vor
+                        dem kauf kann man den sound nicht gratis hören")_,
+                        and the mustache is not tried on either. The name and
+                        the price are the whole pitch. */}
+                </Col>
+            ) : null}
+        </Modal>
+    );
+}
+
+/**
+ * The mustache in the shop _(2026-10-31, his call, verbatim: „mach, dass ich
+ * nicht nur Sounds kaufen kann, sondern auch so ein schnurrbart, der mir dann
+ * auf die Video gesetzt wird")_.
+ *
+ * Before it is bought it is a button with the lock and the price, the way a
+ * locked sound sits in the list, and pressing it asks the same question the
+ * sounds ask. Once bought it is a checkbox like the three above the sound
+ * list: put on or taken off, never paid for twice. Buying puts it on.
+ */
+function Mustache({ settings: s, change, balance }: SetupProps & { balance: number }) {
+    const t = useCopy();
+    const [asking, setAsking] = useState(false);
+    const owned = !!s.mustacheOwned || DEBUG_ALL_BOUGHT;
+
+    const buy = async () => {
+        if (balance < MUSTACHE_PRICE * 10) return;
+        await change({
+            mustacheOwned: true,
+            mustache: true,
+            coinsSpent: (s.coinsSpent || 0) + MUSTACHE_PRICE * 10,
+        });
+        setAsking(false);
+        toast(t.mustacheDone);
+    };
+
+    return (
+        <>
+            {owned ? (
+                <Checkbox label={t.wearMustache} checked={!!s.mustache}
+                    onChange={(on) => void change({ mustache: on })} />
+            ) : (
+                <Row>
+                    <Button
+                        icon={<Icon name="lock" />}
+                        onClick={() => setAsking(true)}
+                    >
+                        {t.mustache} <CoinAmount tenths={MUSTACHE_PRICE * 10} />
+                    </Button>
+                </Row>
+            )}
+            <UnlockDialog
+                name={asking ? t.mustache : null}
+                price={MUSTACHE_PRICE}
+                balance={balance}
+                onConfirm={() => void buy()}
+                onClose={() => setAsking(false)}
+            />
         </>
     );
 }
