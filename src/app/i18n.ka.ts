@@ -123,6 +123,7 @@ export const ka: Copy = {
     unlockDone: (name: string) => `${name} გაიხსნა`,
     mustache: 'ულვაში',
     wearMustache: 'ულვაშის გაკეთება',
+    takeOffMustache: 'ულვაშის მოხსნა',
     mustacheDone: 'ულვაში გაიხსნა',
     soundName: {
         fart: 'გაზის გაშვება', ahem: 'ყელის მოწმენდა', scream: 'ყვირილი',

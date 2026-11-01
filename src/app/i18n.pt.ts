@@ -123,6 +123,7 @@ export const pt: Copy = {
     unlockDone: (name: string) => `${name} desbloqueado`,
     mustache: 'Bigode',
     wearMustache: 'Usar o bigode',
+    takeOffMustache: 'Tirar o bigode',
     mustacheDone: 'Bigode desbloqueado',
     soundName: {
         fart: 'Peido', ahem: 'Pigarro', scream: 'Grito',

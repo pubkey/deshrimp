@@ -210,6 +210,7 @@ const de = {
     unlockDone: (name: string) => `${name} freigeschaltet`,
     mustache: 'Schnurrbart',
     wearMustache: 'Schnurrbart aufsetzen',
+    takeOffMustache: 'Schnurrbart abnehmen',
     mustacheDone: 'Schnurrbart freigeschaltet',
     soundName: {
         fart: 'Furz', ahem: 'Räuspern', scream: 'Schrei',
@@ -382,6 +383,7 @@ const en: Copy = {
     unlockDone: (name: string) => `${name} unlocked`,
     mustache: 'Mustache',
     wearMustache: 'Wear the mustache',
+    takeOffMustache: 'Take off the mustache',
     mustacheDone: 'Mustache unlocked',
     soundName: {
         fart: 'Fart', ahem: 'Ahem', scream: 'Scream',

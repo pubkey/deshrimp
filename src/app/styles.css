@@ -104,6 +104,18 @@
 }
 .haltung-pointsbtn.on { color: var(--text-primary); border-color: var(--text-secondary); }
 
+/* The mustache button sits beside it, to its left, the same size and the same
+ * "on" look _(2026-11-01, his call)_. */
+.haltung-mustachebtn.ui-iconbtn {
+  position: absolute;
+  right: calc(var(--space-2) * 2 + 32px);
+  bottom: var(--space-2);
+  width: 32px;
+  height: 32px;
+  z-index: 1;
+}
+.haltung-mustachebtn.on { color: var(--text-primary); border-color: var(--text-secondary); }
+
 /* The prose under the well: the verdict, a camera error, a note. Its height is
  * reserved rather than measured _(2026-09-15, his call: the tile must not
  * change size on a state change)_. Without this the tile grew when the first

@@ -123,6 +123,7 @@ export const tr: Copy = {
     unlockDone: (name: string) => `${name} açıldı`,
     mustache: 'Bıyık',
     wearMustache: 'Bıyığı tak',
+    takeOffMustache: 'Bıyığı çıkar',
     mustacheDone: 'Bıyık açıldı',
     soundName: {
         fart: 'Osuruk', ahem: 'Boğaz temizleme', scream: 'Çığlık',

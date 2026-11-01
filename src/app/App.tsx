@@ -512,8 +512,12 @@ function PoseOverlay({ points, size }: OverlayProps) {
 const MUSTACHE_HALF = 'M0 -3 C6 -10 17 -12 27 -6 C34 -2 40 0 45 -5 '
     + 'C47 -7 48 -10 46 -13 C51 -9 49 1 38 4 C26 7 11 5 0 3 Z';
 
-/** How far down from the nose towards the mouth the mustache sits, 0 to 1. */
-const MUSTACHE_DROP = 0.55;
+/**
+ * How far down from the nose towards the mouth the mustache sits, 0 to 1.
+ * 0.55 sat it too close under the nose _(2026-11-01, his call, verbatim: „der
+ * schnurbar muss ein ticken runter")_.
+ */
+const MUSTACHE_DROP = 0.7;
 /** How wide it is against the width of the mouth. */
 const MUSTACHE_WIDTH = 2.1;
 /**
@@ -1602,6 +1606,14 @@ function Live() {
                             }}
                         />
                     ) : null}
+                    {/* The mustache's own button, beside the points one
+                        _(2026-11-01, his call, verbatim: „mach den schnurbar
+                        kaufen iconsetting in das video nebem dem
+                        punktebutton")_: the shop and the switch for a thing
+                        drawn on the picture sit on the picture. */}
+                    {camera.on ? (
+                        <Mustache settings={settings} change={change} balance={coinBalance} />
+                    ) : null}
                     {!camera.on ? (
                         <div className="haltung-camera-off">{t.cameraOff}</div>
                     ) : null}
@@ -1709,7 +1721,6 @@ function Live() {
                     balance={coinBalance}
                 />
 
-                <Mustache settings={settings} change={change} balance={coinBalance} />
 
                 {/* The two views, as a switch rather than a button
                     _(2026-09-16, his call: „mach einen toggle daraus so links
@@ -2527,15 +2538,19 @@ function UnlockDialog({ name, price, balance, onConfirm, onClose }: {
  * nicht nur Sounds kaufen kann, sondern auch so ein schnurrbart, der mir dann
  * auf die Video gesetzt wird")_.
  *
- * Before it is bought it is a button with the lock and the price, the way a
- * locked sound sits in the list, and pressing it asks the same question the
- * sounds ask. Once bought it is a checkbox like the three above the sound
- * list: put on or taken off, never paid for twice. Buying puts it on.
+ * One glyph in the camera well, beside the points button and built the same
+ * way _(2026-11-01, his call)_: a 32px icon button, the words only in its title
+ * and accessible name. Before it is bought it says the price there and opens
+ * the same question the sounds ask; once bought it puts the mustache on and
+ * takes it off, never paid for twice, and takes white ink while it is worn,
+ * like the points button. Buying puts it on.
  */
 function Mustache({ settings: s, change, balance }: SetupProps & { balance: number }) {
     const t = useCopy();
+    const lang = useLang();
     const [asking, setAsking] = useState(false);
     const owned = !!s.mustacheOwned || DEBUG_ALL_BOUGHT;
+    const worn = owned && !!s.mustache;
 
     const buy = async () => {
         if (balance < MUSTACHE_PRICE * 10) return;
@@ -2548,21 +2563,21 @@ function Mustache({ settings: s, change, balance }: SetupProps & { balance: numb
         toast(t.mustacheDone);
     };
 
+    const label = !owned
+        ? `${t.mustache} · ${coinAmount(MUSTACHE_PRICE * 10, lang)} Shrimpcoin`
+        : worn ? t.takeOffMustache : t.wearMustache;
+
     return (
         <>
-            {owned ? (
-                <Checkbox label={t.wearMustache} checked={!!s.mustache}
-                    onChange={(on) => void change({ mustache: on })} />
-            ) : (
-                <Row>
-                    <Button
-                        icon={<Icon name="lock" />}
-                        onClick={() => setAsking(true)}
-                    >
-                        {t.mustache} <CoinAmount tenths={MUSTACHE_PRICE * 10} />
-                    </Button>
-                </Row>
-            )}
+            <IconButton
+                className={`haltung-mustachebtn${worn ? ' on' : ''}`}
+                icon={<Icon name="mustache" />}
+                label={label}
+                onClick={() => {
+                    if (owned) void change({ mustache: !worn });
+                    else setAsking(true);
+                }}
+            />
             <UnlockDialog
                 name={asking ? t.mustache : null}
                 price={MUSTACHE_PRICE}

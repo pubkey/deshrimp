@@ -11,6 +11,23 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-11-01 - the mustache moves into the picture
+
+### Changed
+- **The mustache sits lower** _(his call, verbatim: „der schnurbar muss ein
+  ticken runter")_: 70 % of the way from the nose to the mouth instead of
+  55 %, so it rests on the upper lip rather than under the nostrils.
+- **Its control is a glyph in the camera well, beside the points button**
+  _(his call, verbatim: „mach den schnurbar kaufen iconsetting in das video
+  nebem dem punktebutton")_. Same 32px icon button, same white ink while it is
+  on. Locked, its title says the price and a press opens the unlock dialog;
+  bought, a press puts the mustache on or takes it off. The button under the
+  sound list and the checkbox are gone from the control tile. Like the points
+  button it shows only while the camera runs, because without a picture there
+  is nothing to wear it on.
+- `mustache` joins the icon set, drawn to Lucide's rules, and
+  `takeOffMustache` joins the thirteen tables.
+
 ## 2026-10-31 - a mustache in the shop
 
 ### New

@@ -123,6 +123,7 @@ export const ru: Copy = {
     unlockDone: (name: string) => `${name} открыт`,
     mustache: 'Усы',
     wearMustache: 'Надеть усы',
+    takeOffMustache: 'Снять усы',
     mustacheDone: 'Усы открыты',
     soundName: {
         fart: 'Пук', ahem: 'Покашливание', scream: 'Крик',

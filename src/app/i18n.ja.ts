@@ -123,6 +123,7 @@ export const ja: Copy = {
     unlockDone: (name: string) => `${name}を解放しました`,
     mustache: 'ヒゲ',
     wearMustache: 'ヒゲをつける',
+    takeOffMustache: 'ヒゲを外す',
     mustacheDone: 'ヒゲを解放しました',
     soundName: {
         fart: 'おなら', ahem: 'せき払い', scream: '悲鳴',
