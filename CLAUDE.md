@@ -59,3 +59,18 @@ His requests are recorded verbatim, typos and all, and `CHANGELOG.md` records
 the decisions behind them. A recorded decision of his outranks a rule that
 arrived later: the page title keeps its emoji because he asked for that wording
 exactly, in every language.
+
+## Preview links
+
+Every pull request gets a preview deployed by `pr-preview.yml`; the bot posts
+its address on the PR. **Whenever a change adds or changes something that is
+bought with Shrimpcoin, hand him that preview address with `?debugcoins=N`
+already on it**, so he can buy and try it on the spot instead of sitting for
+the coins first _(his call, verbatim: „remember that when you deploy a demo
+page where i can buy new or updates stuff, there always show me the url with
+a debug-coins that i already have so i can buy and try directly")_.
+
+Pick `N` so it covers everything new in the change with some left over, and
+say what it costs. The parameter pays out once and then takes itself out of
+the address, so a reload does not pay again; `?bought` is the other door,
+for trying without the buying.
