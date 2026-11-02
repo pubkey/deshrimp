@@ -121,6 +121,10 @@ export const pl: Copy = {
     unlockCancel: 'Anuluj',
     unlockShort: (missing: Coins) => ['Brakuje ', missing, ' Shrimpcoin. Siedzenie prosto je zarabia.'],
     unlockDone: (name: string) => `${name} odblokowany`,
+    mustache: 'Wąsy',
+    wearMustache: 'Załóż wąsy',
+    takeOffMustache: 'Zdejmij wąsy',
+    mustacheDone: 'Wąsy odblokowane',
     soundName: {
         fart: 'Pierdnięcie', ahem: 'Chrząknięcie', scream: 'Krzyk',
         knuckles: 'Strzelanie kostkami', whip: 'Trzask bata', rimshot: 'Rimshot',

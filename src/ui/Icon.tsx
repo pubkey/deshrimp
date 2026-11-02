@@ -38,6 +38,9 @@
  * ```
  *
  * ## Changelog
+ * - 2026-11-01 `mustache`, for the button in the camera well that buys and
+ *   wears the mustache. Lucide has none; this one is drawn to its rules: one
+ *   closed outline, 1.5 stroke, round joins, inside the 24 box.
  * - 2026-09-16 `grid` and `minimize`, for the switch between the dashboard and
  *   zen. Two shapes rather than one arrow both ways: the button says which of
  *   the two it leads to, and a glyph that changes meaning with its direction
@@ -108,6 +111,9 @@ const PATHS = {
             <path d="M12 9v4" />
             <path d="M12 17h.01" />
         </>
+    ),
+    mustache: (
+        <path d="M12 10.5c-2-1.6-5-1.6-7 .6-1 1-2.4 1-3-.4 0 2.6 2 4.2 4.6 3.7 2.4-.4 4.2-1.3 5.4-2 1.2.7 3 1.6 5.4 2 2.6.5 4.6-1.1 4.6-3.7-.6 1.4-2 1.4-3 .4-2-2.2-5-2.2-7-.6z" />
     ),
     eye: (
         <>

@@ -121,6 +121,10 @@ export const ja: Copy = {
     unlockCancel: 'キャンセル',
     unlockShort: (missing: Coins) => ['あと ', missing, ' Shrimpcoin 足りません。姿勢よく座ると貯まります。'],
     unlockDone: (name: string) => `${name}を解放しました`,
+    mustache: 'ヒゲ',
+    wearMustache: 'ヒゲをつける',
+    takeOffMustache: 'ヒゲを外す',
+    mustacheDone: 'ヒゲを解放しました',
     soundName: {
         fart: 'おなら', ahem: 'せき払い', scream: '悲鳴',
         knuckles: '指の関節を鳴らす音', whip: 'むちの音', rimshot: 'ドンドンパフ',

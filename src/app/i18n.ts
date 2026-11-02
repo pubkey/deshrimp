@@ -208,6 +208,10 @@ const de = {
     unlockCancel: 'Abbrechen',
     unlockShort: (missing: Coins) => ['Es fehlen ', missing, ' Shrimpcoin. Gerade sitzen bringt welche.'],
     unlockDone: (name: string) => `${name} freigeschaltet`,
+    mustache: 'Schnurrbart',
+    wearMustache: 'Schnurrbart aufsetzen',
+    takeOffMustache: 'Schnurrbart abnehmen',
+    mustacheDone: 'Schnurrbart freigeschaltet',
     soundName: {
         fart: 'Furz', ahem: 'Räuspern', scream: 'Schrei',
         knuckles: 'Fingerknacken', whip: 'Peitsche', rimshot: 'Bada-Bumm-Tss',
@@ -377,6 +381,10 @@ const en: Copy = {
     unlockCancel: 'Cancel',
     unlockShort: (missing: Coins) => [missing, ' Shrimpcoin short. Sitting straight earns them.'],
     unlockDone: (name: string) => `${name} unlocked`,
+    mustache: 'Mustache',
+    wearMustache: 'Wear the mustache',
+    takeOffMustache: 'Take off the mustache',
+    mustacheDone: 'Mustache unlocked',
     soundName: {
         fart: 'Fart', ahem: 'Ahem', scream: 'Scream',
         knuckles: 'Knuckle crack', whip: 'Whip crack', rimshot: 'Rimshot',

@@ -235,6 +235,15 @@ export type Settings = {
     firstDay?: string;
     /** The last day the visit bonus was paid, so it is paid once a day. */
     lastDailyBonus?: string;
+    /**
+     * Whether the mustache has been bought _(2026-10-31, his call, verbatim:
+     * „mach, dass ich nicht nur Sounds kaufen kann, sondern auch so ein
+     * schnurrbart, der mir dann auf die Video gesetzt wird")_. Paid for once
+     * with Shrimpcoin, out of the same `coinsSpent` as the sounds.
+     */
+    mustacheOwned?: boolean;
+    /** Whether the bought mustache is drawn on the picture right now. */
+    mustache?: boolean;
 };
 
 /**
@@ -288,6 +297,12 @@ export const DEFAULTS: Settings = {
  * sondern pro nutzungszeit relevant sein")_. The first one stays at four
  * minutes _(his call: „erster sound soll nach 4 minuten ca drin sein")_.
  */
+/**
+ * What the mustache costs, in whole Shrimpcoin: about 40 minutes of straight
+ * sitting, between the third and the fourth sound on the ladder.
+ */
+export const MUSTACHE_PRICE = 500;
+
 export const SOUND_PRICE: Record<SoundName, number> = {
     fart: 0,
     ahem: 50,
@@ -302,7 +317,7 @@ export const SOUND_PRICE: Record<SoundName, number> = {
 const SOUND_NAMES: SoundName[] = ['fart', 'scream', 'knuckles', 'rimshot', 'ahem', 'whip', 'geiger', 'parking'];
 
 const settingsSchema: RxJsonSchema<Settings> = {
-    version: 17,
+    version: 18,
     primaryKey: 'id',
     type: 'object',
     properties: {
@@ -332,6 +347,8 @@ const settingsSchema: RxJsonSchema<Settings> = {
         coinsSpent: { type: 'number' },
         firstDay: { type: 'string', maxLength: 10 },
         lastDailyBonus: { type: 'string', maxLength: 10 },
+        mustacheOwned: { type: 'boolean' },
+        mustache: { type: 'boolean' },
     },
     required: ['id', 'intervalSec', 'maxLean', 'maxForward', 'maxHeadTilt',
         'sound', 'soundName', 'notify', 'vibrate', 'lang', 'windowMin', 'view'],
@@ -349,7 +366,8 @@ const settingsSchema: RxJsonSchema<Settings> = {
  * enum again, for the whip crack; v13 renames every sound from German to
  * English; v14 adds vibration, off; v15 adds the unlocked sounds and the
  * Shrimpcoin spent on them; v16 adds the dates behind the daily visit bonus;
- * v17 widens the sound enum for the Geiger counter and the parking sensor.
+ * v17 widens the sound enum for the Geiger counter and the parking sensor;
+ * v18 adds the mustache, not bought.
  * Every step keeps the thresholds he set - a schema change must never be the
  * thing that resets his settings, and v3 in particular must not change the
  * language a device is already showing.
@@ -442,6 +460,9 @@ const settingsMigrations = {
     // Nobody is moved onto either, and neither is unlocked for free: the sound
     // a device already plays is the sound it keeps.
     17: (old: Record<string, unknown>) => old,
+    // v18 adds the mustache. Both fields are optional and left unset, which
+    // reads as not bought and not worn: nobody gets one for free.
+    18: (old: Record<string, unknown>) => old,
 };
 
 /** The v13 rename, old name to new. `rimshot` was already English. */

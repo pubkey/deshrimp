@@ -121,6 +121,10 @@ export const es: Copy = {
     unlockCancel: 'Cancelar',
     unlockShort: (missing: Coins) => ['Faltan ', missing, ' Shrimpcoin. Sentarte derecho los gana.'],
     unlockDone: (name: string) => `${name} desbloqueado`,
+    mustache: 'Bigote',
+    wearMustache: 'Ponerse el bigote',
+    takeOffMustache: 'Quitarse el bigote',
+    mustacheDone: 'Bigote desbloqueado',
     soundName: {
         fart: 'Pedo', ahem: 'Carraspeo', scream: 'Grito',
         knuckles: 'Crujido de nudillos', whip: 'Latigazo', rimshot: 'Redoble',

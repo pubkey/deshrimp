@@ -104,6 +104,18 @@
 }
 .haltung-pointsbtn.on { color: var(--text-primary); border-color: var(--text-secondary); }
 
+/* The mustache button sits beside it, to its left, the same size and the same
+ * "on" look _(2026-11-01, his call)_. */
+.haltung-mustachebtn.ui-iconbtn {
+  position: absolute;
+  right: calc(var(--space-2) * 2 + 32px);
+  bottom: var(--space-2);
+  width: 32px;
+  height: 32px;
+  z-index: 1;
+}
+.haltung-mustachebtn.on { color: var(--text-primary); border-color: var(--text-secondary); }
+
 /* The prose under the well: the verdict, a camera error, a note. Its height is
  * reserved rather than measured _(2026-09-15, his call: the tile must not
  * change size on a state change)_. Without this the tile grew when the first
@@ -294,3 +306,18 @@
 }
 .haltung-snackbar.on { opacity: 1; }
 .haltung-snackbar-note { font-weight: 400; }
+
+/* The bought mustache _(2026-10-31, his call)_, over the picture like the
+ * developer points and mirrored the same way, so it sits under the nose and
+ * not beside it. Ink in both themes: it is hair on a photograph, not a part
+ * of the interface, and a mustache that turns white in dark mode is a
+ * different joke. */
+.haltung-mustache {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(-1);
+  pointer-events: none;
+}
+.haltung-mustache path { fill: var(--ink-900); }
