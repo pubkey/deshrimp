@@ -11,6 +11,29 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-11-02 - the parking sensor beeps from where he leans
+
+### Changed
+- **The parking sensor is spatial** _(his call, verbatim: „on the parking
+  sensor can we use dolby sorund sound somehow so that it sounds like it beep
+  in front when we lean to front and back on back and sides etc")_. A browser
+  cannot output Dolby, so it uses what Web Audio has for the same job: an HRTF
+  `PannerNode` that places the beep round his head. The shoulder line dropping
+  to his left beeps on his left, to his right on his right, the head forward
+  beeps in front, and a mix of the two beeps in between, each measure pulling
+  by its share of its own limit. The beep glides to a new direction after each
+  reading rather than jumping. Best on headphones; on two speakers the sides
+  still come out clearly.
+- „Anhören" swings the beeps from his left round the front to his right while
+  they close up, and ends on the solid tone in front.
+
+### Left out on purpose
+- **Nothing beeps from behind.** Leaning back is not measured: `pose.ts` only
+  counts the head coming forward, and a backward reading would change what
+  counts as bad posture, which is a separate decision.
+- **A tilted head beeps in front.** The head tilt reading has no side, only a
+  size.
+
 ## 2026-11-01 - the mustache moves into the picture
 
 ### Changed
