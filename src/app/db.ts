@@ -213,11 +213,12 @@ export type Settings = {
      */
     view: View;
     /**
-     * The sounds this device may pick. Only the fart is free; every other one
+     * The sounds this device bought. The ones priced at nothing in
+     * `SOUND_PRICE` are free on top of this list; every other one
      * is bought with Shrimpcoin _(2026-10-18, his call, verbatim: „nur der
      * furzsound ist umsonst. die andern müssen mut shrimpcoins freigeschaltet
      * werden")_. Optional so a device still on the previous version can sync
-     * its settings without failing validation; missing reads as fart only.
+     * its settings without failing validation; missing reads as the free ones only.
      */
     unlockedSounds?: SoundName[];
     /**
@@ -250,9 +251,10 @@ export type Settings = {
  * The alarm sounds he can pick from. Most are the recordings he sent
  * _(2026-09-08)_, the whip crack joins them as a bundled file, and the Geiger
  * counter and the parking sensor are made in the browser rather than
- * recorded. The default
- * is the rude one - he asked for it by name, and a noise you find funny is a
- * noise you leave switched on.
+ * recorded. The default was the rude one until 2026-11-02, because he asked
+ * for it by name; it is the parking sensor now _(his call, verbatim: „make the
+ * parking sensor the default sound")_, after he found the fart puts people
+ * off, women especially, on their first visit. The fart stays free.
  *
  * The values were German until v13 (`furz`, `raeuspern`, `schrei`, `knacken`,
  * `peitsche`); they are what the file under `public/snd/` is called, and they
@@ -271,11 +273,11 @@ export const DEFAULTS: Settings = {
     windowMin: 30,
     lang: 'en',
     sound: true,
-    soundName: 'fart',
+    soundName: 'parking',
     notify: false,
     vibrate: false,
     view: 'zen',
-    unlockedSounds: ['fart'],
+    unlockedSounds: ['parking', 'fart'],
     coinsSpent: 0,
 };
 
@@ -288,8 +290,9 @@ export const DEFAULTS: Settings = {
  * steiler")_: each step roughly triples, so the wait stretches the way an
  * idle game's clock does (research/idle-game-reward-curves.md). Bought in
  * order, the sounds unlock after about 4 minutes, 17 minutes, 1 hour, 3 hours
- * and 10 hours of straight sitting, and the parking sensor after about 100.
- * The Geiger counter is free like the fart _(2026-10-28, his call, verbatim:
+ * and 10 hours of straight sitting.
+ * The parking sensor is free because it is the default _(2026-11-02)_; it was
+ * 50000, about 100 hours. The Geiger counter is free like the fart _(2026-10-28, his call, verbatim:
  * „the geiger counter should be free, equal to the fart sound")_; it was
  * 15000. That is usage time, not
  * calendar time: there is no daily cap, so someone who sits with it four hours a day unlocks
@@ -311,7 +314,7 @@ export const SOUND_PRICE: Record<SoundName, number> = {
     whip: 1500,
     rimshot: 5000,
     geiger: 0,
-    parking: 50000,
+    parking: 0,
 };
 
 const SOUND_NAMES: SoundName[] = ['fart', 'scream', 'knuckles', 'rimshot', 'ahem', 'whip', 'geiger', 'parking'];
@@ -436,7 +439,9 @@ const settingsMigrations = {
     // synthesised names v5 already retired) lands on the default.
     13: (old: Record<string, unknown>) => ({
         ...old,
-        soundName: RENAMED_SOUNDS[String(old.soundName)] || DEFAULTS.soundName,
+        // `fart` rather than `DEFAULTS.soundName`: this step writes what v13
+        // expected, and the default back then was the fart.
+        soundName: RENAMED_SOUNDS[String(old.soundName)] || 'fart',
     }),
     // v14 adds the vibrate switch. Off, like the notification: a device that
     // starts buzzing after an update is a change nobody asked for.
