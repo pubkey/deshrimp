@@ -695,6 +695,61 @@ const PARK_FAST = 0.12;
 const PARK_BEEP = 0.07;
 const PARK_PITCH = 1600;
 
+/**
+ * The parking sensor beeps from where he leans _(2026-11-02, his call,
+ * verbatim: „on the parking sensor can we use dolby sorund sound somehow so
+ * that it sounds like it beep in front when we lean to front and back on back
+ * and sides etc")_.
+ *
+ * A browser cannot speak Dolby, but Web Audio has the thing Dolby is used for
+ * here: a `PannerNode` with the HRTF model, which places a sound around the
+ * listener the way the ears hear a real one. Best on headphones; on two
+ * speakers the sides still come out clearly.
+ *
+ * The direction is the way the body is off, in his own terms: the shoulder
+ * line dropping to his left beeps on his left, the head forward beeps in
+ * front, both at once beeps in between. Each measure pulls by its share of
+ * its own limit, so the worse one wins the direction as it wins the rate.
+ * Behind him is never used, because nothing behind is measured: `pose.ts`
+ * only counts the head coming forward. A tilted head has no side in the
+ * reading, so a head tilt alone beeps in front.
+ *
+ * The angle is in radians, 0 straight ahead, negative to his left.
+ */
+function parkAzimuth(a: Analysis, s: Settings): number {
+    const side = a.leanSide === 'left' ? -1 : a.leanSide === 'right' ? 1 : 0;
+    const x = side * (a.leanDeg / Math.max(1, s.maxLean));
+    const ahead = a.forwardDeg / Math.max(1, s.maxForward);
+    return x === 0 && ahead === 0 ? 0 : Math.atan2(x, ahead);
+}
+
+/** Where on a circle round his head an azimuth sits: x to the right, -z ahead. */
+function placePanner(p: PannerNode, azimuth: number, at: number, glide = 0) {
+    const x = Math.sin(azimuth);
+    const z = -Math.cos(azimuth);
+    if (p.positionX) {
+        ([[p.positionX, x], [p.positionY, 0], [p.positionZ, z]] as const).forEach(([param, v]) => {
+            if (glide) param.setTargetAtTime(v, at, glide);
+            else param.setValueAtTime(v, at);
+        });
+    } else {
+        // Safari before 14.1 has only the old setter, which jumps.
+        (p as unknown as { setPosition(x: number, y: number, z: number): void }).setPosition(x, 0, z);
+    }
+}
+
+/** A panner one step from the head, loud the same at every angle. */
+function makePanner(ctx: AudioContext): PannerNode {
+    const p = ctx.createPanner();
+    p.panningModel = 'HRTF';
+    p.distanceModel = 'inverse';
+    p.refDistance = 1;
+    p.rolloffFactor = 0;
+    p.connect(ctx.destination);
+    placePanner(p, 0, ctx.currentTime);
+    return p;
+}
+
 /** The sounds that run the whole time and follow the severity. */
 const METERS: SoundName[] = ['geiger', 'parking'];
 const isMeter = (name: SoundName) => METERS.includes(name);
@@ -852,8 +907,17 @@ function useBeep() {
         return src;
     };
 
+    /* Where the running parking sensor sounds from. One panner for the
+       whole run, moved after every reading, so a beep already queued on the
+       audio clock follows him too. */
+    const parkPan = useRef<PannerNode | null>(null);
+    const parkOut = (ctx: AudioContext): PannerNode => {
+        if (!parkPan.current || parkPan.current.context !== ctx) parkPan.current = makePanner(ctx);
+        return parkPan.current;
+    };
+
     /** One parking beep: a short sine with soft edges, so it does not click. */
-    const parkBeep = (ctx: AudioContext, at: number, level = 1): OscillatorNode => {
+    const parkBeep = (ctx: AudioContext, at: number, level = 1, out: AudioNode = parkOut(ctx)): OscillatorNode => {
         const osc = ctx.createOscillator();
         osc.frequency.value = PARK_PITCH;
         const g = ctx.createGain();
@@ -862,7 +926,7 @@ function useBeep() {
         g.gain.linearRampToValueAtTime(peak, at + 0.004);
         g.gain.setValueAtTime(peak, at + PARK_BEEP - 0.008);
         g.gain.linearRampToValueAtTime(0, at + PARK_BEEP);
-        osc.connect(g); g.connect(ctx.destination);
+        osc.connect(g); g.connect(out);
         osc.start(at); osc.stop(at + PARK_BEEP);
         return osc;
     };
@@ -877,7 +941,7 @@ function useBeep() {
         const gain = ctx.createGain();
         gain.gain.setValueAtTime(0, ctx.currentTime);
         gain.gain.linearRampToValueAtTime(SOUND_GAIN.parking, ctx.currentTime + 0.01);
-        osc.connect(gain); gain.connect(ctx.destination);
+        osc.connect(gain); gain.connect(parkOut(ctx));
         osc.start();
         solid.current = { osc, gain };
     };
@@ -905,13 +969,19 @@ function useBeep() {
     /**
      * Set the Geiger counter or the parking sensor going for this severity, or
      * silence both with `null`. Called after every reading; what sounds in
-     * between is its own.
+     * between is its own. `azimuth` is where the parking sensor beeps from,
+     * see `parkAzimuth`.
      */
-    const meter = useCallback((name: SoundName | null, ratio = 0) => {
+    const meter = useCallback((name: SoundName | null, ratio = 0, azimuth = 0) => {
         const rate = name === 'geiger' ? geigerRate(ratio) : 0;
         const parking = name === 'parking' && meterLevel(ratio) >= 0;
         const gap = parking ? parkGap(ratio) : 0;
         const state = rate ? `geiger:${rate}` : parking ? `parking:${gap}` : '';
+        // The direction moves even when the rate does not: a glide rather
+        // than a jump, so the beep swings round instead of hopping.
+        if (parking && ctxRef.current) {
+            placePanner(parkOut(ctxRef.current), azimuth, ctxRef.current.currentTime, 0.08);
+        }
         if (state === meterNow.current) return;
         meterNow.current = state;
         const ctx = ctxRef.current;
@@ -1013,14 +1083,21 @@ function useBeep() {
 
         if (name === 'parking') {
             // The same walk for the parking sensor: beeps closing up over
-            // three seconds, then the solid tone for most of one more.
+            // three seconds, then the solid tone for most of one more. The
+            // beeps swing from his left round the front to his right on the
+            // way, so the direction can be heard before he has to slump for
+            // it, and the solid tone sits in front. Its own panner, so a
+            // running meter is not moved by it.
             const span = 3;
+            const pan = makePanner(ctx);
             let at = 0;
             while (at < span) {
-                parkBeep(ctx, t + at, level);
                 const progress = at / span;
+                placePanner(pan, (progress * 2 - 1) * (Math.PI / 2), t + at);
+                parkBeep(ctx, t + at, level, pan);
                 at += Math.max(PARK_FAST, parkGap(METER_FROM + (METER_FULL - METER_FROM) * progress * 0.99));
             }
+            placePanner(pan, 0, t + at);
             const osc = ctx.createOscillator();
             osc.frequency.value = PARK_PITCH;
             const g = ctx.createGain();
@@ -1029,7 +1106,7 @@ function useBeep() {
             g.gain.linearRampToValueAtTime(peak, t + at + 0.01);
             g.gain.setValueAtTime(peak, t + at + 0.8);
             g.gain.linearRampToValueAtTime(0, t + at + 0.82);
-            osc.connect(g); g.connect(out);
+            osc.connect(g); g.connect(pan);
             osc.start(t + at); osc.stop(t + at + 0.85);
             return;
         }
@@ -1354,7 +1431,9 @@ function Live() {
             // The Geiger counter and the parking sensor follow every
             // trustworthy reading, borderline included - that is what lets him
             // hear it getting worse.
-            live.current.beep.meter(metered && trustworthy ? s.soundName : null, severity(result, s));
+            live.current.beep.meter(
+                metered && trustworthy ? s.soundName : null, severity(result, s), parkAzimuth(result, s),
+            );
 
             // One reading that is not bad ends the run, so sitting up quiets the
             // signal on the very next check rather than a few seconds later.
