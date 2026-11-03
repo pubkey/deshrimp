@@ -11,6 +11,30 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-11-02 - the parking sensor is the default
+
+### Changed
+- **The parking sensor is the default sound** _(his call, verbatim: „make the
+  parking sensor the default sound")_, after he found the fart puts people
+  off on their first visit, women especially. A new device starts on it, and
+  it heads the sound list, followed by the fart and the Geiger counter.
+- **It is free now.** A default you have to buy for 50,000 Shrimpcoin is no
+  default. Any sound priced at nothing counts as unlocked, so it is free on
+  every device, including ones that stored their list before. The paid ladder
+  is the five sounds from ahem to rimshot.
+- The written answer's step 3 says so in all thirteen languages, describes
+  how the beeps close up instead of „once a second", and counts eight sounds,
+  which it had stopped doing at six.
+
+### Kept
+- **The fart stays free and stays picked** where it was picked. A stored
+  `fart` cannot tell a choice from a default nobody touched, so no migration
+  moves anyone; only devices without settings get the parking sensor.
+- **No refund for anyone who bought the parking sensor**, the same as when the
+  Geiger counter went free on 2026-10-28.
+- The v13 migration names `fart` outright instead of reading the current
+  default, so it still writes what that step expected.
+
 ## 2026-11-02 - the parking sensor beeps from where he leans
 
 ### Changed

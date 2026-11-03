@@ -59,15 +59,18 @@ hips, and in a desk-sized crop they come back with a visibility of 0.01 against
   is opened after the first pays 20 more. Each payout shows
   briefly in a snackbar; the balance sits under the start button and is kept
   per day with the rest of the history, on the device. It is what the alarm
-  sounds are bought with: the fart and the Geiger counter are free, the other
-  six cost 50, 150, 500, 1,500, 5,000 and 50,000.
+  sounds are bought with: the parking sensor (the default), the fart and the
+  Geiger counter are free, the other five cost 50, 150, 500, 1,500 and 5,000.
   They also buy a mustache, 500, drawn under your nose on the live picture.
 - **Thirteen languages**, switchable top right: de · en · es · fr · it · pt ·
   nl · pl · tr · ru · zh · ja · ka. First visit picks stored choice → browser
   language → English.
-- **The alarm ramps.** It sounds on *every* crooked reading, starting at a
-  quarter volume and reaching full after four in a row; one good reading resets
-  it. A signal always at full volume is a signal you switch off.
+- **The alarm ramps.** The default, the parking sensor, beeps from the moment
+  a reading turns borderline and closes up the further off you sit, up to one
+  solid tone at twice the limit. The recorded sounds play on *every* crooked
+  reading instead, starting at a quarter volume and reaching full after four in
+  a row; one good reading resets them. A signal always at full volume is a
+  signal you switch off.
 - **The tab icon turns** green, yellow or red, so the page still says something
   while it sits behind your work.
 - **Raw readings expire after two days** (at 1 Hz that is tens of thousands of

@@ -193,10 +193,10 @@ const INTERVAL_SEC = 1;
 
 /**
  * The order the sounds are offered in. The names themselves are in `i18n.ts`;
- * this list only fixes which one comes first - `fart` is the default and the
- * one he asked for by name.
+ * this list only fixes which one comes first - `parking` is the default
+ * _(2026-11-02)_, then the other free ones, then the ladder by price.
  */
-const SOUND_ORDER: SoundName[] = ['fart', 'geiger', 'ahem', 'scream', 'knuckles', 'whip', 'rimshot', 'parking'];
+const SOUND_ORDER: SoundName[] = ['parking', 'fart', 'geiger', 'ahem', 'scream', 'knuckles', 'whip', 'rimshot'];
 
 const VERDICT_TONE: Record<Verdict, StatusTone> = {
     good: 'ok', borderline: 'warn', bad: 'bad',
@@ -2515,8 +2515,9 @@ function Sound(props: SoundProps) {
                 checkbox. Turning the signal back off is one click on that same
                 checkbox, so the rule cannot trap anyone. */}
             <Row gap={2} align="bottom" stack>
-                {/* The fart and the Geiger counter are free _(2026-10-28 for
-                    the Geiger counter)_; the rest are bought with Shrimpcoin
+                {/* The parking sensor, the fart and the Geiger counter are
+                    free _(2026-10-28 for the Geiger counter, 2026-11-02 for the
+                    parking sensor)_; the rest are bought with Shrimpcoin
                     _(2026-10-18, his call: „nur der furzsound ist umsonst. die
                     andern müssen mut shrimpcoins freigeschaltet werden")_. A
                     locked sound stays in the list with its price, so the
