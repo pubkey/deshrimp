@@ -100,6 +100,9 @@ const OG_LOCALE = {
     ka: 'ka_GE',
 };
 
+/** The share picture, one for every language: it carries no sentence. */
+const OG_IMAGE = `${SITE}/og-image.png`;
+
 const esc = (s) => String(s)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
@@ -137,13 +140,29 @@ function head(lang) {
         `<meta property="og:url" content="${url}" />`,
         `<meta property="og:title" content="${esc(title)}" />`,
         `<meta property="og:description" content="${esc(description)}" />`,
-        `<meta property="og:image" content="${SITE}/icon.svg" />`,
+        // The share picture. It used to be `icon.svg`, and WhatsApp, Telegram,
+        // Facebook, X and the rest do not render an SVG, so every shared link
+        // came without one. A 1200 x 630 PNG is what they all take
+        // (`scripts/og-image.mjs` draws it). The URL is absolute, as Open Graph
+        // requires, and the size is stated so the first share of a link
+        // already shows the large card instead of waiting for the crawler to
+        // fetch the file and measure it.
+        `<meta property="og:image" content="${OG_IMAGE}" />`,
+        `<meta property="og:image:secure_url" content="${OG_IMAGE}" />`,
+        `<meta property="og:image:type" content="image/png" />`,
+        `<meta property="og:image:width" content="1200" />`,
+        `<meta property="og:image:height" content="630" />`,
+        `<meta property="og:image:alt" content="deshrimp" />`,
         `<meta property="og:locale" content="${OG_LOCALE[code] || code}" />`,
+        ...LANGS.filter((l) => l !== code).map((l) => (
+            `<meta property="og:locale:alternate" content="${OG_LOCALE[l] || l}" />`
+        )),
 
-        `<meta name="twitter:card" content="summary" />`,
+        `<meta name="twitter:card" content="summary_large_image" />`,
         `<meta name="twitter:title" content="${esc(title)}" />`,
         `<meta name="twitter:description" content="${esc(description)}" />`,
-        `<meta name="twitter:image" content="${SITE}/icon.svg" />`,
+        `<meta name="twitter:image" content="${OG_IMAGE}" />`,
+        `<meta name="twitter:image:alt" content="deshrimp" />`,
 
         // A free tool with no sign-up, said in the vocabulary a search engine
         // already has a field for.

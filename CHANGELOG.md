@@ -11,6 +11,27 @@ rest of the repo was. Translating is not rewriting: every entry says what it
 said before, and his own requests inside them are still quoted in the German he
 wrote them in.
 
+## 2026-11-10 - a shared link shows a picture
+
+### Fixed
+- **Links shared on WhatsApp, Telegram, Signal, iMessage, Facebook and X come
+  with a picture now** _(his report, verbatim: „wenn ich deshrimp.com auf
+  whatsapp und so teile dann kommt da kein bild. binde da die richtigen html
+  meta sachen ein")_. The head named `icon.svg` as `og:image`, and none of
+  those apps render an SVG. It is `og-image.png` now: 1200 x 630, the mark and
+  the name on the white ground, drawn by `scripts/og-image.mjs` and committed.
+- The head states the picture's size, type and alt text, the Twitter card is
+  `summary_large_image` instead of the small `summary`, and every language
+  page lists the other twelve as `og:locale:alternate`.
+- The deploy refuses a build without the picture.
+
+### Kept
+- **One picture for all thirteen languages.** It carries no sentence, only
+  the name and the address, so there is nothing to translate.
+- **Already shared links may keep the old empty preview for a while.**
+  WhatsApp and Facebook cache what they fetched; a fresh share, or the
+  Facebook sharing debugger, picks up the new one.
+
 ## 2026-11-02 - the parking sensor is the default
 
 ### Changed
