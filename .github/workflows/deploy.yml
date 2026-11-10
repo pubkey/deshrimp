@@ -3,7 +3,7 @@
 #
 # Two things about this repo shape the workflow, and both bite if ignored:
 #
-# 1. **There is no lockfile**, on purpose — `.npmrc` sets it and `.gitignore`
+# 1. **There is no lockfile**, on purpose: `.npmrc` sets it and `.gitignore`
 #    keeps it out. So this runs `npm install`, never `npm ci`, which needs one.
 # 2. **The pose model is not in git.** It is 17 MB of pinned third-party binary
 #    fetched by the `postinstall` hook into `public/mp/`, from where Vite copies
@@ -99,6 +99,9 @@ jobs:
           # wants it reachable. A build without it publishes a 404 there.
           test -f dist/legal-notice.html || { echo "::error::no dist/legal-notice.html - the Impressum link would 404"; exit 1; }
           test -f dist/robots.txt  || { echo "::error::no dist/robots.txt"; exit 1; }
+          # Every page names this as its share picture. Without it a link
+          # shared on WhatsApp and the like comes out without one again.
+          test -f dist/og-image.png || { echo "::error::no dist/og-image.png - shared links would have no picture"; exit 1; }
           # The custom domain lives in this file and nowhere else. Publishing a
           # tree without it hands the site back to pubkey.github.io and takes
           # the certificate with it - see the note at the top of this file.
